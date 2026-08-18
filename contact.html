@@ -457,7 +457,61 @@
     </div>
 
 </header>
+<!-- ==========================================
+     CART DRAWER
+========================================== -->
 
+<div class="cart-drawer" id="cartDrawer">
+
+    <div class="cart-header">
+
+        <h3>Your Cart</h3>
+
+        <button
+            class="cart-close"
+            id="cartClose"
+            type="button">
+            ×
+        </button>
+
+    </div>
+
+    <div class="cart-items" id="cartItems">
+
+        <p style="
+            text-align:center;
+            color:var(--dark-muted);
+            padding:2rem 0;
+        ">
+            Your cart is empty.
+        </p>
+
+    </div>
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>Total</span>
+
+            <span id="cartTotal">
+                ₹0
+            </span>
+
+        </div>
+
+        <button
+            class="btn-checkout"
+            id="cartCheckout"
+            type="button">
+
+            Checkout
+
+        </button>
+
+    </div>
+
+</div>
 <!-- =========================================
      HERO
 ========================================= -->
