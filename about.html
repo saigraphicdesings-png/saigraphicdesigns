@@ -5,261 +5,340 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>About & Pricing | Sai Graphic Designs</title>
+    <title>About Us | Sai Graphic Designs</title>
 
     <meta name="description"
-        content="Explore Sai Graphic Designs pricing packages for logo design, branding, social media design, visiting cards, brochures, packaging and professional graphic design services.">
+        content="Learn about Sai Graphic Designs, our mission, vision, creative works and achievements in professional graphic design, branding and printing.">
 
     <meta name="keywords"
-        content="Sai Graphic Designs pricing, logo design price, logo recreation, graphic design Madurai, visiting card design, social media design, branding packages">
+        content="Sai Graphic Designs, graphic design company, graphic designer Madurai, branding, logo design, print design, social media design">
 
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* ================================
-           PRICING SECTION
+
+        /* =================================
+           ABOUT PAGE
         ================================= */
 
-        .pricing-section {
+        .about-page {
+            background: var(--white);
+        }
+
+        /* Hero */
+
+        .about-hero {
             padding: 6rem 2rem;
-            background-color: var(--white);
+            text-align: center;
+            background: var(--light);
         }
 
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto 5rem;
+        .about-hero-content {
+            max-width: 800px;
+            margin: auto;
         }
 
-        .pricing-card {
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 3rem 2.5rem;
-            background-color: var(--white);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .pricing-card.popular {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-lg);
-            transform: scale(1.03);
-        }
-
-        .pricing-card.popular::after {
-            content: 'MOST POPULAR';
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background-color: var(--primary-light);
-            color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.35rem 0.85rem;
-            border-radius: 20px;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .pricing-card.popular:hover {
-            transform: scale(1.03) translateY(-5px);
-        }
-
-        .plan-name {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price {
-            font-size: 2.75rem;
-            font-weight: 850;
-            color: var(--dark);
-            margin: 1rem 0;
-        }
-
-        .plan-price span {
-            font-size: 1rem;
-            font-weight: 500;
+        .about-hero p {
+            max-width: 680px;
+            margin: 1.25rem auto 0;
+            line-height: 1.8;
             color: var(--dark-muted);
         }
 
-        .plan-features {
-            list-style: none;
-            margin: 2rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            flex-grow: 1;
+
+        /* Main About */
+
+        .about-company {
+            padding: 6rem 2rem;
         }
 
-        .plan-feature-item {
-            display: flex;
+        .about-company-container {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 4rem;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
         }
 
-        .plan-feature-icon {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .compare-table-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow-x: auto;
-            padding: 0 1rem;
-        }
-
-        .compare-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        .compare-table th,
-        .compare-table td {
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .compare-table th {
-            background-color: var(--light);
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        /* ================================
-           ABOUT STATS
-        ================================= */
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .about-stat {
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: var(--white);
-        }
-
-        .about-stat-number {
-            display: block;
-            font-size: 2rem;
-            font-weight: 850;
-            color: var(--primary);
-        }
-
-        .about-stat-label {
-            display: block;
-            margin-top: 0.25rem;
-            font-size: 0.9rem;
+        .about-company-content p {
+            margin-top: 1rem;
+            line-height: 1.8;
             color: var(--dark-muted);
         }
 
-        /* ================================
-           PROCESS
-        ================================= */
+        .about-company-image {
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--light);
+        }
 
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+        .about-company-image img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        /* Mission Vision */
+
+        .mission-vision {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+
+        .mission-vision-grid {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 2rem;
         }
 
-        .process-card {
-            padding: 2rem;
+        .mission-card,
+        .vision-card {
+            padding: 3rem;
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             background: var(--white);
+
+            transition: var(--transition);
         }
 
-        .process-number {
-            display: inline-flex;
+        .mission-card:hover,
+        .vision-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mv-icon {
+            width: 60px;
+            height: 60px;
+
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+
+            border-radius: 15px;
+
             background: var(--primary);
             color: var(--white);
+
+            font-size: 1.5rem;
             font-weight: 800;
+
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-card h3,
+        .vision-card h3 {
+            font-size: 1.6rem;
             margin-bottom: 1rem;
         }
 
-        .process-card h3 {
+        .mission-card p,
+        .vision-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+
+
+        /* Works */
+
+        .works-section {
+            padding: 6rem 2rem;
+        }
+
+        .works-grid {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 1.5rem;
+        }
+
+        .work-card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            padding: 2rem;
+
+            background: var(--white);
+
+            transition: var(--transition);
+        }
+
+        .work-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .work-number {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--primary);
+
+            margin-bottom: 1rem;
+        }
+
+        .work-card h3 {
+            font-size: 1.25rem;
             margin-bottom: 0.75rem;
         }
 
-        .process-card p {
+        .work-card p {
+            color: var(--dark-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+
+        /* Achievements */
+
+        .achievements-section {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+
+        .achievement-grid {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 1.5rem;
+        }
+
+        .achievement-card {
+            padding: 2rem;
+
+            text-align: center;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            background: var(--white);
+        }
+
+        .achievement-number {
+            display: block;
+
+            font-size: 2.5rem;
+            font-weight: 850;
+
+            color: var(--primary);
+
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .achievement-description {
+            margin-top: 0.5rem;
+
             font-size: 0.9rem;
+            line-height: 1.6;
+
             color: var(--dark-muted);
         }
 
-        /* ================================
-           RESPONSIVE
-        ================================= */
+
+        /* CTA */
+
+        .about-cta {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .about-cta-content {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .about-cta p {
+            margin: 1rem auto 2rem;
+
+            max-width: 600px;
+
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+
+
+        /* Responsive */
 
         @media (max-width: 900px) {
 
-            .pricing-grid {
-                grid-template-columns: 1fr;
-                max-width: 600px;
-            }
-
-            .pricing-card.popular {
-                transform: none;
-            }
-
-            .pricing-card.popular:hover {
-                transform: translateY(-5px);
-            }
-
-            .about-stats {
+            .about-company-container {
                 grid-template-columns: 1fr;
             }
 
-            .process-grid {
+            .mission-vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .works-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .achievement-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
         }
+
 
         @media (max-width: 600px) {
 
-            .pricing-section {
+            .about-hero,
+            .about-company,
+            .mission-vision,
+            .works-section,
+            .achievements-section,
+            .about-cta {
                 padding: 4rem 1rem;
             }
 
-            .process-grid {
+            .works-grid {
                 grid-template-columns: 1fr;
             }
 
-            .plan-price {
-                font-size: 2.2rem;
+            .achievement-grid {
+                grid-template-columns: 1fr;
             }
+
+            .about-company-image img {
+                height: 300px;
+            }
+
+            .mission-card,
+            .vision-card {
+                padding: 2rem;
+            }
+
         }
+
     </style>
+
 </head>
 
 
-<body>
+<body class="about-page">
 
 
 <!-- =================================
-     HEADER NAVIGATION
+     HEADER
 ================================= -->
 
 <header>
@@ -345,37 +424,25 @@
 
 
 <!-- =================================
-     PAGE HERO
+     ABOUT HERO
 ================================= -->
 
-<section
-    class="section countdown-banner"
-    style="padding:5rem 2rem;"
->
+<section class="about-hero">
 
-    <div
-        style="
-        text-align:center;
-        max-width:750px;
-        margin:0 auto;
-        "
-    >
+    <div class="about-hero-content">
 
         <span class="section-tag">
-            Sai Graphic Designs
+            About Sai Graphic Designs
         </span>
 
+        <h1 class="section-title">
+            Designing Ideas Into Reality
+        </h1>
 
-        <h2 class="section-title">
-            Creative Design Solutions
-            for Your Business
-        </h2>
-
-
-        <p style="margin-top:1rem;">
-            Professional graphic design, branding and printing
-            solutions designed to help businesses build a strong
-            and memorable visual identity.
+        <p>
+            We create professional, creative and meaningful visual
+            solutions that help businesses build strong brands,
+            communicate better and stand out from the competition.
         </p>
 
     </div>
@@ -388,99 +455,53 @@
      ABOUT COMPANY
 ================================= -->
 
-<section class="section custom-product">
+<section class="about-company">
 
-    <div class="custom-product-container">
+    <div class="about-company-container">
 
 
-        <div>
+        <div class="about-company-content">
 
             <span class="section-tag">
-                About Us
+                Who We Are
             </span>
 
-
-            <h2
-                class="section-title"
-                style="text-align:left;"
-            >
-                Designing Ideas Into Reality
+            <h2 class="section-title" style="text-align:left;">
+                Creative Design That Builds Brands
             </h2>
 
-
-            <p
-                class="feature-desc"
-                style="margin-top:1rem;"
-            >
+            <p>
                 Sai Graphic Designs is a creative graphic design and
-                printing company providing professional visual
-                solutions for businesses, startups, freelancers
-                and individuals.
+                printing company focused on helping businesses,
+                startups, freelancers and individuals create a strong
+                visual identity.
             </p>
 
-
-            <p style="margin-top:1rem;">
-                From logo design and brand identity to social media
-                creatives, visiting cards, brochures, packaging and
-                printing, we help businesses present themselves
-                professionally across digital and physical platforms.
+            <p>
+                We work across branding, logo design, print design,
+                social media creatives, packaging, promotional
+                materials and other visual communication needs.
             </p>
 
-
-            <p style="margin-top:1rem;">
-                Our goal is simple — understand your business,
-                create a strong visual identity and deliver designs
-                that make your brand stand out.
+            <p>
+                Every project starts with understanding the client's
+                idea, business and target audience. We then transform
+                that idea into a clean, professional and memorable
+                visual design.
             </p>
 
-
-            <div class="about-stats">
-
-
-                <div class="about-stat">
-
-                    <span class="about-stat-number">
-                        100+
-                    </span>
-
-                    <span class="about-stat-label">
-                        Clients Served
-                    </span>
-
-                </div>
-
-
-                <div class="about-stat">
-
-                    <span class="about-stat-number">
-                        5+
-                    </span>
-
-                    <span class="about-stat-label">
-                        Years of Design Experience
-                    </span>
-
-                </div>
-
-
-                <div class="about-stat">
-
-                    <span class="about-stat-number">
-                        20+
-                    </span>
-
-                    <span class="about-stat-label">
-                        Creative Services
-                    </span>
-
-                </div>
-
-            </div>
+            <p>
+                Our philosophy is simple:
+                <strong>
+                    good design should not only look beautiful,
+                    it should communicate clearly and create value.
+                </strong>
+            </p>
 
         </div>
 
 
-        <div class="popular-left-img">
+        <div class="about-company-image">
 
             <img
                 src="images/img_01_press.png"
@@ -496,537 +517,77 @@
 
 
 <!-- =================================
-     OUR SERVICES
+     MISSION & VISION
 ================================= -->
 
-<section class="pricing-section">
+<section class="mission-vision">
 
     <div class="section-header">
 
         <span class="section-tag">
-            Our Services
+            Our Purpose
         </span>
 
         <h2 class="section-title">
-            Professional Design Packages
+            Mission & Vision
         </h2>
 
     </div>
 
 
-    <div class="pricing-grid">
+    <div class="mission-vision-grid">
 
 
-        <!-- BASIC -->
+        <!-- MISSION -->
 
-        <div class="pricing-card">
+        <div class="mission-card">
 
-            <h3 class="plan-name">
-                Starter Design
-            </h3>
-
-
-            <p>
-                Perfect for individuals, freelancers and small
-                businesses who need a professional design.
-            </p>
-
-
-            <div class="plan-price">
-                ₹499
-                <span>
-                    /project
-                </span>
+            <div class="mv-icon">
+                M
             </div>
 
+            <h3>
+                Our Mission
+            </h3>
 
-            <ul class="plan-features">
+            <p>
+                Our mission is to provide high-quality, creative and
+                affordable graphic design solutions that help businesses
+                communicate their ideas professionally.
+            </p>
 
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Professional graphic design
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    1 Creative Concept
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    High-quality JPG/PNG
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Basic revisions
-                </li>
-
-            </ul>
-
-
-            <a
-                href="contact.html?plan=starter"
-                class="btn-primary"
-                style="width:100%;text-align:center;"
-            >
-                Get Started
-            </a>
+            <p style="margin-top:1rem;">
+                We aim to understand every client's unique requirements
+                and turn their ideas into designs that are visually
+                powerful, meaningful and effective.
+            </p>
 
         </div>
 
 
 
-        <!-- BUSINESS -->
+        <!-- VISION -->
 
-        <div class="pricing-card popular">
+        <div class="vision-card">
 
-            <h3 class="plan-name">
-                Business Pro
-            </h3>
-
-
-            <p>
-                Designed for growing businesses that need
-                consistent and professional branding.
-            </p>
-
-
-            <div class="plan-price">
-                ₹2,999
-                <span>
-                    /package
-                </span>
+            <div class="mv-icon">
+                V
             </div>
 
-
-            <ul class="plan-features">
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Professional logo design
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Visiting card design
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Letterhead design
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Social media creative
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    High-quality source files
-                </li>
-
-            </ul>
-
-
-            <a
-                href="contact.html?plan=business"
-                class="btn-primary"
-                style="width:100%;text-align:center;"
-            >
-                Choose Business Pro
-            </a>
-
-        </div>
-
-
-
-        <!-- COMPLETE BRANDING -->
-
-        <div class="pricing-card">
-
-            <h3 class="plan-name">
-                Complete Branding
+            <h3>
+                Our Vision
             </h3>
 
-
             <p>
-                A complete branding solution for startups,
-                companies and growing businesses.
+                Our vision is to become a trusted creative design
+                partner for businesses and individuals by delivering
+                innovative, professional and memorable visual
+                experiences.
             </p>
 
-
-            <div class="plan-price">
-                ₹7,999
-                <span>
-                    /package
-                </span>
-            </div>
-
-
-            <ul class="plan-features">
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Professional logo
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Brand colour palette
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Typography selection
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Visiting card
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Letterhead & envelope
-                </li>
-
-                <li class="plan-feature-item">
-                    <span class="plan-feature-icon">
-                        ✓
-                    </span>
-                    Brand presentation
-                </li>
-
-            </ul>
-
-
-            <a
-                href="contact.html?plan=branding"
-                class="btn-primary"
-                style="width:100%;text-align:center;"
-            >
-                Build My Brand
-            </a>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =================================
-         SERVICE PRICE LIST
-    ================================= -->
-
-    <div
-        class="section-header"
-        style="margin-top:5rem;"
-    >
-
-        <span class="section-tag">
-            Popular Services
-        </span>
-
-        <h2 class="section-title">
-            Starting Prices
-        </h2>
-
-    </div>
-
-
-    <div class="compare-table-section">
-
-        <table class="compare-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Service
-                    </th>
-
-                    <th>
-                        Starting Price
-                    </th>
-
-                    <th>
-                        Suitable For
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-
-                <tr>
-
-                    <td>
-                        Logo Recreation
-                    </td>
-
-                    <td>
-                        ₹1,000
-                    </td>
-
-                    <td>
-                        Existing Logos
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Logo Design
-                    </td>
-
-                    <td>
-                        ₹1,500
-                    </td>
-
-                    <td>
-                        New Businesses
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Visiting Card
-                    </td>
-
-                    <td>
-                        ₹300
-                    </td>
-
-                    <td>
-                        Business & Personal
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Social Media Poster
-                    </td>
-
-                    <td>
-                        ₹250
-                    </td>
-
-                    <td>
-                        Instagram / Facebook
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Brochure Design
-                    </td>
-
-                    <td>
-                        ₹750
-                    </td>
-
-                    <td>
-                        Business Promotion
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Flyer Design
-                    </td>
-
-                    <td>
-                        ₹500
-                    </td>
-
-                    <td>
-                        Promotions & Events
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Packaging Design
-                    </td>
-
-                    <td>
-                        ₹1,500
-                    </td>
-
-                    <td>
-                        Products & Brands
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Complete Branding
-                    </td>
-
-                    <td>
-                        ₹7,999+
-                    </td>
-
-                    <td>
-                        Startups & Companies
-                    </td>
-
-                </tr>
-
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-
-
-<!-- =================================
-     DESIGN PROCESS
-================================= -->
-
-<section class="section custom-product">
-
-    <div class="section-header">
-
-        <span class="section-tag">
-            Our Process
-        </span>
-
-        <h2 class="section-title">
-            Simple & Professional Workflow
-        </h2>
-
-    </div>
-
-
-    <div class="process-grid">
-
-
-        <div class="process-card">
-
-            <span class="process-number">
-                01
-            </span>
-
-            <h3>
-                Discuss
-            </h3>
-
-            <p>
-                Tell us about your business, requirements,
-                target audience and design expectations.
-            </p>
-
-        </div>
-
-
-        <div class="process-card">
-
-            <span class="process-number">
-                02
-            </span>
-
-            <h3>
-                Design
-            </h3>
-
-            <p>
-                We create professional concepts based on
-                your requirements and brand direction.
-            </p>
-
-        </div>
-
-
-        <div class="process-card">
-
-            <span class="process-number">
-                03
-            </span>
-
-            <h3>
-                Review
-            </h3>
-
-            <p>
-                You review the design and provide feedback
-                for the required revisions.
-            </p>
-
-        </div>
-
-
-        <div class="process-card">
-
-            <span class="process-number">
-                04
-            </span>
-
-            <h3>
-                Deliver
-            </h3>
-
-            <p>
-                Final high-quality files are delivered
-                ready for digital use or printing.
+            <p style="margin-top:1rem;">
+                We want to build a creative brand known for quality,
+                reliability, originality and customer satisfaction.
             </p>
 
         </div>
@@ -1038,107 +599,267 @@
 
 
 <!-- =================================
-     WHAT WE DESIGN
+     OUR WORKS
 ================================= -->
 
-<section class="section">
+<section class="works-section">
 
     <div class="section-header">
 
         <span class="section-tag">
-            Creative Services
+            Our Works
         </span>
 
         <h2 class="section-title">
-            One Place for All Your Design Needs
+            What We Create
         </h2>
+
+        <p style="max-width:650px;margin:1rem auto;color:var(--dark-muted);">
+            From the first idea to the final artwork, we create
+            professional visual designs for digital and print
+            communication.
+        </p>
 
     </div>
 
 
-    <div class="features-grid">
+    <div class="works-grid">
 
 
-        <div class="feature-card">
+        <!-- WORK 01 -->
 
-            <h3 class="feature-title">
-                Logo & Branding
+        <div class="work-card">
+
+            <div class="work-number">
+                01 — BRANDING
+            </div>
+
+            <h3>
+                Logo & Brand Identity
             </h3>
 
-            <p class="feature-desc">
-                Logo design, logo recreation, brand identity,
-                colour systems and complete branding.
+            <p>
+                Professional logo design, logo recreation, brand
+                colours, typography and visual identity systems
+                that create a strong brand presence.
             </p>
-
-            <a
-                href="contact.html"
-                class="btn-primary"
-            >
-                Order Now &gt;
-            </a>
 
         </div>
 
 
-        <div class="feature-card">
 
-            <h3 class="feature-title">
-                Print Design
+        <!-- WORK 02 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                02 — PRINT DESIGN
+            </div>
+
+            <h3>
+                Business & Print Materials
             </h3>
 
-            <p class="feature-desc">
-                Visiting cards, brochures, flyers, posters,
-                letterheads, envelopes, standees and more.
+            <p>
+                Visiting cards, letterheads, envelopes, brochures,
+                flyers, posters, standees and other professional
+                print materials.
             </p>
-
-            <a
-                href="contact.html"
-                class="btn-primary"
-            >
-                Order Now &gt;
-            </a>
 
         </div>
 
 
-        <div class="feature-card">
 
-            <h3 class="feature-title">
-                Social Media
+        <!-- WORK 03 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                03 — SOCIAL MEDIA
+            </div>
+
+            <h3>
+                Social Media Creatives
             </h3>
 
-            <p class="feature-desc">
-                Instagram posts, reels creatives, festival
-                posters, promotional designs and advertisements.
+            <p>
+                Creative Instagram and Facebook posts, promotional
+                advertisements, festival creatives, reels graphics
+                and digital campaigns.
             </p>
-
-            <a
-                href="contact.html"
-                class="btn-primary"
-            >
-                Order Now &gt;
-            </a>
 
         </div>
 
 
-        <div class="feature-card">
 
-            <h3 class="feature-title">
-                Packaging Design
+        <!-- WORK 04 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                04 — PACKAGING
+            </div>
+
+            <h3>
+                Product & Packaging Design
             </h3>
 
-            <p class="feature-desc">
-                Product labels, pouches, boxes, bottles,
-                packaging graphics and product branding.
+            <p>
+                Product labels, pouches, boxes, bottles and packaging
+                designs that help products look professional and
+                attract customers.
             </p>
 
-            <a
-                href="contact.html"
-                class="btn-primary"
-            >
-                Order Now &gt;
-            </a>
+        </div>
+
+
+
+        <!-- WORK 05 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                05 — ADVERTISING
+            </div>
+
+            <h3>
+                Marketing Creatives
+            </h3>
+
+            <p>
+                Promotional posters, advertisements, offer creatives,
+                business campaigns and marketing visuals designed
+                to capture attention.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 06 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                06 — DIGITAL DESIGN
+            </div>
+
+            <h3>
+                Digital & Creative Design
+            </h3>
+
+            <p>
+                Website graphics, digital banners, presentations,
+                promotional content and custom visual solutions
+                for modern businesses.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     ACHIEVEMENTS
+================================= -->
+
+<section class="achievements-section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Achievements
+        </span>
+
+        <h2 class="section-title">
+            Growing Through Creativity
+        </h2>
+
+        <p style="max-width:650px;margin:1rem auto;color:var(--dark-muted);">
+            Our journey is built on creativity, client relationships,
+            consistent quality and a passion for design.
+        </p>
+
+    </div>
+
+
+    <div class="achievement-grid">
+
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                100+
+            </span>
+
+            <div class="achievement-title">
+                Clients Served
+            </div>
+
+            <p class="achievement-description">
+                Businesses, startups, freelancers and individuals
+                served with professional design solutions.
+            </p>
+
+        </div>
+
+
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                5+
+            </span>
+
+            <div class="achievement-title">
+                Years of Experience
+            </div>
+
+            <p class="achievement-description">
+                Years of practical experience creating professional
+                digital and print designs.
+            </p>
+
+        </div>
+
+
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                20+
+            </span>
+
+            <div class="achievement-title">
+                Design Services
+            </div>
+
+            <p class="achievement-description">
+                Creative solutions covering branding, print,
+                social media, packaging and more.
+            </p>
+
+        </div>
+
+
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                2022
+            </span>
+
+            <div class="achievement-title">
+                Founded
+            </div>
+
+            <p class="achievement-description">
+                Sai Graphic Designs began its journey with a focus
+                on professional and creative design.
+            </p>
 
         </div>
 
@@ -1152,113 +873,35 @@
      CTA
 ================================= -->
 
-<section
-    class="section countdown-banner"
-    style="padding:4rem 2rem;"
->
+<section class="about-cta">
 
-    <div
-        style="
-        text-align:center;
-        max-width:700px;
-        margin:0 auto;
-        "
-    >
+    <div class="about-cta-content">
 
         <span class="section-tag">
-            Start Your Project
+            Let's Create Together
         </span>
 
-
         <h2 class="section-title">
-            Have a Design Idea?
-            Let's Create It Together.
+            Have an Idea?
+            Let's Turn It Into Reality.
         </h2>
 
-
-        <p style="margin:1rem 0 2rem;">
-            Tell us what you need and we'll help turn your
-            idea into a professional design.
+        <p>
+            Whether you need a logo, branding, social media design,
+            print design or a complete visual identity, we are ready
+            to bring your idea to life.
         </p>
-
 
         <a
             href="contact.html"
             class="btn-dark"
         >
-            Get a Free Quote
+            Start Your Project &gt;
         </a>
 
     </div>
 
 </section>
-
-
-
-<!-- =================================
-     MINI CART
-================================= -->
-
-<div
-    class="cart-drawer"
-    id="cartDrawer"
->
-
-    <div class="cart-header">
-
-        <h3
-            style="
-            font-family:var(--font-sans);
-            font-weight:800;
-            "
-        >
-            Selected Services
-        </h3>
-
-
-        <button
-            class="cart-close"
-            id="cartClose"
-        >
-            &times;
-        </button>
-
-    </div>
-
-
-    <div
-        class="cart-items"
-        id="cartItemsList"
-    >
-        <!-- Items filled dynamically -->
-    </div>
-
-
-    <div class="cart-footer">
-
-        <div class="cart-total">
-
-            <span>
-                Estimated Total:
-            </span>
-
-            <span id="cartTotalVal">
-                ₹0
-            </span>
-
-        </div>
-
-
-        <button
-            class="btn-checkout"
-            onclick="window.location.href='contact.html';"
-        >
-            Continue Order
-        </button>
-
-    </div>
-
-</div>
 
 
 
@@ -1298,31 +941,19 @@
 
             <div class="footer-socials">
 
-                <a
-                    href="#"
-                    class="social-icon"
-                >
+                <a href="#" class="social-icon">
                     Fb
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                >
+                <a href="#" class="social-icon">
                     X
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                >
+                <a href="#" class="social-icon">
                     Li
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                >
+                <a href="#" class="social-icon">
                     Ig
                 </a>
 
@@ -1401,8 +1032,8 @@
                 </li>
 
                 <li class="footer-link">
-                    <a href="about.html">
-                        Pricing
+                    <a href="customizer.html">
+                        Services
                     </a>
                 </li>
 
@@ -1426,7 +1057,6 @@
                 Contact
             </h4>
 
-
             <div class="footer-contact">
 
                 <p>
@@ -1449,8 +1079,6 @@
 
 
 
-    <!-- FOOTER BOTTOM -->
-
     <div class="footer-bottom">
 
         <p>
@@ -1470,4 +1098,5 @@
 <script src="main.js"></script>
 
 </body>
+
 </html>
