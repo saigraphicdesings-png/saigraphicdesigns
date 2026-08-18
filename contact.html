@@ -1,301 +1,188 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contact Us - PrintMax Solutions</title>
+    <title>Contact Us | Sai Graphic Designs</title>
 
     <meta name="description"
-        content="Contact PrintMax Solutions for custom printing, apparel, packaging and professional print solutions.">
+        content="Contact Sai Graphic Designs for logo design, branding, visiting cards, social media designs, brochures, packaging, printing and professional graphic design services.">
+
+    <meta name="keywords"
+        content="Sai Graphic Designs contact, graphic designer Madurai, logo design Madurai, graphic design services, printing services">
 
     <link rel="stylesheet" href="style.css">
 
     <style>
+
         /* =========================================
-           UNIQUE CONTACT PAGE
+           CONTACT PAGE
         ========================================= */
 
         .contact-hero {
-            padding: 7rem 2rem 5rem;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, .10), transparent 30%),
-                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, .10), transparent 30%),
-                var(--light);
+            padding: 5rem 2rem;
             text-align: center;
         }
 
-        .contact-hero h1 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            line-height: 1;
-            margin: 1rem auto;
-            max-width: 850px;
-            letter-spacing: -2px;
+        .contact-hero-inner {
+            max-width: 750px;
+            margin: auto;
         }
 
         .contact-hero p {
-            max-width: 650px;
-            margin: 0 auto;
+            margin-top: 1rem;
             color: var(--dark-muted);
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.8;
         }
 
-        /* Main Contact Layout */
 
-        .contact-wrapper {
-            max-width: 1200px;
-            margin: -2rem auto 0;
-            padding: 0 2rem 6rem;
-            position: relative;
-            z-index: 2;
+        /* =========================================
+           CONTACT GRID
+        ========================================= */
+
+        .contact-section {
+            padding: 5rem 2rem;
+            background: var(--white);
         }
 
         .contact-grid {
+            max-width: 1200px;
+            margin: auto;
             display: grid;
-            grid-template-columns: .85fr 1.15fr;
-            gap: 1.5rem;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 2rem;
             align-items: stretch;
         }
 
-        /* Left Information Card */
+
+        /* =========================================
+           CONTACT INFORMATION
+        ========================================= */
 
         .contact-info-card {
-            border-radius: 24px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
             padding: 2.5rem;
-            color: white;
-            min-height: 650px;
-            position: relative;
-            overflow: hidden;
-            background:
-                linear-gradient(145deg, #111827, #1f2937 60%, #111827);
-            box-shadow: 0 25px 60px rgba(0,0,0,.15);
+            background: var(--light);
         }
 
-        .contact-info-card::before {
-            content: "";
-            position: absolute;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.05);
-            top: -120px;
-            right: -100px;
+        .contact-info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .contact-info-card::after {
-            content: "";
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.04);
-            bottom: -80px;
-            left: -60px;
-        }
-
-        .contact-info-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .contact-mini-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: .5rem;
-            padding: .45rem .8rem;
-            border: 1px solid rgba(255,255,255,.15);
-            border-radius: 50px;
-            background: rgba(255,255,255,.06);
-            font-size: .75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .contact-info-card h2 {
-            font-size: 2.4rem;
-            line-height: 1.1;
-            margin: 1.5rem 0 1rem;
-        }
-
-        .contact-info-card > .contact-info-content > p {
-            color: rgba(255,255,255,.68);
+        .contact-info-card > p {
+            color: var(--dark-muted);
             line-height: 1.7;
+            margin-bottom: 2rem;
         }
 
-        .contact-details {
+        .contact-info-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 1.25rem;
         }
 
-        .contact-detail {
+        .contact-info-item {
             display: flex;
             gap: 1rem;
-            align-items: center;
-            padding: 1rem;
-            border-radius: 14px;
-            background: rgba(255,255,255,.06);
-            border: 1px solid rgba(255,255,255,.08);
+            align-items: flex-start;
         }
 
-        .contact-detail-icon {
-            width: 44px;
-            height: 44px;
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,.1);
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .contact-detail small {
-            display: block;
-            color: rgba(255,255,255,.45);
-            margin-bottom: .25rem;
-            font-size: .72rem;
-            text-transform: uppercase;
-            letter-spacing: .8px;
-        }
-
-        .contact-detail strong,
-        .contact-detail a {
-            color: white;
-            text-decoration: none;
-            font-size: .95rem;
-        }
-
-        /* QR Section */
-
-        .location-card {
-            margin-top: 1.5rem;
-            padding: 1.25rem;
-            border-radius: 18px;
-            background: white;
-            color: #111827;
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .qr-box {
-            width: 110px;
-            height: 110px;
-            padding: 8px;
-            background: white;
-            border-radius: 12px;
-            flex-shrink: 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,.15);
-        }
-
-        .qr-box img {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .location-card h4 {
-            margin: 0 0 .4rem;
-            font-size: 1rem;
-        }
-
-        .location-card p {
-            margin: 0 0 .8rem;
-            font-size: .82rem;
-            line-height: 1.5;
-            color: #6b7280;
-        }
-
-        .map-link {
-            display: inline-flex;
-            align-items: center;
-            gap: .35rem;
-            color: #2563eb;
-            font-weight: 700;
-            font-size: .8rem;
-            text-decoration: none;
-        }
-
-        /* Form Card */
-
-        .contact-form-card {
             background: var(--white);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 50px rgba(0,0,0,.07);
+            font-size: 1.2rem;
         }
 
-        .form-top {
+        .contact-info-item strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-info-item span,
+        .contact-info-item a {
+            color: var(--dark-muted);
+            font-size: 0.92rem;
+            text-decoration: none;
+            line-height: 1.5;
+        }
+
+        .contact-info-item a:hover {
+            color: var(--primary);
+        }
+
+
+        /* =========================================
+           WHATSAPP BUTTON
+        ========================================= */
+
+        .whatsapp-btn {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-top: 2rem;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            background: #25D366;
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+
+
+        /* =========================================
+           CONTACT FORM
+        ========================================= */
+
+        .contact-form-card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 2.5rem;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-form-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form-subtitle {
+            color: var(--dark-muted);
+            font-size: 0.9rem;
             margin-bottom: 2rem;
         }
 
-        .form-top h2 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        .online-status {
-            display: inline-flex;
-            align-items: center;
-            gap: .45rem;
-            font-size: .72rem;
-            font-weight: 700;
-            color: #16a34a;
-            white-space: nowrap;
-        }
-
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(34,197,94,.12);
-        }
-
-        .form-row {
+        .contact-form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: .5rem;
-            font-size: .82rem;
-            font-weight: 700;
+        .form-group-full {
+            grid-column: 1 / -1;
         }
 
         .form-control {
             width: 100%;
-            box-sizing: border-box;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: .95rem 1rem;
-            background: #fafafa;
-            font-family: inherit;
-            font-size: .9rem;
-            outline: none;
-            transition: .2s ease;
-        }
-
-        .form-control:focus {
-            background: white;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 4px rgba(37,99,235,.08);
         }
 
         textarea.form-control {
@@ -303,463 +190,517 @@
             resize: vertical;
         }
 
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: .65rem;
-        }
-
-        .service-option {
-            position: relative;
-        }
-
-        .service-option input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .service-option label {
-            display: block;
-            padding: .8rem;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: .8rem;
-            font-weight: 600;
-            text-align: center;
-            transition: .2s ease;
-        }
-
-        .service-option input:checked + label {
-            border-color: #2563eb;
-            background: rgba(37,99,235,.07);
-            color: #2563eb;
+        .service-select {
+            width: 100%;
         }
 
         .submit-btn {
             width: 100%;
+            margin-top: 0.5rem;
+            padding: 1rem;
             border: none;
             cursor: pointer;
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: .95rem;
-            font-weight: 800;
-            background: #111827;
-            color: white;
-            transition: .25s ease;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0,0,0,.15);
+
+        /* =========================================
+           MAP SECTION
+        ========================================= */
+
+        .location-section {
+            padding: 5rem 2rem;
+            background: var(--light);
         }
 
-        .form-note {
-            text-align: center;
-            margin: .8rem 0 0;
-            font-size: .72rem;
-            color: var(--dark-muted);
-        }
-
-        /* Quick Contact */
-
-        .quick-contact {
+        .location-container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem 6rem;
+            margin: auto;
         }
 
-        .quick-grid {
+        .location-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 2rem;
+            align-items: center;
         }
 
-        .quick-card {
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            background: var(--white);
-            text-decoration: none;
-            color: inherit;
-            transition: .25s ease;
+        .location-content h2 {
+            text-align: left;
         }
 
-        .quick-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,.08);
-        }
-
-        .quick-icon {
-            font-size: 1.6rem;
+        .location-content p {
+            color: var(--dark-muted);
+            line-height: 1.8;
             margin-bottom: 1rem;
         }
 
-        .quick-card h4 {
-            margin: 0 0 .35rem;
+        .location-address {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-left: 4px solid var(--primary);
+            background: var(--white);
+            border-radius: 8px;
         }
 
-        .quick-card p {
-            margin: 0;
-            color: var(--dark-muted);
-            font-size: .85rem;
+        .map-container {
+            width: 100%;
+            height: 420px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* FAQ */
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+        /* =========================================
+           FAQ
+        ========================================= */
 
         .faq-section {
-            padding: 6rem 2rem;
-            background: var(--light);
+            padding: 5rem 2rem;
+            background: var(--white);
         }
 
         .faq-container {
             max-width: 850px;
-            margin: 0 auto;
+            margin: auto;
         }
 
         .faq-item {
-            background: var(--white);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            margin-bottom: .8rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
             overflow: hidden;
+            background: var(--white);
         }
 
         .faq-question {
-            width: 100%;
-            padding: 1.25rem 1.4rem;
-            border: none;
-            background: transparent;
+            padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            text-align: left;
             cursor: pointer;
-            font-family: inherit;
             font-weight: 700;
-            font-size: .95rem;
         }
 
-        .faq-plus {
+        .faq-icon {
             font-size: 1.3rem;
-            transition: .25s ease;
+            transition: 0.3s ease;
         }
 
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: .3s ease;
-        }
-
-        .faq-answer p {
-            padding: 0 1.4rem 1.3rem;
-            margin: 0;
+            padding: 0 1.5rem;
             color: var(--dark-muted);
-            font-size: .88rem;
             line-height: 1.7;
+            transition: 0.3s ease;
         }
 
         .faq-item.active .faq-answer {
             max-height: 200px;
+            padding: 0 1.5rem 1.5rem;
         }
 
-        .faq-item.active .faq-plus {
+        .faq-item.active .faq-icon {
             transform: rotate(45deg);
         }
 
-        /* Mobile */
 
-        @media (max-width: 850px) {
+        /* =========================================
+           CTA
+        ========================================= */
+
+        .contact-cta {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .contact-cta-inner {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .contact-cta p {
+            color: var(--dark-muted);
+            margin: 1rem 0 2rem;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
             .contact-grid {
                 grid-template-columns: 1fr;
             }
 
-            .contact-info-card {
-                min-height: auto;
+            .location-grid {
+                grid-template-columns: 1fr;
             }
 
-            .quick-grid {
-                grid-template-columns: 1fr;
+            .location-content h2 {
+                text-align: left;
             }
         }
 
-        @media (max-width: 600px) {
-            .contact-hero {
-                padding: 5rem 1.2rem 4rem;
-            }
 
-            .contact-wrapper,
-            .quick-contact {
-                padding-left: 1rem;
-                padding-right: 1rem;
+        @media (max-width: 600px) {
+
+            .contact-section,
+            .location-section,
+            .faq-section,
+            .contact-cta {
+                padding: 4rem 1rem;
             }
 
             .contact-info-card,
             .contact-form-card {
                 padding: 1.5rem;
-                border-radius: 18px;
             }
 
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .service-grid {
+            .contact-form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .location-card {
-                align-items: flex-start;
+            .form-group-full {
+                grid-column: auto;
             }
 
-            .qr-box {
-                width: 90px;
-                height: 90px;
-            }
-
-            .form-top {
-                flex-direction: column;
+            .map-container {
+                height: 320px;
             }
         }
+
     </style>
 </head>
 
+
 <body>
+
 
 <!-- =========================================
      HEADER
 ========================================= -->
 
 <header>
+
     <div class="nav-container">
 
         <a href="index.html" class="logo">
-            <div class="logo-icon">P</div>
-            Print<span>Max</span>
+
+            <div class="logo-icon">
+                SG
+            </div>
+
+            Sai
+            <span>Graphic Designs</span>
+
         </a>
 
+
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-link">Home</a></li>
-            <li><a href="about.html" class="nav-link">About</a></li>
-            <li><a href="customizer.html" class="nav-link">Design Studio</a></li>
-            <li><a href="about.html" class="nav-link">Pricing</a></li>
-            <li><a href="contact.html" class="nav-link active">Contact</a></li>
+
+            <li>
+                <a href="index.html" class="nav-link">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html" class="nav-link">
+                    About
+                </a>
+            </li>
+
+            <li>
+                <a href="customizer.html" class="nav-link">
+                    Services
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html" class="nav-link">
+                    Pricing
+                </a>
+            </li>
+
+            <li>
+                <a href="contact.html" class="nav-link active">
+                    Contact
+                </a>
+            </li>
+
         </ul>
 
+
         <div class="nav-actions">
-            <a href="#" class="cart-icon-btn" id="cartToggle">
-                &#128722;
-                <span class="cart-badge">0</span>
+
+            <a
+                href="#"
+                class="cart-icon-btn"
+                id="cartToggle"
+            >
+                🛒
+
+                <span class="cart-badge">
+                    0
+                </span>
+
             </a>
 
-            <a href="customizer.html" class="btn-header">
+
+            <a
+                href="contact.html"
+                class="btn-header"
+            >
                 Get Started &gt;
             </a>
+
         </div>
 
     </div>
+
 </header>
+
 
 
 <!-- =========================================
      HERO
 ========================================= -->
 
-<section class="contact-hero">
+<section class="contact-hero countdown-banner">
 
-    <span class="section-tag">
-        Let's Work Together
-    </span>
+    <div class="contact-hero-inner">
 
-    <h1>
-        Your Next Print Project
-        <br>
-        Starts Here.
-    </h1>
+        <span class="section-tag">
+            Let's Work Together
+        </span>
 
-    <p>
-        Tell us what you're planning. From custom apparel and promotional
-        products to large-scale corporate printing, our team is ready to
-        turn your idea into a finished product.
-    </p>
+
+        <h1 class="section-title">
+            Let's Create Something
+            <br>
+            Amazing Together
+        </h1>
+
+
+        <p>
+            Have a logo idea, branding project, social media campaign
+            or printing requirement? Tell us about your project and
+            we'll help turn your idea into reality.
+        </p>
+
+    </div>
 
 </section>
 
 
+
 <!-- =========================================
-     CONTACT SECTION
+     CONTACT FORM
 ========================================= -->
 
-<section class="contact-wrapper">
+<section class="contact-section">
 
     <div class="contact-grid">
 
 
-        <!-- LEFT CONTACT INFORMATION -->
+        <!-- CONTACT INFORMATION -->
 
         <div class="contact-info-card">
 
-            <div class="contact-info-content">
+            <span class="section-tag">
+                Contact Information
+            </span>
 
-                <span class="contact-mini-tag">
-                    ● Direct Support
-                </span>
+            <h3>
+                Let's Start a Conversation
+            </h3>
 
-                <h2>
-                    Let's talk about
-                    your project.
-                </h2>
-
-                <p>
-                    Need a quick quote or have a special printing requirement?
-                    Reach our team directly or scan our location QR code.
-                </p>
+            <p>
+                Whether you need a simple design or complete brand
+                identity, Sai Graphic Designs is ready to help.
+            </p>
 
 
-                <div class="contact-details">
-
-                    <div class="contact-detail">
-
-                        <div class="contact-detail-icon">
-                            📍
-                        </div>
-
-                        <div>
-                            <small>Our Location</small>
-
-                            <strong>
-                                99 Ink Avenue, Press District,
-                                Suite 20
-                            </strong>
-                        </div>
-
-                    </div>
+            <div class="contact-info-list">
 
 
-                    <div class="contact-detail">
+                <!-- PHONE -->
 
-                        <div class="contact-detail-icon">
-                            ☎
-                        </div>
+                <div class="contact-info-item">
 
-                        <div>
-                            <small>Phone</small>
-
-                            <a href="tel:0000000000">
-                                000-000-0000
-                            </a>
-                        </div>
-
-                    </div>
-
-
-                    <div class="contact-detail">
-
-                        <div class="contact-detail-icon">
-                            ✉
-                        </div>
-
-                        <div>
-                            <small>Email</small>
-
-                            <a href="mailto:support@printmax.demo">
-                                support@printmax.demo
-                            </a>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- LOCATION QR -->
-
-                <div class="location-card">
-
-                    <div class="qr-box">
-
-                        <!--
-                            QR points to Google Maps search.
-                            Replace the address below with your
-                            real Google Maps location.
-                        -->
-
-                        <img
-                            src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fwww.google.com%2Fmaps%2Fsearch%2F%3Fapi%3D1%26query%3D99%2BInk%2BAvenue%2BPress%2BDistrict%2BSuite%2B20"
-                            alt="Scan to open PrintMax location"
-                        >
-
+                    <div class="contact-icon">
+                        📞
                     </div>
 
                     <div>
 
-                        <h4>
-                            Find Us Easily
-                        </h4>
+                        <strong>
+                            Phone
+                        </strong>
 
-                        <p>
-                            Scan this QR code with your phone
-                            to open our location in Google Maps.
-                        </p>
-
-                        <a
-                            class="map-link"
-                            href="https://www.google.com/maps/search/?api=1&query=99+Ink+Avenue+Press+District+Suite+20"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            Open Google Maps →
+                        <a href="tel:+916381128781">
+                            +91 63811 28781
                         </a>
 
                     </div>
 
                 </div>
 
+
+                <!-- EMAIL -->
+
+                <div class="contact-info-item">
+
+                    <div class="contact-icon">
+                        ✉️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Email
+                        </strong>
+
+                        <a href="mailto:saigraphicdesings@gmail.com">
+                            saigraphicdesings@gmail.com
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="contact-info-item">
+
+                    <div class="contact-icon">
+                        📍
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Location
+                        </strong>
+
+                        <span>
+                            Madurai, Tamil Nadu, India
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WORKING HOURS -->
+
+                <div class="contact-info-item">
+
+                    <div class="contact-icon">
+                        🕒
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Working Hours
+                        </strong>
+
+                        <span>
+                            Monday – Saturday<br>
+                            9:00 AM – 8:00 PM
+                        </span>
+
+                    </div>
+
+                </div>
+
             </div>
+
+
+            <!-- WHATSAPP -->
+
+            <a
+                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20would%20like%20to%20discuss%20a%20design%20project."
+                target="_blank"
+                class="whatsapp-btn"
+            >
+
+                💬
+                Chat With Us on WhatsApp
+
+            </a>
 
         </div>
 
 
-        <!-- RIGHT FORM -->
+
+        <!-- FORM -->
 
         <div class="contact-form-card">
 
-            <div class="form-top">
+            <span class="section-tag">
+                Project Inquiry
+            </span>
 
-                <div>
+            <h3>
+                Tell Us About Your Project
+            </h3>
 
-                    <span class="section-tag">
-                        Quote Request
-                    </span>
-
-                    <h2>
-                        Tell us what you need.
-                    </h2>
-
-                </div>
-
-                <div class="online-status">
-                    <span class="online-dot"></span>
-                    We're Online
-                </div>
-
-            </div>
+            <p class="contact-form-subtitle">
+                Fill in the details below and we'll get back to you.
+            </p>
 
 
             <form
                 id="contactForm"
-                onsubmit="submitContactForm(event)"
+                action="https://formsubmit.co/saigraphicdesings@gmail.com"
+                method="POST"
             >
 
-                <!-- NAME + EMAIL -->
+                <!-- FormSubmit settings -->
 
-                <div class="form-row">
+                <input
+                    type="hidden"
+                    name="_subject"
+                    value="New Project Inquiry - Sai Graphic Designs"
+                >
+
+                <input
+                    type="hidden"
+                    name="_captcha"
+                    value="false"
+                >
+
+                <input
+                    type="hidden"
+                    name="_template"
+                    value="table"
+                >
+
+
+                <div class="contact-form-grid">
+
+
+                    <!-- NAME -->
 
                     <div class="form-group">
 
                         <label
-                            for="conName"
+                            for="name"
                             class="form-label"
                         >
                             Full Name *
@@ -767,236 +708,265 @@
 
                         <input
                             type="text"
-                            id="conName"
+                            id="name"
+                            name="Name"
                             class="form-control"
-                            placeholder="Your full name"
+                            placeholder="Your Name"
                             required
                         >
 
                     </div>
 
 
-                    <div class="form-group">
-
-                        <label
-                            for="conEmail"
-                            class="form-label"
-                        >
-                            Email Address *
-                        </label>
-
-                        <input
-                            type="email"
-                            id="conEmail"
-                            class="form-control"
-                            placeholder="you@company.com"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <!-- PHONE + COMPANY -->
-
-                <div class="form-row">
+                    <!-- PHONE -->
 
                     <div class="form-group">
 
                         <label
-                            for="conPhone"
+                            for="phone"
                             class="form-label"
                         >
-                            Phone Number
+                            Phone Number *
                         </label>
 
                         <input
                             type="tel"
-                            id="conPhone"
+                            id="phone"
+                            name="Phone"
                             class="form-control"
-                            placeholder="+91 00000 00000"
+                            placeholder="+91 XXXXX XXXXX"
+                            required
                         >
 
                     </div>
 
+
+                    <!-- EMAIL -->
 
                     <div class="form-group">
 
                         <label
-                            for="conCompany"
+                            for="email"
                             class="form-label"
                         >
-                            Company Name
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="Email"
+                            class="form-control"
+                            placeholder="your@email.com"
+                        >
+
+                    </div>
+
+
+                    <!-- BUSINESS -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="business"
+                            class="form-label"
+                        >
+                            Business / Company
                         </label>
 
                         <input
                             type="text"
-                            id="conCompany"
+                            id="business"
+                            name="Business"
                             class="form-control"
-                            placeholder="Your company"
+                            placeholder="Company Name"
                         >
 
                     </div>
 
-                </div>
+
+                    <!-- SERVICE -->
+
+                    <div class="form-group form-group-full">
+
+                        <label
+                            for="service"
+                            class="form-label"
+                        >
+                            What Do You Need? *
+                        </label>
+
+                        <select
+                            id="service"
+                            name="Service"
+                            class="form-control service-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select a Service
+                            </option>
+
+                            <option value="Logo Design">
+                                Logo Design
+                            </option>
+
+                            <option value="Logo Recreation">
+                                Logo Recreation
+                            </option>
+
+                            <option value="Brand Identity">
+                                Brand Identity
+                            </option>
+
+                            <option value="Visiting Card">
+                                Visiting Card
+                            </option>
+
+                            <option value="Social Media Design">
+                                Social Media Design
+                            </option>
+
+                            <option value="Poster Design">
+                                Poster Design
+                            </option>
+
+                            <option value="Brochure Design">
+                                Brochure Design
+                            </option>
+
+                            <option value="Flyer Design">
+                                Flyer Design
+                            </option>
+
+                            <option value="Packaging Design">
+                                Packaging Design
+                            </option>
+
+                            <option value="Video Editing">
+                                Video Editing
+                            </option>
+
+                            <option value="Printing">
+                                Printing Services
+                            </option>
+
+                            <option value="Complete Branding">
+                                Complete Branding
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
 
 
-                <!-- SERVICE -->
+                    <!-- BUDGET -->
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label class="form-label">
-                        What are you looking for?
-                    </label>
+                        <label
+                            for="budget"
+                            class="form-label"
+                        >
+                            Approx. Budget
+                        </label>
 
-                    <div class="service-grid">
+                        <select
+                            id="budget"
+                            name="Budget"
+                            class="form-control"
+                        >
 
-                        <div class="service-option">
+                            <option value="">
+                                Select Budget
+                            </option>
 
-                            <input
-                                type="radio"
-                                id="service1"
-                                name="service"
-                                value="T-Shirt Printing"
-                                required
-                            >
+                            <option value="Below ₹500">
+                                Below ₹500
+                            </option>
 
-                            <label for="service1">
-                                👕 T-Shirt Printing
-                            </label>
+                            <option value="₹500 - ₹1,000">
+                                ₹500 - ₹1,000
+                            </option>
 
-                        </div>
+                            <option value="₹1,000 - ₹3,000">
+                                ₹1,000 - ₹3,000
+                            </option>
 
+                            <option value="₹3,000 - ₹8,000">
+                                ₹3,000 - ₹8,000
+                            </option>
 
-                        <div class="service-option">
+                            <option value="₹8,000+">
+                                ₹8,000+
+                            </option>
 
-                            <input
-                                type="radio"
-                                id="service2"
-                                name="service"
-                                value="Hoodie Printing"
-                            >
+                        </select>
 
-                            <label for="service2">
-                                🧥 Hoodie Printing
-                            </label>
-
-                        </div>
-
-
-                        <div class="service-option">
-
-                            <input
-                                type="radio"
-                                id="service3"
-                                name="service"
-                                value="Corporate Printing"
-                            >
-
-                            <label for="service3">
-                                🏢 Corporate
-                            </label>
-
-                        </div>
+                    </div>
 
 
-                        <div class="service-option">
+                    <!-- DEADLINE -->
 
-                            <input
-                                type="radio"
-                                id="service4"
-                                name="service"
-                                value="Custom Project"
-                            >
+                    <div class="form-group">
 
-                            <label for="service4">
-                                ✨ Custom Project
-                            </label>
+                        <label
+                            for="deadline"
+                            class="form-label"
+                        >
+                            Required By
+                        </label>
 
-                        </div>
+                        <input
+                            type="date"
+                            id="deadline"
+                            name="Required By"
+                            class="form-control"
+                        >
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="form-group form-group-full">
+
+                        <label
+                            for="message"
+                            class="form-label"
+                        >
+                            Project Details *
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="Project Details"
+                            class="form-control"
+                            placeholder="Tell us about your design requirement..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <div class="form-group form-group-full">
+
+                        <button
+                            type="submit"
+                            class="btn-checkout submit-btn"
+                        >
+                            Send Project Inquiry →
+                        </button>
 
                     </div>
 
                 </div>
-
-
-                <!-- QUANTITY -->
-
-                <div class="form-group">
-
-                    <label
-                        for="conQuantity"
-                        class="form-label"
-                    >
-                        Estimated Quantity
-                    </label>
-
-                    <select
-                        id="conQuantity"
-                        class="form-control"
-                    >
-
-                        <option value="">
-                            Select quantity
-                        </option>
-
-                        <option>
-                            10 - 50 units
-                        </option>
-
-                        <option>
-                            50 - 200 units
-                        </option>
-
-                        <option>
-                            200 - 500 units
-                        </option>
-
-                        <option>
-                            500 - 1,000 units
-                        </option>
-
-                        <option>
-                            1,000+ units
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- MESSAGE -->
-
-                <div class="form-group">
-
-                    <label
-                        for="conMsg"
-                        class="form-label"
-                    >
-                        Project Details *
-                    </label>
-
-                    <textarea
-                        id="conMsg"
-                        class="form-control"
-                        placeholder="Tell us about your design, fabric, colours, printing requirements, deadline, etc."
-                        required
-                    ></textarea>
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="submit-btn"
-                >
-                    Send Quote Request →
-                </button>
-
-                <p class="form-note">
-                    We normally respond within 2 business hours.
-                </p>
 
             </form>
 
@@ -1007,91 +977,96 @@
 </section>
 
 
+
 <!-- =========================================
-     QUICK CONTACT
+     LOCATION MAP
 ========================================= -->
 
-<section class="quick-contact">
+<section class="location-section">
 
-    <div class="section-header">
+    <div class="location-container">
 
-        <span class="section-tag">
-            Quick Connect
-        </span>
+        <div class="section-header">
 
-        <h2 class="section-title">
-            Prefer a Direct Conversation?
-        </h2>
+            <span class="section-tag">
+                Find Us
+            </span>
 
-    </div>
+            <h2 class="section-title">
+                Our Location
+            </h2>
+
+        </div>
 
 
-    <div class="quick-grid">
+        <div class="location-grid">
 
-        <a
-            href="tel:0000000000"
-            class="quick-card"
-        >
 
-            <div class="quick-icon">
-                ☎️
+            <!-- LOCATION TEXT -->
+
+            <div class="location-content">
+
+                <span class="section-tag">
+                    Madurai
+                </span>
+
+
+                <h2 class="section-title">
+                    Sai Graphic Designs
+                </h2>
+
+
+                <p>
+                    We provide professional graphic design, branding
+                    and printing solutions for businesses and
+                    individuals.
+                </p>
+
+
+                <div class="location-address">
+
+                    <strong>
+                        📍 Studio Location
+                    </strong>
+
+                    <p style="margin-top:0.5rem;">
+                        Madurai, Tamil Nadu, India
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="https://www.google.com/maps/search/?api=1&query=Madurai,Tamil Nadu,India"
+                    target="_blank"
+                    class="btn-primary"
+                    style="margin-top:1.5rem;display:inline-block;"
+                >
+                    Open in Google Maps →
+                </a>
+
             </div>
 
-            <h4>
-                Call Us
-            </h4>
 
-            <p>
-                Speak directly with our support team.
-            </p>
+            <!-- GOOGLE MAP -->
 
-        </a>
+            <div class="map-container">
 
+                <iframe
+                    src="https://www.google.com/maps?q=Madurai,Tamil%20Nadu,India&output=embed"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
 
-        <a
-            href="mailto:support@printmax.demo"
-            class="quick-card"
-        >
-
-            <div class="quick-icon">
-                ✉️
             </div>
 
-            <h4>
-                Email Us
-            </h4>
-
-            <p>
-                Send your project requirements by email.
-            </p>
-
-        </a>
-
-
-        <a
-            href="https://www.google.com/maps/search/?api=1&query=99+Ink+Avenue+Press+District+Suite+20"
-            target="_blank"
-            rel="noopener"
-            class="quick-card"
-        >
-
-            <div class="quick-icon">
-                📍
-            </div>
-
-            <h4>
-                Visit Us
-            </h4>
-
-            <p>
-                Open our location directly in Google Maps.
-            </p>
-
-        </a>
+        </div>
 
     </div>
 
 </section>
+
 
 
 <!-- =========================================
@@ -1103,7 +1078,7 @@
     <div class="section-header">
 
         <span class="section-tag">
-            Need Help?
+            FAQ
         </span>
 
         <h2 class="section-title">
@@ -1118,23 +1093,22 @@
 
         <div class="faq-item">
 
-            <button class="faq-question">
+            <div class="faq-question">
 
-                What is your minimum order quantity?
+                How can I place an order?
 
-                <span class="faq-plus">
+                <span class="faq-icon">
                     +
                 </span>
 
-            </button>
+            </div>
 
             <div class="faq-answer">
 
-                <p>
-                    Our standard custom printing starts from 10 units.
-                    Larger corporate and bulk orders can be discussed
-                    directly with our team.
-                </p>
+                You can send your requirements through our contact
+                form or WhatsApp. We'll discuss your requirements,
+                provide the price and start the project after
+                confirmation.
 
             </div>
 
@@ -1143,22 +1117,22 @@
 
         <div class="faq-item">
 
-            <button class="faq-question">
+            <div class="faq-question">
 
-                Can I send my own design?
+                How long does a design project take?
 
-                <span class="faq-plus">
+                <span class="faq-icon">
                     +
                 </span>
 
-            </button>
+            </div>
 
             <div class="faq-answer">
 
-                <p>
-                    Yes. We accept professional artwork formats including
-                    PDF, AI, EPS, SVG, PNG and high-resolution JPEG files.
-                </p>
+                Delivery time depends on the type and complexity
+                of the project. Simple designs can usually be
+                completed faster, while branding and larger projects
+                may require additional time.
 
             </div>
 
@@ -1167,22 +1141,21 @@
 
         <div class="faq-item">
 
-            <button class="faq-question">
+            <div class="faq-question">
 
-                How quickly will I receive a quotation?
+                Do you provide source files?
 
-                <span class="faq-plus">
+                <span class="faq-icon">
                     +
                 </span>
 
-            </button>
+            </div>
 
             <div class="faq-answer">
 
-                <p>
-                    Most quote requests receive an initial response within
-                    2 business hours during our normal working schedule.
-                </p>
+                Yes. Source files can be provided for applicable
+                design packages. File formats may include AI, PSD,
+                PDF, SVG, PNG and JPG depending on the project.
 
             </div>
 
@@ -1191,22 +1164,21 @@
 
         <div class="faq-item">
 
-            <button class="faq-question">
+            <div class="faq-question">
 
-                Do you handle bulk corporate orders?
+                Do you provide printing services?
 
-                <span class="faq-plus">
+                <span class="faq-icon">
                     +
                 </span>
 
-            </button>
+            </div>
 
             <div class="faq-answer">
 
-                <p>
-                    Absolutely. We handle corporate apparel, promotional
-                    products, packaging and large-volume printing projects.
-                </p>
+                Yes. We can help with various printing requirements
+                including visiting cards, brochures, flyers,
+                packaging, posters and other promotional materials.
 
             </div>
 
@@ -1218,17 +1190,66 @@
 </section>
 
 
+
 <!-- =========================================
-     CART DRAWER
+     CTA
 ========================================= -->
 
-<div class="cart-drawer" id="cartDrawer">
+<section class="contact-cta countdown-banner">
+
+    <div class="contact-cta-inner">
+
+        <span class="section-tag">
+            Start Your Project
+        </span>
+
+
+        <h2 class="section-title">
+            Have a Design Idea?
+            Let's Make It Real.
+        </h2>
+
+
+        <p>
+            Send us your requirements today and let's create
+            something professional for your brand.
+        </p>
+
+
+        <a
+            href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20want%20to%20start%20a%20design%20project."
+            target="_blank"
+            class="btn-dark"
+        >
+            Start on WhatsApp →
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     MINI CART
+========================================= -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+>
 
     <div class="cart-header">
 
-        <h3 style="font-family: var(--font-sans); font-weight: 800;">
-            Your Cart
+        <h3
+            style="
+            font-family:var(--font-sans);
+            font-weight:800;
+            "
+        >
+            Selected Services
         </h3>
+
 
         <button
             class="cart-close"
@@ -1239,33 +1260,41 @@
 
     </div>
 
+
     <div
         class="cart-items"
         id="cartItemsList"
-    ></div>
+    >
+
+    </div>
+
 
     <div class="cart-footer">
 
         <div class="cart-total">
 
-            <span>Total:</span>
+            <span>
+                Estimated Total:
+            </span>
 
             <span id="cartTotalVal">
-                $0.00
+                ₹0
             </span>
 
         </div>
 
+
         <button
             class="btn-checkout"
-            onclick="alert('Proceeding to mock checkout!'); localStorage.removeItem('printmax_cart'); window.location.reload();"
+            onclick="window.location.href='contact.html';"
         >
-            Checkout
+            Continue Order
         </button>
 
     </div>
 
 </div>
+
 
 
 <!-- =========================================
@@ -1276,70 +1305,96 @@
 
     <div class="footer-container">
 
+
         <div class="footer-brand">
 
             <div class="logo">
 
                 <div class="logo-icon">
-                    P
+                    SG
                 </div>
 
-                Print<span>Max</span>
+                Sai
+                <span>
+                    Graphic Designs
+                </span>
 
             </div>
 
+
             <p>
-                Delivering high-resolution, eco-friendly custom
-                printing solutions for businesses globally since 2012.
+                Professional graphic design, branding and printing
+                solutions for businesses, startups, freelancers
+                and individuals.
             </p>
+
 
             <div class="footer-socials">
 
-                <a href="#" class="social-icon">Fb</a>
-                <a href="#" class="social-icon">X</a>
-                <a href="#" class="social-icon">Li</a>
-                <a href="#" class="social-icon">Ig</a>
+                <a href="#" class="social-icon">
+                    Fb
+                </a>
+
+                <a href="#" class="social-icon">
+                    X
+                </a>
+
+                <a href="#" class="social-icon">
+                    Li
+                </a>
+
+                <a href="#" class="social-icon">
+                    Ig
+                </a>
 
             </div>
 
         </div>
 
 
+
         <div>
 
             <h4 class="footer-col-title">
-                Practice Scope
+                Services
             </h4>
 
             <ul class="footer-links">
 
                 <li class="footer-link">
                     <a href="customizer.html">
-                        T-Shirt Customizer
+                        Logo Design
                     </a>
                 </li>
 
                 <li class="footer-link">
-                    <a href="about.html">
-                        Hoodie Customizer
+                    <a href="customizer.html">
+                        Logo Recreation
                     </a>
                 </li>
 
                 <li class="footer-link">
-                    <a href="about.html">
-                        Corporate Packaging
+                    <a href="customizer.html">
+                        Brand Identity
                     </a>
                 </li>
 
                 <li class="footer-link">
-                    <a href="about.html">
-                        Promotional Materials
+                    <a href="customizer.html">
+                        Social Media Design
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Print Design
                     </a>
                 </li>
 
             </ul>
 
         </div>
+
 
 
         <div>
@@ -1379,6 +1434,7 @@
         </div>
 
 
+
         <div>
 
             <h4 class="footer-col-title">
@@ -1388,15 +1444,21 @@
             <div class="footer-contact">
 
                 <p>
-                    99 Ink Avenue, Press District, Suite 20
+                    Madurai, Tamil Nadu, India
                 </p>
 
                 <p>
-                    P: 000-000-0000
+                    P:
+                    <a href="tel:+916381128781">
+                        +91 63811 28781
+                    </a>
                 </p>
 
                 <p>
-                    E: support@printmax.demo
+                    E:
+                    <a href="mailto:saigraphicdesings@gmail.com">
+                        saigraphicdesings@gmail.com
+                    </a>
                 </p>
 
             </div>
@@ -1409,12 +1471,12 @@
     <div class="footer-bottom">
 
         <p>
-            &copy; 2026 PrintMax Solutions.
+            &copy; 2026 Sai Graphic Designs.
             All rights reserved.
         </p>
 
         <p>
-            Eco-Print Certified
+            Designing Ideas into Reality
         </p>
 
     </div>
@@ -1422,29 +1484,35 @@
 </footer>
 
 
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
 
 <script src="main.js"></script>
 
+
+<!-- =========================================
+     FAQ JAVASCRIPT
+========================================= -->
+
 <script>
 
-    /* FAQ Accordion */
+    const faqQuestions =
+        document.querySelectorAll(".faq-question");
 
-    document.querySelectorAll(".faq-question").forEach(button => {
+    faqQuestions.forEach(question => {
 
-        button.addEventListener("click", () => {
+        question.addEventListener("click", () => {
 
-            const item = button.parentElement;
+            const item =
+                question.parentElement;
 
-            document.querySelectorAll(".faq-item").forEach(other => {
+            document
+                .querySelectorAll(".faq-item")
+                .forEach(other => {
 
-                if (other !== item) {
-                    other.classList.remove("active");
-                }
+                    if (other !== item) {
+                        other.classList.remove("active");
+                    }
 
-            });
+                });
 
             item.classList.toggle("active");
 
@@ -1452,44 +1520,8 @@
 
     });
 
-
-    /* Contact Form */
-
-    function submitContactForm(event) {
-
-        event.preventDefault();
-
-        const name =
-            document.getElementById("conName").value;
-
-        const email =
-            document.getElementById("conEmail").value;
-
-        const service =
-            document.querySelector(
-                'input[name="service"]:checked'
-            )?.value || "Custom Project";
-
-        alert(
-            "Thank you, " +
-            name +
-            "!\n\n" +
-            "Your " +
-            service +
-            " enquiry has been received.\n\n" +
-            "We will contact you at " +
-            email +
-            "."
-        );
-
-        document
-            .getElementById("contactForm")
-            .reset();
-
-    }
-
 </script>
+
 
 </body>
 </html>
-```
