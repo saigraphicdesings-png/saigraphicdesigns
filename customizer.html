@@ -2162,19 +2162,15 @@ document.addEventListener("DOMContentLoaded", function () {
        CART
     ===================================================== */
 
-    const cart = [];
+    let cart = JSON.parse(localStorage.getItem("saiGraphicCart")) || [];
 
 
-    function openCart() {
-
-        cartDrawer.classList.add("active");
-
-        cartOverlay.classList.add("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
+   function saveCart() {
+    localStorage.setItem(
+        "saiGraphicCart",
+        JSON.stringify(cart)
+    );
+}
 
         document.body.style.overflow =
             "hidden";
@@ -2199,24 +2195,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function addServiceToCart() {
+   function addServiceToCart() {
 
-        const existing =
-            cart.find(function (item) {
+    const existing = cart.find(function (item) {
+        return item.name === selectedServiceData.name;
+    });
 
-                return item.name ===
-                    selectedServiceData.name;
+    if (existing) {
+        openCart();
+        return;
+    }
 
-            });
+    cart.push({
+        name: selectedServiceData.name,
+        price: selectedServiceData.price
+    });
 
-
-        if (existing) {
-
-            openCart();
-
-            return;
-
-        }
+    saveCart();
+    updateCart();
+    openCart();
+}
 
 
         cart.push({
