@@ -52,10 +52,14 @@ html {
 
 body {
     min-height: 100vh;
+
     font-family: var(--font-sans);
+
     background-color: var(--white);
     color: var(--dark-muted);
+
     line-height: 1.6;
+
     overflow-x: hidden;
 }
 
@@ -88,6 +92,7 @@ h6 {
 a {
     color: inherit;
     text-decoration: none;
+
     transition: var(--transition);
 }
 
@@ -97,7 +102,8 @@ a {
    SAME HEADER ON ALL PAGES
 ========================================= */
 
-header {
+header,
+.site-header {
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -147,9 +153,15 @@ header {
     line-height: 1;
 
     white-space: nowrap;
+
+    flex-shrink: 0;
 }
 
-.logo span {
+.logo-name {
+    color: var(--dark);
+}
+
+.logo-name strong {
     color: var(--primary);
 }
 
@@ -175,24 +187,35 @@ header {
 
 /* =========================================
    NAVIGATION
+   HOME / ABOUT / SERVICES / CONTACT
 ========================================= */
 
-.nav-menu {
+.main-nav {
     display: flex;
     align-items: center;
+    justify-content: center;
 
-    list-style: none;
-
+    /*
+       Equal spacing between:
+       Home
+       About
+       Services
+       Contact
+    */
     gap: 2.5rem;
 
     margin-left: auto;
     margin-right: 2rem;
+
+    flex-shrink: 0;
 }
 
 .nav-link {
     position: relative;
 
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     padding: 0.5rem 0;
 
@@ -200,6 +223,8 @@ header {
 
     font-size: 0.95rem;
     font-weight: 600;
+
+    white-space: nowrap;
 }
 
 .nav-link:hover,
@@ -214,6 +239,7 @@ header {
 
     left: 0;
     right: 0;
+
     bottom: -0.2rem;
 
     width: 100%;
@@ -278,7 +304,9 @@ header {
 }
 
 
-/* Cart Badge */
+/* =========================================
+   CART BADGE
+========================================= */
 
 .cart-badge {
     position: absolute;
@@ -320,6 +348,8 @@ header {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    gap: 0.4rem;
 
     background-color: var(--primary);
     color: var(--white) !important;
@@ -2375,7 +2405,7 @@ footer {
         padding-right: 1.5rem;
     }
 
-    .nav-menu {
+    .main-nav {
         gap: 1.5rem;
 
         margin-right: 1rem;
@@ -2453,12 +2483,10 @@ footer {
     }
 
     /*
-       Hide desktop navigation.
-       If you have a mobile menu button,
-       it can be shown here.
+       Hide desktop navigation on mobile.
     */
 
-    .nav-menu {
+    .main-nav {
         display: none;
     }
 
