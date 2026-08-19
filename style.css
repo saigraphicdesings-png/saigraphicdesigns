@@ -3002,41 +3002,58 @@ footer {
     }
 }
 /* =====================================================
-   MOBILE MENU
+   MOBILE NAVIGATION
 ===================================================== */
 
-/* Desktop */
+/* Mobile menu button hidden on desktop */
 .mobile-menu-btn {
     display: none;
-    border: 1px solid #ddd;
-    background: #fff;
-    color: var(--dark, #111);
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    line-height: 1;
     align-items: center;
     justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
     padding: 0;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    background: #fff;
+    color: var(--dark, #111);
+
+    font-size: 1.4rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
 }
 
-/* Tablet + Mobile */
+
+/* =====================================================
+   TABLET + MOBILE
+===================================================== */
+
 @media (max-width: 900px) {
 
     .nav-container {
         position: relative;
     }
 
+
+    /* Show mobile menu button */
     .mobile-menu-btn {
         display: flex;
         order: 2;
     }
 
+
+    /* Navigation closed */
     .main-nav {
         position: absolute;
-        top: calc(100% + 1px);
+
+        top: 100%;
         left: 0;
         right: 0;
 
@@ -3044,14 +3061,16 @@ footer {
         flex-direction: column;
         align-items: stretch;
 
-        background: #fff;
+        width: 100%;
 
         padding: 0.7rem 1rem;
 
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
+        background: #fff;
 
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+        border-top: 1px solid #eee;
+
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.10);
 
         opacity: 0;
         visibility: hidden;
@@ -3064,18 +3083,28 @@ footer {
             visibility 0.25s ease,
             transform 0.25s ease;
 
-        z-index: 999;
+        z-index: 9999;
     }
 
+
+    /* Navigation OPEN */
     .main-nav.mobile-menu-open {
+
         opacity: 1;
+
         visibility: visible;
+
         pointer-events: auto;
+
         transform: translateY(0);
     }
 
+
+    /* Navigation links */
     .main-nav .nav-link {
+
         display: block;
+
         width: 100%;
 
         padding: 0.9rem 0.8rem;
@@ -3085,23 +3114,38 @@ footer {
         text-decoration: none;
     }
 
+
     .main-nav .nav-link:hover {
+
         background: #f5f5f5;
     }
+
+
+    /* Header order */
+    .logo {
+        order: 1;
+
+        margin-right: auto;
+    }
+
 
     .nav-actions {
         order: 3;
     }
 
-    .logo {
-        order: 1;
-        margin-right: auto;
+
+    /* Hide Get Started on mobile */
+    .nav-actions .btn-header {
+        display: none;
     }
 
 }
 
 
-/* Small mobile */
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
 @media (max-width: 650px) {
 
     .nav-container {
@@ -3109,25 +3153,30 @@ footer {
         padding-right: 1rem;
     }
 
+
     .logo-name {
         font-size: 1rem;
     }
 
+
     .logo-icon {
         width: 34px;
         height: 34px;
+
         font-size: 0.85rem;
     }
+
 
     .mobile-menu-btn {
         width: 42px;
         height: 42px;
-        font-size: 1.4rem;
+
+        font-size: 1.35rem;
     }
+
 
     .cart-icon-btn {
         width: 42px;
         height: 42px;
     }
 
-}
