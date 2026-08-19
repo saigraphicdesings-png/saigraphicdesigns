@@ -383,177 +383,226 @@
         }
 
 
-        /* =====================================================
-           CART
-        ===================================================== */
+       /* =====================================================
+   CART
+===================================================== */
 
-        .cart-icon-btn {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--border);
-            background: var(--white);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: var(--primary);
-            color: #fff;
-            font-size: .7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
+let cart = JSON.parse(
+    localStorage.getItem("saiGraphicCart")
+) || [];
 
 
-        .cart-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.45);
-            opacity: 0;
-            visibility: hidden;
-            z-index: 998;
-            transition: .25s ease;
-        }
+function saveCart() {
 
-        .cart-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    localStorage.setItem(
+        "saiGraphicCart",
+        JSON.stringify(cart)
+    );
+
+}
 
 
-        .cart-drawer {
-            position: fixed;
-            top: 0;
-            right: -440px;
-            width: min(430px, 92vw);
-            height: 100vh;
-            background: #fff;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            box-shadow: -10px 0 40px rgba(0,0,0,.15);
-            transition: right .3s ease;
-        }
+function openCart() {
 
-        .cart-drawer.active {
-            right: 0;
-        }
+    cartDrawer.classList.add("active");
+
+    cartOverlay.classList.add("active");
+
+    cartDrawer.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
 
 
-        .cart-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.3rem 1.4rem;
-            border-bottom: 1px solid #eee;
-        }
+function closeCart() {
 
-        .cart-header h3 {
-            margin: 0;
-            font-size: 1.15rem;
-        }
+    cartDrawer.classList.remove("active");
 
-        .cart-close {
-            border: 0;
-            background: transparent;
-            font-size: 2rem;
-            cursor: pointer;
-            line-height: 1;
-        }
+    cartOverlay.classList.remove("active");
+
+    cartDrawer.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
 
 
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
+function addServiceToCart() {
 
-        .empty-cart {
-            text-align: center;
-            padding: 4rem 1rem;
-            color: #777;
-            line-height: 1.7;
-        }
+    const existing =
+        cart.find(function (item) {
+
+            return item.name ===
+                selectedServiceData.name;
+
+        });
 
 
-        .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
-        }
+    if (existing) {
 
-        .cart-item-info {
-            flex: 1;
-        }
+        openCart();
 
-        .cart-item-name {
-            font-weight: 800;
-            margin-bottom: .25rem;
-            color: var(--dark);
-        }
+        return;
 
-        .cart-item-price {
-            font-size: .9rem;
-            color: #666;
-        }
-
-        .cart-remove {
-            border: 0;
-            background: #f3f3f3;
-            color: #333;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
+    }
 
 
-        .cart-footer {
-            padding: 1.2rem;
-            border-top: 1px solid #eee;
-        }
+    cart.push({
 
-        .cart-total {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 800;
-            font-size: 1.05rem;
-            margin-bottom: 1rem;
-        }
+        name:
+            selectedServiceData.name,
 
-        .cart-checkout {
-            width: 100%;
-            border: 0;
-            cursor: pointer;
-            padding: .95rem 1rem;
-            border-radius: 10px;
-            background: var(--dark);
-            color: #fff;
-            font-weight: 800;
-            font-size: 1rem;
-        }
+        price:
+            selectedServiceData.price
 
-        .cart-checkout:disabled {
-            opacity: .45;
-            cursor: not-allowed;
-        }
+    });
 
+
+    saveCart();
+
+    updateCart();
+
+    openCart();
+
+}
+
+
+function updateCart() {
+
+    cartItemsList.innerHTML = "";
+
+
+    if (cart.length === 0) {
+
+        cartItemsList.innerHTML = `
+
+            <div class="empty-cart">
+
+                <p>
+                    <strong>No services selected yet.</strong>
+                </p>
+
+                <p>
+                    Choose a service and click
+                    "Add to Order".
+                </p>
+
+            </div>
+
+        `;
+
+
+        cartBadge.textContent = "0";
+
+        cartTotalVal.textContent = "₹0";
+
+        cartCheckout.disabled = true;
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    cart.forEach(function (item, index) {
+
+        total += Number(item.price);
+
+
+        const itemElement =
+            document.createElement("div");
+
+
+        itemElement.className =
+            "cart-item";
+
+
+        itemElement.innerHTML = `
+
+            <div class="cart-item-info">
+
+                <div class="cart-item-name">
+                    ${escapeHTML(item.name)}
+                </div>
+
+                <div class="cart-item-price">
+                    ${formatPrice(item.price)}
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="cart-remove"
+                data-index="${index}"
+                aria-label="Remove ${escapeHTML(item.name)}"
+            >
+                ×
+            </button>
+
+        `;
+
+
+        cartItemsList.appendChild(
+            itemElement
+        );
+
+    });
+
+
+    cartBadge.textContent =
+        cart.length;
+
+
+    cartTotalVal.textContent =
+        formatPrice(total);
+
+
+    cartCheckout.disabled =
+        false;
+
+
+    document
+        .querySelectorAll(".cart-remove")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const index =
+                        Number(
+                            this.dataset.index
+                        );
+
+
+                    cart.splice(
+                        index,
+                        1
+                    );
+
+
+                    saveCart();
+
+                    updateCart();
+
+                }
+            );
+
+        });
+
+}
 
         /* =====================================================
            CTA
