@@ -2434,6 +2434,69 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+    <!-- CART OVERLAY -->
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true">
+</div>
+
+
+<!-- CART DRAWER -->
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
+
+    <div class="cart-header">
+
+        <h3>
+            Selected Services
+        </h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart">
+            &times;
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsList">
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="cart-checkout"
+            id="cartCheckout"
+            disabled>
+            Send Order on WhatsApp
+        </button>
+
+    </div>
+
+</div>
 
 </script>
 
