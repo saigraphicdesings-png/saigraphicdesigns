@@ -2491,7 +2491,494 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    /* =====================================================
+       CART STORAGE
+    ===================================================== */
+
+    const CART_KEY = "saiGraphicCart";
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const cartToggle =
+        document.getElementById("cartToggle");
+
+    const cartClose =
+        document.getElementById("cartClose");
+
+    const cartOverlay =
+        document.getElementById("cartOverlay");
+
+    const cartDrawer =
+        document.getElementById("cartDrawer");
+
+    const cartBadge =
+        document.getElementById("cartBadge");
+
+    const cartItemsList =
+        document.getElementById("cartItemsList");
+
+    const cartTotalVal =
+        document.getElementById("cartTotalVal");
+
+    const cartCheckout =
+        document.getElementById("cartCheckout");
+
+
+    /* =====================================================
+       CHECK CART ELEMENTS
+    ===================================================== */
+
+    if (
+        !cartToggle ||
+        !cartDrawer ||
+        !cartOverlay ||
+        !cartItemsList ||
+        !cartBadge
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       LOAD CART
+    ===================================================== */
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(CART_KEY)
+        ) || [];
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ===================================================== */
+
+    function formatPrice(price) {
+
+        return "₹" +
+            Number(price).toLocaleString("en-IN");
+
+    }
+
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
+
+    function saveCart() {
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    function updateCart() {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
+
+
+        cartItemsList.innerHTML = "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+                <div class="empty-cart">
+
+                    <p>
+                        <strong>
+                            No services selected yet.
+                        </strong>
+                    </p>
+
+                    <p>
+                        Go to Services and click
+                        "Add to Order".
+                    </p>
+
+                </div>
+            `;
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            if (cartCheckout) {
+                cartCheckout.disabled = true;
+            }
+
+            return;
+        }
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        let total = 0;
+
+
+        /* =================================================
+           CART ITEMS
+        ================================================= */
+
+        cart.forEach(function (item, index) {
+
+            const price =
+                Number(item.price) || 0;
+
+            total += price;
+
+
+            const itemElement =
+                document.createElement("div");
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(price)}
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove service">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                itemElement
+            );
+
+        });
+
+
+        /* =================================================
+           BADGE
+        ================================================= */
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        cartTotalVal.textContent =
+            formatPrice(total);
+
+
+        /* =================================================
+           CHECKOUT
+        ================================================= */
+
+        if (cartCheckout) {
+
+            cartCheckout.disabled = false;
+
+        }
+
+
+        /* =================================================
+           REMOVE SERVICES
+        ================================================= */
+
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replaceAll("&", "&amp;")
+
+            .replaceAll("<", "&lt;")
+
+            .replaceAll(">", "&gt;")
+
+            .replaceAll('"', "&quot;")
+
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =====================================================
+       OPEN CART
+    ===================================================== */
+
+    function openCart() {
+
+        updateCart();
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =====================================================
+       CLOSE CART
+    ===================================================== */
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /* =====================================================
+       CART BUTTON
+    ===================================================== */
+
+    cartToggle.addEventListener(
+        "click",
+        function () {
+
+            openCart();
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    cartOverlay.addEventListener(
+        "click",
+        closeCart
+    );
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeCart();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       WHATSAPP CHECKOUT
+    ===================================================== */
+
+    if (cartCheckout) {
+
+        cartCheckout.addEventListener(
+            "click",
+            function () {
+
+                if (cart.length === 0) {
+                    return;
+                }
+
+
+                const total =
+                    cart.reduce(
+                        function (sum, item) {
+
+                            return sum +
+                                Number(item.price);
+
+                        },
+                        0
+                    );
+
+
+                const serviceList =
+                    cart.map(
+                        function (item, index) {
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - " +
+                                formatPrice(
+                                    item.price
+                                )
+                            );
+
+                        }
+                    ).join("\n");
+
+
+                const message = `
+Hello Sai Graphic Designs 👋
+
+I would like to order the following services:
+
+━━━━━━━━━━━━━━━━━━
+SELECTED SERVICES
+━━━━━━━━━━━━━━━━━━
+
+${serviceList}
+
+━━━━━━━━━━━━━━━━━━
+ORDER SUMMARY
+━━━━━━━━━━━━━━━━━━
+
+Number of Services: ${cart.length}
+
+Estimated Total: ${formatPrice(total)}
+
+Please contact me to discuss the project details and payment.
+
+Thank you!
+Sai Graphic Designs Website
+`;
+
+
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIAL CART LOAD
+    ===================================================== */
+
+    updateCart();
+
+});
+</script>
 </body>
 
 </html>
