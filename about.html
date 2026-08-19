@@ -342,60 +342,67 @@
 <body class="about-page">
 
 
-<!-- =================================
+<!-- =========================================
      HEADER
-================================= -->
+========================================= -->
 
-<header>
+<header class="site-header">
 
     <div class="nav-container">
 
         <!-- LOGO -->
-
         <a href="index.html" class="logo">
 
             <div class="logo-icon">
                 SG
             </div>
 
-            Sai <span>Graphic Designs</span>
+            <span class="logo-sai">
+                Sai
+            </span>
+
+            <span class="logo-designs">
+                Graphic Designs
+            </span>
 
         </a>
 
 
         <!-- NAVIGATION -->
+        <nav class="main-navigation">
 
-        <ul class="nav-menu">
+            <ul class="nav-menu">
 
-            <li>
-                <a href="index.html" class="nav-link">
-                    Home
-                </a>
-            </li>
+                <li>
+                    <a href="index.html" class="nav-link">
+                        Home
+                    </a>
+                </li>
 
-            <li>
-                <a href="about.html" class="nav-link active">
-                    About
-                </a>
-            </li>
+                <li>
+                    <a href="about.html" class="nav-link active">
+                        About
+                    </a>
+                </li>
 
-            <li>
-                <a href="customizer.html" class="nav-link">
-                    Services
-                </a>
-            </li>
+                <li>
+                    <a href="customizer.html" class="nav-link">
+                        Services
+                    </a>
+                </li>
 
-            <li>
-                <a href="contact.html" class="nav-link">
-                    Contact
-                </a>
-            </li>
+                <li>
+                    <a href="contact.html" class="nav-link">
+                        Contact
+                    </a>
+                </li>
 
-        </ul>
+            </ul>
+
+        </nav>
 
 
         <!-- HEADER ACTIONS -->
-
         <div class="nav-actions">
 
             <button
@@ -404,7 +411,10 @@
                 id="cartToggle"
                 aria-label="Open shopping cart"
             >
-                🛒
+
+                <span class="cart-icon">
+                    🛒
+                </span>
 
                 <span
                     class="cart-badge"
@@ -420,7 +430,8 @@
                 href="contact.html"
                 class="btn-header"
             >
-                Get Started &gt;
+                Get Started
+                <span>→</span>
             </a>
 
         </div>
@@ -428,9 +439,6 @@
     </div>
 
 </header>
-
-
-
 <!-- =================================
      ABOUT HERO
 ================================= -->
