@@ -455,9 +455,9 @@
 
 <body>
 
-<!-- =========================================
+<!-- =================================
      HEADER
-========================================= -->
+================================= -->
 
 <header class="site-header">
 
@@ -465,57 +465,37 @@
 
         <!-- LOGO -->
         <a href="index.html" class="logo">
+            <div class="logo-icon">SG</div>
 
-            <div class="logo-icon">
-                SG
-            </div>
-
-            <span class="logo-sai">
-                Sai
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
             </span>
-
-            <span class="logo-designs">
-                Graphic Designs
-            </span>
-
         </a>
 
 
         <!-- NAVIGATION -->
-        <nav class="main-navigation">
+        <nav class="main-nav" aria-label="Main Navigation">
 
-            <ul class="nav-menu">
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
 
-                <li>
-                    <a href="index.html" class="nav-link">
-                        Home
-                    </a>
-                </li>
+            <a href="about.html" class="nav-link">
+                About
+            </a>
 
-                <li>
-                    <a href="about.html" class="nav-link">
-                        About
-                    </a>
-                </li>
+            <a href="customizer.html" class="nav-link">
+                Services
+            </a>
 
-                <li>
-                    <a href="customizer.html" class="nav-link">
-                        Services
-                    </a>
-                </li>
-
-                <li>
-                    <a href="contact.html" class="nav-link active">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
+            <a href="contact.html" class="nav-link active">
+                Contact
+            </a>
 
         </nav>
 
 
-        <!-- HEADER ACTIONS -->
+        <!-- ACTIONS -->
         <div class="nav-actions">
 
             <button
@@ -524,27 +504,12 @@
                 id="cartToggle"
                 aria-label="Open shopping cart"
             >
-
-                <span class="cart-icon">
-                    🛒
-                </span>
-
-                <span
-                    class="cart-badge"
-                    id="cartBadge"
-                >
-                    0
-                </span>
-
+                🛒
+                <span class="cart-badge" id="cartBadge">0</span>
             </button>
 
-
-            <a
-                href="contact.html"
-                class="btn-header"
-            >
-                Get Started
-                <span>→</span>
+            <a href="contact.html" class="btn-header">
+                Get Started <span>→</span>
             </a>
 
         </div>
