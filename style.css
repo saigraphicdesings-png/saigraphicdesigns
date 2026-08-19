@@ -3001,3 +3001,133 @@ footer {
         padding: 1.5rem;
     }
 }
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+/* Desktop */
+.mobile-menu-btn {
+    display: none;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: var(--dark, #111);
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Tablet + Mobile */
+@media (max-width: 900px) {
+
+    .nav-container {
+        position: relative;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        order: 2;
+    }
+
+    .main-nav {
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0;
+        right: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        background: #fff;
+
+        padding: 0.7rem 1rem;
+
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transform: translateY(-10px);
+
+        transition:
+            opacity 0.25s ease,
+            visibility 0.25s ease,
+            transform 0.25s ease;
+
+        z-index: 999;
+    }
+
+    .main-nav.mobile-menu-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .main-nav .nav-link {
+        display: block;
+        width: 100%;
+
+        padding: 0.9rem 0.8rem;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+    }
+
+    .main-nav .nav-link:hover {
+        background: #f5f5f5;
+    }
+
+    .nav-actions {
+        order: 3;
+    }
+
+    .logo {
+        order: 1;
+        margin-right: auto;
+    }
+
+}
+
+
+/* Small mobile */
+@media (max-width: 650px) {
+
+    .nav-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .logo-name {
+        font-size: 1rem;
+    }
+
+    .logo-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+    }
+
+    .mobile-menu-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.4rem;
+    }
+
+    .cart-icon-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+}
