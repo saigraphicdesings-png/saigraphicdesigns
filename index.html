@@ -2315,7 +2315,127 @@ Thank you!`;
 ===================================================== -->
 
 <script src="main.js"></script>
+<script>
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton =
+        document.getElementById("mobileMenuBtn");
+
+    const mainNav =
+        document.getElementById("mainNav");
+
+
+    if (!menuButton || !mainNav) {
+        return;
+    }
+
+
+    /* =====================================================
+       OPEN / CLOSE MENU
+    ===================================================== */
+
+    menuButton.addEventListener(
+        "click",
+        function () {
+
+            const isOpen =
+                mainNav.classList.toggle(
+                    "mobile-active"
+                );
+
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                isOpen ? "true" : "false"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-label",
+                isOpen
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+            );
+
+
+            menuButton.textContent =
+                isOpen ? "×" : "☰";
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE AFTER CLICKING LINK
+    ===================================================== */
+
+    mainNav
+        .querySelectorAll(".nav-link")
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    mainNav.classList.remove(
+                        "mobile-active"
+                    );
+
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    menuButton.setAttribute(
+                        "aria-label",
+                        "Open navigation menu"
+                    );
+
+
+                    menuButton.textContent =
+                        "☰";
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       CLOSE WITH ESC
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                mainNav.classList.remove(
+                    "mobile-active"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+
+                menuButton.textContent =
+                    "☰";
+
+            }
+
+        }
+    );
+
+});
+
+</script>
 
 </body>
 
