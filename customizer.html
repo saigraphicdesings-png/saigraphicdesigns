@@ -2158,144 +2158,225 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-   <!-- =====================================================
-     CART JAVASCRIPT
-===================================================== -->
+    /* =====================================================
+       CART
+    ===================================================== */
 
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const cart = [];
-
-        const cartToggle = document.getElementById("cartToggle");
-        const cartClose = document.getElementById("cartClose");
-        const cartDrawer = document.getElementById("cartDrawer");
-        const cartOverlay = document.getElementById("cartOverlay");
-
-        const cartBadge = document.getElementById("cartBadge");
-        const cartItemsList = document.getElementById("cartItemsList");
-        const cartTotalVal = document.getElementById("cartTotalVal");
-        const checkoutBtn = document.getElementById("checkoutBtn");
-
-        const addButtons = document.querySelectorAll(".btn-add-cart");
+    const cart = [];
 
 
-        function openCart() {
+    function openCart() {
 
-            cartDrawer.classList.add("active");
-            cartOverlay.classList.add("active");
+        cartDrawer.classList.add("active");
 
-            cartDrawer.setAttribute("aria-hidden", "false");
-            cartOverlay.setAttribute("aria-hidden", "false");
+        cartOverlay.classList.add("active");
 
-            document.body.style.overflow = "hidden";
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
-        }
+        document.body.style.overflow =
+            "hidden";
 
-
-        function closeCart() {
-
-            cartDrawer.classList.remove("active");
-            cartOverlay.classList.remove("active");
-
-            cartDrawer.setAttribute("aria-hidden", "true");
-            cartOverlay.setAttribute("aria-hidden", "true");
-
-            document.body.style.overflow = "";
-
-        }
+    }
 
 
-        function updateCart() {
+    function closeCart() {
 
-            cartItemsList.innerHTML = "";
+        cartDrawer.classList.remove("active");
 
-            if (cart.length === 0) {
+        cartOverlay.classList.remove("active");
 
-                cartItemsList.innerHTML = `
-                    <div class="empty-cart">
-                        <p>No services selected yet.</p>
-                        <p>Choose a service to start your order.</p>
-                    </div>
-                `;
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
 
-                cartBadge.textContent = "0";
-                cartTotalVal.textContent = "₹0";
-                checkoutBtn.disabled = true;
+        document.body.style.overflow =
+            "";
 
-                return;
-            }
+    }
 
 
-            let total = 0;
+    function addServiceToCart() {
 
+        const existing =
+            cart.find(function (item) {
 
-            cart.forEach(function (item, index) {
-
-                total += item.price;
-
-
-                const cartItem = document.createElement("div");
-
-                cartItem.className = "cart-item";
-
-
-                cartItem.innerHTML = `
-
-                    <div class="cart-item-info">
-
-                        <div class="cart-item-name">
-                            ${item.name}
-                        </div>
-
-                        <div class="cart-item-price">
-                            ₹${item.price.toLocaleString("en-IN")}
-                        </div>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="cart-remove"
-                        data-index="${index}"
-                        aria-label="Remove ${item.name}"
-                    >
-                        ×
-                    </button>
-
-                `;
-
-
-                cartItemsList.appendChild(cartItem);
+                return item.name ===
+                    selectedServiceData.name;
 
             });
 
 
-            cartBadge.textContent = cart.length;
+        if (existing) {
+
+            openCart();
+
+            return;
+
+        }
+
+
+        cart.push({
+
+            name:
+                selectedServiceData.name,
+
+            price:
+                selectedServiceData.price
+
+        });
+
+
+        updateCart();
+
+        openCart();
+
+    }
+
+
+    function updateCart() {
+
+        cartItemsList.innerHTML = "";
+
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <p>
+                        <strong>No services selected yet.</strong>
+                    </p>
+
+                    <p>
+                        Choose a service and click
+                        "Add to Order".
+                    </p>
+
+                </div>
+
+            `;
+
+
+            cartBadge.textContent =
+                "0";
 
             cartTotalVal.textContent =
-                "₹" + total.toLocaleString("en-IN");
+                "₹0";
 
-            checkoutBtn.disabled = false;
+            cartCheckout.disabled =
+                true;
+
+            return;
+
+        }
 
 
-            document.querySelectorAll(".cart-remove").forEach(function (button) {
+        let total = 0;
 
-                button.addEventListener("click", function () {
 
-                    const index =
-                        Number(this.getAttribute("data-index"));
+        cart.forEach(function (item, index) {
 
-                    cart.splice(index, 1);
+            total += item.price;
 
-                    updateCart();
 
-                });
+            const itemElement =
+                document.createElement("div");
+
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(item.price)}
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove ${escapeHTML(item.name)}"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                itemElement
+            );
+
+        });
+
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        cartTotalVal.textContent =
+            formatPrice(total);
+
+
+        cartCheckout.disabled =
+            false;
+
+
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        updateCart();
+
+                    }
+                );
 
             });
 
-        }
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
 
 
     /* =====================================================
