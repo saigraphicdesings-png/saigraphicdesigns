@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-
         /* =========================================
            CONTACT PAGE
         ========================================= */
@@ -363,6 +362,10 @@
                 padding: 4rem 1rem;
             }
 
+            .contact-hero {
+                padding: 4rem 1rem;
+            }
+
             .contact-info-card,
             .contact-form-card {
                 padding: 1.5rem;
@@ -379,28 +382,46 @@
             .map-container {
                 height: 320px;
             }
-        }
 
+            .contact-info-item {
+                gap: 0.75rem;
+            }
+
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+            }
+
+            .whatsapp-btn {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 
 
 <body>
 
-<!-- ================================
+
+<!-- =========================================
      HEADER
-================================ -->
+========================================= -->
 
 <header>
 
     <div class="nav-container">
 
         <a href="index.html" class="logo">
+
             <div class="logo-icon">
                 SG
             </div>
+
             Sai <span>Graphic Designs</span>
+
         </a>
+
 
         <ul class="nav-menu">
 
@@ -430,18 +451,31 @@
 
         </ul>
 
+
         <div class="nav-actions">
 
             <button
                 type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
+                aria-label="Open shopping cart"
             >
                 🛒
-                <span class="cart-badge" id="cartBadge">0</span>
+
+                <span
+                    class="cart-badge"
+                    id="cartBadge"
+                >
+                    0
+                </span>
+
             </button>
 
-            <a href="contact.html" class="btn-header">
+
+            <a
+                href="contact.html"
+                class="btn-header"
+            >
                 Get Started &gt;
             </a>
 
@@ -450,8 +484,11 @@
     </div>
 
 </header>
+
+
+
 <!-- =========================================
-     HERO
+     CONTACT HERO
 ========================================= -->
 
 <section class="contact-hero countdown-banner">
@@ -464,16 +501,20 @@
 
 
         <h1 class="section-title">
+
             Let's Create Something
             <br>
             Amazing Together
+
         </h1>
 
 
         <p>
+
             Have a logo idea, branding project, social media campaign
             or printing requirement? Tell us about your project and
             we'll help turn your idea into reality.
+
         </p>
 
     </div>
@@ -483,7 +524,7 @@
 
 
 <!-- =========================================
-     CONTACT FORM
+     CONTACT SECTION
 ========================================= -->
 
 <section class="contact-section">
@@ -491,7 +532,9 @@
     <div class="contact-grid">
 
 
-        <!-- CONTACT INFORMATION -->
+        <!-- =====================================
+             CONTACT INFORMATION
+        ====================================== -->
 
         <div class="contact-info-card">
 
@@ -499,13 +542,17 @@
                 Contact Information
             </span>
 
+
             <h3>
                 Let's Start a Conversation
             </h3>
 
+
             <p>
+
                 Whether you need a simple design or complete brand
                 identity, Sai Graphic Designs is ready to help.
+
             </p>
 
 
@@ -596,7 +643,8 @@
                         </strong>
 
                         <span>
-                            Monday – Saturday<br>
+                            Monday – Saturday
+                            <br>
                             9:00 AM – 8:00 PM
                         </span>
 
@@ -612,6 +660,7 @@
             <a
                 href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20would%20like%20to%20discuss%20a%20design%20project."
                 target="_blank"
+                rel="noopener noreferrer"
                 class="whatsapp-btn"
             >
 
@@ -624,7 +673,9 @@
 
 
 
-        <!-- FORM -->
+        <!-- =====================================
+             CONTACT FORM
+        ====================================== -->
 
         <div class="contact-form-card">
 
@@ -632,9 +683,11 @@
                 Project Inquiry
             </span>
 
+
             <h3>
                 Tell Us About Your Project
             </h3>
+
 
             <p class="contact-form-subtitle">
                 Fill in the details below and we'll get back to you.
@@ -647,7 +700,8 @@
                 method="POST"
             >
 
-                <!-- FormSubmit settings -->
+
+                <!-- FORMSUBMIT SETTINGS -->
 
                 <input
                     type="hidden"
@@ -682,16 +736,19 @@
                             Full Name *
                         </label>
 
+
                         <input
                             type="text"
                             id="name"
                             name="Name"
                             class="form-control"
                             placeholder="Your Name"
+                            autocomplete="name"
                             required
                         >
 
                     </div>
+
 
 
                     <!-- PHONE -->
@@ -705,16 +762,19 @@
                             Phone Number *
                         </label>
 
+
                         <input
                             type="tel"
                             id="phone"
                             name="Phone"
                             class="form-control"
                             placeholder="+91 XXXXX XXXXX"
+                            autocomplete="tel"
                             required
                         >
 
                     </div>
+
 
 
                     <!-- EMAIL -->
@@ -728,15 +788,18 @@
                             Email Address
                         </label>
 
+
                         <input
                             type="email"
                             id="email"
                             name="Email"
                             class="form-control"
                             placeholder="your@email.com"
+                            autocomplete="email"
                         >
 
                     </div>
+
 
 
                     <!-- BUSINESS -->
@@ -750,15 +813,18 @@
                             Business / Company
                         </label>
 
+
                         <input
                             type="text"
                             id="business"
                             name="Business"
                             class="form-control"
                             placeholder="Company Name"
+                            autocomplete="organization"
                         >
 
                     </div>
+
 
 
                     <!-- SERVICE -->
@@ -771,6 +837,7 @@
                         >
                             What Do You Need? *
                         </label>
+
 
                         <select
                             id="service"
@@ -840,6 +907,7 @@
                     </div>
 
 
+
                     <!-- BUDGET -->
 
                     <div class="form-group">
@@ -850,6 +918,7 @@
                         >
                             Approx. Budget
                         </label>
+
 
                         <select
                             id="budget"
@@ -886,6 +955,7 @@
                     </div>
 
 
+
                     <!-- DEADLINE -->
 
                     <div class="form-group">
@@ -897,6 +967,7 @@
                             Required By
                         </label>
 
+
                         <input
                             type="date"
                             id="deadline"
@@ -907,7 +978,8 @@
                     </div>
 
 
-                    <!-- MESSAGE -->
+
+                    <!-- PROJECT DETAILS -->
 
                     <div class="form-group form-group-full">
 
@@ -918,6 +990,7 @@
                             Project Details *
                         </label>
 
+
                         <textarea
                             id="message"
                             name="Project Details"
@@ -927,6 +1000,7 @@
                         ></textarea>
 
                     </div>
+
 
 
                     <!-- SUBMIT -->
@@ -955,12 +1029,13 @@
 
 
 <!-- =========================================
-     LOCATION MAP
+     LOCATION SECTION
 ========================================= -->
 
 <section class="location-section">
 
     <div class="location-container">
+
 
         <div class="section-header">
 
@@ -975,10 +1050,11 @@
         </div>
 
 
+
         <div class="location-grid">
 
 
-            <!-- LOCATION TEXT -->
+            <!-- LOCATION INFORMATION -->
 
             <div class="location-content">
 
@@ -993,9 +1069,11 @@
 
 
                 <p>
+
                     We provide professional graphic design, branding
                     and printing solutions for businesses and
                     individuals.
+
                 </p>
 
 
@@ -1005,6 +1083,7 @@
                         📍 Studio Location
                     </strong>
 
+
                     <p style="margin-top:0.5rem;">
                         Madurai, Tamil Nadu, India
                     </p>
@@ -1013,8 +1092,9 @@
 
 
                 <a
-                    href="https://www.google.com/maps/search/?api=1&query=Madurai,Tamil Nadu,India"
+                    href="https://www.google.com/maps/search/?api=1&query=Madurai,Tamil%20Nadu,India"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="btn-primary"
                     style="margin-top:1.5rem;display:inline-block;"
                 >
@@ -1022,6 +1102,7 @@
                 </a>
 
             </div>
+
 
 
             <!-- GOOGLE MAP -->
@@ -1032,7 +1113,9 @@
                     src="https://www.google.com/maps?q=Madurai,Tamil%20Nadu,India&output=embed"
                     loading="lazy"
                     allowfullscreen
-                    referrerpolicy="no-referrer-when-downgrade">
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Sai Graphic Designs location map"
+                >
                 </iframe>
 
             </div>
@@ -1046,16 +1129,18 @@
 
 
 <!-- =========================================
-     FAQ
+     FAQ SECTION
 ========================================= -->
 
 <section class="faq-section">
+
 
     <div class="section-header">
 
         <span class="section-tag">
             FAQ
         </span>
+
 
         <h2 class="section-title">
             Frequently Asked Questions
@@ -1064,20 +1149,31 @@
     </div>
 
 
+
     <div class="faq-container">
 
 
+        <!-- FAQ 1 -->
+
         <div class="faq-item">
 
-            <div class="faq-question">
+            <div
+                class="faq-question"
+                role="button"
+                tabindex="0"
+            >
 
-                How can I place an order?
+                <span>
+                    How can I place an order?
+                </span>
+
 
                 <span class="faq-icon">
                     +
                 </span>
 
             </div>
+
 
             <div class="faq-answer">
 
@@ -1091,17 +1187,28 @@
         </div>
 
 
+
+        <!-- FAQ 2 -->
+
         <div class="faq-item">
 
-            <div class="faq-question">
+            <div
+                class="faq-question"
+                role="button"
+                tabindex="0"
+            >
 
-                How long does a design project take?
+                <span>
+                    How long does a design project take?
+                </span>
+
 
                 <span class="faq-icon">
                     +
                 </span>
 
             </div>
+
 
             <div class="faq-answer">
 
@@ -1115,17 +1222,28 @@
         </div>
 
 
+
+        <!-- FAQ 3 -->
+
         <div class="faq-item">
 
-            <div class="faq-question">
+            <div
+                class="faq-question"
+                role="button"
+                tabindex="0"
+            >
 
-                Do you provide source files?
+                <span>
+                    Do you provide source files?
+                </span>
+
 
                 <span class="faq-icon">
                     +
                 </span>
 
             </div>
+
 
             <div class="faq-answer">
 
@@ -1138,17 +1256,28 @@
         </div>
 
 
+
+        <!-- FAQ 4 -->
+
         <div class="faq-item">
 
-            <div class="faq-question">
+            <div
+                class="faq-question"
+                role="button"
+                tabindex="0"
+            >
 
-                Do you provide printing services?
+                <span>
+                    Do you provide printing services?
+                </span>
+
 
                 <span class="faq-icon">
                     +
                 </span>
 
             </div>
+
 
             <div class="faq-answer">
 
@@ -1168,7 +1297,7 @@
 
 
 <!-- =========================================
-     CTA
+     CTA SECTION
 ========================================= -->
 
 <section class="contact-cta countdown-banner">
@@ -1181,20 +1310,26 @@
 
 
         <h2 class="section-title">
+
             Have a Design Idea?
+            <br>
             Let's Make It Real.
+
         </h2>
 
 
         <p>
+
             Send us your requirements today and let's create
             something professional for your brand.
+
         </p>
 
 
         <a
             href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20want%20to%20start%20a%20design%20project."
             target="_blank"
+            rel="noopener noreferrer"
             class="btn-dark"
         >
             Start on WhatsApp →
@@ -1215,12 +1350,13 @@
     id="cartDrawer"
 >
 
+
     <div class="cart-header">
 
         <h3
             style="
-            font-family:var(--font-sans);
-            font-weight:800;
+                font-family:var(--font-sans);
+                font-weight:800;
             "
         >
             Selected Services
@@ -1230,6 +1366,8 @@
         <button
             class="cart-close"
             id="cartClose"
+            type="button"
+            aria-label="Close cart"
         >
             &times;
         </button>
@@ -1237,12 +1375,13 @@
     </div>
 
 
+
     <div
         class="cart-items"
         id="cartItemsList"
     >
-
     </div>
+
 
 
     <div class="cart-footer">
@@ -1253,6 +1392,7 @@
                 Estimated Total:
             </span>
 
+
             <span id="cartTotalVal">
                 ₹0
             </span>
@@ -1262,6 +1402,7 @@
 
         <button
             class="btn-checkout"
+            type="button"
             onclick="window.location.href='contact.html';"
         >
             Continue Order
@@ -1282,6 +1423,8 @@
     <div class="footer-container">
 
 
+        <!-- FOOTER BRAND -->
+
         <div class="footer-brand">
 
             <div class="logo">
@@ -1299,27 +1442,48 @@
 
 
             <p>
+
                 Professional graphic design, branding and printing
                 solutions for businesses, startups, freelancers
                 and individuals.
+
             </p>
 
 
             <div class="footer-socials">
 
-                <a href="#" class="social-icon">
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Facebook"
+                >
                     Fb
                 </a>
 
-                <a href="#" class="social-icon">
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="X"
+                >
                     X
                 </a>
 
-                <a href="#" class="social-icon">
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="LinkedIn"
+                >
                     Li
                 </a>
 
-                <a href="#" class="social-icon">
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Instagram"
+                >
                     Ig
                 </a>
 
@@ -1329,42 +1493,59 @@
 
 
 
+        <!-- SERVICES -->
+
         <div>
 
             <h4 class="footer-col-title">
                 Services
             </h4>
 
+
             <ul class="footer-links">
 
                 <li class="footer-link">
+
                     <a href="customizer.html">
                         Logo Design
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="customizer.html">
                         Logo Recreation
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="customizer.html">
                         Brand Identity
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="customizer.html">
                         Social Media Design
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="customizer.html">
                         Print Design
                     </a>
+
                 </li>
 
             </ul>
@@ -1372,6 +1553,8 @@
         </div>
 
 
+
+        <!-- COMPANY -->
 
         <div>
 
@@ -1379,30 +1562,42 @@
                 Company
             </h4>
 
+
             <ul class="footer-links">
 
                 <li class="footer-link">
+
                     <a href="index.html">
                         Home
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="about.html">
                         About Us
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="about.html">
                         Pricing
                     </a>
+
                 </li>
 
+
                 <li class="footer-link">
+
                     <a href="contact.html">
                         Contact Us
                     </a>
+
                 </li>
 
             </ul>
@@ -1411,11 +1606,14 @@
 
 
 
+        <!-- CONTACT -->
+
         <div>
 
             <h4 class="footer-col-title">
                 Contact
             </h4>
+
 
             <div class="footer-contact">
 
@@ -1423,18 +1621,26 @@
                     Madurai, Tamil Nadu, India
                 </p>
 
+
                 <p>
+
                     P:
+
                     <a href="tel:+916381128781">
                         +91 63811 28781
                     </a>
+
                 </p>
 
+
                 <p>
+
                     E:
+
                     <a href="mailto:saigraphicdesings@gmail.com">
                         saigraphicdesings@gmail.com
                     </a>
+
                 </p>
 
             </div>
@@ -1444,12 +1650,18 @@
     </div>
 
 
+
+    <!-- FOOTER BOTTOM -->
+
     <div class="footer-bottom">
 
         <p>
+
             &copy; 2026 Sai Graphic Designs.
             All rights reserved.
+
         </p>
+
 
         <p>
             Designing Ideas into Reality
@@ -1461,7 +1673,12 @@
 
 
 
+<!-- =========================================
+     MAIN JAVASCRIPT
+========================================= -->
+
 <script src="main.js"></script>
+
 
 
 <!-- =========================================
@@ -1470,27 +1687,61 @@
 
 <script>
 
-    const faqQuestions =
-        document.querySelectorAll(".faq-question");
+    document.addEventListener("DOMContentLoaded", function () {
 
-    faqQuestions.forEach(question => {
+        const faqQuestions =
+            document.querySelectorAll(".faq-question");
 
-        question.addEventListener("click", () => {
 
-            const item =
-                question.parentElement;
+        faqQuestions.forEach(function (question) {
 
-            document
-                .querySelectorAll(".faq-item")
-                .forEach(other => {
+            function toggleFAQ() {
 
-                    if (other !== item) {
-                        other.classList.remove("active");
+                const item =
+                    question.parentElement;
+
+
+                document
+                    .querySelectorAll(".faq-item")
+                    .forEach(function (other) {
+
+                        if (other !== item) {
+
+                            other.classList.remove("active");
+
+                        }
+
+                    });
+
+
+                item.classList.toggle("active");
+
+            }
+
+
+            question.addEventListener(
+                "click",
+                toggleFAQ
+            );
+
+
+            question.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        event.preventDefault();
+
+                        toggleFAQ();
+
                     }
 
-                });
-
-            item.classList.toggle("active");
+                }
+            );
 
         });
 
