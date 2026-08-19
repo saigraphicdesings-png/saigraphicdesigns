@@ -211,3 +211,175 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 });
+* =====================================================
+   MOBILE MENU
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mobileMenuBtn =
+        document.getElementById("mobileMenuBtn");
+
+    const mainNav =
+        document.getElementById("mainNav");
+
+
+    /* If this page does not have the menu, stop */
+    if (!mobileMenuBtn || !mainNav) {
+        return;
+    }
+
+
+    /* =================================================
+       OPEN / CLOSE MENU
+    ================================================= */
+
+    mobileMenuBtn.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            const isOpen =
+                mainNav.classList.toggle(
+                    "mobile-menu-open"
+                );
+
+
+            mobileMenuBtn.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
+
+            if (isOpen) {
+
+                mobileMenuBtn.setAttribute(
+                    "aria-label",
+                    "Close navigation menu"
+                );
+
+                mobileMenuBtn.innerHTML = "✕";
+
+            } else {
+
+                mobileMenuBtn.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+                mobileMenuBtn.innerHTML = "☰";
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       CLOSE AFTER CLICKING NAVIGATION LINK
+    ================================================= */
+
+    const navLinks =
+        mainNav.querySelectorAll(".nav-link");
+
+
+    navLinks.forEach(function (link) {
+
+        link.addEventListener(
+            "click",
+            function () {
+
+                closeMobileMenu();
+
+            }
+        );
+
+    });
+
+
+    /* =================================================
+       CLOSE MENU FUNCTION
+    ================================================= */
+
+    function closeMobileMenu() {
+
+        mainNav.classList.remove(
+            "mobile-menu-open"
+        );
+
+
+        mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        mobileMenuBtn.setAttribute(
+            "aria-label",
+            "Open navigation menu"
+        );
+
+
+        mobileMenuBtn.innerHTML = "☰";
+
+    }
+
+
+    /* =================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ================================================= */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !mainNav.contains(event.target) &&
+                !mobileMenuBtn.contains(event.target)
+            ) {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       ESC KEY
+    ================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       RESET WHEN SCREEN BECOMES DESKTOP
+    ================================================= */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 900) {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+});
