@@ -8,15 +8,16 @@
     <title>About Us | Sai Graphic Designs</title>
 
     <meta name="description"
-        content="Learn about Sai Graphic Designs, our mission, vision, creative works and achievements in professional graphic design, branding and printing.">
+        content="Learn about Sai Graphic Designs, our mission, vision, creative works and experience in professional graphic design, branding and printing.">
 
     <meta name="keywords"
-        content="Sai Graphic Designs, graphic design company, graphic designer Madurai, branding, logo design, print design, social media design">
+        content="Sai Graphic Designs, graphic designer Madurai, logo design, logo recreation, branding, visiting card design, print design, social media design, packaging design">
+
+    <meta name="author" content="Sai Graphic Designs">
 
     <link rel="stylesheet" href="style.css">
 
     <style>
-
         /* =================================
            ABOUT PAGE
         ================================= */
@@ -25,7 +26,9 @@
             background: var(--white);
         }
 
-        /* Hero */
+        /* =================================
+           ABOUT HERO
+        ================================= */
 
         .about-hero {
             padding: 6rem 2rem;
@@ -38,6 +41,10 @@
             margin: auto;
         }
 
+        .about-hero h1 {
+            margin-top: 1rem;
+        }
+
         .about-hero p {
             max-width: 680px;
             margin: 1.25rem auto 0;
@@ -45,8 +52,9 @@
             color: var(--dark-muted);
         }
 
-
-        /* Main About */
+        /* =================================
+           COMPANY ABOUT
+        ================================= */
 
         .about-company {
             padding: 6rem 2rem;
@@ -73,6 +81,7 @@
             border-radius: 20px;
             overflow: hidden;
             background: var(--light);
+            border: 1px solid var(--border);
         }
 
         .about-company-image img {
@@ -82,8 +91,9 @@
             display: block;
         }
 
-
-        /* Mission Vision */
+        /* =================================
+           MISSION & VISION
+        ================================= */
 
         .mission-vision {
             padding: 6rem 2rem;
@@ -103,8 +113,10 @@
         .mission-card,
         .vision-card {
             padding: 3rem;
+
             border: 1px solid var(--border);
             border-radius: 20px;
+
             background: var(--white);
 
             transition: var(--transition);
@@ -147,8 +159,14 @@
             line-height: 1.8;
         }
 
+        .mission-card p + p,
+        .vision-card p + p {
+            margin-top: 1rem;
+        }
 
-        /* Works */
+        /* =================================
+           OUR WORKS
+        ================================= */
 
         .works-section {
             padding: 6rem 2rem;
@@ -165,10 +183,10 @@
         }
 
         .work-card {
+            padding: 2rem;
+
             border: 1px solid var(--border);
             border-radius: 18px;
-
-            padding: 2rem;
 
             background: var(--white);
 
@@ -199,8 +217,9 @@
             font-size: 0.95rem;
         }
 
-
-        /* Achievements */
+        /* =================================
+           ACHIEVEMENTS
+        ================================= */
 
         .achievements-section {
             padding: 6rem 2rem;
@@ -226,6 +245,13 @@
             border-radius: 18px;
 
             background: var(--white);
+
+            transition: var(--transition);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .achievement-number {
@@ -253,8 +279,9 @@
             color: var(--dark-muted);
         }
 
-
-        /* CTA */
+        /* =================================
+           CTA
+        ================================= */
 
         .about-cta {
             padding: 6rem 2rem;
@@ -275,8 +302,9 @@
             line-height: 1.8;
         }
 
-
-        /* Responsive */
+        /* =================================
+           MOBILE
+        ================================= */
 
         @media (max-width: 900px) {
 
@@ -295,9 +323,7 @@
             .achievement-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
         }
-
 
         @media (max-width: 600px) {
 
@@ -310,10 +336,7 @@
                 padding: 4rem 1rem;
             }
 
-            .works-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .works-grid,
             .achievement-grid {
                 grid-template-columns: 1fr;
             }
@@ -327,8 +350,10 @@
                 padding: 2rem;
             }
 
+            .about-hero h1 {
+                font-size: 2rem;
+            }
         }
-
     </style>
 
 </head>
@@ -340,9 +365,12 @@
 <!-- =================================
      HEADER
 ================================= -->
+
 <header>
 
     <div class="nav-container">
+
+        <!-- LOGO -->
 
         <a href="index.html" class="logo">
 
@@ -354,6 +382,8 @@
 
         </a>
 
+
+        <!-- NAVIGATION -->
 
         <ul class="nav-menu">
 
@@ -374,6 +404,7 @@
                     Services
                 </a>
             </li>
+
             <li>
                 <a href="contact.html" class="nav-link">
                     Contact
@@ -383,36 +414,41 @@
         </ul>
 
 
-       <div class="nav-actions">
+        <!-- HEADER ACTIONS -->
 
-            <a href="#" class="cart-icon-btn" id="cartToggle">
-
-                🛒
-
-                <span class="cart-badge">
-                    0
-                </span>
-
-            </a>
-<div class="nav-actions">
+        <div class="nav-actions">
 
             <button
                 type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
+                aria-label="Open selected services"
             >
                 🛒
-                <span class="cart-badge" id="cartBadge">0</span>
+
+                <span
+                    class="cart-badge"
+                    id="cartBadge"
+                >
+                    0
+                </span>
+
             </button>
 
-            <a href="contact.html" class="btn-header">
+
+            <a
+                href="contact.html"
+                class="btn-header"
+            >
                 Get Started &gt;
             </a>
 
         </div>
 
     </div>
+
 </header>
+
 
 <!-- =================================
      ABOUT HERO
@@ -441,7 +477,6 @@
 </section>
 
 
-
 <!-- =================================
      ABOUT COMPANY
 ================================= -->
@@ -451,13 +486,18 @@
     <div class="about-company-container">
 
 
+        <!-- CONTENT -->
+
         <div class="about-company-content">
 
             <span class="section-tag">
                 Who We Are
             </span>
 
-            <h2 class="section-title" style="text-align:left;">
+            <h2
+                class="section-title"
+                style="text-align:left;"
+            >
                 Creative Design That Builds Brands
             </h2>
 
@@ -492,11 +532,14 @@
         </div>
 
 
+        <!-- IMAGE -->
+
         <div class="about-company-image">
 
             <img
-                src="images/img_01_press.png"
-                alt="Sai Graphic Designs Creative Studio"
+                src="Images/img_01_press.png"
+                alt="Sai Graphic Designs creative design studio"
+                loading="lazy"
             >
 
         </div>
@@ -504,7 +547,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =================================
@@ -547,14 +589,13 @@
                 communicate their ideas professionally.
             </p>
 
-            <p style="margin-top:1rem;">
+            <p>
                 We aim to understand every client's unique requirements
                 and turn their ideas into designs that are visually
                 powerful, meaningful and effective.
             </p>
 
         </div>
-
 
 
         <!-- VISION -->
@@ -576,7 +617,7 @@
                 experiences.
             </p>
 
-            <p style="margin-top:1rem;">
+            <p>
                 We want to build a creative brand known for quality,
                 reliability, originality and customer satisfaction.
             </p>
@@ -586,7 +627,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =================================
@@ -605,7 +645,13 @@
             What We Create
         </h2>
 
-        <p style="max-width:650px;margin:1rem auto;color:var(--dark-muted);">
+        <p
+            style="
+                max-width:650px;
+                margin:1rem auto;
+                color:var(--dark-muted);
+            "
+        >
             From the first idea to the final artwork, we create
             professional visual designs for digital and print
             communication.
@@ -638,7 +684,6 @@
         </div>
 
 
-
         <!-- WORK 02 -->
 
         <div class="work-card">
@@ -658,7 +703,6 @@
             </p>
 
         </div>
-
 
 
         <!-- WORK 03 -->
@@ -682,7 +726,6 @@
         </div>
 
 
-
         <!-- WORK 04 -->
 
         <div class="work-card">
@@ -704,7 +747,6 @@
         </div>
 
 
-
         <!-- WORK 05 -->
 
         <div class="work-card">
@@ -724,7 +766,6 @@
             </p>
 
         </div>
-
 
 
         <!-- WORK 06 -->
@@ -752,7 +793,6 @@
 </section>
 
 
-
 <!-- =================================
      ACHIEVEMENTS
 ================================= -->
@@ -769,7 +809,13 @@
             Growing Through Creativity
         </h2>
 
-        <p style="max-width:650px;margin:1rem auto;color:var(--dark-muted);">
+        <p
+            style="
+                max-width:650px;
+                margin:1rem auto;
+                color:var(--dark-muted);
+            "
+        >
             Our journey is built on creativity, client relationships,
             consistent quality and a passion for design.
         </p>
@@ -779,6 +825,8 @@
 
     <div class="achievement-grid">
 
+
+        <!-- CLIENTS -->
 
         <div class="achievement-card">
 
@@ -798,6 +846,7 @@
         </div>
 
 
+        <!-- EXPERIENCE -->
 
         <div class="achievement-card">
 
@@ -817,6 +866,7 @@
         </div>
 
 
+        <!-- SERVICES -->
 
         <div class="achievement-card">
 
@@ -836,6 +886,7 @@
         </div>
 
 
+        <!-- FOUNDED -->
 
         <div class="achievement-card">
 
@@ -857,7 +908,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =================================
@@ -893,7 +943,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =================================
@@ -932,26 +981,41 @@
 
             <div class="footer-socials">
 
-                <a href="#" class="social-icon">
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Facebook"
+                >
                     Fb
                 </a>
 
-                <a href="#" class="social-icon">
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="X"
+                >
                     X
                 </a>
 
-                <a href="#" class="social-icon">
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="LinkedIn"
+                >
                     Li
                 </a>
 
-                <a href="#" class="social-icon">
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Instagram"
+                >
                     Ig
                 </a>
 
             </div>
 
         </div>
-
 
 
         <!-- SERVICES -->
@@ -999,7 +1063,6 @@
         </div>
 
 
-
         <!-- COMPANY -->
 
         <div>
@@ -1039,7 +1102,6 @@
         </div>
 
 
-
         <!-- CONTACT -->
 
         <div>
@@ -1069,6 +1131,7 @@
     </div>
 
 
+    <!-- FOOTER BOTTOM -->
 
     <div class="footer-bottom">
 
@@ -1085,6 +1148,10 @@
 
 </footer>
 
+
+<!-- =================================
+     JAVASCRIPT
+================================= -->
 
 <script src="main.js"></script>
 
