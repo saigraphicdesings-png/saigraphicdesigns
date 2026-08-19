@@ -1,10 +1,7 @@
 /* =========================================================
    SAI GRAPHIC DESIGNS - MAIN JAVASCRIPT
-   Works on:
-   Home
-   About
-   Services / Customizer
-   Contact
+   ONE SHARED CART FOR ALL PAGES
+   Home / About / Services / Contact
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -20,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const minutesEl = document.getElementById("promoMinutes");
         const secondsEl = document.getElementById("promoSeconds");
 
-        // Countdown does not exist on this page
         if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
             return;
         }
@@ -44,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-
         function updateClock() {
 
             const now = Date.now();
@@ -64,30 +59,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-
             const days = Math.floor(
-                distance /
-                (1000 * 60 * 60 * 24)
+                distance / (1000 * 60 * 60 * 24)
             );
 
             const hours = Math.floor(
-                (distance %
-                    (1000 * 60 * 60 * 24)) /
+                (distance % (1000 * 60 * 60 * 24)) /
                 (1000 * 60 * 60)
             );
 
             const minutes = Math.floor(
-                (distance %
-                    (1000 * 60 * 60)) /
+                (distance % (1000 * 60 * 60)) /
                 (1000 * 60)
             );
 
             const seconds = Math.floor(
-                (distance %
-                    (1000 * 60)) /
+                (distance % (1000 * 60)) /
                 1000
             );
-
 
             daysEl.textContent =
                 String(days).padStart(2, "0");
@@ -102,28 +91,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 String(seconds).padStart(2, "0");
         }
 
-
         updateClock();
 
         setInterval(updateClock, 1000);
     }
 
 
-
     /* =====================================================
-       2. SHOPPING CART
-       Shared between ALL pages using localStorage
+       2. GLOBAL SHOPPING CART
+       SAME CART ON EVERY PAGE
     ===================================================== */
 
     function initCart() {
 
+        /*
+         * IMPORTANT:
+         * DO NOT CHANGE THIS KEY ON ANY PAGE.
+         */
         const CART_KEY = "printmax_cart";
 
         let cart = [];
 
 
         /* =================================================
-           LOAD CART SAFELY
+           LOAD SHARED CART
         ================================================= */
 
         function loadCart() {
@@ -134,7 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     localStorage.getItem(CART_KEY);
 
                 if (!savedCart) {
+
                     cart = [];
+
                     return;
                 }
 
@@ -154,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } catch (error) {
 
                 console.error(
-                    "Could not load cart:",
+                    "Could not load shared cart:",
                     error
                 );
 
@@ -164,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =================================================
-           SAVE CART
+           SAVE SHARED CART
         ================================================= */
 
         function saveCart() {
@@ -179,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } catch (error) {
 
                 console.error(
-                    "Could not save cart:",
+                    "Could not save shared cart:",
                     error
                 );
 
@@ -188,66 +181,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =================================================
-           UPDATE CART UI
+           HTML ESCAPE
+        ================================================= */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        /* =================================================
+           UPDATE CART COUNT / TOTAL / ITEMS
         ================================================= */
 
         function updateCartUI() {
 
-            /* ---------------------------------------------
-               CART COUNT
-            --------------------------------------------- */
+            /*
+             * TOTAL QUANTITY
+             */
 
-            const count = cart.reduce(
-                function (total, item) {
+            const count =
+                cart.reduce(
+                    function (total, item) {
 
-                    return total +
-                        (Number(item.qty) || 0);
+                        return total +
+                            (Number(item.qty) || 0);
 
-                },
-                0
-            );
-
-
-            /* ---------------------------------------------
-               CART TOTAL
-            --------------------------------------------- */
-
-            const totalCost = cart.reduce(
-                function (total, item) {
-
-                    const price =
-                        Number(item.price) || 0;
-
-                    const qty =
-                        Number(item.qty) || 0;
-
-                    return total +
-                        (price * qty);
-
-                },
-                0
-            );
-
-
-            /* ---------------------------------------------
-               UPDATE ALL CART BADGES
-            --------------------------------------------- */
-
-            const badges =
-                document.querySelectorAll(
-                    ".cart-badge"
+                    },
+                    0
                 );
 
-            badges.forEach(function (badge) {
 
-                badge.textContent = count;
+            /*
+             * TOTAL PRICE
+             */
 
-            });
+            const totalCost =
+                cart.reduce(
+                    function (total, item) {
+
+                        const price =
+                            Number(item.price) || 0;
+
+                        const qty =
+                            Number(item.qty) || 0;
+
+                        return total +
+                            (price * qty);
+
+                    },
+                    0
+                );
 
 
-            /* ---------------------------------------------
-               UPDATE TOTAL
-            --------------------------------------------- */
+            /*
+             * UPDATE ALL CART BADGES
+             */
+
+            document
+                .querySelectorAll(".cart-badge")
+                .forEach(function (badge) {
+
+                    badge.textContent = count;
+
+                });
+
+
+            /*
+             * UPDATE CART TOTAL
+             */
 
             const totalCostEl =
                 document.getElementById(
@@ -262,9 +269,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* ---------------------------------------------
-               CART ITEMS
-            --------------------------------------------- */
+            /*
+             * CART ITEMS CONTAINER
+             */
 
             const listContainer =
                 document.getElementById(
@@ -272,13 +279,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
             if (!listContainer) {
+
                 return;
             }
 
 
-            /* ---------------------------------------------
-               EMPTY CART
-            --------------------------------------------- */
+            /*
+             * EMPTY CART
+             */
 
             if (cart.length === 0) {
 
@@ -298,9 +306,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* ---------------------------------------------
-               CART ITEMS HTML
-            --------------------------------------------- */
+            /*
+             * DISPLAY CART
+             */
 
             listContainer.innerHTML =
                 cart.map(function (item) {
@@ -310,7 +318,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const qty =
                         Number(item.qty) || 0;
-
 
                     return `
                         <div
@@ -372,7 +379,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             </div>
 
-
                             <button
                                 type="button"
                                 class="cart-remove-btn"
@@ -395,9 +401,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).join("");
 
 
-            /* ---------------------------------------------
-               REMOVE BUTTONS
-            --------------------------------------------- */
+            /*
+             * REMOVE ITEMS
+             */
 
             listContainer
                 .querySelectorAll(".cart-remove-btn")
@@ -435,22 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =================================================
-           ESCAPE HTML
-        ================================================= */
-
-        function escapeHTML(value) {
-
-            return String(value)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-
-        /* =================================================
-           ADD PRODUCT TO CART
+           ADD NORMAL PRODUCTS
         ================================================= */
 
         function initAddToCartButtons() {
@@ -460,8 +451,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     ".btn-add-cart"
                 );
 
-
             buttons.forEach(function (button) {
+
+                /*
+                 * Prevent duplicate event listeners
+                 */
+
+                if (
+                    button.dataset.cartInitialized === "true"
+                ) {
+                    return;
+                }
+
+                button.dataset.cartInitialized = "true";
+
 
                 button.addEventListener(
                     "click",
@@ -474,7 +477,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 "data-name"
                             ) || "Service";
 
-
                         const price =
                             parseFloat(
                                 button.getAttribute(
@@ -484,8 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                         /*
-                         * Use an existing product if
-                         * the same service already exists.
+                         * SAME PRODUCT = INCREASE QTY
                          */
 
                         const existingItem =
@@ -493,7 +494,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                 function (item) {
 
                                     return (
-                                        item.name === name &&
+                                        String(item.name) ===
+                                        String(name) &&
                                         !item.customText
                                     );
 
@@ -529,9 +531,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
 
+                        /*
+                         * SAVE TO SHARED CART
+                         */
+
                         saveCart();
 
                         updateCartUI();
+
 
                         showToast(
                             "Added " +
@@ -569,9 +576,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            /* ---------------------------------------------
-               OPEN CART
-            --------------------------------------------- */
+            /*
+             * OPEN
+             */
 
             if (cartToggle && cartDrawer) {
 
@@ -580,6 +587,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (event) {
 
                         event.preventDefault();
+
+                        /*
+                         * Reload latest cart before opening.
+                         */
+
+                        loadCart();
+
+                        updateCartUI();
 
                         cartDrawer.classList.add(
                             "open"
@@ -591,9 +606,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* ---------------------------------------------
-               CLOSE CART
-            --------------------------------------------- */
+            /*
+             * CLOSE
+             */
 
             if (cartClose && cartDrawer) {
 
@@ -611,9 +626,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* ---------------------------------------------
-               CLOSE CART WITH ESC
-            --------------------------------------------- */
+            /*
+             * ESC
+             */
 
             document.addEventListener(
                 "keydown",
@@ -634,9 +649,9 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-            /* ---------------------------------------------
-               CLOSE WHEN CLICKING OUTSIDE
-            --------------------------------------------- */
+            /*
+             * OUTSIDE CLICK
+             */
 
             document.addEventListener(
                 "click",
@@ -646,6 +661,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         !cartDrawer ||
                         !cartDrawer.classList.contains("open")
                     ) {
+
                         return;
                     }
 
@@ -668,7 +684,124 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =================================================
-           INITIALIZE CART
+           GLOBAL CART STATE
+           SERVICES / CUSTOMIZER USES THIS
+        ================================================= */
+
+        window.cartState = {
+
+            get cart() {
+
+                /*
+                 * Always return latest shared cart.
+                 */
+
+                loadCart();
+
+                return cart;
+
+            },
+
+
+            set cart(value) {
+
+                if (Array.isArray(value)) {
+
+                    cart = value;
+
+                    saveCart();
+
+                    updateCartUI();
+
+                }
+
+            },
+
+
+            updateCartUI: function () {
+
+                loadCart();
+
+                updateCartUI();
+
+            },
+
+
+            saveCart: function () {
+
+                saveCart();
+
+            },
+
+
+            addItem: function (item) {
+
+                /*
+                 * Reload before adding.
+                 * This guarantees that Services,
+                 * Home, About and Contact use
+                 * the same current cart.
+                 */
+
+                loadCart();
+
+
+                /*
+                 * CUSTOM PRODUCTS
+                 * Always add as separate item.
+                 */
+
+                if (item.customText) {
+
+                    cart.push(item);
+
+                } else {
+
+                    /*
+                     * NORMAL PRODUCTS
+                     * Increase quantity if same product exists.
+                     */
+
+                    const existingItem =
+                        cart.find(
+                            function (existing) {
+
+                                return (
+                                    String(existing.name) ===
+                                    String(item.name) &&
+                                    !existing.customText
+                                );
+
+                            }
+                        );
+
+
+                    if (existingItem) {
+
+                        existingItem.qty =
+                            (Number(existingItem.qty) || 0) +
+                            (Number(item.qty) || 1);
+
+                    } else {
+
+                        cart.push(item);
+
+                    }
+
+                }
+
+
+                saveCart();
+
+                updateCartUI();
+
+            }
+
+        };
+
+
+        /* =================================================
+           INITIALIZE
         ================================================= */
 
         loadCart();
@@ -681,43 +814,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =================================================
-           GLOBAL CART STATE
-           Used by customizer
-        ================================================= */
-
-        window.cartState = {
-
-            get cart() {
-                return cart;
-            },
-
-            set cart(value) {
-
-                if (Array.isArray(value)) {
-                    cart = value;
-                }
-
-            },
-
-            updateCartUI: updateCartUI,
-
-            saveCart: saveCart,
-
-            addItem: function (item) {
-
-                cart.push(item);
-
-                saveCart();
-
-                updateCartUI();
-
-            }
-
-        };
-
-
-        /* =================================================
-           UPDATE CART IF ANOTHER TAB/PAGE CHANGES IT
+           CROSS-TAB / CROSS-PAGE UPDATE
         ================================================= */
 
         window.addEventListener(
@@ -736,7 +833,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     }
-
 
 
     /* =====================================================
@@ -771,13 +867,8 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /*
-         * IMPORTANT:
-         * If this is not the Services page,
-         * simply stop here.
-         */
-
         if (!textInput) {
+
             return;
         }
 
@@ -931,7 +1022,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     /*
-                     * Add through global cart state.
+                     * USE SAME GLOBAL CART
                      */
 
                     if (window.cartState) {
@@ -955,35 +1046,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }
 
-                    } else {
-
-                        /*
-                         * Safety fallback.
-                         */
-
-                        let savedCart =
-                            JSON.parse(
-                                localStorage.getItem(
-                                    "printmax_cart"
-                                ) || "[]"
-                            );
-
-
-                        savedCart.push(item);
-
-
-                        localStorage.setItem(
-                            "printmax_cart",
-                            JSON.stringify(
-                                savedCart
-                            )
-                        );
-
-
-                        showToast(
-                            "Added custom T-Shirt to cart!"
-                        );
-
                     }
 
                 }
@@ -994,9 +1056,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
-       4. TOAST MESSAGE
+       4. TOAST
     ===================================================== */
 
     function showToast(text) {
@@ -1061,7 +1122,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        5. MOBILE MENU
     ===================================================== */
@@ -1079,19 +1139,11 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /*
-         * Some pages may not have the mobile menu.
-         * Do not stop other JavaScript.
-         */
-
         if (!mobileMenuBtn || !mainNav) {
+
             return;
         }
 
-
-        /* =================================================
-           CLOSE MENU
-        ================================================= */
 
         function closeMobileMenu() {
 
@@ -1099,18 +1151,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 "mobile-menu-open"
             );
 
-
             mobileMenuBtn.setAttribute(
                 "aria-expanded",
                 "false"
             );
 
-
             mobileMenuBtn.setAttribute(
                 "aria-label",
                 "Open navigation menu"
             );
-
 
             mobileMenuBtn.innerHTML =
                 "☰";
@@ -1118,22 +1167,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* =================================================
-           OPEN / CLOSE
-        ================================================= */
-
         mobileMenuBtn.addEventListener(
             "click",
             function (event) {
 
                 event.stopPropagation();
 
-
                 const isOpen =
                     mainNav.classList.toggle(
                         "mobile-menu-open"
                     );
-
 
                 mobileMenuBtn.setAttribute(
                     "aria-expanded",
@@ -1161,10 +1204,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* =================================================
-           NAVIGATION LINKS
-        ================================================= */
-
         const navLinks =
             mainNav.querySelectorAll(
                 ".nav-link"
@@ -1187,10 +1226,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* =================================================
-           CLICK OUTSIDE
-        ================================================= */
-
         document.addEventListener(
             "click",
             function (event) {
@@ -1208,17 +1243,11 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* =================================================
-           ESC KEY
-        ================================================= */
-
         document.addEventListener(
             "keydown",
             function (event) {
 
-                if (
-                    event.key === "Escape"
-                ) {
+                if (event.key === "Escape") {
 
                     closeMobileMenu();
 
@@ -1228,17 +1257,11 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* =================================================
-           DESKTOP RESET
-        ================================================= */
-
         window.addEventListener(
             "resize",
             function () {
 
-                if (
-                    window.innerWidth > 900
-                ) {
+                if (window.innerWidth > 900) {
 
                     closeMobileMenu();
 
@@ -1248,7 +1271,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     }
-
 
 
     /* =====================================================
