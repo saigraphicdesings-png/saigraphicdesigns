@@ -428,46 +428,65 @@
      HEADER
 ================================= -->
 
-<header>
+<header class="site-header">
+
     <div class="nav-container">
 
-        <!-- Logo -->
+        <!-- LOGO -->
         <a href="index.html" class="logo">
-            <span class="logo-icon">SG</span>
-            Sai <span>Graphic Designs</span>
+            <div class="logo-icon">SG</div>
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
+            </span>
         </a>
 
-        <!-- Navigation -->
-        <nav>
-            <ul class="nav-menu">
-                <li>
-                    <a href="index.html" class="nav-link active">Home</a>
-                </li>
-                <li>
-                    <a href="about.html" class="nav-link">About</a>
-                </li>
-                <li>
-                    <a href="services.html" class="nav-link">Services</a>
-                </li>
-                <li>
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-            </ul>
+
+        <!-- NAVIGATION -->
+        <nav class="main-nav" aria-label="Main Navigation">
+
+            <a href="index.html" class="nav-link active">
+                Home
+            </a>
+
+            <a href="about.html" class="nav-link">
+                About
+            </a>
+
+            <a href="customizer.html" class="nav-link">
+                Services
+            </a>
+
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
+
         </nav>
 
-        <!-- Actions -->
+
+        <!-- ACTIONS -->
         <div class="nav-actions">
-            <button class="cart-icon-btn" id="cartBtn">
+
+            <!-- CART -->
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart"
+            >
                 🛒
-                <span class="cart-badge">1</span>
+                <span class="cart-badge" id="cartBadge">0</span>
             </button>
 
+
+            <!-- GET STARTED -->
             <a href="contact.html" class="btn-header">
-                Get Started →
+                Get Started <span>→</span>
             </a>
+
         </div>
 
     </div>
+
 </header>
 <!-- =====================================================
      HERO
