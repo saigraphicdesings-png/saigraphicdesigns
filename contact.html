@@ -455,61 +455,103 @@
 
 <body>
 
-    <!-- =========================================
-         HEADER
-    ========================================= -->
+<!-- =========================================
+     HEADER
+========================================= -->
 
-    <header>
-        <div class="nav-container">
+<header class="site-header">
 
-            <a href="index.html" class="logo" aria-label="Sai Graphic Designs Home">
-                <div class="logo-icon">SG</div>
-                Sai <span>Graphic Designs</span>
-            </a>
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                SG
+            </div>
+
+            <span class="logo-sai">
+                Sai
+            </span>
+
+            <span class="logo-designs">
+                Graphic Designs
+            </span>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+        <nav class="main-navigation">
 
             <ul class="nav-menu">
+
                 <li>
-                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="index.html" class="nav-link">
+                        Home
+                    </a>
                 </li>
 
                 <li>
-                    <a href="about.html" class="nav-link">About</a>
+                    <a href="about.html" class="nav-link">
+                        About
+                    </a>
                 </li>
 
                 <li>
-                    <a href="customizer.html" class="nav-link">Services</a>
+                    <a href="customizer.html" class="nav-link">
+                        Services
+                    </a>
                 </li>
 
                 <li>
-                    <a href="contact.html" class="nav-link active" aria-current="page">
+                    <a href="contact.html" class="nav-link active">
                         Contact
                     </a>
                 </li>
+
             </ul>
 
-            <div class="nav-actions">
+        </nav>
 
-                <button
-                    type="button"
-                    class="cart-icon-btn"
-                    id="cartToggle"
-                    aria-label="Open shopping cart"
-                    aria-controls="cartDrawer"
-                >
+
+        <!-- HEADER ACTIONS -->
+        <div class="nav-actions">
+
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart"
+            >
+
+                <span class="cart-icon">
                     🛒
-                    <span class="cart-badge" id="cartBadge">0</span>
-                </button>
+                </span>
 
-                <a href="contact.html" class="btn-header">
-                    Get Started &gt;
-                </a>
+                <span
+                    class="cart-badge"
+                    id="cartBadge"
+                >
+                    0
+                </span>
 
-            </div>
+            </button>
+
+
+            <a
+                href="contact.html"
+                class="btn-header"
+            >
+                Get Started
+                <span>→</span>
+            </a>
 
         </div>
-    </header>
 
+    </div>
 
+</header>
     <!-- =========================================
          CONTACT HERO
     ========================================= -->
