@@ -2158,225 +2158,144 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    /* =====================================================
-       CART
-    ===================================================== */
+   <!-- =====================================================
+     CART JAVASCRIPT
+===================================================== -->
 
-    const cart = [];
+<script>
 
+    document.addEventListener("DOMContentLoaded", function () {
 
-    function openCart() {
+        const cart = [];
 
-        cartDrawer.classList.add("active");
+        const cartToggle = document.getElementById("cartToggle");
+        const cartClose = document.getElementById("cartClose");
+        const cartDrawer = document.getElementById("cartDrawer");
+        const cartOverlay = document.getElementById("cartOverlay");
 
-        cartOverlay.classList.add("active");
+        const cartBadge = document.getElementById("cartBadge");
+        const cartItemsList = document.getElementById("cartItemsList");
+        const cartTotalVal = document.getElementById("cartTotalVal");
+        const checkoutBtn = document.getElementById("checkoutBtn");
 
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.style.overflow =
-            "hidden";
-
-    }
-
-
-    function closeCart() {
-
-        cartDrawer.classList.remove("active");
-
-        cartOverlay.classList.remove("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.style.overflow =
-            "";
-
-    }
+        const addButtons = document.querySelectorAll(".btn-add-cart");
 
 
-    function addServiceToCart() {
+        function openCart() {
 
-        const existing =
-            cart.find(function (item) {
+            cartDrawer.classList.add("active");
+            cartOverlay.classList.add("active");
 
-                return item.name ===
-                    selectedServiceData.name;
+            cartDrawer.setAttribute("aria-hidden", "false");
+            cartOverlay.setAttribute("aria-hidden", "false");
 
-            });
-
-
-        if (existing) {
-
-            openCart();
-
-            return;
+            document.body.style.overflow = "hidden";
 
         }
 
 
-        cart.push({
+        function closeCart() {
 
-            name:
-                selectedServiceData.name,
+            cartDrawer.classList.remove("active");
+            cartOverlay.classList.remove("active");
 
-            price:
-                selectedServiceData.price
+            cartDrawer.setAttribute("aria-hidden", "true");
+            cartOverlay.setAttribute("aria-hidden", "true");
 
-        });
+            document.body.style.overflow = "";
 
-
-        updateCart();
-
-        openCart();
-
-    }
+        }
 
 
-    function updateCart() {
+        function updateCart() {
 
-        cartItemsList.innerHTML = "";
+            cartItemsList.innerHTML = "";
 
+            if (cart.length === 0) {
 
-        if (cart.length === 0) {
+                cartItemsList.innerHTML = `
+                    <div class="empty-cart">
+                        <p>No services selected yet.</p>
+                        <p>Choose a service to start your order.</p>
+                    </div>
+                `;
 
-            cartItemsList.innerHTML = `
+                cartBadge.textContent = "0";
+                cartTotalVal.textContent = "₹0";
+                checkoutBtn.disabled = true;
 
-                <div class="empty-cart">
-
-                    <p>
-                        <strong>No services selected yet.</strong>
-                    </p>
-
-                    <p>
-                        Choose a service and click
-                        "Add to Order".
-                    </p>
-
-                </div>
-
-            `;
+                return;
+            }
 
 
-            cartBadge.textContent =
-                "0";
+            let total = 0;
+
+
+            cart.forEach(function (item, index) {
+
+                total += item.price;
+
+
+                const cartItem = document.createElement("div");
+
+                cartItem.className = "cart-item";
+
+
+                cartItem.innerHTML = `
+
+                    <div class="cart-item-info">
+
+                        <div class="cart-item-name">
+                            ${item.name}
+                        </div>
+
+                        <div class="cart-item-price">
+                            ₹${item.price.toLocaleString("en-IN")}
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="cart-remove"
+                        data-index="${index}"
+                        aria-label="Remove ${item.name}"
+                    >
+                        ×
+                    </button>
+
+                `;
+
+
+                cartItemsList.appendChild(cartItem);
+
+            });
+
+
+            cartBadge.textContent = cart.length;
 
             cartTotalVal.textContent =
-                "₹0";
+                "₹" + total.toLocaleString("en-IN");
 
-            cartCheckout.disabled =
-                true;
-
-            return;
-
-        }
+            checkoutBtn.disabled = false;
 
 
-        let total = 0;
+            document.querySelectorAll(".cart-remove").forEach(function (button) {
 
+                button.addEventListener("click", function () {
 
-        cart.forEach(function (item, index) {
+                    const index =
+                        Number(this.getAttribute("data-index"));
 
-            total += item.price;
+                    cart.splice(index, 1);
 
+                    updateCart();
 
-            const itemElement =
-                document.createElement("div");
-
-
-            itemElement.className =
-                "cart-item";
-
-
-            itemElement.innerHTML = `
-
-                <div class="cart-item-info">
-
-                    <div class="cart-item-name">
-                        ${escapeHTML(item.name)}
-                    </div>
-
-                    <div class="cart-item-price">
-                        ${formatPrice(item.price)}
-                    </div>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="cart-remove"
-                    data-index="${index}"
-                    aria-label="Remove ${escapeHTML(item.name)}"
-                >
-                    ×
-                </button>
-
-            `;
-
-
-            cartItemsList.appendChild(
-                itemElement
-            );
-
-        });
-
-
-        cartBadge.textContent =
-            cart.length;
-
-
-        cartTotalVal.textContent =
-            formatPrice(total);
-
-
-        cartCheckout.disabled =
-            false;
-
-
-        document
-            .querySelectorAll(".cart-remove")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const index =
-                            Number(
-                                this.dataset.index
-                            );
-
-
-                        cart.splice(
-                            index,
-                            1
-                        );
-
-
-                        updateCart();
-
-                    }
-                );
+                });
 
             });
 
-    }
-
-
-    function escapeHTML(value) {
-
-        return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-
-    }
+        }
 
 
     /* =====================================================
