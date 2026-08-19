@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-/* =================================
+/* =========================================
    ROOT VARIABLES
-================================= */
+========================================= */
 
 :root {
     --primary: #10b981;
@@ -36,9 +36,9 @@
 }
 
 
-/* =================================
+/* =========================================
    RESET
-================================= */
+========================================= */
 
 * {
     margin: 0;
@@ -51,6 +51,7 @@ html {
 }
 
 body {
+    min-height: 100vh;
     font-family: var(--font-sans);
     background-color: var(--white);
     color: var(--dark-muted);
@@ -59,6 +60,7 @@ body {
 }
 
 img {
+    display: block;
     max-width: 100%;
 }
 
@@ -67,6 +69,10 @@ input,
 textarea,
 select {
     font-family: inherit;
+}
+
+button {
+    cursor: pointer;
 }
 
 h1,
@@ -80,15 +86,16 @@ h6 {
 }
 
 a {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
     transition: var(--transition);
 }
 
 
-/* =================================
+/* =========================================
    HEADER / NAVBAR
-================================= */
+   SAME HEADER ON ALL PAGES
+========================================= */
 
 header {
     position: sticky;
@@ -97,11 +104,11 @@ header {
 
     width: 100%;
 
-    background-color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
-    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
 
@@ -122,20 +129,22 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    LOGO
-================================= */
+========================================= */
 
 .logo {
     display: inline-flex;
     align-items: center;
 
-    gap: 0.45rem;
+    gap: 0.5rem;
 
     color: var(--dark);
 
     font-size: 1.5rem;
     font-weight: 800;
+
+    line-height: 1;
 
     white-space: nowrap;
 }
@@ -164,9 +173,9 @@ header {
 }
 
 
-/* =================================
-   NAV MENU
-================================= */
+/* =========================================
+   NAVIGATION
+========================================= */
 
 .nav-menu {
     display: flex;
@@ -183,12 +192,14 @@ header {
 .nav-link {
     position: relative;
 
-    font-size: 0.95rem;
-    font-weight: 600;
+    display: inline-block;
+
+    padding: 0.5rem 0;
 
     color: var(--dark-muted);
 
-    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .nav-link:hover,
@@ -203,8 +214,9 @@ header {
 
     left: 0;
     right: 0;
-    bottom: -0.25rem;
+    bottom: -0.2rem;
 
+    width: 100%;
     height: 2px;
 
     background-color: var(--primary);
@@ -213,9 +225,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    NAV ACTIONS
-================================= */
+========================================= */
 
 .nav-actions {
     display: flex;
@@ -227,9 +239,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    CART BUTTON
-================================= */
+========================================= */
 
 .cart-icon-btn {
     position: relative;
@@ -257,6 +269,7 @@ header {
 
 .cart-icon-btn:hover {
     border-color: var(--primary);
+
     color: var(--primary);
 
     transform: translateY(-2px);
@@ -265,7 +278,7 @@ header {
 }
 
 
-/* Cart badge */
+/* Cart Badge */
 
 .cart-badge {
     position: absolute;
@@ -285,33 +298,33 @@ header {
     background-color: var(--primary);
     color: var(--white);
 
+    border: 2px solid var(--white);
     border-radius: 50%;
 
     font-size: 0.68rem;
     font-weight: 800;
 
     line-height: 1;
-
-    border: 2px solid var(--white);
 }
 
 
-/* =================================
+/* =========================================
    HEADER BUTTON
-================================= */
+========================================= */
 
 .btn-header {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
     min-height: 46px;
 
     padding: 0.75rem 1.5rem;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     background-color: var(--primary);
     color: var(--white) !important;
 
+    border: none;
     border-radius: 30px;
 
     font-size: 0.9rem;
@@ -321,6 +334,8 @@ header {
 
     box-shadow:
         0 4px 10px rgba(16, 185, 129, 0.2);
+
+    transition: var(--transition);
 }
 
 .btn-header:hover {
@@ -333,9 +348,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    HERO
-================================= */
+========================================= */
 
 .hero {
     padding: 6rem 2rem;
@@ -381,6 +396,8 @@ header {
 .hero-title {
     margin-bottom: 1.5rem;
 
+    color: var(--dark);
+
     font-size: 3.5rem;
     line-height: 1.15;
 
@@ -415,10 +432,14 @@ header {
     border-radius: 30px;
 
     font-weight: 600;
+
+    transition: var(--transition);
 }
 
 .btn-dark:hover {
     background-color: #1f2937;
+
+    color: var(--white);
 
     transform: translateY(-2px);
 }
@@ -443,6 +464,7 @@ header {
 }
 
 .hero-img {
+    width: 100%;
     max-width: 100%;
     height: auto;
 
@@ -487,9 +509,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    GLOBAL SECTIONS
-================================= */
+========================================= */
 
 .section {
     padding: 7rem 2rem;
@@ -517,14 +539,16 @@ header {
 }
 
 .section-title {
+    color: var(--dark);
+
     font-size: 2.5rem;
     line-height: 1.2;
 }
 
 
-/* =================================
+/* =========================================
    MINI META BAR
-================================= */
+========================================= */
 
 .meta-row {
     padding: 1rem 0;
@@ -541,7 +565,10 @@ header {
     margin: 0 auto;
 
     display: flex;
+    align-items: center;
     justify-content: space-around;
+
+    gap: 2rem;
 }
 
 .meta-item {
@@ -557,9 +584,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    FEATURES
-================================= */
+========================================= */
 
 .features-grid {
     max-width: 1200px;
@@ -602,26 +629,35 @@ header {
 }
 
 .btn-primary {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     padding: 0.75rem 1.75rem;
 
     background-color: var(--primary);
     color: var(--white);
 
+    border: none;
     border-radius: 30px;
 
     font-weight: 600;
+
+    transition: var(--transition);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
 }
 
 
-/* =================================
+/* =========================================
    CUSTOM PRODUCT
-================================= */
+========================================= */
 
 .custom-product {
     background-color: var(--light);
@@ -661,6 +697,7 @@ header {
 }
 
 .custom-visual-img {
+    width: 100%;
     max-width: 100%;
     height: auto;
 
@@ -697,9 +734,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    COLLECTIONS
-================================= */
+========================================= */
 
 .collections-grid {
     max-width: 1200px;
@@ -738,12 +775,18 @@ header {
     height: 100%;
 
     object-fit: cover;
+
+    transition: transform 0.4s ease;
+}
+
+.collection-img-wrap:hover .collection-img {
+    transform: scale(1.04);
 }
 
 
-/* =================================
+/* =========================================
    COUNTDOWN
-================================= */
+========================================= */
 
 .countdown-banner {
     background-color: var(--light);
@@ -759,6 +802,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 2rem;
 
     background-color: var(--primary-light);
 
@@ -776,6 +821,8 @@ header {
 }
 
 .countdown-content {
+    flex: 1;
+
     text-align: center;
 }
 
@@ -825,9 +872,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    PRODUCTS
-================================= */
+========================================= */
 
 .products-grid {
     max-width: 1200px;
@@ -894,6 +941,8 @@ header {
 .product-name {
     margin-bottom: 0.5rem;
 
+    color: var(--dark);
+
     font-size: 1.1rem;
 }
 
@@ -904,9 +953,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    TICKER
-================================= */
+========================================= */
 
 .ticker-wrap {
     overflow: hidden;
@@ -935,6 +984,8 @@ header {
 
     padding: 0 2rem;
 
+    color: var(--white);
+
     font-size: 1.25rem;
     font-weight: 800;
 
@@ -958,9 +1009,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    POPULAR PRODUCTS
-================================= */
+========================================= */
 
 .popular-container {
     max-width: 1200px;
@@ -1005,6 +1056,8 @@ header {
 .popular-mockup-wrap {
     width: 220px;
 
+    flex-shrink: 0;
+
     padding: 1.5rem;
 
     background-color: var(--white);
@@ -1046,9 +1099,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    TESTIMONIALS
-================================= */
+========================================= */
 
 .testimonials {
     background-color: var(--light);
@@ -1127,6 +1180,8 @@ header {
     width: 44px;
     height: 44px;
 
+    flex-shrink: 0;
+
     border-radius: 50%;
 
     object-fit: cover;
@@ -1144,9 +1199,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    LOGO WALL
-================================= */
+========================================= */
 
 .logo-wall {
     padding: 3rem 0;
@@ -1160,9 +1215,13 @@ header {
 
     margin: 0 auto;
 
+    padding: 0 2rem;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 2rem;
 
     opacity: 0.6;
 }
@@ -1173,9 +1232,9 @@ header {
 }
 
 
-/* =================================
+/* =========================================
    BLOG
-================================= */
+========================================= */
 
 .blog-grid {
     max-width: 1200px;
@@ -1195,10 +1254,20 @@ header {
 
     border: 1px solid var(--border);
     border-radius: 12px;
+
+    transition: var(--transition);
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: var(--shadow-md);
 }
 
 .blog-img-wrap {
     height: 220px;
+
+    overflow: hidden;
 }
 
 .blog-img-wrap img {
@@ -1206,6 +1275,12 @@ header {
     height: 100%;
 
     object-fit: cover;
+
+    transition: transform 0.4s ease;
+}
+
+.blog-card:hover .blog-img-wrap img {
+    transform: scale(1.04);
 }
 
 .blog-info {
@@ -1228,14 +1303,16 @@ header {
 .blog-title {
     margin-bottom: 1rem;
 
+    color: var(--dark);
+
     font-size: 1.25rem;
     line-height: 1.35;
 }
 
 
-/* =================================
+/* =========================================
    FOOTER
-================================= */
+========================================= */
 
 footer {
     padding: 6rem 2rem 2rem;
@@ -1285,6 +1362,8 @@ footer {
     border-radius: 50%;
 
     color: var(--dark-muted);
+
+    transition: var(--transition);
 }
 
 .social-icon:hover {
@@ -1343,9 +1422,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    CUSTOMIZER
-================================= */
+========================================= */
 
 .customizer-grid {
     max-width: 1200px;
@@ -1392,6 +1471,8 @@ footer {
 
     max-width: 140px;
 
+    color: var(--dark);
+
     font-size: 1.5rem;
     font-weight: 800;
 
@@ -1401,7 +1482,7 @@ footer {
 
     line-height: 1.1;
 
-    word-break: break-all;
+    word-break: break-word;
 
     pointer-events: none;
 }
@@ -1430,16 +1511,22 @@ footer {
     transition: var(--transition);
 }
 
+.color-option-btn:hover {
+    transform: scale(1.08);
+}
+
 .color-option-btn.active {
     border-color: var(--primary);
 
     transform: scale(1.1);
+
+    box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 
-/* =================================
+/* =========================================
    CART DRAWER
-================================= */
+========================================= */
 
 .cart-drawer {
     position: fixed;
@@ -1463,7 +1550,7 @@ footer {
 
     z-index: 2000;
 
-    transition: var(--transition);
+    transition: right 0.3s ease;
 }
 
 .cart-drawer.open {
@@ -1535,7 +1622,7 @@ footer {
 
     color: var(--dark);
 
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .btn-checkout {
@@ -1563,9 +1650,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    CART OVERLAY
-================================= */
+========================================= */
 
 .cart-overlay {
     position: fixed;
@@ -1588,28 +1675,30 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    TOAST
-================================= */
+========================================= */
 
 .toast {
     position: fixed;
 
-    right: -300px;
+    right: -350px;
     bottom: 2rem;
+
+    max-width: 320px;
 
     padding: 1rem 1.5rem;
 
     background-color: var(--dark);
     color: var(--white);
 
-    border-radius: 4px;
+    border-radius: 8px;
 
     box-shadow: var(--shadow-lg);
 
     z-index: 3000;
 
-    transition: var(--transition);
+    transition: right 0.3s ease;
 }
 
 .toast.show {
@@ -1617,9 +1706,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    ACCORDION
-================================= */
+========================================= */
 
 .accordion {
     max-width: 800px;
@@ -1663,7 +1752,7 @@ footer {
 
     font-size: 0.95rem;
 
-    transition: var(--transition);
+    transition: max-height 0.3s ease;
 }
 
 .accordion-item.active .accordion-content {
@@ -1673,9 +1762,9 @@ footer {
 }
 
 
-/* =================================
-   POPULAR SERVICE IMAGES
-================================= */
+/* =========================================
+   SERVICES
+========================================= */
 
 .service-image-wrap {
     position: relative;
@@ -1732,9 +1821,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    LOGO BEFORE / AFTER
-================================= */
+========================================= */
 
 .logo-before-after {
     position: relative;
@@ -1756,7 +1845,6 @@ footer {
 
 .logo-ba-side {
     min-height: 230px;
-
     height: 100%;
 
     padding: 1rem;
@@ -1826,9 +1914,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    ABOUT PAGE
-================================= */
+========================================= */
 
 .about-page {
     background: var(--white);
@@ -1845,7 +1933,7 @@ footer {
 .about-hero-content {
     max-width: 800px;
 
-    margin: auto;
+    margin: 0 auto;
 }
 
 .about-hero p {
@@ -1865,7 +1953,7 @@ footer {
 .about-company-container {
     max-width: 1200px;
 
-    margin: auto;
+    margin: 0 auto;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1901,9 +1989,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    MISSION / VISION
-================================= */
+========================================= */
 
 .mission-vision {
     padding: 6rem 2rem;
@@ -1975,9 +2063,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    WORKS
-================================= */
+========================================= */
 
 .works-section {
     padding: 6rem 2rem;
@@ -2035,9 +2123,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    ACHIEVEMENTS
-================================= */
+========================================= */
 
 .achievements-section {
     padding: 6rem 2rem;
@@ -2075,7 +2163,7 @@ footer {
     color: var(--primary);
 
     font-size: 2.5rem;
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .achievement-title {
@@ -2095,9 +2183,9 @@ footer {
 }
 
 
-/* =================================
+/* =========================================
    ABOUT CTA
-================================= */
+========================================= */
 
 .about-cta {
     padding: 6rem 2rem;
@@ -2108,7 +2196,7 @@ footer {
 .about-cta-content {
     max-width: 750px;
 
-    margin: auto;
+    margin: 0 auto;
 }
 
 .about-cta p {
@@ -2122,9 +2210,163 @@ footer {
 }
 
 
-/* =================================
-   RESPONSIVE
-================================= */
+/* =========================================
+   CONTACT PAGE
+========================================= */
+
+.contact-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+
+    gap: 4rem;
+
+    align-items: start;
+}
+
+.contact-info {
+    padding: 3rem;
+
+    background: var(--light);
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+}
+
+.contact-info h3 {
+    margin-bottom: 1rem;
+
+    font-size: 1.75rem;
+}
+
+.contact-info > p {
+    margin-bottom: 2rem;
+
+    line-height: 1.8;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 1rem;
+
+    margin-bottom: 1.5rem;
+}
+
+.contact-info-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    border-radius: 10px;
+}
+
+.contact-info-item h4 {
+    margin-bottom: 0.2rem;
+
+    font-size: 0.95rem;
+}
+
+.contact-info-item p {
+    font-size: 0.9rem;
+}
+
+.contact-form {
+    padding: 3rem;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 0.5rem;
+
+    color: var(--dark);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    padding: 0.9rem 1rem;
+
+    background: var(--white);
+    color: var(--dark);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    outline: none;
+
+    transition: var(--transition);
+}
+
+.form-group textarea {
+    min-height: 150px;
+
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.contact-submit {
+    width: 100%;
+
+    padding: 0.95rem 1.5rem;
+
+    background: var(--primary);
+    color: var(--white);
+
+    border: none;
+    border-radius: 30px;
+
+    font-weight: 700;
+
+    transition: var(--transition);
+}
+
+.contact-submit:hover {
+    background: var(--primary-hover);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   RESPONSIVE - 1100px
+========================================= */
 
 @media (max-width: 1100px) {
 
@@ -2135,6 +2377,7 @@ footer {
 
     .nav-menu {
         gap: 1.5rem;
+
         margin-right: 1rem;
     }
 
@@ -2151,6 +2394,10 @@ footer {
     }
 }
 
+
+/* =========================================
+   RESPONSIVE - 1024px
+========================================= */
 
 @media (max-width: 1024px) {
 
@@ -2175,8 +2422,16 @@ footer {
     .about-company-container {
         gap: 2.5rem;
     }
+
+    .contact-container {
+        gap: 2.5rem;
+    }
 }
 
+
+/* =========================================
+   RESPONSIVE - 768px
+========================================= */
 
 @media (max-width: 768px) {
 
@@ -2196,6 +2451,12 @@ footer {
         width: 30px;
         height: 30px;
     }
+
+    /*
+       Hide desktop navigation.
+       If you have a mobile menu button,
+       it can be shown here.
+    */
 
     .nav-menu {
         display: none;
@@ -2219,7 +2480,6 @@ footer {
 
         font-size: 0.8rem;
     }
-
 
     .hero-container,
     .custom-product-container,
@@ -2277,8 +2537,21 @@ footer {
     .section-title {
         font-size: 2.2rem;
     }
+
+    .hero-stat-card {
+        right: 10px;
+    }
+
+    .contact-info,
+    .contact-form {
+        padding: 2rem;
+    }
 }
 
+
+/* =========================================
+   RESPONSIVE - 600px
+========================================= */
 
 @media (max-width: 600px) {
 
@@ -2394,10 +2667,22 @@ footer {
         right: 1rem;
         left: 1rem;
 
+        max-width: none;
+
         text-align: center;
+    }
+
+    .logo-wall-container {
+        flex-wrap: wrap;
+
+        justify-content: center;
     }
 }
 
+
+/* =========================================
+   RESPONSIVE - 420px
+========================================= */
 
 @media (max-width: 420px) {
 
@@ -2425,5 +2710,51 @@ footer {
 
     .nav-container {
         gap: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-stat-card {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        margin-top: 1rem;
+    }
+
+    .custom-visual-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-img-wrap,
+    .collection-img-wrap.large {
+        height: 260px;
+
+        grid-row: auto;
+    }
+
+    .countdown-photo {
+        width: 130px;
+        height: 170px;
+    }
+
+    .countdown-clock {
+        flex-wrap: wrap;
+    }
+
+    .popular-mockup-wrap {
+        width: 100%;
+    }
+
+    .contact-info,
+    .contact-form {
+        padding: 1.5rem;
     }
 }
