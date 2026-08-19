@@ -1,49 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       CART STORAGE
-    ===================================================== */
-
     const CART_KEY = "saiGraphicCart";
 
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const cartToggle =
-        document.getElementById("cartToggle");
-
-    const cartBadge =
-        document.getElementById("cartBadge");
-
-    const cartOverlay =
-        document.getElementById("cartOverlay");
-
-    const cartDrawer =
-        document.getElementById("cartDrawer");
-
-    const cartClose =
-        document.getElementById("cartClose");
-
-    const cartItemsList =
-        document.getElementById("cartItemsList");
-
-    const cartTotalVal =
-        document.getElementById("cartTotalVal");
-
-    const cartCheckout =
-        document.getElementById("cartCheckout");
+    const cartToggle = document.getElementById("cartToggle");
+    const cartBadge = document.getElementById("cartBadge");
+    const cartOverlay = document.getElementById("cartOverlay");
+    const cartDrawer = document.getElementById("cartDrawer");
+    const cartClose = document.getElementById("cartClose");
+    const cartItemsList = document.getElementById("cartItemsList");
+    const cartTotalVal = document.getElementById("cartTotalVal");
+    const cartCheckout = document.getElementById("cartCheckout");
 
 
-    /* =====================================================
+    /* ==========================================
        LOAD CART
-    ===================================================== */
+    ========================================== */
 
-    let cart = loadCart();
-
-
-    function loadCart() {
+    function getCart() {
 
         try {
 
@@ -53,11 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (error) {
 
-            console.error(
-                "Cart loading error:",
-                error
-            );
-
             return [];
 
         }
@@ -65,11 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        SAVE CART
-    ===================================================== */
+    ========================================== */
 
-    function saveCart() {
+    function saveCart(cart) {
 
         localStorage.setItem(
             CART_KEY,
@@ -79,9 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       PRICE FORMAT
-    ===================================================== */
+    /* ==========================================
+       FORMAT PRICE
+    ========================================== */
 
     function formatPrice(price) {
 
@@ -92,18 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        UPDATE CART
-    ===================================================== */
+    ========================================== */
 
     function updateCart() {
 
-        cart = loadCart();
+        const cart = getCart();
 
 
-        /* ---------------------------------------------
-           BADGE
-        --------------------------------------------- */
+        /* CART BADGE */
 
         if (cartBadge) {
 
@@ -113,9 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* ---------------------------------------------
-           CART CONTENT
-        --------------------------------------------- */
+        /* CART CONTENT */
 
         if (!cartItemsList) {
 
@@ -127,13 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
         cartItemsList.innerHTML = "";
 
 
-        /* ---------------------------------------------
-           EMPTY CART
-        --------------------------------------------- */
+        /* EMPTY */
 
         if (cart.length === 0) {
 
             cartItemsList.innerHTML = `
+
                 <div class="empty-cart">
 
                     <p>
@@ -148,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </p>
 
                 </div>
+
             `;
 
 
@@ -161,8 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (cartCheckout) {
 
-                cartCheckout.disabled =
-                    true;
+                cartCheckout.disabled = true;
 
             }
 
@@ -172,16 +135,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* ---------------------------------------------
-           CALCULATE TOTAL
-        --------------------------------------------- */
+        /* TOTAL */
 
         let total = 0;
 
 
-        /* ---------------------------------------------
-           CART ITEMS
-        --------------------------------------------- */
+        /* ITEMS */
 
         cart.forEach(function (item, index) {
 
@@ -212,15 +171,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 </div>
 
-
                 <button
                     type="button"
                     class="cart-remove"
-                    data-index="${index}"
-                    aria-label="Remove service">
-
+                    data-index="${index}">
                     ×
-
                 </button>
 
             `;
@@ -233,9 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-        /* ---------------------------------------------
-           TOTAL
-        --------------------------------------------- */
+        /* TOTAL */
 
         if (cartTotalVal) {
 
@@ -245,28 +198,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* ---------------------------------------------
-           CHECKOUT
-        --------------------------------------------- */
+        /* ENABLE CHECKOUT */
 
         if (cartCheckout) {
 
-            cartCheckout.disabled =
-                false;
+            cartCheckout.disabled = false;
 
         }
 
     }
 
 
-    /* =====================================================
+    /* ==========================================
        ESCAPE HTML
-    ===================================================== */
+    ========================================== */
 
     function escapeHTML(value) {
 
         return String(value)
-
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -276,41 +225,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        OPEN CART
-    ===================================================== */
+    ========================================== */
 
     function openCart() {
-
-        if (!cartDrawer) {
-            return;
-        }
-
 
         updateCart();
 
 
-        cartDrawer.classList.add(
-            "active"
-        );
+        if (cartDrawer) {
 
+            cartDrawer.classList.add("active");
 
-        if (cartOverlay) {
-
-            cartOverlay.classList.add(
-                "active"
+            cartDrawer.setAttribute(
+                "aria-hidden",
+                "false"
             );
 
         }
 
 
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
         if (cartOverlay) {
+
+            cartOverlay.classList.add("active");
 
             cartOverlay.setAttribute(
                 "aria-hidden",
@@ -326,20 +264,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        CLOSE CART
-    ===================================================== */
+    ========================================== */
 
     function closeCart() {
 
-        if (!cartDrawer) {
-            return;
+        if (cartDrawer) {
+
+            cartDrawer.classList.remove(
+                "active"
+            );
+
+            cartDrawer.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
         }
-
-
-        cartDrawer.classList.remove(
-            "active"
-        );
 
 
         if (cartOverlay) {
@@ -347,17 +289,6 @@ document.addEventListener("DOMContentLoaded", function () {
             cartOverlay.classList.remove(
                 "active"
             );
-
-        }
-
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-
-        if (cartOverlay) {
 
             cartOverlay.setAttribute(
                 "aria-hidden",
@@ -367,33 +298,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        document.body.style.overflow =
-            "";
+        document.body.style.overflow = "";
 
     }
 
 
-    /* =====================================================
-       CART TOGGLE
-    ===================================================== */
+    /* ==========================================
+       CART BUTTON
+    ========================================== */
 
     if (cartToggle) {
 
         cartToggle.addEventListener(
             "click",
-            function () {
-
-                openCart();
-
-            }
+            openCart
         );
 
     }
 
 
-    /* =====================================================
-       CLOSE BUTTON
-    ===================================================== */
+    /* ==========================================
+       CLOSE
+    ========================================== */
 
     if (cartClose) {
 
@@ -405,10 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       OVERLAY
-    ===================================================== */
-
     if (cartOverlay) {
 
         cartOverlay.addEventListener(
@@ -419,17 +341,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       ESC KEY
-    ===================================================== */
+    /* ==========================================
+       ESCAPE KEY
+    ========================================== */
 
     document.addEventListener(
         "keydown",
         function (event) {
 
-            if (
-                event.key === "Escape"
-            ) {
+            if (event.key === "Escape") {
 
                 closeCart();
 
@@ -439,9 +359,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =====================================================
-       REMOVE CART ITEM
-    ===================================================== */
+    /* ==========================================
+       REMOVE ITEM
+    ========================================== */
 
     if (cartItemsList) {
 
@@ -449,13 +369,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "click",
             function (event) {
 
-                const removeButton =
-                    event.target.closest(
-                        ".cart-remove"
-                    );
-
-
-                if (!removeButton) {
+                if (
+                    !event.target.classList.contains(
+                        "cart-remove"
+                    )
+                ) {
 
                     return;
 
@@ -464,27 +382,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const index =
                     Number(
-                        removeButton.dataset.index
+                        event.target.dataset.index
                     );
 
 
-                if (
-                    Number.isInteger(index) &&
-                    index >= 0 &&
-                    index < cart.length
-                ) {
-
-                    cart.splice(
-                        index,
-                        1
-                    );
+                const cart = getCart();
 
 
-                    saveCart();
+                cart.splice(
+                    index,
+                    1
+                );
 
-                    updateCart();
 
-                }
+                saveCart(cart);
+
+                updateCart();
 
             }
         );
@@ -492,9 +405,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        CHECKOUT → WHATSAPP
-    ===================================================== */
+    ========================================== */
 
     if (cartCheckout) {
 
@@ -502,12 +415,10 @@ document.addEventListener("DOMContentLoaded", function () {
             "click",
             function () {
 
-                cart = loadCart();
+                const cart = getCart();
 
 
-                if (
-                    cart.length === 0
-                ) {
+                if (cart.length === 0) {
 
                     return;
 
@@ -531,29 +442,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                const serviceList =
-                    cart
-                        .map(
-                            function (
-                                item,
-                                index
-                            ) {
+                const services =
+                    cart.map(
+                        function (
+                            item,
+                            index
+                        ) {
 
-                                return (
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - " +
+                                formatPrice(
+                                    item.price
+                                )
+                            );
 
-                                    (index + 1) +
-                                    ". " +
-                                    item.name +
-                                    " - " +
-                                    formatPrice(
-                                        item.price
-                                    )
-
-                                );
-
-                            }
-                        )
-                        .join("\n");
+                        }
+                    ).join("\n");
 
 
                 const message =
@@ -565,7 +472,7 @@ I would like to order the following services:
 SELECTED SERVICES
 ━━━━━━━━━━━━━━━━━━
 
-${serviceList}
+${services}
 
 ━━━━━━━━━━━━━━━━━━
 ORDER SUMMARY
@@ -583,15 +490,12 @@ Sai Graphic Designs Website`;
 
                 const whatsappURL =
                     "https://wa.me/916381128781?text=" +
-                    encodeURIComponent(
-                        message
-                    );
+                    encodeURIComponent(message);
 
 
                 window.open(
                     whatsappURL,
-                    "_blank",
-                    "noopener,noreferrer"
+                    "_blank"
                 );
 
             }
@@ -600,51 +504,42 @@ Sai Graphic Designs Website`;
     }
 
 
-    /* =====================================================
-       STORAGE CHANGE
-       Keeps cart synchronized between browser tabs/windows
-    ===================================================== */
+    /* ==========================================
+       UPDATE WHEN RETURNING TO PAGE
+    ========================================== */
 
     window.addEventListener(
-        "storage",
-        function (event) {
+        "pageshow",
+        function () {
 
-            if (
-                event.key === CART_KEY
-            ) {
-
-                updateCart();
-
-            }
+            updateCart();
 
         }
     );
 
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
+    /* ==========================================
+       INITIAL LOAD
+    ========================================== */
 
     updateCart();
 
 
-    /* =====================================================
-       MAKE CART FUNCTIONS AVAILABLE
-       For customizer.html
-    ===================================================== */
+    /* ==========================================
+       SERVICE ADD FUNCTION
+    ========================================== */
 
-    window.SaiGraphicCart = {
-
-        add: function (
+    window.addServiceToGlobalCart =
+        function (
             serviceName,
             price
         ) {
 
-            cart = loadCart();
+            const cart = getCart();
 
 
-            const existing =
-                cart.find(
+            const exists =
+                cart.some(
                     function (item) {
 
                         return item.name ===
@@ -654,7 +549,7 @@ Sai Graphic Designs Website`;
                 );
 
 
-            if (existing) {
+            if (exists) {
 
                 alert(
                     serviceName +
@@ -677,21 +572,12 @@ Sai Graphic Designs Website`;
             });
 
 
-            saveCart();
+            saveCart(cart);
 
             updateCart();
 
             openCart();
 
-        },
-
-
-        update: updateCart,
-
-        open: openCart,
-
-        close: closeCart
-
-    };
+        };
 
 });
