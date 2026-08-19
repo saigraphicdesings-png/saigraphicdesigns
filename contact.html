@@ -13,6 +13,8 @@
     <meta name="keywords"
         content="Sai Graphic Designs contact, graphic designer Madurai, logo design Madurai, graphic design services, printing services">
 
+    <meta name="author" content="Sai Graphic Designs">
+
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -37,7 +39,6 @@
             line-height: 1.8;
         }
 
-
         /* =========================================
            CONTACT GRID
         ========================================= */
@@ -55,7 +56,6 @@
             gap: 2rem;
             align-items: stretch;
         }
-
 
         /* =========================================
            CONTACT INFORMATION
@@ -121,7 +121,6 @@
             color: var(--primary);
         }
 
-
         /* =========================================
            WHATSAPP BUTTON
         ========================================= */
@@ -135,7 +134,7 @@
             padding: 1rem 1.2rem;
             border-radius: 10px;
             background: #25D366;
-            color: white;
+            color: #ffffff;
             font-weight: 700;
             text-decoration: none;
             transition: 0.3s ease;
@@ -145,7 +144,6 @@
             transform: translateY(-3px);
             opacity: 0.9;
         }
-
 
         /* =========================================
            CONTACT FORM
@@ -182,6 +180,7 @@
 
         .form-control {
             width: 100%;
+            box-sizing: border-box;
         }
 
         textarea.form-control {
@@ -201,6 +200,10 @@
             cursor: pointer;
         }
 
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
 
         /* =========================================
            MAP SECTION
@@ -256,7 +259,6 @@
             border: 0;
         }
 
-
         /* =========================================
            FAQ
         ========================================= */
@@ -280,17 +282,31 @@
         }
 
         .faq-question {
+            width: 100%;
             padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
             cursor: pointer;
             font-weight: 700;
+            background: transparent;
+            border: 0;
+            color: var(--dark);
+            font-family: inherit;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .faq-question:focus-visible {
+            outline: 3px solid var(--primary-light);
+            outline-offset: -3px;
         }
 
         .faq-icon {
             font-size: 1.3rem;
             transition: 0.3s ease;
+            flex-shrink: 0;
         }
 
         .faq-answer {
@@ -303,14 +319,13 @@
         }
 
         .faq-item.active .faq-answer {
-            max-height: 200px;
+            max-height: 300px;
             padding: 0 1.5rem 1.5rem;
         }
 
         .faq-item.active .faq-icon {
             transform: rotate(45deg);
         }
-
 
         /* =========================================
            CTA
@@ -332,13 +347,40 @@
             line-height: 1.7;
         }
 
+        /* =========================================
+           FORM STATUS
+        ========================================= */
+
+        .form-status {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .form-status.show {
+            display: block;
+        }
+
+        .form-status.success {
+            background: #eafaf0;
+            color: #176b36;
+            border: 1px solid #b8e8c8;
+        }
+
+        .form-status.error {
+            background: #fff0f0;
+            color: #a32020;
+            border: 1px solid #f0baba;
+        }
 
         /* =========================================
            RESPONSIVE
         ========================================= */
 
         @media (max-width: 900px) {
-
             .contact-grid {
                 grid-template-columns: 1fr;
             }
@@ -352,9 +394,7 @@
             }
         }
 
-
         @media (max-width: 600px) {
-
             .contact-section,
             .location-section,
             .faq-section,
@@ -396,1359 +436,1243 @@
             .whatsapp-btn {
                 font-size: 0.9rem;
             }
+
+            .faq-question {
+                padding: 1rem;
+            }
+
+            .faq-answer {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .faq-item.active .faq-answer {
+                padding: 0 1rem 1rem;
+            }
         }
     </style>
 </head>
 
-
 <body>
 
+    <!-- =========================================
+         HEADER
+    ========================================= -->
 
-<!-- =========================================
-     HEADER
-========================================= -->
+    <header>
+        <div class="nav-container">
 
-<header>
-
-    <div class="nav-container">
-
-        <a href="index.html" class="logo">
-
-            <div class="logo-icon">
-                SG
-            </div>
-
-            Sai <span>Graphic Designs</span>
-
-        </a>
-
-
-        <ul class="nav-menu">
-
-            <li>
-                <a href="index.html" class="nav-link">
-                    Home
-                </a>
-            </li>
-
-            <li>
-                <a href="about.html" class="nav-link">
-                    About
-                </a>
-            </li>
-
-            <li>
-                <a href="customizer.html" class="nav-link">
-                    Services
-                </a>
-            </li>
-
-            <li>
-                <a href="contact.html" class="nav-link active">
-                    Contact
-                </a>
-            </li>
-
-        </ul>
-
-
-        <div class="nav-actions">
-
-            <button
-                type="button"
-                class="cart-icon-btn"
-                id="cartToggle"
-                aria-label="Open shopping cart"
-            >
-                🛒
-
-                <span
-                    class="cart-badge"
-                    id="cartBadge"
-                >
-                    0
-                </span>
-
-            </button>
-
-
-            <a
-                href="contact.html"
-                class="btn-header"
-            >
-                Get Started &gt;
+            <a href="index.html" class="logo" aria-label="Sai Graphic Designs Home">
+                <div class="logo-icon">SG</div>
+                Sai <span>Graphic Designs</span>
             </a>
 
+            <ul class="nav-menu">
+                <li>
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+
+                <li>
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+
+                <li>
+                    <a href="customizer.html" class="nav-link">Services</a>
+                </li>
+
+                <li>
+                    <a href="contact.html" class="nav-link active" aria-current="page">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-actions">
+
+                <button
+                    type="button"
+                    class="cart-icon-btn"
+                    id="cartToggle"
+                    aria-label="Open shopping cart"
+                    aria-controls="cartDrawer"
+                >
+                    🛒
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+
+                <a href="contact.html" class="btn-header">
+                    Get Started &gt;
+                </a>
+
+            </div>
+
         </div>
-
-    </div>
-
-</header>
+    </header>
 
 
+    <!-- =========================================
+         CONTACT HERO
+    ========================================= -->
 
-<!-- =========================================
-     CONTACT HERO
-========================================= -->
+    <section class="contact-hero countdown-banner">
 
-<section class="contact-hero countdown-banner">
-
-    <div class="contact-hero-inner">
-
-        <span class="section-tag">
-            Let's Work Together
-        </span>
-
-
-        <h1 class="section-title">
-
-            Let's Create Something
-            <br>
-            Amazing Together
-
-        </h1>
-
-
-        <p>
-
-            Have a logo idea, branding project, social media campaign
-            or printing requirement? Tell us about your project and
-            we'll help turn your idea into reality.
-
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     CONTACT SECTION
-========================================= -->
-
-<section class="contact-section">
-
-    <div class="contact-grid">
-
-
-        <!-- =====================================
-             CONTACT INFORMATION
-        ====================================== -->
-
-        <div class="contact-info-card">
+        <div class="contact-hero-inner">
 
             <span class="section-tag">
-                Contact Information
+                Let's Work Together
             </span>
 
-
-            <h3>
-                Let's Start a Conversation
-            </h3>
-
+            <h1 class="section-title">
+                Let's Create Something
+                <br>
+                Amazing Together
+            </h1>
 
             <p>
-
-                Whether you need a simple design or complete brand
-                identity, Sai Graphic Designs is ready to help.
-
+                Have a logo idea, branding project, social media campaign
+                or printing requirement? Tell us about your project and
+                we'll help turn your idea into reality.
             </p>
-
-
-            <div class="contact-info-list">
-
-
-                <!-- PHONE -->
-
-                <div class="contact-info-item">
-
-                    <div class="contact-icon">
-                        📞
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Phone
-                        </strong>
-
-                        <a href="tel:+916381128781">
-                            +91 63811 28781
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- EMAIL -->
-
-                <div class="contact-info-item">
-
-                    <div class="contact-icon">
-                        ✉️
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Email
-                        </strong>
-
-                        <a href="mailto:saigraphicdesings@gmail.com">
-                            saigraphicdesings@gmail.com
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- LOCATION -->
-
-                <div class="contact-info-item">
-
-                    <div class="contact-icon">
-                        📍
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Location
-                        </strong>
-
-                        <span>
-                            Madurai, Tamil Nadu, India
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- WORKING HOURS -->
-
-                <div class="contact-info-item">
-
-                    <div class="contact-icon">
-                        🕒
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Working Hours
-                        </strong>
-
-                        <span>
-                            Monday – Saturday
-                            <br>
-                            9:00 AM – 8:00 PM
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- WHATSAPP -->
-
-            <a
-                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20would%20like%20to%20discuss%20a%20design%20project."
-                target="_blank"
-                rel="noopener noreferrer"
-                class="whatsapp-btn"
-            >
-
-                💬
-                Chat With Us on WhatsApp
-
-            </a>
 
         </div>
 
+    </section>
 
 
-        <!-- =====================================
-             CONTACT FORM
-        ====================================== -->
+    <!-- =========================================
+         CONTACT SECTION
+    ========================================= -->
 
-        <div class="contact-form-card">
+    <section class="contact-section">
 
-            <span class="section-tag">
-                Project Inquiry
-            </span>
+        <div class="contact-grid">
 
+            <!-- CONTACT INFORMATION -->
 
-            <h3>
-                Tell Us About Your Project
-            </h3>
+            <div class="contact-info-card">
 
+                <span class="section-tag">
+                    Contact Information
+                </span>
 
-            <p class="contact-form-subtitle">
-                Fill in the details below and we'll get back to you.
-            </p>
+                <h3>
+                    Let's Start a Conversation
+                </h3>
 
+                <p>
+                    Whether you need a simple design or complete brand
+                    identity, Sai Graphic Designs is ready to help.
+                </p>
 
-            <form
-                id="contactForm"
-                action="https://formsubmit.co/saigraphicdesings@gmail.com"
-                method="POST"
-            >
-
-
-                <!-- FORMSUBMIT SETTINGS -->
-
-                <input
-                    type="hidden"
-                    name="_subject"
-                    value="New Project Inquiry - Sai Graphic Designs"
-                >
-
-                <input
-                    type="hidden"
-                    name="_captcha"
-                    value="false"
-                >
-
-                <input
-                    type="hidden"
-                    name="_template"
-                    value="table"
-                >
-
-
-                <div class="contact-form-grid">
-
-
-                    <!-- NAME -->
-
-                    <div class="form-group">
-
-                        <label
-                            for="name"
-                            class="form-label"
-                        >
-                            Full Name *
-                        </label>
-
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="Name"
-                            class="form-control"
-                            placeholder="Your Name"
-                            autocomplete="name"
-                            required
-                        >
-
-                    </div>
-
-
+                <div class="contact-info-list">
 
                     <!-- PHONE -->
 
-                    <div class="form-group">
+                    <div class="contact-info-item">
 
-                        <label
-                            for="phone"
-                            class="form-label"
-                        >
-                            Phone Number *
-                        </label>
+                        <div class="contact-icon" aria-hidden="true">
+                            📞
+                        </div>
 
+                        <div>
+                            <strong>Phone</strong>
 
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="Phone"
-                            class="form-control"
-                            placeholder="+91 XXXXX XXXXX"
-                            autocomplete="tel"
-                            required
-                        >
+                            <a href="tel:+916381128781">
+                                +91 63811 28781
+                            </a>
+                        </div>
 
                     </div>
-
 
 
                     <!-- EMAIL -->
 
-                    <div class="form-group">
+                    <div class="contact-info-item">
 
-                        <label
-                            for="email"
-                            class="form-label"
-                        >
-                            Email Address
-                        </label>
+                        <div class="contact-icon" aria-hidden="true">
+                            ✉️
+                        </div>
 
+                        <div>
+                            <strong>Email</strong>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="Email"
-                            class="form-control"
-                            placeholder="your@email.com"
-                            autocomplete="email"
-                        >
+                            <a href="mailto:saigraphicdesings@gmail.com">
+                                saigraphicdesings@gmail.com
+                            </a>
+                        </div>
 
                     </div>
 
 
+                    <!-- LOCATION -->
 
-                    <!-- BUSINESS -->
+                    <div class="contact-info-item">
 
-                    <div class="form-group">
+                        <div class="contact-icon" aria-hidden="true">
+                            📍
+                        </div>
 
-                        <label
-                            for="business"
-                            class="form-label"
-                        >
-                            Business / Company
-                        </label>
+                        <div>
+                            <strong>Location</strong>
 
-
-                        <input
-                            type="text"
-                            id="business"
-                            name="Business"
-                            class="form-control"
-                            placeholder="Company Name"
-                            autocomplete="organization"
-                        >
+                            <span>
+                                Madurai, Tamil Nadu, India
+                            </span>
+                        </div>
 
                     </div>
 
 
+                    <!-- WORKING HOURS -->
 
-                    <!-- SERVICE -->
+                    <div class="contact-info-item">
 
-                    <div class="form-group form-group-full">
+                        <div class="contact-icon" aria-hidden="true">
+                            🕒
+                        </div>
 
-                        <label
-                            for="service"
-                            class="form-label"
-                        >
-                            What Do You Need? *
-                        </label>
+                        <div>
+                            <strong>Working Hours</strong>
 
-
-                        <select
-                            id="service"
-                            name="Service"
-                            class="form-control service-select"
-                            required
-                        >
-
-                            <option value="">
-                                Select a Service
-                            </option>
-
-                            <option value="Logo Design">
-                                Logo Design
-                            </option>
-
-                            <option value="Logo Recreation">
-                                Logo Recreation
-                            </option>
-
-                            <option value="Brand Identity">
-                                Brand Identity
-                            </option>
-
-                            <option value="Visiting Card">
-                                Visiting Card
-                            </option>
-
-                            <option value="Social Media Design">
-                                Social Media Design
-                            </option>
-
-                            <option value="Poster Design">
-                                Poster Design
-                            </option>
-
-                            <option value="Brochure Design">
-                                Brochure Design
-                            </option>
-
-                            <option value="Flyer Design">
-                                Flyer Design
-                            </option>
-
-                            <option value="Packaging Design">
-                                Packaging Design
-                            </option>
-
-                            <option value="Video Editing">
-                                Video Editing
-                            </option>
-
-                            <option value="Printing">
-                                Printing Services
-                            </option>
-
-                            <option value="Complete Branding">
-                                Complete Branding
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <!-- BUDGET -->
-
-                    <div class="form-group">
-
-                        <label
-                            for="budget"
-                            class="form-label"
-                        >
-                            Approx. Budget
-                        </label>
-
-
-                        <select
-                            id="budget"
-                            name="Budget"
-                            class="form-control"
-                        >
-
-                            <option value="">
-                                Select Budget
-                            </option>
-
-                            <option value="Below ₹500">
-                                Below ₹500
-                            </option>
-
-                            <option value="₹500 - ₹1,000">
-                                ₹500 - ₹1,000
-                            </option>
-
-                            <option value="₹1,000 - ₹3,000">
-                                ₹1,000 - ₹3,000
-                            </option>
-
-                            <option value="₹3,000 - ₹8,000">
-                                ₹3,000 - ₹8,000
-                            </option>
-
-                            <option value="₹8,000+">
-                                ₹8,000+
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-
-                    <!-- DEADLINE -->
-
-                    <div class="form-group">
-
-                        <label
-                            for="deadline"
-                            class="form-label"
-                        >
-                            Required By
-                        </label>
-
-
-                        <input
-                            type="date"
-                            id="deadline"
-                            name="Required By"
-                            class="form-control"
-                        >
-
-                    </div>
-
-
-
-                    <!-- PROJECT DETAILS -->
-
-                    <div class="form-group form-group-full">
-
-                        <label
-                            for="message"
-                            class="form-label"
-                        >
-                            Project Details *
-                        </label>
-
-
-                        <textarea
-                            id="message"
-                            name="Project Details"
-                            class="form-control"
-                            placeholder="Tell us about your design requirement..."
-                            required
-                        ></textarea>
-
-                    </div>
-
-
-
-                    <!-- SUBMIT -->
-
-                    <div class="form-group form-group-full">
-
-                        <button
-                            type="submit"
-                            class="btn-checkout submit-btn"
-                        >
-                            Send Project Inquiry →
-                        </button>
+                            <span>
+                                Monday – Saturday
+                                <br>
+                                9:00 AM – 8:00 PM
+                            </span>
+                        </div>
 
                     </div>
 
                 </div>
 
-            </form>
+
+                <!-- WHATSAPP -->
+
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20would%20like%20to%20discuss%20a%20design%20project."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="whatsapp-btn"
+                >
+                    💬
+                    Chat With Us on WhatsApp
+                </a>
+
+            </div>
+
+
+            <!-- CONTACT FORM -->
+
+            <div class="contact-form-card">
+
+                <span class="section-tag">
+                    Project Inquiry
+                </span>
+
+                <h3>
+                    Tell Us About Your Project
+                </h3>
+
+                <p class="contact-form-subtitle">
+                    Fill in the details below and we'll get back to you.
+                </p>
+
+                <form
+                    id="contactForm"
+                    action="https://formsubmit.co/saigraphicdesings@gmail.com"
+                    method="POST"
+                >
+
+                    <!-- FORMSUBMIT SETTINGS -->
+
+                    <input
+                        type="hidden"
+                        name="_subject"
+                        value="New Project Inquiry - Sai Graphic Designs"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="_captcha"
+                        value="false"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="_template"
+                        value="table"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="_next"
+                        value="contact.html"
+                    >
+
+
+                    <div class="contact-form-grid">
+
+                        <!-- NAME -->
+
+                        <div class="form-group">
+
+                            <label for="name" class="form-label">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="Name"
+                                class="form-control"
+                                placeholder="Your Name"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="form-group">
+
+                            <label for="phone" class="form-label">
+                                Phone Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="Phone"
+                                class="form-control"
+                                placeholder="+91 XXXXX XXXXX"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label for="email" class="form-label">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="Email"
+                                class="form-control"
+                                placeholder="your@email.com"
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+
+                        <!-- BUSINESS -->
+
+                        <div class="form-group">
+
+                            <label for="business" class="form-label">
+                                Business / Company
+                            </label>
+
+                            <input
+                                type="text"
+                                id="business"
+                                name="Business"
+                                class="form-control"
+                                placeholder="Company Name"
+                                autocomplete="organization"
+                            >
+
+                        </div>
+
+
+                        <!-- SERVICE -->
+
+                        <div class="form-group form-group-full">
+
+                            <label for="service" class="form-label">
+                                What Do You Need? *
+                            </label>
+
+                            <select
+                                id="service"
+                                name="Service"
+                                class="form-control service-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a Service
+                                </option>
+
+                                <option value="Logo Design">
+                                    Logo Design
+                                </option>
+
+                                <option value="Logo Recreation">
+                                    Logo Recreation
+                                </option>
+
+                                <option value="Brand Identity">
+                                    Brand Identity
+                                </option>
+
+                                <option value="Visiting Card">
+                                    Visiting Card
+                                </option>
+
+                                <option value="Letterhead Design">
+                                    Letterhead Design
+                                </option>
+
+                                <option value="Brochure Design">
+                                    Brochure Design
+                                </option>
+
+                                <option value="Flyer Design">
+                                    Flyer Design
+                                </option>
+
+                                <option value="Poster Design">
+                                    Poster Design
+                                </option>
+
+                                <option value="Social Media Design">
+                                    Social Media Design
+                                </option>
+
+                                <option value="Video Editing">
+                                    Video Editing
+                                </option>
+
+                                <option value="Packaging Design">
+                                    Packaging Design
+                                </option>
+
+                                <option value="Printing Services">
+                                    Printing Services
+                                </option>
+
+                                <option value="Complete Branding">
+                                    Complete Branding
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- BUDGET -->
+
+                        <div class="form-group">
+
+                            <label for="budget" class="form-label">
+                                Approx. Budget
+                            </label>
+
+                            <select
+                                id="budget"
+                                name="Budget"
+                                class="form-control"
+                            >
+
+                                <option value="">
+                                    Select Budget
+                                </option>
+
+                                <option value="Below ₹500">
+                                    Below ₹500
+                                </option>
+
+                                <option value="₹500 - ₹1,000">
+                                    ₹500 - ₹1,000
+                                </option>
+
+                                <option value="₹1,000 - ₹3,000">
+                                    ₹1,000 - ₹3,000
+                                </option>
+
+                                <option value="₹3,000 - ₹8,000">
+                                    ₹3,000 - ₹8,000
+                                </option>
+
+                                <option value="₹8,000+">
+                                    ₹8,000+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DEADLINE -->
+
+                        <div class="form-group">
+
+                            <label for="deadline" class="form-label">
+                                Required By
+                            </label>
+
+                            <input
+                                type="date"
+                                id="deadline"
+                                name="Required By"
+                                class="form-control"
+                            >
+
+                        </div>
+
+
+                        <!-- PROJECT DETAILS -->
+
+                        <div class="form-group form-group-full">
+
+                            <label for="message" class="form-label">
+                                Project Details *
+                            </label>
+
+                            <textarea
+                                id="message"
+                                name="Project Details"
+                                class="form-control"
+                                placeholder="Tell us about your design requirement..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div
+                            id="formStatus"
+                            class="form-status form-group-full"
+                            role="status"
+                            aria-live="polite"
+                        ></div>
+
+
+                        <!-- SUBMIT -->
+
+                        <div class="form-group form-group-full">
+
+                            <button
+                                type="submit"
+                                class="btn-checkout submit-btn"
+                                id="contactSubmit"
+                            >
+                                Send Project Inquiry →
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
+    <!-- =========================================
+         LOCATION SECTION
+    ========================================= -->
 
-<!-- =========================================
-     LOCATION SECTION
-========================================= -->
+    <section class="location-section">
 
-<section class="location-section">
+        <div class="location-container">
 
-    <div class="location-container">
+            <div class="section-header">
 
+                <span class="section-tag">
+                    Find Us
+                </span>
+
+                <h2 class="section-title">
+                    Our Location
+                </h2>
+
+            </div>
+
+
+            <div class="location-grid">
+
+                <!-- LOCATION INFORMATION -->
+
+                <div class="location-content">
+
+                    <span class="section-tag">
+                        Madurai
+                    </span>
+
+                    <h2 class="section-title">
+                        Sai Graphic Designs
+                    </h2>
+
+                    <p>
+                        We provide professional graphic design, branding
+                        and printing solutions for businesses and
+                        individuals.
+                    </p>
+
+                    <div class="location-address">
+
+                        <strong>
+                            📍 Studio Location
+                        </strong>
+
+                        <p style="margin-top:0.5rem;">
+                            Madurai, Tamil Nadu, India
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="https://www.google.com/maps/search/?api=1&query=Madurai%2CTamil%20Nadu%2CIndia"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-primary"
+                        style="margin-top:1.5rem;display:inline-block;"
+                    >
+                        Open in Google Maps →
+                    </a>
+
+                </div>
+
+
+                <!-- GOOGLE MAP -->
+
+                <div class="map-container">
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Madurai,Tamil%20Nadu,India&output=embed"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Sai Graphic Designs location map"
+                    ></iframe>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FAQ SECTION
+    ========================================= -->
+
+    <section class="faq-section">
 
         <div class="section-header">
 
             <span class="section-tag">
-                Find Us
+                FAQ
             </span>
 
             <h2 class="section-title">
-                Our Location
+                Frequently Asked Questions
             </h2>
 
         </div>
 
 
+        <div class="faq-container">
 
-        <div class="location-grid">
+            <!-- FAQ 1 -->
+
+            <div class="faq-item">
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    aria-expanded="false"
+                >
+                    <span>
+                        How can I place an order?
+                    </span>
+
+                    <span class="faq-icon" aria-hidden="true">
+                        +
+                    </span>
+                </button>
+
+                <div class="faq-answer">
+                    You can send your requirements through our contact
+                    form or WhatsApp. We'll discuss your requirements,
+                    provide the price and start the project after
+                    confirmation.
+                </div>
+
+            </div>
 
 
-            <!-- LOCATION INFORMATION -->
+            <!-- FAQ 2 -->
 
-            <div class="location-content">
+            <div class="faq-item">
 
-                <span class="section-tag">
-                    Madurai
+                <button
+                    type="button"
+                    class="faq-question"
+                    aria-expanded="false"
+                >
+                    <span>
+                        How long does a design project take?
+                    </span>
+
+                    <span class="faq-icon" aria-hidden="true">
+                        +
+                    </span>
+                </button>
+
+                <div class="faq-answer">
+                    Delivery time depends on the type and complexity
+                    of the project. Simple designs can usually be
+                    completed faster, while branding and larger projects
+                    may require additional time.
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 3 -->
+
+            <div class="faq-item">
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    aria-expanded="false"
+                >
+                    <span>
+                        Do you provide source files?
+                    </span>
+
+                    <span class="faq-icon" aria-hidden="true">
+                        +
+                    </span>
+                </button>
+
+                <div class="faq-answer">
+                    Yes. Source files can be provided for applicable
+                    design packages. File formats may include AI, PSD,
+                    PDF, SVG, PNG and JPG depending on the project.
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 4 -->
+
+            <div class="faq-item">
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    aria-expanded="false"
+                >
+                    <span>
+                        Do you provide printing services?
+                    </span>
+
+                    <span class="faq-icon" aria-hidden="true">
+                        +
+                    </span>
+                </button>
+
+                <div class="faq-answer">
+                    Yes. We can help with various printing requirements
+                    including visiting cards, brochures, flyers,
+                    packaging, posters and other promotional materials.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CTA SECTION
+    ========================================= -->
+
+    <section class="contact-cta countdown-banner">
+
+        <div class="contact-cta-inner">
+
+            <span class="section-tag">
+                Start Your Project
+            </span>
+
+            <h2 class="section-title">
+                Have a Design Idea?
+                <br>
+                Let's Make It Real.
+            </h2>
+
+            <p>
+                Send us your requirements today and let's create
+                something professional for your brand.
+            </p>
+
+            <a
+                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20want%20to%20start%20a%20design%20project."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-dark"
+            >
+                Start on WhatsApp →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         MINI CART
+    ========================================= -->
+
+    <div
+        class="cart-drawer"
+        id="cartDrawer"
+        aria-hidden="true"
+    >
+
+        <div class="cart-header">
+
+            <h3
+                style="
+                    font-family:var(--font-sans);
+                    font-weight:800;
+                "
+            >
+                Selected Services
+            </h3>
+
+            <button
+                class="cart-close"
+                id="cartClose"
+                type="button"
+                aria-label="Close cart"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <div
+            class="cart-items"
+            id="cartItemsList"
+        ></div>
+
+
+        <div class="cart-footer">
+
+            <div class="cart-total">
+
+                <span>
+                    Estimated Total:
                 </span>
 
+                <span id="cartTotalVal">
+                    ₹0
+                </span>
 
-                <h2 class="section-title">
-                    Sai Graphic Designs
-                </h2>
+            </div>
 
+            <button
+                class="btn-checkout"
+                type="button"
+                id="continueOrderBtn"
+            >
+                Continue Order
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer>
+
+        <div class="footer-container">
+
+            <!-- FOOTER BRAND -->
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <div class="logo-icon">
+                        SG
+                    </div>
+
+                    Sai
+
+                    <span>
+                        Graphic Designs
+                    </span>
+
+                </div>
 
                 <p>
-
-                    We provide professional graphic design, branding
-                    and printing solutions for businesses and
-                    individuals.
-
+                    Professional graphic design, branding and printing
+                    solutions for businesses, startups, freelancers
+                    and individuals.
                 </p>
 
+                <div class="footer-socials">
 
-                <div class="location-address">
+                    <a
+                        href="#"
+                        class="social-icon"
+                        aria-label="Facebook"
+                    >
+                        Fb
+                    </a>
 
-                    <strong>
-                        📍 Studio Location
-                    </strong>
+                    <a
+                        href="#"
+                        class="social-icon"
+                        aria-label="X"
+                    >
+                        X
+                    </a>
+
+                    <a
+                        href="#"
+                        class="social-icon"
+                        aria-label="LinkedIn"
+                    >
+                        Li
+                    </a>
+
+                    <a
+                        href="#"
+                        class="social-icon"
+                        aria-label="Instagram"
+                    >
+                        Ig
+                    </a>
+
+                </div>
+
+            </div>
 
 
-                    <p style="margin-top:0.5rem;">
+            <!-- SERVICES -->
+
+            <div>
+
+                <h4 class="footer-col-title">
+                    Services
+                </h4>
+
+                <ul class="footer-links">
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Logo Design
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Logo Recreation
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Brand Identity
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Social Media Design
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Print Design
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- COMPANY -->
+
+            <div>
+
+                <h4 class="footer-col-title">
+                    Company
+                </h4>
+
+                <ul class="footer-links">
+
+                    <li class="footer-link">
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="about.html">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="customizer.html">
+                            Services
+                        </a>
+                    </li>
+
+                    <li class="footer-link">
+                        <a href="contact.html">
+                            Contact Us
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div>
+
+                <h4 class="footer-col-title">
+                    Contact
+                </h4>
+
+                <div class="footer-contact">
+
+                    <p>
                         Madurai, Tamil Nadu, India
+                    </p>
+
+                    <p>
+                        P:
+                        <a href="tel:+916381128781">
+                            +91 63811 28781
+                        </a>
+                    </p>
+
+                    <p>
+                        E:
+                        <a href="mailto:saigraphicdesings@gmail.com">
+                            saigraphicdesings@gmail.com
+                        </a>
                     </p>
 
                 </div>
 
-
-                <a
-                    href="https://www.google.com/maps/search/?api=1&query=Madurai,Tamil%20Nadu,India"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-primary"
-                    style="margin-top:1.5rem;display:inline-block;"
-                >
-                    Open in Google Maps →
-                </a>
-
-            </div>
-
-
-
-            <!-- GOOGLE MAP -->
-
-            <div class="map-container">
-
-                <iframe
-                    src="https://www.google.com/maps?q=Madurai,Tamil%20Nadu,India&output=embed"
-                    loading="lazy"
-                    allowfullscreen
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="Sai Graphic Designs location map"
-                >
-                </iframe>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     FAQ SECTION
-========================================= -->
-
-<section class="faq-section">
-
-
-    <div class="section-header">
-
-        <span class="section-tag">
-            FAQ
-        </span>
-
-
-        <h2 class="section-title">
-            Frequently Asked Questions
-        </h2>
-
-    </div>
-
-
-
-    <div class="faq-container">
-
-
-        <!-- FAQ 1 -->
-
-        <div class="faq-item">
-
-            <div
-                class="faq-question"
-                role="button"
-                tabindex="0"
-            >
-
-                <span>
-                    How can I place an order?
-                </span>
-
-
-                <span class="faq-icon">
-                    +
-                </span>
-
-            </div>
-
-
-            <div class="faq-answer">
-
-                You can send your requirements through our contact
-                form or WhatsApp. We'll discuss your requirements,
-                provide the price and start the project after
-                confirmation.
-
             </div>
 
         </div>
 
 
+        <!-- FOOTER BOTTOM -->
 
-        <!-- FAQ 2 -->
-
-        <div class="faq-item">
-
-            <div
-                class="faq-question"
-                role="button"
-                tabindex="0"
-            >
-
-                <span>
-                    How long does a design project take?
-                </span>
-
-
-                <span class="faq-icon">
-                    +
-                </span>
-
-            </div>
-
-
-            <div class="faq-answer">
-
-                Delivery time depends on the type and complexity
-                of the project. Simple designs can usually be
-                completed faster, while branding and larger projects
-                may require additional time.
-
-            </div>
-
-        </div>
-
-
-
-        <!-- FAQ 3 -->
-
-        <div class="faq-item">
-
-            <div
-                class="faq-question"
-                role="button"
-                tabindex="0"
-            >
-
-                <span>
-                    Do you provide source files?
-                </span>
-
-
-                <span class="faq-icon">
-                    +
-                </span>
-
-            </div>
-
-
-            <div class="faq-answer">
-
-                Yes. Source files can be provided for applicable
-                design packages. File formats may include AI, PSD,
-                PDF, SVG, PNG and JPG depending on the project.
-
-            </div>
-
-        </div>
-
-
-
-        <!-- FAQ 4 -->
-
-        <div class="faq-item">
-
-            <div
-                class="faq-question"
-                role="button"
-                tabindex="0"
-            >
-
-                <span>
-                    Do you provide printing services?
-                </span>
-
-
-                <span class="faq-icon">
-                    +
-                </span>
-
-            </div>
-
-
-            <div class="faq-answer">
-
-                Yes. We can help with various printing requirements
-                including visiting cards, brochures, flyers,
-                packaging, posters and other promotional materials.
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     CTA SECTION
-========================================= -->
-
-<section class="contact-cta countdown-banner">
-
-    <div class="contact-cta-inner">
-
-        <span class="section-tag">
-            Start Your Project
-        </span>
-
-
-        <h2 class="section-title">
-
-            Have a Design Idea?
-            <br>
-            Let's Make It Real.
-
-        </h2>
-
-
-        <p>
-
-            Send us your requirements today and let's create
-            something professional for your brand.
-
-        </p>
-
-
-        <a
-            href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs,%20I%20want%20to%20start%20a%20design%20project."
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-dark"
-        >
-            Start on WhatsApp →
-        </a>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     MINI CART
-========================================= -->
-
-<div
-    class="cart-drawer"
-    id="cartDrawer"
->
-
-
-    <div class="cart-header">
-
-        <h3
-            style="
-                font-family:var(--font-sans);
-                font-weight:800;
-            "
-        >
-            Selected Services
-        </h3>
-
-
-        <button
-            class="cart-close"
-            id="cartClose"
-            type="button"
-            aria-label="Close cart"
-        >
-            &times;
-        </button>
-
-    </div>
-
-
-
-    <div
-        class="cart-items"
-        id="cartItemsList"
-    >
-    </div>
-
-
-
-    <div class="cart-footer">
-
-        <div class="cart-total">
-
-            <span>
-                Estimated Total:
-            </span>
-
-
-            <span id="cartTotalVal">
-                ₹0
-            </span>
-
-        </div>
-
-
-        <button
-            class="btn-checkout"
-            type="button"
-            onclick="window.location.href='contact.html';"
-        >
-            Continue Order
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================
-     FOOTER
-========================================= -->
-
-<footer>
-
-    <div class="footer-container">
-
-
-        <!-- FOOTER BRAND -->
-
-        <div class="footer-brand">
-
-            <div class="logo">
-
-                <div class="logo-icon">
-                    SG
-                </div>
-
-                Sai
-                <span>
-                    Graphic Designs
-                </span>
-
-            </div>
-
+        <div class="footer-bottom">
 
             <p>
-
-                Professional graphic design, branding and printing
-                solutions for businesses, startups, freelancers
-                and individuals.
-
+                &copy; 2026 Sai Graphic Designs.
+                All rights reserved.
             </p>
 
-
-            <div class="footer-socials">
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Facebook"
-                >
-                    Fb
-                </a>
-
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="X"
-                >
-                    X
-                </a>
-
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="LinkedIn"
-                >
-                    Li
-                </a>
-
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Instagram"
-                >
-                    Ig
-                </a>
-
-            </div>
+            <p>
+                Designing Ideas into Reality
+            </p>
 
         </div>
 
+    </footer>
 
 
-        <!-- SERVICES -->
+    <!-- =========================================
+         MAIN JAVASCRIPT
+    ========================================= -->
 
-        <div>
+    <script src="main.js"></script>
 
-            <h4 class="footer-col-title">
-                Services
-            </h4>
 
+    <!-- =========================================
+         CONTACT PAGE JAVASCRIPT
+    ========================================= -->
 
-            <ul class="footer-links">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
-                <li class="footer-link">
+            /* =========================================
+               FAQ
+            ========================================= */
 
-                    <a href="customizer.html">
-                        Logo Design
-                    </a>
+            const faqQuestions =
+                document.querySelectorAll(".faq-question");
 
-                </li>
+            faqQuestions.forEach(function (question) {
 
+                question.addEventListener("click", function () {
 
-                <li class="footer-link">
+                    const item =
+                        question.closest(".faq-item");
 
-                    <a href="customizer.html">
-                        Logo Recreation
-                    </a>
+                    const isActive =
+                        item.classList.contains("active");
 
-                </li>
+                    document
+                        .querySelectorAll(".faq-item")
+                        .forEach(function (otherItem) {
 
+                            otherItem.classList.remove("active");
 
-                <li class="footer-link">
+                            const otherQuestion =
+                                otherItem.querySelector(".faq-question");
 
-                    <a href="customizer.html">
-                        Brand Identity
-                    </a>
+                            if (otherQuestion) {
+                                otherQuestion.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+                            }
 
-                </li>
+                        });
 
+                    if (!isActive) {
 
-                <li class="footer-link">
+                        item.classList.add("active");
 
-                    <a href="customizer.html">
-                        Social Media Design
-                    </a>
+                        question.setAttribute(
+                            "aria-expanded",
+                            "true"
+                        );
 
-                </li>
+                    }
 
+                });
 
-                <li class="footer-link">
+            });
 
-                    <a href="customizer.html">
-                        Print Design
-                    </a>
 
-                </li>
+            /* =========================================
+               DATE VALIDATION
+            ========================================= */
 
-            </ul>
+            const deadline =
+                document.getElementById("deadline");
 
-        </div>
+            if (deadline) {
 
+                const today =
+                    new Date().toISOString().split("T")[0];
 
-
-        <!-- COMPANY -->
-
-        <div>
-
-            <h4 class="footer-col-title">
-                Company
-            </h4>
-
-
-            <ul class="footer-links">
-
-                <li class="footer-link">
-
-                    <a href="index.html">
-                        Home
-                    </a>
-
-                </li>
-
-
-                <li class="footer-link">
-
-                    <a href="about.html">
-                        About Us
-                    </a>
-
-                </li>
-
-
-                <li class="footer-link">
-
-                    <a href="about.html">
-                        Pricing
-                    </a>
-
-                </li>
-
-
-                <li class="footer-link">
-
-                    <a href="contact.html">
-                        Contact Us
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </div>
-
-
-
-        <!-- CONTACT -->
-
-        <div>
-
-            <h4 class="footer-col-title">
-                Contact
-            </h4>
-
-
-            <div class="footer-contact">
-
-                <p>
-                    Madurai, Tamil Nadu, India
-                </p>
-
-
-                <p>
-
-                    P:
-
-                    <a href="tel:+916381128781">
-                        +91 63811 28781
-                    </a>
-
-                </p>
-
-
-                <p>
-
-                    E:
-
-                    <a href="mailto:saigraphicdesings@gmail.com">
-                        saigraphicdesings@gmail.com
-                    </a>
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- FOOTER BOTTOM -->
-
-    <div class="footer-bottom">
-
-        <p>
-
-            &copy; 2026 Sai Graphic Designs.
-            All rights reserved.
-
-        </p>
-
-
-        <p>
-            Designing Ideas into Reality
-        </p>
-
-    </div>
-
-</footer>
-
-
-
-<!-- =========================================
-     MAIN JAVASCRIPT
-========================================= -->
-
-<script src="main.js"></script>
-
-
-
-<!-- =========================================
-     FAQ JAVASCRIPT
-========================================= -->
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const faqQuestions =
-            document.querySelectorAll(".faq-question");
-
-
-        faqQuestions.forEach(function (question) {
-
-            function toggleFAQ() {
-
-                const item =
-                    question.parentElement;
-
-
-                document
-                    .querySelectorAll(".faq-item")
-                    .forEach(function (other) {
-
-                        if (other !== item) {
-
-                            other.classList.remove("active");
-
-                        }
-
-                    });
-
-
-                item.classList.toggle("active");
+                deadline.min = today;
 
             }
 
 
-            question.addEventListener(
-                "click",
-                toggleFAQ
-            );
+            /* =========================================
+               CONTACT FORM
+            ========================================= */
+
+            const contactForm =
+                document.getElementById("contactForm");
+
+            const submitButton =
+                document.getElementById("contactSubmit");
+
+            const formStatus =
+                document.getElementById("formStatus");
 
 
-            question.addEventListener(
-                "keydown",
-                function (event) {
+            if (contactForm) {
 
-                    if (
-                        event.key === "Enter" ||
-                        event.key === " "
-                    ) {
+                contactForm.addEventListener(
+                    "submit",
+                    function () {
 
-                        event.preventDefault();
+                        if (
+                            submitButton &&
+                            formStatus
+                        ) {
 
-                        toggleFAQ();
+                            submitButton.disabled = true;
+
+                            submitButton.textContent =
+                                "Sending Inquiry...";
+
+                            formStatus.className =
+                                "form-status show success";
+
+                            formStatus.textContent =
+                                "Your inquiry is being submitted. Please wait...";
+
+                        }
 
                     }
+                );
 
-                }
-            );
+            }
+
+
+            /* =========================================
+               CONTINUE ORDER
+            ========================================= */
+
+            const continueOrderBtn =
+                document.getElementById("continueOrderBtn");
+
+            if (continueOrderBtn) {
+
+                continueOrderBtn.addEventListener(
+                    "click",
+                    function () {
+
+                        window.location.href =
+                            "contact.html";
+
+                    }
+                );
+
+            }
 
         });
-
-    });
-
-</script>
-
+    </script>
 
 </body>
+
 </html>
