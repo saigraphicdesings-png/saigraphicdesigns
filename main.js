@@ -211,89 +211,70 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 });
-* =====================================================
+/* =====================================================
    MOBILE MENU
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const mobileMenuBtn =
-        document.getElementById("mobileMenuBtn");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const mainNav = document.getElementById("mainNav");
 
-    const mainNav =
-        document.getElementById("mainNav");
-
-
-    /* If this page does not have the menu, stop */
     if (!mobileMenuBtn || !mainNav) {
         return;
     }
-
 
     /* =================================================
        OPEN / CLOSE MENU
     ================================================= */
 
-    mobileMenuBtn.addEventListener(
-        "click",
-        function (event) {
+    mobileMenuBtn.addEventListener("click", function (event) {
 
-            event.stopPropagation();
+        event.stopPropagation();
 
-            const isOpen =
-                mainNav.classList.toggle(
-                    "mobile-menu-open"
-                );
+        const isOpen = mainNav.classList.toggle("mobile-menu-open");
 
+        mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+        if (isOpen) {
 
             mobileMenuBtn.setAttribute(
-                "aria-expanded",
-                String(isOpen)
+                "aria-label",
+                "Close navigation menu"
             );
 
+            mobileMenuBtn.innerHTML = "✕";
 
-            if (isOpen) {
+        } else {
 
-                mobileMenuBtn.setAttribute(
-                    "aria-label",
-                    "Close navigation menu"
-                );
+            mobileMenuBtn.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
 
-                mobileMenuBtn.innerHTML = "✕";
-
-            } else {
-
-                mobileMenuBtn.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
-
-                mobileMenuBtn.innerHTML = "☰";
-
-            }
+            mobileMenuBtn.innerHTML = "☰";
 
         }
-    );
+
+    });
 
 
     /* =================================================
        CLOSE AFTER CLICKING NAVIGATION LINK
     ================================================= */
 
-    const navLinks =
-        mainNav.querySelectorAll(".nav-link");
-
+    const navLinks = mainNav.querySelectorAll(".nav-link");
 
     navLinks.forEach(function (link) {
 
-        link.addEventListener(
-            "click",
-            function () {
+        link.addEventListener("click", function () {
 
-                closeMobileMenu();
+            closeMobileMenu();
 
-            }
-        );
+        });
 
     });
 
@@ -304,22 +285,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function closeMobileMenu() {
 
-        mainNav.classList.remove(
-            "mobile-menu-open"
-        );
-
+        mainNav.classList.remove("mobile-menu-open");
 
         mobileMenuBtn.setAttribute(
             "aria-expanded",
             "false"
         );
 
-
         mobileMenuBtn.setAttribute(
             "aria-label",
             "Open navigation menu"
         );
-
 
         mobileMenuBtn.innerHTML = "☰";
 
@@ -330,41 +306,50 @@ document.addEventListener("DOMContentLoaded", function () {
        CLOSE WHEN CLICKING OUTSIDE
     ================================================= */
 
-    document.addEventListener(
-        "click",
-        function (event) {
+    document.addEventListener("click", function (event) {
 
-            if (
-                !mainNav.contains(event.target) &&
-                !mobileMenuBtn.contains(event.target)
-            ) {
+        if (
+            !mainNav.contains(event.target) &&
+            !mobileMenuBtn.contains(event.target)
+        ) {
 
-                closeMobileMenu();
-
-            }
+            closeMobileMenu();
 
         }
-    );
+
+    });
 
 
     /* =================================================
        ESC KEY
     ================================================= */
 
-    document.addEventListener(
-        "keydown",
-        function (event) {
+    document.addEventListener("keydown", function (event) {
 
-            if (event.key === "Escape") {
+        if (event.key === "Escape") {
 
-                closeMobileMenu();
-
-            }
+            closeMobileMenu();
 
         }
-    );
+
+    });
 
 
+    /* =================================================
+       RESET WHEN SCREEN BECOMES DESKTOP
+    ================================================= */
+
+    window.addEventListener("resize", function () {
+
+        if (window.innerWidth > 900) {
+
+            closeMobileMenu();
+
+        }
+
+    });
+
+});
     /* =================================================
        RESET WHEN SCREEN BECOMES DESKTOP
     ================================================= */
