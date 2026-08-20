@@ -23,9 +23,9 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* =====================================================
-           EXTRA HOMEPAGE STYLES
-        ===================================================== */
+        /* =========================================
+           HOMEPAGE EXTRA STYLES
+        ========================================= */
 
         .hero-actions {
             display: flex;
@@ -66,34 +66,6 @@
             margin-bottom: 1.2rem;
         }
 
-        .product-card {
-            overflow: hidden;
-        }
-
-        .product-img-wrap {
-            overflow: hidden;
-        }
-
-        .product-img {
-            transition: transform 0.4s ease;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.04);
-        }
-
-        .product-order-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.8rem;
-            margin-top: 1rem;
-        }
-
-        .product-order-row .btn-add-cart {
-            margin-top: 0 !important;
-        }
-
         .whatsapp-floating {
             position: fixed;
             right: 22px;
@@ -117,134 +89,179 @@
             transform: translateY(-4px) scale(1.05);
         }
 
-<!-- CART OVERLAY -->
-<div
-    class="cart-overlay"
-    id="cartOverlay"
-    aria-hidden="true">
-</div>
+        /* =========================================
+           CART
+        ========================================= */
 
-<!-- CART DRAWER -->
-<div
-    class="cart-drawer"
-    id="cartDrawer"
-    aria-hidden="true">
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: 0.3s ease;
+            z-index: 9998;
+        }
 
-    <div class="cart-header">
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
 
-        <h3>Selected Services</h3>
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(430px, 100%);
+            height: 100vh;
+            background: #fff;
+            z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+        }
 
-        <button
-            type="button"
-            class="cart-close"
-            id="cartClose"
-            aria-label="Close cart">
-            &times;
-        </button>
+        .cart-drawer.active {
+            transform: translateX(0);
+        }
 
-    </div>
+        .cart-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+        }
 
-    <div
-        class="cart-items"
-        id="cartItemsList">
+        .cart-header h3 {
+            margin: 0;
+        }
 
-        <div class="empty-cart">
-            <p>No services selected yet.</p>
-            <p>Choose a service to start your order.</p>
-        </div>
+        .cart-close {
+            width: 40px;
+            height: 40px;
+            border: 0;
+            background: #f3f3f3;
+            border-radius: 50%;
+            font-size: 25px;
+            cursor: pointer;
+        }
 
-    </div>
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
 
-    <div class="cart-footer">
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
 
-        <div class="cart-total">
-            <span>Estimated Total:</span>
-            <span id="cartTotalVal">₹0</span>
-        </div>
+        .cart-item-info {
+            flex: 1;
+        }
 
-        <button
-            type="button"
-            class="btn-checkout"
-            id="checkoutBtn"
-            disabled>
-            Continue Order
-        </button>
+        .cart-item-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
 
-    </div>
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
 
-</div>
+        .cart-remove {
+            width: 34px;
+            height: 34px;
+            border: 0;
+            border-radius: 50%;
+            background: #ffecec;
+            color: #d00;
+            font-size: 22px;
+            cursor: pointer;
+        }
 
-<!-- =================================
-     FOOTER
-================================= -->
+        .empty-cart {
+            text-align: center;
+            padding: 50px 15px;
+            color: #777;
+        }
 
-<footer>
+        .empty-cart p {
+            margin: 5px 0;
+        }
 
-    <div class="footer-container">
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding: 20px;
+            background: #fff;
+        }
 
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
 
-        <!-- BRAND -->
+        #cartTotalVal {
+            color: var(--primary);
+        }
 
-        <div class="footer-brand">
+        .btn-checkout {
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #25D366;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
 
-            <div class="logo">
+        .btn-checkout:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-                <div class="logo-icon">
-                    SG
-                </div>
+        .cart-badge {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background: #e60023;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-                Sai
-                <span>
-                    Graphic Designs
-                </span>
+        .cart-icon-btn {
+            position: relative;
+        }
 
-            </div>
+        /* =========================================
+           MOBILE
+        ========================================= */
 
-
-            <p>
-                Professional graphic design, branding and printing
-                solutions for businesses, startups, freelancers
-                and individuals.
-            </p>
-
-
-            <div class="footer-socials">
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Facebook"
-                >
-                    Fb
-                </a>
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="X"
-                >
-                    X
-                </a>
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="LinkedIn"
-                >
-                    Li
-                </a>
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Instagram"
-                >
-                    Ig
-                </a>
-
-            </div>
-
-        </div>
         @media (max-width: 900px) {
             .process-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -274,22 +291,19 @@
             }
         }
     </style>
-
 </head>
 
 
 <body>
 
-
-<!-- =================================
+<!-- =========================================
      HEADER
-================================= -->
+========================================= -->
 
 <header class="site-header">
 
     <div class="nav-container">
 
-        <!-- LOGO -->
         <a href="index.html" class="logo">
 
             <div class="logo-icon">
@@ -303,82 +317,77 @@
         </a>
 
 
-        <!-- MOBILE MENU BUTTON -->
         <button
             type="button"
             class="mobile-menu-btn"
             id="mobileMenuBtn"
             aria-label="Open navigation menu"
-            aria-expanded="false"
-        >
+            aria-expanded="false">
+
             ☰
+
         </button>
 
 
-        <!-- NAVIGATION -->
         <nav
             class="main-nav"
             id="mainNav"
-            aria-label="Main Navigation"
-        >
+            aria-label="Main Navigation">
 
-            <a
-                href="index.html"
-                class="nav-link active"
-            >
+            <a href="index.html" class="nav-link active">
                 Home
             </a>
 
-            <a
-                href="about.html"
-                class="nav-link"
-            >
+            <a href="about.html" class="nav-link">
                 About
             </a>
 
-            <a
-                href="customizer.html"
-                class="nav-link"
-            >
+            <a href="customizer.html" class="nav-link">
                 Services
             </a>
 
-            <a
-                href="contact.html"
-                class="nav-link"
-            >
+            <a href="contact.html" class="nav-link">
                 Contact
             </a>
 
         </nav>
 
 
-       <!-- ACTIONS -->
         <div class="nav-actions">
 
             <button
                 type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
-                aria-label="Open shopping cart"
-            >
+                aria-label="Open shopping cart">
+
                 🛒
-                <span class="cart-badge" id="cartBadge">0</span>
+
+                <span
+                    class="cart-badge"
+                    id="cartBadge">
+
+                    0
+
+                </span>
+
             </button>
 
+
             <a href="contact.html" class="btn-header">
-                Get Started <span>→</span>
+                Get Started →
             </a>
 
         </div>
 
     </div>
 
-
 </header>
-<!-- =====================================================
+
+
+<!-- =========================================
      HERO
-===================================================== -->
+========================================= -->
 
 <section class="hero">
 
@@ -415,9 +424,10 @@
 
                 <a
                     href="customizer.html"
-                    class="btn-dark"
-                >
+                    class="btn-dark">
+
                     Explore Services →
+
                 </a>
 
 
@@ -444,9 +454,7 @@
                 src="Images/Hero image.png"
                 alt="Graphic designer working on a creative branding project"
                 class="hero-img"
-                loading="eager"
-            >
-
+                loading="eager">
 
             <div class="hero-stat-card">
 
@@ -467,9 +475,9 @@
 </section>
 
 
-<!-- =====================================================
-     BENEFITS BAR
-===================================================== -->
+<!-- =========================================
+     BENEFITS
+========================================= -->
 
 <div class="meta-row">
 
@@ -495,9 +503,9 @@
 </div>
 
 
-<!-- =====================================================
-     CORE SERVICES
-===================================================== -->
+<!-- =========================================
+     SERVICES
+========================================= -->
 
 <section class="section">
 
@@ -515,7 +523,6 @@
 
 
     <div class="features-grid">
-
 
         <div class="feature-card">
 
@@ -536,9 +543,10 @@
 
             <a
                 href="customizer.html"
-                class="btn-primary"
-            >
+                class="btn-primary">
+
                 View Service →
+
             </a>
 
         </div>
@@ -563,9 +571,10 @@
 
             <a
                 href="customizer.html"
-                class="btn-primary"
-            >
+                class="btn-primary">
+
                 View Service →
+
             </a>
 
         </div>
@@ -590,9 +599,10 @@
 
             <a
                 href="customizer.html"
-                class="btn-primary"
-            >
+                class="btn-primary">
+
                 View Service →
+
             </a>
 
         </div>
@@ -617,9 +627,10 @@
 
             <a
                 href="customizer.html"
-                class="btn-primary"
-            >
+                class="btn-primary">
+
                 View Service →
+
             </a>
 
         </div>
@@ -629,14 +640,13 @@
 </section>
 
 
-<!-- =====================================================
-     ABOUT / WHY US
-===================================================== -->
+<!-- =========================================
+     WHY US
+========================================= -->
 
 <section class="section custom-product">
 
     <div class="custom-product-container">
-
 
         <div class="custom-visual-grid">
 
@@ -646,8 +656,7 @@
                     src="Images/Designing.png"
                     alt="Creative graphic design workspace"
                     class="custom-visual-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <p style="font-weight:700;margin-top:1rem;">
                     Design Service
@@ -662,8 +671,7 @@
                     src="Images/Printing.png"
                     alt="Professional printing service"
                     class="custom-visual-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <p style="font-weight:700;margin-top:1rem;">
                     Printing Service
@@ -683,9 +691,10 @@
 
             <h2
                 class="section-title"
-                style="text-align:left;color:var(--dark);"
-            >
+                style="text-align:left;color:var(--dark);">
+
                 Creative Designs That Help Your Business Grow
+
             </h2>
 
 
@@ -710,6 +719,7 @@
 
                 </li>
 
+
                 <li class="custom-bullet-item">
 
                     <span class="custom-bullet-icon">
@@ -720,6 +730,7 @@
 
                 </li>
 
+
                 <li class="custom-bullet-item">
 
                     <span class="custom-bullet-icon">
@@ -729,6 +740,7 @@
                     Fast & Reliable Delivery
 
                 </li>
+
 
                 <li class="custom-bullet-item">
 
@@ -745,9 +757,10 @@
 
             <a
                 href="about.html"
-                class="btn-dark"
-            >
+                class="btn-dark">
+
                 About Sai Graphic Designs →
+
             </a>
 
         </div>
@@ -757,9 +770,9 @@
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================
      CREATIVE WORK
-===================================================== -->
+========================================= -->
 
 <section class="section">
 
@@ -778,9 +791,7 @@
 
     <div class="collections-grid">
 
-
         <div class="collection-gallery">
-
 
             <div class="collection-img-wrap large">
 
@@ -788,8 +799,7 @@
                     src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=85"
                     alt="Professional brand identity and stationery design"
                     class="collection-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <div class="portfolio-label">
                     Branding & Identity
@@ -804,8 +814,7 @@
                     src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=85"
                     alt="Creative graphic design project"
                     class="collection-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <div class="portfolio-label">
                     Social Media
@@ -820,8 +829,7 @@
                     src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=900&q=85"
                     alt="Creative digital design project"
                     class="collection-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <div class="portfolio-label">
                     Digital Design
@@ -836,15 +844,13 @@
 
             <div
                 class="collection-img-wrap"
-                style="grid-column:span 2;height:500px;"
-            >
+                style="grid-column:span 2;height:500px;">
 
                 <img
                     src="https://images.unsplash.com/photo-1523726491678-bf852e717f6a?auto=format&fit=crop&w=1400&q=85"
                     alt="Professional graphic designer workspace"
                     class="collection-img"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
                 <div class="portfolio-label">
                     Creative Design Studio
@@ -858,9 +864,10 @@
 
 </section>
 
-<!-- =====================================================
-     HOW IT WORKS
-===================================================== -->
+
+<!-- =========================================
+     PROCESS
+========================================= -->
 
 <section class="section">
 
@@ -954,14 +961,13 @@
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================
      WHY CHOOSE US
-===================================================== -->
+========================================= -->
 
 <section
     class="section custom-product"
-    style="padding-top:5rem;padding-bottom:5rem;"
->
+    style="padding-top:5rem;padding-bottom:5rem;">
 
     <div class="section-header">
 
@@ -977,7 +983,6 @@
 
 
     <div class="products-grid">
-
 
         <div class="custom-visual-card">
 
@@ -1063,9 +1068,9 @@
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================
      MARQUEE
-===================================================== -->
+========================================= -->
 
 <div class="ticker-wrap">
 
@@ -1111,29 +1116,14 @@
             Printing Services
         </span>
 
-        <span class="ticker-item">
-            <span class="ticker-star">*</span>
-            Logo Design
-        </span>
-
-        <span class="ticker-item">
-            <span class="ticker-star">*</span>
-            Branding
-        </span>
-
-        <span class="ticker-item">
-            <span class="ticker-star">*</span>
-            Social Media Design
-        </span>
-
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     CALL TO ACTION
-===================================================== -->
+<!-- =========================================
+     CTA
+========================================= -->
 
 <section class="cta-section">
 
@@ -1144,26 +1134,32 @@
         </h2>
 
         <p>
+
             Let's create professional designs that make your business
             look better, communicate clearly and stand out from the crowd.
+
         </p>
+
 
         <div class="cta-buttons">
 
             <a
                 href="contact.html"
-                class="btn-white"
-            >
+                class="btn-white">
+
                 Start Your Project →
+
             </a>
 
+
             <a
-                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20would%20like%20to%20discuss%20a%20design%20project."
+                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20would%20like%20to%20discuss%20a%20design%20project"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn-whatsapp"
-            >
+                class="btn-whatsapp">
+
                 WhatsApp Us
+
             </a>
 
         </div>
@@ -1173,26 +1169,25 @@
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================
      CART OVERLAY
-===================================================== -->
+========================================= -->
 
 <div
     class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true"
-></div>
+    aria-hidden="true">
+</div>
 
 
-<!-- =====================================================
+<!-- =========================================
      CART DRAWER
-===================================================== -->
+========================================= -->
 
 <div
     class="cart-drawer"
     id="cartDrawer"
-    aria-hidden="true"
->
+    aria-hidden="true">
 
     <div class="cart-header">
 
@@ -1204,9 +1199,10 @@
             type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close cart"
-        >
+            aria-label="Close cart">
+
             &times;
+
         </button>
 
     </div>
@@ -1214,18 +1210,7 @@
 
     <div
         class="cart-items"
-        id="cartItemsList"
-    >
-
-        <div class="empty-cart">
-            <p>
-                No services selected yet.
-            </p>
-
-            <p>
-                Choose a service to start your order.
-            </p>
-        </div>
+        id="cartItemsList">
 
     </div>
 
@@ -1249,9 +1234,10 @@
             type="button"
             class="btn-checkout"
             id="checkoutBtn"
-            disabled
-        >
+            disabled>
+
             Continue Order
+
         </button>
 
     </div>
@@ -1259,31 +1245,29 @@
 </div>
 
 
-<!-- =====================================================
-     WHATSAPP FLOATING BUTTON
-===================================================== -->
+<!-- =========================================
+     WHATSAPP FLOATING
+========================================= -->
 
 <a
-    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20graphic%20design%20service."
+    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20graphic%20design%20service"
     target="_blank"
     rel="noopener noreferrer"
     class="whatsapp-floating"
-    aria-label="Contact Sai Graphic Designs on WhatsApp"
->
+    aria-label="Contact Sai Graphic Designs on WhatsApp">
+
     💬
+
 </a>
 
 
-<!-- =====================================================
+<!-- =========================================
      FOOTER
-===================================================== -->
+========================================= -->
 
 <footer>
 
     <div class="footer-container">
-
-
-        <!-- BRAND -->
 
         <div class="footer-brand">
 
@@ -1293,7 +1277,10 @@
                     SG
                 </div>
 
-                Sai <span>Graphic Designs</span>
+                Sai
+                <span>
+                    Graphic Designs
+                </span>
 
             </div>
 
@@ -1308,35 +1295,19 @@
 
             <div class="footer-socials">
 
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Facebook"
-                >
+                <a href="#" class="social-icon" aria-label="Facebook">
                     Fb
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="X"
-                >
+                <a href="#" class="social-icon" aria-label="X">
                     X
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="LinkedIn"
-                >
+                <a href="#" class="social-icon" aria-label="LinkedIn">
                     Li
                 </a>
 
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Instagram"
-                >
+                <a href="#" class="social-icon" aria-label="Instagram">
                     Ig
                 </a>
 
@@ -1344,8 +1315,6 @@
 
         </div>
 
-
-        <!-- SERVICES -->
 
         <div>
 
@@ -1390,8 +1359,6 @@
         </div>
 
 
-        <!-- COMPANY -->
-
         <div>
 
             <h4 class="footer-col-title">
@@ -1429,8 +1396,6 @@
         </div>
 
 
-        <!-- CONTACT -->
-
         <div>
 
             <h4 class="footer-col-title">
@@ -1458,8 +1423,6 @@
     </div>
 
 
-    <!-- FOOTER BOTTOM -->
-
     <div class="footer-bottom">
 
         <p>
@@ -1476,24 +1439,78 @@
 </footer>
 
 
-<!-- =====================================================
+<!-- =========================================
+     MAIN JAVASCRIPT
+========================================= -->
+
+<script src="main.js"></script>
+
+
+<!-- =========================================
      CART JAVASCRIPT
-===================================================== -->
+========================================= -->
 
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       SHARED CART
-    ===================================================== */
+    /*
+    =====================================================
+    IMPORTANT
+    =====================================================
+
+    This key MUST be exactly the same on customizer.html
+    and every other page.
+
+    =====================================================
+    */
 
     const CART_KEY = "saiGraphicCart";
 
-    let cart = JSON.parse(
-        localStorage.getItem(CART_KEY)
-    ) || [];
+    let cart = loadCart();
 
+
+    /* =========================================
+       LOAD CART
+    ========================================= */
+
+    function loadCart() {
+
+        try {
+
+            const savedCart =
+                localStorage.getItem(CART_KEY);
+
+            if (!savedCart) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(savedCart);
+
+            if (!Array.isArray(parsed)) {
+                return [];
+            }
+
+            return parsed;
+
+        } catch (error) {
+
+            console.error(
+                "Cart loading error:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================================
+       SAVE CART
+    ========================================= */
 
     function saveCart() {
 
@@ -1505,9 +1522,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* =========================================
        ELEMENTS
-    ===================================================== */
+    ========================================= */
 
     const cartToggle =
         document.getElementById("cartToggle");
@@ -1533,13 +1550,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkoutBtn =
         document.getElementById("checkoutBtn");
 
-    const addButtons =
-        document.querySelectorAll(".btn-add-cart");
 
-
-    /* =====================================================
+    /* =========================================
        OPEN CART
-    ===================================================== */
+    ========================================= */
 
     function openCart() {
 
@@ -1557,20 +1571,25 @@ document.addEventListener("DOMContentLoaded", function () {
             "false"
         );
 
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow =
+            "hidden";
 
     }
 
 
-    /* =====================================================
+    /* =========================================
        CLOSE CART
-    ===================================================== */
+    ========================================= */
 
     function closeCart() {
 
-        cartDrawer.classList.remove("active");
+        cartDrawer.classList.remove(
+            "active"
+        );
 
-        cartOverlay.classList.remove("active");
+        cartOverlay.classList.remove(
+            "active"
+        );
 
         cartDrawer.setAttribute(
             "aria-hidden",
@@ -1582,21 +1601,52 @@ document.addEventListener("DOMContentLoaded", function () {
             "true"
         );
 
-        document.body.style.overflow = "";
+        document.body.style.overflow =
+            "";
 
     }
 
 
-    /* =====================================================
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================
        UPDATE CART
-    ===================================================== */
+    ========================================= */
 
     function updateCart() {
+
+        /*
+        Reload localStorage every time.
+        This makes the cart work after moving
+        between Home and Services pages.
+        */
+
+        cart = loadCart();
+
 
         cartItemsList.innerHTML = "";
 
 
-        /* EMPTY CART */
+        /* EMPTY */
 
         if (cart.length === 0) {
 
@@ -1609,7 +1659,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </p>
 
                     <p>
-                        Choose a service to start your order.
+                        Go to Services and choose a service.
                     </p>
 
                 </div>
@@ -1630,11 +1680,14 @@ document.addEventListener("DOMContentLoaded", function () {
         let total = 0;
 
 
-        /* DISPLAY ITEMS */
+        /* ITEMS */
 
         cart.forEach(function (item, index) {
 
-            total += Number(item.price);
+            const price =
+                Number(item.price) || 0;
+
+            total += price;
 
 
             const cartItem =
@@ -1649,12 +1702,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="cart-item-info">
 
                     <div class="cart-item-name">
-                        ${escapeHTML(item.name)}
+
+                        ${escapeHTML(
+                            item.name ||
+                            "Unnamed Service"
+                        )}
+
                     </div>
 
                     <div class="cart-item-price">
-                        ₹${Number(item.price)
-                            .toLocaleString("en-IN")}
+
+                        ₹${price.toLocaleString("en-IN")}
+
                     </div>
 
                 </div>
@@ -1664,20 +1723,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     type="button"
                     class="cart-remove"
                     data-index="${index}"
-                    aria-label="Remove ${escapeHTML(item.name)}"
-                >
+                    aria-label="Remove service">
+
                     ×
+
                 </button>
 
             `;
 
 
-            cartItemsList.appendChild(cartItem);
+            cartItemsList.appendChild(
+                cartItem
+            );
 
         });
 
 
-        /* UPDATE TOTAL */
+        /* TOTAL */
 
         cartBadge.textContent =
             cart.length;
@@ -1685,12 +1747,13 @@ document.addEventListener("DOMContentLoaded", function () {
         cartTotalVal.textContent =
             "₹" + total.toLocaleString("en-IN");
 
-        checkoutBtn.disabled = false;
+        checkoutBtn.disabled =
+            false;
 
 
-        /* REMOVE BUTTONS */
+        /* REMOVE */
 
-        document
+        cartItemsList
             .querySelectorAll(".cart-remove")
             .forEach(function (button) {
 
@@ -1704,13 +1767,22 @@ document.addEventListener("DOMContentLoaded", function () {
                             );
 
 
-                        cart.splice(index, 1);
+                        if (
+                            Number.isInteger(index) &&
+                            index >= 0 &&
+                            index < cart.length
+                        ) {
 
+                            cart.splice(
+                                index,
+                                1
+                            );
 
-                        saveCart();
+                            saveCart();
 
+                            updateCart();
 
-                        updateCart();
+                        }
 
                     }
                 );
@@ -1720,147 +1792,57 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
+    /* =========================================
+       CART OPEN BUTTON
+    ========================================= */
 
-    function escapeHTML(value) {
+    if (cartToggle) {
 
-        return String(value)
-
-            .replaceAll("&", "&amp;")
-
-            .replaceAll("<", "&lt;")
-
-            .replaceAll(">", "&gt;")
-
-            .replaceAll('"', "&quot;")
-
-            .replaceAll("'", "&#039;");
-
-    }
-
-
-    /* =====================================================
-       ADD TO CART
-    ===================================================== */
-
-    addButtons.forEach(function (button) {
-
-        button.addEventListener(
+        cartToggle.addEventListener(
             "click",
             function () {
 
-                const name =
-                    this.getAttribute("data-name");
-
-                const price =
-                    Number(
-                        this.getAttribute("data-price")
-                    );
-
-
-                /* CHECK DUPLICATE */
-
-                const existing =
-                    cart.find(function (item) {
-
-                        return item.name === name;
-
-                    });
-
-
-                if (existing) {
-
-                    alert(
-                        name +
-                        " is already selected."
-                    );
-
-                    openCart();
-
-                    return;
-
-                }
-
-
-                /* ADD */
-
-                cart.push({
-
-                    name: name,
-
-                    price: price
-
-                });
-
-
-                /* SAVE */
-
-                saveCart();
-
-
-                /* UPDATE */
-
                 updateCart();
-
-
-                /* OPEN */
 
                 openCart();
 
             }
         );
 
-    });
+    }
 
 
-    /* =====================================================
-       CART BUTTON
-    ===================================================== */
-
-    cartToggle.addEventListener(
-        "click",
-        function () {
-
-            /* Get latest cart */
-
-            cart = JSON.parse(
-                localStorage.getItem(CART_KEY)
-            ) || [];
-
-
-            updateCart();
-
-            openCart();
-
-        }
-    );
-
-
-    /* =====================================================
+    /* =========================================
        CLOSE BUTTON
-    ===================================================== */
+    ========================================= */
 
-    cartClose.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    /* =====================================================
+    /* =========================================
        OVERLAY
-    ===================================================== */
+    ========================================= */
 
-    cartOverlay.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    /* =====================================================
+    /* =========================================
        ESC KEY
-    ===================================================== */
+    ========================================= */
 
     document.addEventListener(
         "keydown",
@@ -1876,50 +1858,56 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =====================================================
-       CHECKOUT / WHATSAPP
-    ===================================================== */
+    /* =========================================
+       CHECKOUT
+    ========================================= */
 
-    checkoutBtn.addEventListener(
-        "click",
-        function () {
+    if (checkoutBtn) {
 
-            if (cart.length === 0) {
-                return;
-            }
+        checkoutBtn.addEventListener(
+            "click",
+            function () {
 
-
-            const serviceList =
-                cart
-                    .map(function (item, index) {
-
-                        return (
-                            (index + 1) +
-                            ". " +
-                            item.name +
-                            " - ₹" +
-                            Number(item.price)
-                                .toLocaleString("en-IN")
-                        );
-
-                    })
-                    .join("\n");
+                cart = loadCart();
 
 
-            const total =
-                cart.reduce(
-                    function (sum, item) {
+                if (cart.length === 0) {
 
-                        return sum +
-                            Number(item.price);
+                    return;
 
-                    },
-                    0
-                );
+                }
 
 
-            const message =
-                `Hello Sai Graphic Designs 👋
+                let total = 0;
+
+
+                const serviceList =
+                    cart
+                        .map(function (item, index) {
+
+                            const price =
+                                Number(item.price) || 0;
+
+                            total += price;
+
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - ₹" +
+                                price.toLocaleString(
+                                    "en-IN"
+                                )
+                            );
+
+                        })
+                        .join("\n");
+
+
+                const message =
+
+`Hello Sai Graphic Designs 👋
 
 I would like to order the following services:
 
@@ -1941,24 +1929,46 @@ Please contact me to discuss the project details and payment.
 Thank you!`;
 
 
-            const whatsappURL =
-                "https://wa.me/916381128781?text=" +
-                encodeURIComponent(message);
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
 
 
-            window.open(
-                whatsappURL,
-                "_blank",
-                "noopener,noreferrer"
-            );
+                window.open(
+                    whatsappURL,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       LISTEN FOR STORAGE CHANGES
+    ========================================= */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (
+                event.key === CART_KEY
+            ) {
+
+                updateCart();
+
+            }
 
         }
     );
 
 
-    /* =====================================================
+    /* =========================================
        INITIALIZE
-    ===================================================== */
+    ========================================= */
 
     updateCart();
 
@@ -1967,129 +1977,133 @@ Thank you!`;
 </script>
 
 
-<!-- =====================================================
-     EXISTING MAIN JAVASCRIPT
-===================================================== -->
+<!-- =========================================
+     MOBILE MENU
+========================================= -->
 
-<script src="main.js"></script>
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const menuButton =
-        document.getElementById("mobileMenuBtn");
+        const menuButton =
+            document.getElementById(
+                "mobileMenuBtn"
+            );
 
-    const mainNav =
-        document.getElementById("mainNav");
+        const mainNav =
+            document.getElementById(
+                "mainNav"
+            );
 
 
-    if (!menuButton || !mainNav) {
-        return;
-    }
+        if (
+            !menuButton ||
+            !mainNav
+        ) {
+
+            return;
+
+        }
 
 
-    /* =====================================================
-       OPEN / CLOSE MENU
-    ===================================================== */
+        menuButton.addEventListener(
+            "click",
+            function () {
 
-    menuButton.addEventListener(
-        "click",
-        function () {
+                const isOpen =
+                    mainNav.classList.toggle(
+                        "mobile-active"
+                    );
 
-            const isOpen =
-                mainNav.classList.toggle(
-                    "mobile-active"
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    isOpen
+                        ? "true"
+                        : "false"
                 );
 
 
-            menuButton.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
+                menuButton.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
 
 
-            menuButton.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
-            );
+                menuButton.textContent =
+                    isOpen
+                        ? "×"
+                        : "☰";
+
+            }
+        );
 
 
-            menuButton.textContent =
-                isOpen ? "×" : "☰";
+        mainNav
+            .querySelectorAll(".nav-link")
+            .forEach(function (link) {
 
-        }
-    );
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        mainNav.classList.remove(
+                            "mobile-active"
+                        );
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                        menuButton.setAttribute(
+                            "aria-label",
+                            "Open navigation menu"
+                        );
+
+                        menuButton.textContent =
+                            "☰";
+
+                    }
+                );
+
+            });
 
 
-    /* =====================================================
-       CLOSE AFTER CLICKING LINK
-    ===================================================== */
+        document.addEventListener(
+            "keydown",
+            function (event) {
 
-    mainNav
-        .querySelectorAll(".nav-link")
-        .forEach(function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
+                if (
+                    event.key === "Escape"
+                ) {
 
                     mainNav.classList.remove(
                         "mobile-active"
                     );
-
 
                     menuButton.setAttribute(
                         "aria-expanded",
                         "false"
                     );
 
-
-                    menuButton.setAttribute(
-                        "aria-label",
-                        "Open navigation menu"
-                    );
-
-
                     menuButton.textContent =
                         "☰";
 
                 }
-            );
-
-        });
-
-
-    /* =====================================================
-       CLOSE WITH ESC
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                mainNav.classList.remove(
-                    "mobile-active"
-                );
-
-
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                menuButton.textContent =
-                    "☰";
 
             }
+        );
 
-        }
-    );
+    }
+);
 
-});
+</script>
+
+
 </body>
 </html>
