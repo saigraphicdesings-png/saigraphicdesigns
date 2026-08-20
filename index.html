@@ -1847,12 +1847,7 @@ cart-item
 ===================================================== -->
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
-
-    /* =====================================================
-       SHARED CART
-    ===================================================== */
 
     const CART_KEY = "saiGraphicCart";
 
@@ -1860,57 +1855,30 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.getItem(CART_KEY)
     ) || [];
 
-
-    function saveCart() {
-
-        localStorage.setItem(
-            CART_KEY,
-            JSON.stringify(cart)
-        );
-
-    }
-
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const cartToggle =
-        document.getElementById("cartToggle");
-
-    const cartClose =
-        document.getElementById("cartClose");
-
-    const cartDrawer =
-        document.getElementById("cartDrawer");
-
-    const cartOverlay =
-        document.getElementById("cartOverlay");
-
-    const cartBadge =
-        document.getElementById("cartBadge");
-
-    const cartItemsList =
-        document.getElementById("cartItemsList");
-
-    const cartTotalVal =
-        document.getElementById("cartTotalVal");
-
-    const checkoutBtn =
-        document.getElementById("checkoutBtn");
+    const cartToggle = document.getElementById("cartToggle");
+    const cartClose = document.getElementById("cartClose");
+    const cartDrawer = document.getElementById("cartDrawer");
+    const cartOverlay = document.getElementById("cartOverlay");
+    const cartBadge = document.getElementById("cartBadge");
+    const cartItemsList = document.getElementById("cartItemsList");
+    const cartTotalVal = document.getElementById("cartTotalVal");
+    const checkoutBtn = document.getElementById("checkoutBtn");
 
     const addButtons =
         document.querySelectorAll(".btn-add-cart");
 
 
-    /* =====================================================
-       OPEN CART
-    ===================================================== */
+    function saveCart() {
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+    }
+
 
     function openCart() {
 
         cartDrawer.classList.add("active");
-
         cartOverlay.classList.add("active");
 
         cartDrawer.setAttribute(
@@ -1924,18 +1892,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         document.body.style.overflow = "hidden";
-
     }
 
-
-    /* =====================================================
-       CLOSE CART
-    ===================================================== */
 
     function closeCart() {
 
         cartDrawer.classList.remove("active");
-
         cartOverlay.classList.remove("active");
 
         cartDrawer.setAttribute(
@@ -1949,54 +1911,43 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         document.body.style.overflow = "";
-
     }
 
 
-    /* =====================================================
-       UPDATE CART
-    ===================================================== */
+    function escapeHTML(value) {
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
 
     function updateCart() {
 
         cartItemsList.innerHTML = "";
 
-
-        /* EMPTY CART */
-
         if (cart.length === 0) {
 
             cartItemsList.innerHTML = `
-
                 <div class="empty-cart">
-
-                    <p>
-                        No services selected yet.
-                    </p>
-
-                    <p>
-                        Choose a service to start your order.
-                    </p>
-
+                    <p>No services selected yet.</p>
+                    <p>Choose a service to start your order.</p>
                 </div>
-
             `;
 
             cartBadge.textContent = "0";
-
             cartTotalVal.textContent = "₹0";
-
             checkoutBtn.disabled = true;
 
             return;
-
         }
 
 
         let total = 0;
 
-
-        /* DISPLAY ITEMS */
 
         cart.forEach(function (item, index) {
 
@@ -2006,12 +1957,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const cartItem =
                 document.createElement("div");
 
-            cartItem.className =
-                "cart-item";
+            cartItem.className = "cart-item";
 
 
             cartItem.innerHTML = `
-
                 <div class="cart-item-info">
 
                     <div class="cart-item-name">
@@ -2019,12 +1968,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
 
                     <div class="cart-item-price">
-                        ₹${Number(item.price)
-                            .toLocaleString("en-IN")}
+                        ₹${Number(item.price).toLocaleString("en-IN")}
                     </div>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -2034,27 +1981,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 >
                     ×
                 </button>
-
             `;
 
 
             cartItemsList.appendChild(cartItem);
-
         });
 
 
-        /* UPDATE TOTAL */
-
-        cartBadge.textContent =
-            cart.length;
+        cartBadge.textContent = cart.length;
 
         cartTotalVal.textContent =
             "₹" + total.toLocaleString("en-IN");
 
         checkoutBtn.disabled = false;
 
-
-        /* REMOVE BUTTONS */
 
         document
             .querySelectorAll(".cart-remove")
@@ -2065,51 +2005,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     function () {
 
                         const index =
-                            Number(
-                                this.dataset.index
-                            );
-
+                            Number(this.dataset.index);
 
                         cart.splice(index, 1);
 
-
                         saveCart();
 
-
                         updateCart();
-
                     }
                 );
-
             });
-
     }
 
-
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
-
-    function escapeHTML(value) {
-
-        return String(value)
-
-            .replaceAll("&", "&amp;")
-
-            .replaceAll("<", "&lt;")
-
-            .replaceAll(">", "&gt;")
-
-            .replaceAll('"', "&quot;")
-
-            .replaceAll("'", "&#039;");
-
-    }
-
-
-    /* =====================================================
-       ADD TO CART
-    ===================================================== */
 
     addButtons.forEach(function (button) {
 
@@ -2126,8 +2033,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                /* CHECK DUPLICATE */
-
                 const existing =
                     cart.find(function (item) {
 
@@ -2143,70 +2048,41 @@ document.addEventListener("DOMContentLoaded", function () {
                         " is already selected."
                     );
 
+                    updateCart();
                     openCart();
 
                     return;
-
                 }
 
 
-                /* ADD */
-
                 cart.push({
-
                     name: name,
-
                     price: price
-
                 });
 
 
-                /* SAVE */
-
                 saveCart();
-
-
-                /* UPDATE */
-
                 updateCart();
-
-
-                /* OPEN */
-
                 openCart();
-
             }
         );
-
     });
 
-
-    /* =====================================================
-       CART BUTTON
-    ===================================================== */
 
     cartToggle.addEventListener(
         "click",
         function () {
 
-            /* Get latest cart */
-
-            cart = JSON.parse(
-                localStorage.getItem(CART_KEY)
-            ) || [];
-
+            cart =
+                JSON.parse(
+                    localStorage.getItem(CART_KEY)
+                ) || [];
 
             updateCart();
-
             openCart();
-
         }
     );
 
-
-    /* =====================================================
-       CLOSE BUTTON
-    ===================================================== */
 
     cartClose.addEventListener(
         "click",
@@ -2214,37 +2090,23 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =====================================================
-       OVERLAY
-    ===================================================== */
-
     cartOverlay.addEventListener(
         "click",
         closeCart
     );
 
 
-    /* =====================================================
-       ESC KEY
-    ===================================================== */
-
     document.addEventListener(
         "keydown",
         function (event) {
 
             if (event.key === "Escape") {
-
                 closeCart();
-
             }
 
         }
     );
 
-
-    /* =====================================================
-       CHECKOUT / WHATSAPP
-    ===================================================== */
 
     checkoutBtn.addEventListener(
         "click",
@@ -2285,7 +2147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             const message =
-                `Hello Sai Graphic Designs 👋
+`Hello Sai Graphic Designs 👋
 
 I would like to order the following services:
 
@@ -2317,19 +2179,13 @@ Thank you!`;
                 "_blank",
                 "noopener,noreferrer"
             );
-
         }
     );
 
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
-
     updateCart();
 
 });
-
 </script>
 
 
