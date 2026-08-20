@@ -1717,8 +1717,9 @@
 </section>
     
 <!-- =====================================================
-CART OVERLAY
+     CART OVERLAY
 ===================================================== -->
+
 <div
     class="cart-overlay"
     id="cartOverlay"
@@ -1727,8 +1728,9 @@ CART OVERLAY
 
 
 <!-- =====================================================
-CART DRAWER
+     CART DRAWER
 ===================================================== -->
+
 <div
     class="cart-drawer"
     id="cartDrawer"
@@ -1744,8 +1746,10 @@ CART DRAWER
             type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close selected services">
+            aria-label="Close cart">
+
             &times;
+
         </button>
 
     </div>
@@ -1754,6 +1758,19 @@ CART DRAWER
     <div
         class="cart-items"
         id="cartItemsList">
+
+        <div class="empty-cart">
+
+            <p>
+                No services selected yet.
+            </p>
+
+            <p>
+                Choose a service to start your order.
+            </p>
+
+        </div>
+
     </div>
 
 
@@ -1762,7 +1779,7 @@ CART DRAWER
         <div class="cart-total">
 
             <span>
-                Estimated Total
+                Estimated Total:
             </span>
 
             <span id="cartTotalVal">
@@ -1774,10 +1791,12 @@ CART DRAWER
 
         <button
             type="button"
-            class="cart-checkout"
-            id="cartCheckout"
+            class="btn-checkout"
+            id="checkoutBtn"
             disabled>
-            Send Order on WhatsApp
+
+            Continue Order
+
         </button>
 
     </div>
