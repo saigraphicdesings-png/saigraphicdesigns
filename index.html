@@ -117,289 +117,230 @@
             transform: translateY(-4px) scale(1.05);
         }
 
-        /* =====================================================
-           CART
-        ===================================================== */
+       <!-- =====================================================
+     CART OVERLAY
+===================================================== -->
 
-        .cart-icon-btn {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--border);
-            background: var(--white);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: var(--primary);
-            color: #fff;
-            font-size: .7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true"
+></div>
 
 
-        .cart-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.45);
-            opacity: 0;
-            visibility: hidden;
-            z-index: 998;
-            transition: .25s ease;
-        }
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
 
-        .cart-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true"
+>
 
+    <div class="cart-header">
 
-        .cart-drawer {
-            position: fixed;
-            top: 0;
-            right: -440px;
-            width: min(430px, 92vw);
-            height: 100vh;
-            background: #fff;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            box-shadow: -10px 0 40px rgba(0,0,0,.15);
-            transition: right .3s ease;
-        }
+        <h3>
+            Selected Services
+        </h3>
 
-        .cart-drawer.active {
-            right: 0;
-        }
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart"
+        >
+            &times;
+        </button>
+
+    </div>
 
 
-        .cart-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.3rem 1.4rem;
-            border-bottom: 1px solid #eee;
-        }
+    <div
+        class="cart-items"
+        id="cartItemsList"
+    >
 
-        .cart-header h3 {
-            margin: 0;
-            font-size: 1.15rem;
-        }
+        <div class="empty-cart">
+            <p>
+                No services selected yet.
+            </p>
 
-        .cart-close {
-            border: 0;
-            background: transparent;
-            font-size: 2rem;
-            cursor: pointer;
-            line-height: 1;
-        }
+            <p>
+                Choose a service to start your order.
+            </p>
+        </div>
+
+    </div>
 
 
-cart-item 
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
 
 
-        .cart-footer {
-            padding: 1.2rem;
-            border-top: 1px solid #eee;
-        }
+        <button
+            type="button"
+            class="btn-checkout"
+            id="checkoutBtn"
+            disabled
+        >
+            Continue Order
+        </button>
 
-        .cart-total {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 800;
-            font-size: 1.05rem;
-            margin-bottom: 1rem;
-        }
+    </div>
 
-        .cart-checkout {
-            width: 100%;
-            border: 0;
-            cursor: pointer;
-            padding: .95rem 1rem;
-            border-radius: 10px;
-            background: var(--dark);
-            color: #fff;
-            font-weight: 800;
-            font-size: 1rem;
-        }
+</div>
 
-        .cart-checkout:disabled {
-            opacity: .45;
-            cursor: not-allowed;
-        }
+<!-- =================================
+     MINI CART
+================================= -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+    <div class="cart-header">
+
+        <h3
+            style="
+                font-family:var(--font-sans);
+                font-weight:800;
+            "
+        >
+            Selected Services
+        </h3>
+
+        <button
+            class="cart-close"
+            id="cartClose"
+            type="button"
+            aria-label="Close cart"
+        >
+            &times;
+        </button>
+
+    </div>
 
 
-        .btn-checkout {
-            width: 100%;
-            border: 0;
-            cursor: pointer;
-            padding: 0.95rem 1rem;
-            border-radius: 10px;
-            background: var(--dark, #111);
-            color: #fff;
-            font-weight: 800;
-            font-size: 1rem;
-        }
+    <div
+        class="cart-items"
+        id="cartItemsList"
+    >
+    </div>
 
-        .btn-checkout:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
 
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
+    <div class="cart-footer">
 
-        .cart-icon-btn {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            border: 1px solid #ddd;
-            background: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
+        <div class="cart-total">
 
-        .cart-badge {
-            position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: var(--primary, #111);
-            color: #fff;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
+            <span>
+                Estimated Total:
+            </span>
 
-        .portfolio-label {
-            position: absolute;
-            left: 18px;
-            bottom: 18px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0.7rem 1rem;
-            border-radius: 10px;
-            font-weight: 800;
-        }
+            <span id="cartTotalVal">
+                ₹0
+            </span>
 
-        .collection-img-wrap {
-            position: relative;
-            overflow: hidden;
-        }
+        </div>
 
-        .collection-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
 
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.2rem;
-            margin-top: 2.5rem;
-        }
+        <button
+            class="btn-checkout"
+            type="button"
+            onclick="window.location.href='contact.html';"
+        >
+            Continue Order
+        </button>
 
-        .process-card {
-            padding: 1.5rem;
-            border: 1px solid #eee;
-            border-radius: 16px;
-            background: #fff;
-        }
+    </div>
 
-        .process-number {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 0.8rem;
-            color: var(--primary);
-        }
+</div>
 
-        .process-card h3 {
-            margin-bottom: 0.5rem;
-        }
 
-        .process-card p {
-            font-size: 0.9rem;
-            color: #666;
-        }
 
-        .cta-section {
-            padding: 5rem 1.5rem;
-        }
+<!-- =================================
+     FOOTER
+================================= -->
 
-        .cta-box {
-            max-width: 1150px;
-            margin: auto;
-            padding: 4rem 2rem;
-            border-radius: 24px;
-            background: var(--dark, #111);
-            color: #fff;
-            text-align: center;
-        }
+<footer>
 
-        .cta-box h2 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 1rem;
-        }
+    <div class="footer-container">
 
-        .cta-box p {
-            max-width: 650px;
-            margin: 0 auto 1.8rem;
-            color: rgba(255, 255, 255, 0.75);
-        }
 
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
+        <!-- BRAND -->
 
-        .btn-white {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.9rem 1.3rem;
-            border-radius: 10px;
-            background: #fff;
-            color: #111;
-            text-decoration: none;
-            font-weight: 800;
-        }
+        <div class="footer-brand">
 
-        .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.9rem 1.3rem;
-            border-radius: 10px;
-            background: #25D366;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 800;
-        }
+            <div class="logo">
 
+                <div class="logo-icon">
+                    SG
+                </div>
+
+                Sai
+                <span>
+                    Graphic Designs
+                </span>
+
+            </div>
+
+
+            <p>
+                Professional graphic design, branding and printing
+                solutions for businesses, startups, freelancers
+                and individuals.
+            </p>
+
+
+            <div class="footer-socials">
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Facebook"
+                >
+                    Fb
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="X"
+                >
+                    X
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="LinkedIn"
+                >
+                    Li
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Instagram"
+                >
+                    Ig
+                </a>
+
+            </div>
+
+        </div>
         @media (max-width: 900px) {
             .process-grid {
                 grid-template-columns: repeat(2, 1fr);
