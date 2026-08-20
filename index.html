@@ -2,29 +2,57 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Sai Graphic Designs | Graphic Design & Printing Services</title>
 
-    <meta name="description"
-        content="Sai Graphic Designs provides professional logo design, logo recreation, branding, visiting cards, social media designs, brochures, packaging, printing and creative design services.">
+    <meta
+        name="description"
+        content="Sai Graphic Designs provides professional logo design, branding, visiting cards, social media designs, brochures, packaging, printing and creative design services."
+    >
 
-    <meta name="keywords"
-        content="Sai Graphic Designs, graphic designer Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services">
+    <meta
+        name="keywords"
+        content="Sai Graphic Designs, graphic designer Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services"
+    >
 
-    <meta name="author" content="Sai Graphic Designs">
+    <meta
+        name="author"
+        content="Sai Graphic Designs"
+    >
 
-    <meta name="robots" content="index, follow">
+    <meta
+        name="robots"
+        content="index, follow"
+    >
 
-    <link rel="canonical" href="index.html">
+    <link
+        rel="canonical"
+        href="index.html"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 
     <style>
+
         /* =====================================================
-           EXTRA HOMEPAGE STYLES
+           HOME PAGE ADDITIONAL STYLES
+        ===================================================== */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        /* =====================================================
+           HERO
         ===================================================== */
 
         .hero-actions {
@@ -34,131 +62,164 @@
             flex-wrap: wrap;
         }
 
+
         .hero-meta-item {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: .6rem;
             font-weight: 700;
         }
+
 
         .hero-meta-icon {
             width: 28px;
             height: 28px;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             border-radius: 50%;
+
             background: var(--primary);
             color: #fff;
+
             font-weight: 800;
         }
+
+
+        /* =====================================================
+           SERVICE ICON
+        ===================================================== */
 
         .service-icon {
             width: 58px;
             height: 58px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             background: var(--primary);
             color: #fff;
+
             border-radius: 16px;
+
             font-size: 1.5rem;
+
             margin-bottom: 1.2rem;
         }
+
+
+        /* =====================================================
+           PRODUCT CARDS
+        ===================================================== */
 
         .product-card {
             overflow: hidden;
         }
 
+
         .product-img-wrap {
             overflow: hidden;
         }
 
+
         .product-img {
-            transition: transform 0.4s ease;
+            width: 100%;
+            display: block;
+
+            transition: transform .4s ease;
         }
+
 
         .product-card:hover .product-img {
             transform: scale(1.04);
         }
 
-        .product-order-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.8rem;
-            margin-top: 1rem;
-        }
-
-        .product-order-row .btn-add-cart {
-            margin-top: 0 !important;
-        }
-
-        .whatsapp-floating {
-            position: fixed;
-            right: 22px;
-            bottom: 22px;
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: #25D366;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.7rem;
-            text-decoration: none;
-            z-index: 999;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-            transition: transform 0.25s ease;
-        }
-
-        .whatsapp-floating:hover {
-            transform: translateY(-4px) scale(1.05);
-        }
 
         /* =====================================================
-           CART
+           CART BUTTON
         ===================================================== */
 
         .cart-icon-btn {
             position: relative;
+
             width: 44px;
             height: 44px;
-            border: 1px solid var(--border);
-            background: var(--white);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
 
-        .cart-badge {
-            position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: var(--primary);
-            color: #fff;
-            font-size: .7rem;
+            border: 1px solid var(--border, #ddd);
+
+            background: #fff;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 1.2rem;
+
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+
+        .cart-badge {
+            position: absolute;
+
+            top: -7px;
+            right: -7px;
+
+            min-width: 20px;
+            height: 20px;
+
+            padding: 0 5px;
+
+            border-radius: 50px;
+
+            background: var(--primary, #111);
+            color: #fff;
+
+            font-size: .7rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             font-weight: 800;
         }
 
 
+        /* =====================================================
+           NAV ACTIONS
+        ===================================================== */
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+        }
+
+
+        /* =====================================================
+           CART OVERLAY
+        ===================================================== */
+
         .cart-overlay {
             position: fixed;
+
             inset: 0;
-            background: rgba(0,0,0,.45);
+
+            background: rgba(0, 0, 0, .45);
+
             opacity: 0;
             visibility: hidden;
+
             z-index: 998;
+
             transition: .25s ease;
         }
+
 
         .cart-overlay.active {
             opacity: 1;
@@ -166,241 +227,467 @@
         }
 
 
+        /* =====================================================
+           CART DRAWER
+        ===================================================== */
+
         .cart-drawer {
             position: fixed;
+
             top: 0;
             right: -440px;
+
             width: min(430px, 92vw);
             height: 100vh;
+
             background: #fff;
+
             z-index: 1000;
+
             display: flex;
             flex-direction: column;
-            box-shadow: -10px 0 40px rgba(0,0,0,.15);
+
+            box-shadow: -10px 0 40px rgba(0, 0, 0, .15);
+
             transition: right .3s ease;
         }
+
 
         .cart-drawer.active {
             right: 0;
         }
 
 
+        /* =====================================================
+           CART HEADER
+        ===================================================== */
+
         .cart-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 1.3rem 1.4rem;
+
             border-bottom: 1px solid #eee;
         }
+
 
         .cart-header h3 {
             margin: 0;
             font-size: 1.15rem;
         }
 
+
         .cart-close {
             border: 0;
+
             background: transparent;
+
             font-size: 2rem;
+
             cursor: pointer;
+
             line-height: 1;
         }
 
 
-cart-item 
+        /* =====================================================
+           CART ITEMS
+        ===================================================== */
 
+        .cart-items {
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding: 1rem 1.2rem;
+        }
+
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 1rem;
+
+            padding: 1rem 0;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .cart-item-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+
+        .cart-item-name {
+            font-weight: 800;
+
+            margin-bottom: .3rem;
+        }
+
+
+        .cart-item-price {
+            color: #666;
+
+            font-size: .9rem;
+        }
+
+
+        .cart-remove {
+            flex-shrink: 0;
+
+            width: 34px;
+            height: 34px;
+
+            border: 1px solid #ddd;
+
+            background: #fff;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 1.3rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .cart-remove:hover {
+            background: #f5f5f5;
+        }
+
+
+        /* =====================================================
+           EMPTY CART
+        ===================================================== */
+
+        .empty-cart {
+            padding: 3rem 1rem;
+
+            text-align: center;
+
+            color: #666;
+        }
+
+
+        .empty-cart p:first-child {
+            font-weight: 800;
+
+            color: #222;
+
+            margin-bottom: .4rem;
+        }
+
+
+        /* =====================================================
+           CART FOOTER
+        ===================================================== */
 
         .cart-footer {
             padding: 1.2rem;
+
             border-top: 1px solid #eee;
         }
+
 
         .cart-total {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             font-weight: 800;
+
             font-size: 1.05rem;
+
             margin-bottom: 1rem;
-        }
-
-        .cart-checkout {
-            width: 100%;
-            border: 0;
-            cursor: pointer;
-            padding: .95rem 1rem;
-            border-radius: 10px;
-            background: var(--dark);
-            color: #fff;
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .cart-checkout:disabled {
-            opacity: .45;
-            cursor: not-allowed;
         }
 
 
         .btn-checkout {
             width: 100%;
+
             border: 0;
+
             cursor: pointer;
-            padding: 0.95rem 1rem;
+
+            padding: .95rem 1rem;
+
             border-radius: 10px;
+
             background: var(--dark, #111);
+
             color: #fff;
+
             font-weight: 800;
+
             font-size: 1rem;
         }
 
+
         .btn-checkout:disabled {
-            opacity: 0.45;
+            opacity: .45;
+
             cursor: not-allowed;
         }
 
-        .nav-actions {
+
+        /* =====================================================
+           PRODUCT ORDER
+        ===================================================== */
+
+        .product-order-row {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            justify-content: space-between;
+
+            gap: .8rem;
+
+            margin-top: 1rem;
         }
 
-        .cart-icon-btn {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            border: 1px solid #ddd;
-            background: #fff;
-            border-radius: 10px;
+
+        .btn-add-cart {
+            width: 100%;
+
             cursor: pointer;
-            font-size: 1.2rem;
         }
 
-        .cart-badge {
-            position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 5px;
-            border-radius: 50px;
-            background: var(--primary, #111);
-            color: #fff;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
 
-        .portfolio-label {
-            position: absolute;
-            left: 18px;
-            bottom: 18px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0.7rem 1rem;
-            border-radius: 10px;
-            font-weight: 800;
-        }
+        /* =====================================================
+           PORTFOLIO
+        ===================================================== */
 
         .collection-img-wrap {
             position: relative;
+
             overflow: hidden;
         }
+
 
         .collection-img {
             width: 100%;
             height: 100%;
+
             object-fit: cover;
+
+            display: block;
         }
+
+
+        .portfolio-label {
+            position: absolute;
+
+            left: 18px;
+            bottom: 18px;
+
+            background: rgba(255, 255, 255, .95);
+
+            padding: .7rem 1rem;
+
+            border-radius: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           PROCESS
+        ===================================================== */
 
         .process-grid {
             display: grid;
+
             grid-template-columns: repeat(4, 1fr);
+
             gap: 1.2rem;
+
             margin-top: 2.5rem;
         }
 
+
         .process-card {
             padding: 1.5rem;
+
             border: 1px solid #eee;
+
             border-radius: 16px;
+
             background: #fff;
         }
 
+
         .process-number {
             font-size: 2rem;
+
             font-weight: 900;
-            margin-bottom: 0.8rem;
+
+            margin-bottom: .8rem;
+
             color: var(--primary);
         }
 
+
         .process-card h3 {
-            margin-bottom: 0.5rem;
+            margin-bottom: .5rem;
         }
 
+
         .process-card p {
-            font-size: 0.9rem;
+            font-size: .9rem;
+
             color: #666;
         }
+
+
+        /* =====================================================
+           CTA
+        ===================================================== */
 
         .cta-section {
             padding: 5rem 1.5rem;
         }
 
+
         .cta-box {
             max-width: 1150px;
+
             margin: auto;
+
             padding: 4rem 2rem;
+
             border-radius: 24px;
+
             background: var(--dark, #111);
+
             color: #fff;
+
             text-align: center;
         }
 
+
         .cta-box h2 {
             font-size: clamp(2rem, 5vw, 3.5rem);
+
             margin-bottom: 1rem;
         }
 
+
         .cta-box p {
             max-width: 650px;
+
             margin: 0 auto 1.8rem;
-            color: rgba(255, 255, 255, 0.75);
+
+            color: rgba(255, 255, 255, .75);
         }
+
 
         .cta-buttons {
             display: flex;
+
             justify-content: center;
+
             gap: 1rem;
+
             flex-wrap: wrap;
         }
 
-        .btn-white {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.9rem 1.3rem;
-            border-radius: 10px;
-            background: #fff;
-            color: #111;
-            text-decoration: none;
-            font-weight: 800;
-        }
 
+        .btn-white,
         .btn-whatsapp {
             display: inline-flex;
+
             align-items: center;
             justify-content: center;
-            padding: 0.9rem 1.3rem;
+
+            padding: .9rem 1.3rem;
+
             border-radius: 10px;
-            background: #25D366;
-            color: #fff;
+
             text-decoration: none;
+
             font-weight: 800;
         }
 
+
+        .btn-white {
+            background: #fff;
+
+            color: #111;
+        }
+
+
+        .btn-whatsapp {
+            background: #25D366;
+
+            color: #fff;
+        }
+
+
+        /* =====================================================
+           WHATSAPP FLOATING BUTTON
+        ===================================================== */
+
+        .whatsapp-floating {
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            width: 58px;
+            height: 58px;
+
+            border-radius: 50%;
+
+            background: #25D366;
+
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.7rem;
+
+            text-decoration: none;
+
+            z-index: 997;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+
+            transition: transform .25s ease;
+        }
+
+
+        .whatsapp-floating:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+
+        /* =====================================================
+           HOME ONLY NAVIGATION
+        ===================================================== */
+
+        .home-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .25rem;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
         @media (max-width: 900px) {
+
             .process-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -408,26 +695,46 @@ cart-item
             .nav-actions .btn-header {
                 display: none;
             }
+
         }
 
+
         @media (max-width: 650px) {
+
             .process-grid {
                 grid-template-columns: 1fr;
             }
 
+
             .hero-actions {
                 align-items: flex-start;
+
                 flex-direction: column;
             }
 
+
             .hero-meta-item {
-                font-size: 0.9rem;
+                font-size: .9rem;
             }
+
 
             .cta-box {
                 padding: 3rem 1.3rem;
             }
+
+
+            .cart-drawer {
+                width: 94vw;
+            }
+
+
+            .whatsapp-floating {
+                right: 16px;
+                bottom: 16px;
+            }
+
         }
+
     </style>
 
 </head>
@@ -436,16 +743,21 @@ cart-item
 <body>
 
 
-<!-- =================================
+<!-- =====================================================
      HEADER
-================================= -->
+===================================================== -->
 
 <header class="site-header">
 
     <div class="nav-container">
 
+
         <!-- LOGO -->
-        <a href="index.html" class="logo">
+
+        <a
+            href="#home"
+            class="logo"
+        >
 
             <div class="logo-icon">
                 SG
@@ -458,7 +770,8 @@ cart-item
         </a>
 
 
-        <!-- MOBILE MENU BUTTON -->
+        <!-- MOBILE MENU -->
+
         <button
             type="button"
             class="mobile-menu-btn"
@@ -470,7 +783,8 @@ cart-item
         </button>
 
 
-        <!-- NAVIGATION -->
+        <!-- HOME ONLY NAVIGATION -->
+
         <nav
             class="main-nav"
             id="mainNav"
@@ -478,28 +792,35 @@ cart-item
         >
 
             <a
-                href="index.html"
+                href="#home"
                 class="nav-link active"
             >
                 Home
             </a>
 
             <a
-                href="about.html"
-                class="nav-link"
-            >
-                About
-            </a>
-
-            <a
-                href="customizer.html"
+                href="#services"
                 class="nav-link"
             >
                 Services
             </a>
 
             <a
-                href="contact.html"
+                href="#work"
+                class="nav-link"
+            >
+                Our Work
+            </a>
+
+            <a
+                href="#about"
+                class="nav-link"
+            >
+                About
+            </a>
+
+            <a
+                href="#contact"
                 class="nav-link"
             >
                 Contact
@@ -509,42 +830,58 @@ cart-item
 
 
         <!-- ACTIONS -->
-       <div class="nav-actions">
 
-    <button
-        type="button"
-        class="cart-icon-btn"
-        id="cartToggle"
-        aria-label="Open shopping cart">
-
-        🛒
-
-        <span
-            class="cart-badge"
-            id="cartBadge">
-            0
-        </span>
-
-    </button>
+        <div class="nav-actions">
 
 
-    <a
-        href="contact.html"
-        class="btn-header">
-        Get Started <span>→</span>
-    </a>
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart"
+            >
 
-</div>
+                🛒
+
+                <span
+                    class="cart-badge"
+                    id="cartBadge"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+            <a
+                href="#services"
+                class="btn-header"
+            >
+                Get Started <span>→</span>
+            </a>
+
+
+        </div>
+
+    </div>
+
 </header>
+
+
 <!-- =====================================================
      HERO
 ===================================================== -->
+
+<main id="home">
+
 
 <section class="hero">
 
     <div class="hero-container">
 
+
         <div>
+
 
             <span class="hero-badge">
                 Creative Graphic Design Studio
@@ -573,8 +910,9 @@ cart-item
 
             <div class="hero-actions">
 
+
                 <a
-                    href="customizer.html"
+                    href="#services"
                     class="btn-dark"
                 >
                     Explore Services →
@@ -593,12 +931,15 @@ cart-item
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
         <div class="hero-img-wrap">
+
 
             <img
                 src="Images/Hero image.png"
@@ -620,7 +961,9 @@ cart-item
 
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -628,27 +971,40 @@ cart-item
 
 
 <!-- =====================================================
-     BENEFITS BAR
+     BENEFITS
 ===================================================== -->
 
 <div class="meta-row">
 
     <div class="meta-container">
 
+
         <div class="meta-item">
+
             <span>✓</span>
+
             Professional Designs
+
         </div>
 
+
         <div class="meta-item">
+
             <span>✓</span>
+
             Fast Delivery
+
         </div>
 
+
         <div class="meta-item">
+
             <span>✓</span>
+
             Affordable Pricing
+
         </div>
+
 
     </div>
 
@@ -656,20 +1012,26 @@ cart-item
 
 
 <!-- =====================================================
-     CORE SERVICES
+     SERVICES
 ===================================================== -->
 
-<section class="section">
+<section
+    class="section"
+    id="services"
+>
 
     <div class="section-header">
+
 
         <span class="section-tag">
             Our Services
         </span>
 
+
         <h2 class="section-title">
             Everything Your Brand Needs
         </h2>
+
 
     </div>
 
@@ -677,15 +1039,20 @@ cart-item
     <div class="features-grid">
 
 
+        <!-- SERVICE 1 -->
+
         <div class="feature-card">
+
 
             <div class="service-icon">
                 ✦
             </div>
 
+
             <h3 class="feature-title">
                 Logo Design & Recreation
             </h3>
+
 
             <p class="feature-desc">
 
@@ -694,25 +1061,32 @@ cart-item
 
             </p>
 
+
             <a
-                href="customizer.html"
+                href="#popular-services"
                 class="btn-primary"
             >
-                View Service →
+                Order Service →
             </a>
+
 
         </div>
 
 
+        <!-- SERVICE 2 -->
+
         <div class="feature-card">
+
 
             <div class="service-icon">
                 ◈
             </div>
 
+
             <h3 class="feature-title">
                 Branding & Brand Identity
             </h3>
+
 
             <p class="feature-desc">
 
@@ -721,25 +1095,32 @@ cart-item
 
             </p>
 
+
             <a
-                href="customizer.html"
+                href="#popular-services"
                 class="btn-primary"
             >
-                View Service →
+                Order Service →
             </a>
+
 
         </div>
 
 
+        <!-- SERVICE 3 -->
+
         <div class="feature-card">
+
 
             <div class="service-icon">
                 ◎
             </div>
 
+
             <h3 class="feature-title">
                 Social Media Designs
             </h3>
+
 
             <p class="feature-desc">
 
@@ -748,25 +1129,32 @@ cart-item
 
             </p>
 
+
             <a
-                href="customizer.html"
+                href="#popular-services"
                 class="btn-primary"
             >
-                View Service →
+                Order Service →
             </a>
+
 
         </div>
 
 
+        <!-- SERVICE 4 -->
+
         <div class="feature-card">
+
 
             <div class="service-icon">
                 ▣
             </div>
 
+
             <h3 class="feature-title">
                 Print & Marketing Designs
             </h3>
+
 
             <p class="feature-desc">
 
@@ -775,14 +1163,17 @@ cart-item
 
             </p>
 
+
             <a
-                href="customizer.html"
+                href="#popular-services"
                 class="btn-primary"
             >
-                View Service →
+                Order Service →
             </a>
 
+
         </div>
+
 
     </div>
 
@@ -793,14 +1184,20 @@ cart-item
      ABOUT / WHY US
 ===================================================== -->
 
-<section class="section custom-product">
+<section
+    class="section custom-product"
+    id="about"
+>
+
 
     <div class="custom-product-container">
 
 
         <div class="custom-visual-grid">
 
+
             <div class="custom-visual-card">
+
 
                 <img
                     src="Images/Designing.png"
@@ -809,14 +1206,17 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <p style="font-weight:700;margin-top:1rem;">
                     Design Service
                 </p>
+
 
             </div>
 
 
             <div class="custom-visual-card">
+
 
                 <img
                     src="Images/Printing.png"
@@ -825,16 +1225,20 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <p style="font-weight:700;margin-top:1rem;">
                     Printing Service
                 </p>
 
+
             </div>
+
 
         </div>
 
 
         <div class="who-right">
+
 
             <span class="section-tag">
                 Why Sai Graphic Designs?
@@ -860,6 +1264,7 @@ cart-item
 
             <ul class="custom-bullet-list">
 
+
                 <li class="custom-bullet-item">
 
                     <span class="custom-bullet-icon">
@@ -869,6 +1274,7 @@ cart-item
                     Professional & Creative Designs
 
                 </li>
+
 
                 <li class="custom-bullet-item">
 
@@ -880,6 +1286,7 @@ cart-item
 
                 </li>
 
+
                 <li class="custom-bullet-item">
 
                     <span class="custom-bullet-icon">
@@ -889,6 +1296,7 @@ cart-item
                     Fast & Reliable Delivery
 
                 </li>
+
 
                 <li class="custom-bullet-item">
 
@@ -900,17 +1308,20 @@ cart-item
 
                 </li>
 
+
             </ul>
 
 
             <a
-                href="about.html"
+                href="#services"
                 class="btn-dark"
             >
-                About Sai Graphic Designs →
+                Explore Services →
             </a>
 
+
         </div>
+
 
     </div>
 
@@ -921,17 +1332,24 @@ cart-item
      CREATIVE WORK
 ===================================================== -->
 
-<section class="section">
+<section
+    class="section"
+    id="work"
+>
+
 
     <div class="section-header">
+
 
         <span class="section-tag">
             Our Creative Work
         </span>
 
+
         <h2 class="section-title">
-            Explore Our Design Services
+            Explore Our Design Work
         </h2>
+
 
     </div>
 
@@ -944,6 +1362,7 @@ cart-item
 
             <div class="collection-img-wrap large">
 
+
                 <img
                     src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=85"
                     alt="Professional brand identity and stationery design"
@@ -951,14 +1370,17 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <div class="portfolio-label">
                     Branding & Identity
                 </div>
+
 
             </div>
 
 
             <div class="collection-img-wrap">
+
 
                 <img
                     src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=85"
@@ -967,14 +1389,17 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <div class="portfolio-label">
                     Social Media
                 </div>
+
 
             </div>
 
 
             <div class="collection-img-wrap">
+
 
                 <img
                     src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=900&q=85"
@@ -983,21 +1408,26 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <div class="portfolio-label">
                     Digital Design
                 </div>
 
+
             </div>
+
 
         </div>
 
 
         <div class="collection-gallery">
 
+
             <div
                 class="collection-img-wrap"
                 style="grid-column:span 2;height:500px;"
             >
+
 
                 <img
                     src="https://images.unsplash.com/photo-1523726491678-bf852e717f6a?auto=format&fit=crop&w=1400&q=85"
@@ -1006,13 +1436,17 @@ cart-item
                     loading="lazy"
                 >
 
+
                 <div class="portfolio-label">
                     Creative Design Studio
                 </div>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -1020,20 +1454,27 @@ cart-item
 
 
 <!-- =====================================================
-     POPULAR SERVICES
+     POPULAR SERVICES / ORDER
 ===================================================== -->
 
-<section class="section">
+<section
+    class="section"
+    id="popular-services"
+>
+
 
     <div class="section-header">
+
 
         <span class="section-tag">
             Popular Services
         </span>
 
+
         <h2 class="section-title">
-            Services Our Customers Love
+            Choose a Service & Order
         </h2>
+
 
     </div>
 
@@ -1044,6 +1485,7 @@ cart-item
         <!-- LOGO DESIGN -->
 
         <div class="product-card">
+
 
             <div class="product-img-wrap">
 
@@ -1056,27 +1498,32 @@ cart-item
 
             </div>
 
+
             <div class="product-info">
+
 
                 <h3 class="product-name">
                     Logo Design
                 </h3>
 
+
                 <p class="product-price">
                     Starting ₹1,000/-
                 </p>
+
 
                 <button
                     type="button"
                     class="btn-add-cart btn-primary"
                     data-name="Logo Design"
                     data-price="1000"
-                    style="margin-top:1rem;width:100%;"
                 >
                     Order Now
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -1084,6 +1531,7 @@ cart-item
         <!-- VISITING CARD -->
 
         <div class="product-card">
+
 
             <div class="product-img-wrap">
 
@@ -1096,27 +1544,32 @@ cart-item
 
             </div>
 
+
             <div class="product-info">
+
 
                 <h3 class="product-name">
                     Visiting Card Design
                 </h3>
 
+
                 <p class="product-price">
                     Starting ₹200/-
                 </p>
+
 
                 <button
                     type="button"
                     class="btn-add-cart btn-primary"
                     data-name="Visiting Card Design"
                     data-price="200"
-                    style="margin-top:1rem;width:100%;"
                 >
                     Order Now
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -1124,6 +1577,7 @@ cart-item
         <!-- SOCIAL MEDIA -->
 
         <div class="product-card">
+
 
             <div class="product-img-wrap">
 
@@ -1136,27 +1590,32 @@ cart-item
 
             </div>
 
+
             <div class="product-info">
+
 
                 <h3 class="product-name">
                     Social Media Design
                 </h3>
 
+
                 <p class="product-price">
                     Starting ₹200/-
                 </p>
+
 
                 <button
                     type="button"
                     class="btn-add-cart btn-primary"
                     data-name="Social Media Design"
                     data-price="200"
-                    style="margin-top:1rem;width:100%;"
                 >
                     Order Now
                 </button>
 
+
             </div>
+
 
         </div>
 
@@ -1164,6 +1623,7 @@ cart-item
         <!-- BROCHURE -->
 
         <div class="product-card">
+
 
             <div class="product-img-wrap">
 
@@ -1176,29 +1636,35 @@ cart-item
 
             </div>
 
+
             <div class="product-info">
+
 
                 <h3 class="product-name">
                     Brochure & Flyer Design
                 </h3>
 
+
                 <p class="product-price">
                     Starting ₹200/-
                 </p>
+
 
                 <button
                     type="button"
                     class="btn-add-cart btn-primary"
                     data-name="Brochure & Flyer Design"
                     data-price="200"
-                    style="margin-top:1rem;width:100%;"
                 >
                     Order Now
                 </button>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -1211,90 +1677,111 @@ cart-item
 
 <section class="section">
 
+
     <div class="section-header">
+
 
         <span class="section-tag">
             Simple Process
         </span>
 
+
         <h2 class="section-title">
             From Idea to Final Design
         </h2>
+
 
     </div>
 
 
     <div class="process-grid">
 
+
         <div class="process-card">
+
 
             <div class="process-number">
                 01
             </div>
 
+
             <h3>
                 Choose a Service
             </h3>
 
+
             <p>
                 Select the design service you need from our available
-                services.
+                services on this Home page.
             </p>
+
 
         </div>
 
 
         <div class="process-card">
+
 
             <div class="process-number">
                 02
             </div>
 
+
             <h3>
-                Share Your Details
+                Add to Cart
             </h3>
 
+
             <p>
-                Tell us about your business, requirements and design
-                preferences.
+                Click Order Now and add the service to your shopping cart.
             </p>
+
 
         </div>
 
 
         <div class="process-card">
+
 
             <div class="process-number">
                 03
             </div>
 
+
             <h3>
-                We Create
+                Continue Order
             </h3>
 
+
             <p>
-                Our design process turns your idea into a professional
-                creative solution.
+                Review your selected services and estimated total in the cart.
             </p>
+
 
         </div>
 
 
         <div class="process-card">
 
+
             <div class="process-number">
                 04
             </div>
 
+
             <h3>
-                Final Delivery
+                WhatsApp Confirmation
             </h3>
 
+
             <p>
-                Receive your final approved design in the required format.
+                Continue your order through WhatsApp and discuss the project
+                details directly with us.
             </p>
 
+
         </div>
+
 
     </div>
 
@@ -1310,15 +1797,19 @@ cart-item
     style="padding-top:5rem;padding-bottom:5rem;"
 >
 
+
     <div class="section-header">
+
 
         <span class="section-tag">
             Why Choose Us
         </span>
 
+
         <h2 class="section-title">
             Design Services You Can Trust
         </h2>
+
 
     </div>
 
@@ -1328,82 +1819,107 @@ cart-item
 
         <div class="custom-visual-card">
 
-            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+
+            <div
+                style="font-size:2rem;color:var(--primary);margin-bottom:1rem;"
+            >
                 🏆
             </div>
 
-            <h4 style="margin-bottom:0.5rem;">
+
+            <h4 style="margin-bottom:.5rem;">
                 Professional Quality
             </h4>
 
-            <p style="font-size:0.85rem;">
+
+            <p style="font-size:.85rem;">
 
                 High-quality creative designs created with attention
                 to detail and brand consistency.
 
             </p>
 
+
         </div>
 
 
         <div class="custom-visual-card">
 
-            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+
+            <div
+                style="font-size:2rem;color:var(--primary);margin-bottom:1rem;"
+            >
                 💰
             </div>
 
-            <h4 style="margin-bottom:0.5rem;">
+
+            <h4 style="margin-bottom:.5rem;">
                 Affordable Pricing
             </h4>
 
-            <p style="font-size:0.85rem;">
+
+            <p style="font-size:.85rem;">
 
                 Flexible pricing options suitable for individuals,
                 startups and established businesses.
 
             </p>
 
+
         </div>
 
 
         <div class="custom-visual-card">
 
-            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+
+            <div
+                style="font-size:2rem;color:var(--primary);margin-bottom:1rem;"
+            >
                 ⚡
             </div>
 
-            <h4 style="margin-bottom:0.5rem;">
+
+            <h4 style="margin-bottom:.5rem;">
                 Fast Delivery
             </h4>
 
-            <p style="font-size:0.85rem;">
+
+            <p style="font-size:.85rem;">
 
                 We focus on delivering quality work within the
                 agreed project timeline.
 
             </p>
 
+
         </div>
 
 
         <div class="custom-visual-card">
 
-            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+
+            <div
+                style="font-size:2rem;color:var(--primary);margin-bottom:1rem;"
+            >
                 🤝
             </div>
 
-            <h4 style="margin-bottom:0.5rem;">
+
+            <h4 style="margin-bottom:.5rem;">
                 Customer Support
             </h4>
 
-            <p style="font-size:0.85rem;">
+
+            <p style="font-size:.85rem;">
 
                 Friendly communication and design support throughout
                 your project.
 
             </p>
 
+
         </div>
+
 
     </div>
 
@@ -1416,62 +1932,75 @@ cart-item
 
 <div class="ticker-wrap">
 
+
     <div class="ticker">
+
 
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Logo Design
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Branding
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Social Media Design
         </span>
+
 
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Print Design
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Packaging Design
         </span>
+
 
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Logo Recreation
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Video Editing
         </span>
+
 
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Printing Services
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Logo Design
         </span>
+
 
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Branding
         </span>
 
+
         <span class="ticker-item">
             <span class="ticker-star">*</span>
             Social Media Design
         </span>
+
 
     </div>
 
@@ -1479,30 +2008,42 @@ cart-item
 
 
 <!-- =====================================================
-     CALL TO ACTION
+     CONTACT / CTA
 ===================================================== -->
 
-<section class="cta-section">
+<section
+    class="cta-section"
+    id="contact"
+>
+
 
     <div class="cta-box">
+
 
         <h2>
             Ready to Build Your Brand?
         </h2>
 
+
         <p>
-            Let's create professional designs that make your business
-            look better, communicate clearly and stand out from the crowd.
+
+            Choose your service, add it to the cart and continue your
+            order through WhatsApp. Let's create professional designs
+            that make your business stand out.
+
         </p>
+
 
         <div class="cta-buttons">
 
+
             <a
-                href="contact.html"
+                href="#popular-services"
                 class="btn-white"
             >
-                Start Your Project →
+                Order a Service →
             </a>
+
 
             <a
                 href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20would%20like%20to%20discuss%20a%20design%20project."
@@ -1513,11 +2054,16 @@ cart-item
                 WhatsApp Us
             </a>
 
+
         </div>
+
 
     </div>
 
 </section>
+
+
+</main>
 
 
 <!-- =====================================================
@@ -1535,17 +2081,21 @@ cart-item
      CART DRAWER
 ===================================================== -->
 
-<div
+<aside
     class="cart-drawer"
     id="cartDrawer"
     aria-hidden="true"
+    aria-label="Shopping cart"
 >
 
+
     <div class="cart-header">
+
 
         <h3>
             Selected Services
         </h3>
+
 
         <button
             type="button"
@@ -1556,6 +2106,7 @@ cart-item
             &times;
         </button>
 
+
     </div>
 
 
@@ -1564,30 +2115,41 @@ cart-item
         id="cartItemsList"
     >
 
+
         <div class="empty-cart">
+
+
             <p>
                 No services selected yet.
             </p>
 
+
             <p>
                 Choose a service to start your order.
             </p>
+
+
         </div>
+
 
     </div>
 
 
     <div class="cart-footer">
 
+
         <div class="cart-total">
+
 
             <span>
                 Estimated Total:
             </span>
 
+
             <span id="cartTotalVal">
                 ₹0
             </span>
+
 
         </div>
 
@@ -1601,9 +2163,11 @@ cart-item
             Continue Order
         </button>
 
+
     </div>
 
-</div>
+
+</aside>
 
 
 <!-- =====================================================
@@ -1627,6 +2191,7 @@ cart-item
 
 <footer>
 
+
     <div class="footer-container">
 
 
@@ -1634,13 +2199,17 @@ cart-item
 
         <div class="footer-brand">
 
+
             <div class="logo">
+
 
                 <div class="logo-icon">
                     SG
                 </div>
 
+
                 Sai <span>Graphic Designs</span>
+
 
             </div>
 
@@ -1655,6 +2224,7 @@ cart-item
 
             <div class="footer-socials">
 
+
                 <a
                     href="#"
                     class="social-icon"
@@ -1662,6 +2232,7 @@ cart-item
                 >
                     Fb
                 </a>
+
 
                 <a
                     href="#"
@@ -1671,6 +2242,7 @@ cart-item
                     X
                 </a>
 
+
                 <a
                     href="#"
                     class="social-icon"
@@ -1678,6 +2250,7 @@ cart-item
                 >
                     Li
                 </a>
+
 
                 <a
                     href="#"
@@ -1687,7 +2260,9 @@ cart-item
                     Ig
                 </a>
 
+
             </div>
+
 
         </div>
 
@@ -1696,82 +2271,106 @@ cart-item
 
         <div>
 
+
             <h4 class="footer-col-title">
                 Services
             </h4>
 
+
             <ul class="footer-links">
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#popular-services">
                         Logo Design
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#popular-services">
                         Logo Recreation
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#popular-services">
                         Branding
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#popular-services">
                         Social Media Design
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#popular-services">
                         Print Design
                     </a>
                 </li>
 
+
             </ul>
+
 
         </div>
 
 
-        <!-- COMPANY -->
+        <!-- HOME -->
 
         <div>
 
+
             <h4 class="footer-col-title">
-                Company
+                Explore
             </h4>
+
 
             <ul class="footer-links">
 
+
                 <li class="footer-link">
-                    <a href="index.html">
+                    <a href="#home">
                         Home
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="about.html">
+                    <a href="#about">
                         About Us
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="customizer.html">
+                    <a href="#services">
                         Services
                     </a>
                 </li>
 
+
                 <li class="footer-link">
-                    <a href="contact.html">
+                    <a href="#work">
+                        Our Work
+                    </a>
+                </li>
+
+
+                <li class="footer-link">
+                    <a href="#contact">
                         Contact
                     </a>
                 </li>
 
+
             </ul>
+
 
         </div>
 
@@ -1780,27 +2379,35 @@ cart-item
 
         <div>
 
+
             <h4 class="footer-col-title">
                 Contact
             </h4>
 
+
             <div class="footer-contact">
+
 
                 <p>
                     Madurai, Tamil Nadu, India
                 </p>
 
+
                 <p>
                     P: +91 63811 28781
                 </p>
+
 
                 <p>
                     E: saigraphicdesings@gmail.com
                 </p>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -1809,16 +2416,20 @@ cart-item
 
     <div class="footer-bottom">
 
+
         <p>
             &copy; 2026 Sai Graphic Designs.
             All rights reserved.
         </p>
 
+
         <p>
             Designing Ideas into Reality
         </p>
 
+
     </div>
+
 
 </footer>
 
@@ -1831,16 +2442,34 @@ cart-item
 
 document.addEventListener("DOMContentLoaded", function () {
 
+
     /* =====================================================
-       SHARED CART
+       CART STORAGE
     ===================================================== */
 
     const CART_KEY = "saiGraphicCart";
 
-    let cart = JSON.parse(
-        localStorage.getItem(CART_KEY)
-    ) || [];
 
+    let cart = [];
+
+
+    try {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
+
+    } catch (error) {
+
+        cart = [];
+
+    }
+
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
 
     function saveCart() {
 
@@ -1859,212 +2488,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartToggle =
         document.getElementById("cartToggle");
 
+
     const cartClose =
         document.getElementById("cartClose");
+
 
     const cartDrawer =
         document.getElementById("cartDrawer");
 
+
     const cartOverlay =
         document.getElementById("cartOverlay");
+
 
     const cartBadge =
         document.getElementById("cartBadge");
 
+
     const cartItemsList =
         document.getElementById("cartItemsList");
+
 
     const cartTotalVal =
         document.getElementById("cartTotalVal");
 
+
     const checkoutBtn =
         document.getElementById("checkoutBtn");
 
+
     const addButtons =
         document.querySelectorAll(".btn-add-cart");
-
-
-    /* =====================================================
-       OPEN CART
-    ===================================================== */
-
-    function openCart() {
-
-        cartDrawer.classList.add("active");
-
-        cartOverlay.classList.add("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        cartOverlay.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.style.overflow = "hidden";
-
-    }
-
-
-    /* =====================================================
-       CLOSE CART
-    ===================================================== */
-
-    function closeCart() {
-
-        cartDrawer.classList.remove("active");
-
-        cartOverlay.classList.remove("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        cartOverlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.style.overflow = "";
-
-    }
-
-
-    /* =====================================================
-       UPDATE CART
-    ===================================================== */
-
-    function updateCart() {
-
-        cartItemsList.innerHTML = "";
-
-
-        /* EMPTY CART */
-
-        if (cart.length === 0) {
-
-            cartItemsList.innerHTML = `
-
-                <div class="empty-cart">
-
-                    <p>
-                        No services selected yet.
-                    </p>
-
-                    <p>
-                        Choose a service to start your order.
-                    </p>
-
-                </div>
-
-            `;
-
-            cartBadge.textContent = "0";
-
-            cartTotalVal.textContent = "₹0";
-
-            checkoutBtn.disabled = true;
-
-            return;
-
-        }
-
-
-        let total = 0;
-
-
-        /* DISPLAY ITEMS */
-
-        cart.forEach(function (item, index) {
-
-            total += Number(item.price);
-
-
-            const cartItem =
-                document.createElement("div");
-
-            cartItem.className =
-                "cart-item";
-
-
-            cartItem.innerHTML = `
-
-                <div class="cart-item-info">
-
-                    <div class="cart-item-name">
-                        ${escapeHTML(item.name)}
-                    </div>
-
-                    <div class="cart-item-price">
-                        ₹${Number(item.price)
-                            .toLocaleString("en-IN")}
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="cart-remove"
-                    data-index="${index}"
-                    aria-label="Remove ${escapeHTML(item.name)}"
-                >
-                    ×
-                </button>
-
-            `;
-
-
-            cartItemsList.appendChild(cartItem);
-
-        });
-
-
-        /* UPDATE TOTAL */
-
-        cartBadge.textContent =
-            cart.length;
-
-        cartTotalVal.textContent =
-            "₹" + total.toLocaleString("en-IN");
-
-        checkoutBtn.disabled = false;
-
-
-        /* REMOVE BUTTONS */
-
-        document
-            .querySelectorAll(".cart-remove")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const index =
-                            Number(
-                                this.dataset.index
-                            );
-
-
-                        cart.splice(index, 1);
-
-
-                        saveCart();
-
-
-                        updateCart();
-
-                    }
-                );
-
-            });
-
-    }
 
 
     /* =====================================================
@@ -2089,21 +2543,244 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       ADD TO CART
+       OPEN CART
+    ===================================================== */
+
+    function openCart() {
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow = "hidden";
+
+    }
+
+
+    /* =====================================================
+       CLOSE CART
+    ===================================================== */
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    function updateCart() {
+
+
+        cartItemsList.innerHTML = "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+
+            cartItemsList.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <p>
+                        No services selected yet.
+                    </p>
+
+                    <p>
+                        Choose a service to start your order.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            cartBadge.textContent = "0";
+
+
+            cartTotalVal.textContent = "₹0";
+
+
+            checkoutBtn.disabled = true;
+
+
+            return;
+
+        }
+
+
+        let total = 0;
+
+
+        /* CREATE CART ITEMS */
+
+        cart.forEach(function (item, index) {
+
+
+            const price =
+                Number(item.price) || 0;
+
+
+            total += price;
+
+
+            const cartItem =
+                document.createElement("div");
+
+
+            cartItem.className =
+                "cart-item";
+
+
+            cartItem.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+
+                        ${escapeHTML(item.name)}
+
+                    </div>
+
+                    <div class="cart-item-price">
+
+                        ₹${price.toLocaleString("en-IN")}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove ${escapeHTML(item.name)}"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                cartItem
+            );
+
+
+        });
+
+
+        /* UPDATE SUMMARY */
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        cartTotalVal.textContent =
+            "₹" + total.toLocaleString("en-IN");
+
+
+        checkoutBtn.disabled = false;
+
+
+        /* REMOVE BUTTONS */
+
+        cartItemsList
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+
+                    }
+                );
+
+
+            });
+
+
+    }
+
+
+    /* =====================================================
+       ADD SERVICE TO CART
     ===================================================== */
 
     addButtons.forEach(function (button) {
+
 
         button.addEventListener(
             "click",
             function () {
 
+
                 const name =
-                    this.getAttribute("data-name");
+                    this.getAttribute(
+                        "data-name"
+                    );
+
 
                 const price =
                     Number(
-                        this.getAttribute("data-price")
+                        this.getAttribute(
+                            "data-price"
+                        )
                     );
 
 
@@ -2119,10 +2796,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (existing) {
 
+
                     alert(
                         name +
                         " is already selected."
                     );
+
 
                     openCart();
 
@@ -2131,7 +2810,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* ADD */
+                /* ADD SERVICE */
 
                 cart.push({
 
@@ -2152,41 +2831,55 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateCart();
 
 
-                /* OPEN */
+                /* OPEN CART */
 
                 openCart();
 
+
             }
         );
+
 
     });
 
 
     /* =====================================================
-       CART BUTTON
+       CART TOGGLE
     ===================================================== */
 
     cartToggle.addEventListener(
         "click",
         function () {
 
-            /* Get latest cart */
 
-            cart = JSON.parse(
-                localStorage.getItem(CART_KEY)
-            ) || [];
+            try {
+
+                cart =
+                    JSON.parse(
+                        localStorage.getItem(
+                            CART_KEY
+                        )
+                    ) || [];
+
+            } catch (error) {
+
+                cart = [];
+
+            }
 
 
             updateCart();
 
+
             openCart();
+
 
         }
     );
 
 
     /* =====================================================
-       CLOSE BUTTON
+       CLOSE CART
     ===================================================== */
 
     cartClose.addEventListener(
@@ -2213,28 +2906,36 @@ document.addEventListener("DOMContentLoaded", function () {
         "keydown",
         function (event) {
 
-            if (event.key === "Escape") {
+
+            if (
+                event.key === "Escape" &&
+                cartDrawer.classList.contains("active")
+            ) {
 
                 closeCart();
 
             }
+
 
         }
     );
 
 
     /* =====================================================
-       CHECKOUT / WHATSAPP
+       CHECKOUT → WHATSAPP
     ===================================================== */
 
     checkoutBtn.addEventListener(
         "click",
         function () {
 
+
             if (cart.length === 0) {
                 return;
             }
 
+
+            /* SERVICE LIST */
 
             const serviceList =
                 cart
@@ -2253,20 +2954,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     .join("\n");
 
 
+            /* TOTAL */
+
             const total =
                 cart.reduce(
                     function (sum, item) {
 
-                        return sum +
-                            Number(item.price);
+                        return (
+                            sum +
+                            Number(item.price)
+                        );
 
                     },
                     0
                 );
 
 
+            /* WHATSAPP MESSAGE */
+
             const message =
-                `Hello Sai Graphic Designs 👋
+`Hello Sai Graphic Designs 👋
 
 I would like to order the following services:
 
@@ -2283,21 +2990,26 @@ ORDER SUMMARY
 Number of Services: ${cart.length}
 Estimated Total: ₹${total.toLocaleString("en-IN")}
 
-Please contact me to discuss the project details and payment.
+Please contact me to discuss the project details, requirements and payment.
 
 Thank you!`;
 
+
+            /* WHATSAPP URL */
 
             const whatsappURL =
                 "https://wa.me/916381128781?text=" +
                 encodeURIComponent(message);
 
 
+            /* OPEN WHATSAPP */
+
             window.open(
                 whatsappURL,
                 "_blank",
                 "noopener,noreferrer"
             );
+
 
         }
     );
@@ -2309,7 +3021,9 @@ Thank you!`;
 
     updateCart();
 
+
 });
+
 
 </script>
 
@@ -2319,68 +3033,137 @@ Thank you!`;
 ===================================================== -->
 
 <script src="main.js"></script>
+
+
+<!-- =====================================================
+     MOBILE MENU
+===================================================== -->
+
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const menuButton =
-        document.getElementById("mobileMenuBtn");
-
-    const mainNav =
-        document.getElementById("mainNav");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    if (!menuButton || !mainNav) {
-        return;
-    }
+        const menuButton =
+            document.getElementById(
+                "mobileMenuBtn"
+            );
 
 
-    /* =====================================================
-       OPEN / CLOSE MENU
-    ===================================================== */
+        const mainNav =
+            document.getElementById(
+                "mainNav"
+            );
 
-    menuButton.addEventListener(
-        "click",
-        function () {
 
-            const isOpen =
-                mainNav.classList.toggle(
-                    "mobile-active"
+        if (
+            !menuButton ||
+            !mainNav
+        ) {
+            return;
+        }
+
+
+        /* =================================================
+           OPEN / CLOSE MENU
+        ================================================= */
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+
+                const isOpen =
+                    mainNav.classList.toggle(
+                        "mobile-active"
+                    );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    isOpen
+                        ? "true"
+                        : "false"
                 );
 
 
-            menuButton.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
+                menuButton.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+
+                menuButton.textContent =
+                    isOpen
+                        ? "×"
+                        : "☰";
+
+
+            }
+        );
+
+
+        /* =================================================
+           CLOSE AFTER LINK CLICK
+        ================================================= */
+
+        mainNav
+            .querySelectorAll(".nav-link")
+            .forEach(
+                function (link) {
+
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+
+                            mainNav.classList.remove(
+                                "mobile-active"
+                            );
+
+
+                            menuButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+
+                            menuButton.setAttribute(
+                                "aria-label",
+                                "Open navigation menu"
+                            );
+
+
+                            menuButton.textContent =
+                                "☰";
+
+
+                        }
+                    );
+
+
+                }
             );
 
 
-            menuButton.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
-            );
+        /* =================================================
+           CLOSE WITH ESC
+        ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
 
 
-            menuButton.textContent =
-                isOpen ? "×" : "☰";
+                if (
+                    event.key === "Escape"
+                ) {
 
-        }
-    );
-
-
-    /* =====================================================
-       CLOSE AFTER CLICKING LINK
-    ===================================================== */
-
-    mainNav
-        .querySelectorAll(".nav-link")
-        .forEach(function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
 
                     mainNav.classList.remove(
                         "mobile-active"
@@ -2402,41 +3185,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     menuButton.textContent =
                         "☰";
 
+
                 }
-            );
 
-        });
-
-
-    /* =====================================================
-       CLOSE WITH ESC
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                mainNav.classList.remove(
-                    "mobile-active"
-                );
-
-
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                menuButton.textContent =
-                    "☰";
 
             }
+        );
 
-        }
-    );
 
-});
+    }
+);
+
+</script>
+
+
 </body>
+
 </html>
