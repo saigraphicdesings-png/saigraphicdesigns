@@ -1509,25 +1509,24 @@
 
 
 <!-- =====================================================
-     CART OVERLAY
+     SHARED CART OVERLAY
 ===================================================== -->
 
 <div
     class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true"
-></div>
+    aria-hidden="true">
+</div>
 
 
 <!-- =====================================================
-     CART DRAWER
+     SHARED CART DRAWER
 ===================================================== -->
 
 <div
     class="cart-drawer"
     id="cartDrawer"
-    aria-hidden="true"
->
+    aria-hidden="true">
 
     <div class="cart-header">
 
@@ -1539,9 +1538,10 @@
             type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close cart"
-        >
+            aria-label="Close cart">
+
             &times;
+
         </button>
 
     </div>
@@ -1549,18 +1549,9 @@
 
     <div
         class="cart-items"
-        id="cartItemsList"
-    >
+        id="cartItemsList">
 
-        <div class="empty-cart">
-            <p>
-                No services selected yet.
-            </p>
-
-            <p>
-                Choose a service to start your order.
-            </p>
-        </div>
+        <!-- JavaScript loads cart items here -->
 
     </div>
 
@@ -1570,7 +1561,7 @@
         <div class="cart-total">
 
             <span>
-                Estimated Total:
+                Estimated Total
             </span>
 
             <span id="cartTotalVal">
@@ -1582,11 +1573,12 @@
 
         <button
             type="button"
-            class="btn-checkout"
-            id="checkoutBtn"
-            disabled
-        >
-            Continue Order
+            class="cart-checkout"
+            id="cartCheckout"
+            disabled>
+
+            Send Order on WhatsApp
+
         </button>
 
     </div>
