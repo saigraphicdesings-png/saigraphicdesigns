@@ -1,35 +1,37 @@
-/* =====================================================
-   SAI GRAPHIC DESIGNS
-   SHOP TEMPLATE CART CONNECTION
-   Uses the SAME cart as Services
-===================================================== */
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
+    /*
+     * SHOP USES THE SAME CART AS SERVICES
+     *
+     * Cart storage:
+     * saiGraphicCart
+     *
+     * The actual cart drawer, remove buttons,
+     * total and WhatsApp checkout are controlled
+     * by your existing service cart JavaScript.
+     */
 
-    /* =================================================
-       ADD SHOP TEMPLATE TO SAME GLOBAL CART
-    ================================================= */
+
+    /* =====================================================
+       ADD SHOP TEMPLATE TO SAME CART
+    ===================================================== */
 
     window.addTemplate = function (templateName, price) {
 
+        const finalPrice = Number(price) || 0;
+
+
         /*
-         * Your existing service cart already provides:
-         *
-         * addServiceToGlobalCart()
-         *
-         * We simply send the shop template to it.
+         * Use the existing service cart function.
          */
 
         if (
-            typeof window.addServiceToGlobalCart ===
-            "function"
+            typeof window.addServiceToGlobalCart === "function"
         ) {
 
             window.addServiceToGlobalCart(
                 templateName,
-                Number(price) || 0
+                finalPrice
             );
 
             return;
@@ -37,17 +39,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Safety fallback.
-         * This only happens if main.js/cart.js
-         * was not loaded correctly.
+         * If this appears, main.js/cart.js is not loaded
+         * before shop.js.
          */
 
         console.error(
-            "addServiceToGlobalCart() was not found."
+            "addServiceToGlobalCart() is not available."
         );
 
         alert(
-            "Cart could not be loaded. Please refresh the page."
+            "Cart is not available. Please refresh the page."
         );
 
     };
