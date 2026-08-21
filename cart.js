@@ -1,12 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       GLOBAL CART
-       Used by BOTH Services page and Shop page
-    ===================================================== */
-
     const CART_KEY = "saiGraphicCart";
-
 
     /* =====================================================
        CART ELEMENTS
@@ -42,15 +36,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const cart = JSON.parse(savedCart);
 
-            if (!Array.isArray(cart)) {
-                return [];
-            }
-
-            return cart;
+            return Array.isArray(cart) ? cart : [];
 
         } catch (error) {
 
-            console.error("Error loading cart:", error);
+            console.error("Cart loading error:", error);
 
             return [];
 
@@ -79,8 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function formatPrice(price) {
 
-        return "₹" + Number(price || 0)
-            .toLocaleString("en-IN");
+        return "₹" + Number(price || 0).toLocaleString("en-IN");
 
     }
 
@@ -102,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       UPDATE CART BADGE
+       UPDATE BADGE
     ===================================================== */
 
     function updateCartBadge() {
@@ -119,10 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       UPDATE CART DRAWER
+       RENDER CART
     ===================================================== */
 
-    function updateCart() {
+    function updateGlobalCart() {
 
         const cart = getCart();
 
@@ -148,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="empty-cart">
 
                     <p>
-                        <strong>Your order is empty.</strong>
+                        <strong>Your cart is empty.</strong>
                     </p>
 
                     <p>
@@ -196,9 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const itemElement =
                 document.createElement("div");
 
-
-            itemElement.className =
-                "cart-item";
+            itemElement.className = "cart-item";
 
 
             itemElement.innerHTML = `
@@ -228,9 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
 
-            cartItemsList.appendChild(
-                itemElement
-            );
+            cartItemsList.appendChild(itemElement);
 
         });
 
@@ -260,21 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
        OPEN CART
     ===================================================== */
 
-    function openCart() {
+    function openGlobalCart() {
 
-        updateCart();
-
-
-        if (cartOverlay) {
-
-            cartOverlay.classList.add("active");
-
-            cartOverlay.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-        }
+        updateGlobalCart();
 
 
         if (cartDrawer) {
@@ -282,6 +255,18 @@ document.addEventListener("DOMContentLoaded", function () {
             cartDrawer.classList.add("active");
 
             cartDrawer.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        if (cartOverlay) {
+
+            cartOverlay.classList.add("active");
+
+            cartOverlay.setAttribute(
                 "aria-hidden",
                 "false"
             );
@@ -298,19 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
        CLOSE CART
     ===================================================== */
 
-    function closeCart() {
-
-        if (cartOverlay) {
-
-            cartOverlay.classList.remove("active");
-
-            cartOverlay.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-        }
-
+    function closeGlobalCart() {
 
         if (cartDrawer) {
 
@@ -324,131 +297,104 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+        if (cartOverlay) {
+
+            cartOverlay.classList.remove("active");
+
+            cartOverlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }
+
+
         document.body.style.overflow = "";
 
     }
 
 
     /* =====================================================
-       ADD SERVICE
-       Used by customizer.html
+       MAKE FUNCTIONS GLOBAL
     ===================================================== */
 
-    window.addServiceToGlobalCart =
-        function (serviceName, price) {
+    window.openGlobalCart =
+        openGlobalCart;
 
-            const cart = getCart();
-
-
-            const numericPrice =
-                Number(price) || 0;
-
-
-            /* CHECK DUPLICATE */
-
-            const exists =
-                cart.some(function (item) {
-
-                    return item.name === serviceName;
-
-                });
-
-
-            if (exists) {
-
-                alert(
-                    serviceName +
-                    " is already in your order."
-                );
-
-                openCart();
-
-                return;
-
-            }
-
-
-            /* ADD SERVICE */
-
-            cart.push({
-
-                name: serviceName,
-
-                price: numericPrice,
-
-                type: "service"
-
-            });
-
-
-            saveCart(cart);
-
-            updateCart();
-
-            openCart();
-
-        };
+    window.closeGlobalCart =
+        closeGlobalCart;
 
 
     /* =====================================================
-       ADD SHOP TEMPLATE
-       Used by shop.html
+       HEADER CART BUTTON
     ===================================================== */
 
-    window.addTemplate =
-        function (templateName, price) {
+    if (cartToggle) {
 
-            const cart = getCart();
+        cartToggle.addEventListener(
+            "click",
+            function () {
 
+                openGlobalCart();
 
-            const numericPrice =
-                Number(price) || 0;
+            }
+        );
 
-
-            /* CHECK DUPLICATE */
-
-            const exists =
-                cart.some(function (item) {
-
-                    return item.name === templateName;
-
-                });
+    }
 
 
-            if (exists) {
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
 
-                alert(
-                    templateName +
-                    " is already in your order."
-                );
+    if (cartClose) {
 
-                openCart();
+        cartClose.addEventListener(
+            "click",
+            function () {
 
-                return;
+                closeGlobalCart();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            function () {
+
+                closeGlobalCart();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeGlobalCart();
 
             }
 
-
-            /* ADD TEMPLATE */
-
-            cart.push({
-
-                name: templateName,
-
-                price: numericPrice,
-
-                type: "template"
-
-            });
-
-
-            saveCart(cart);
-
-            updateCart();
-
-            openCart();
-
-        };
+        }
+    );
 
 
     /* =====================================================
@@ -487,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     saveCart(cart);
 
-                    updateCart();
+                    updateGlobalCart();
 
                 }
 
@@ -498,83 +444,139 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       HEADER CART BUTTON
+       ADD SERVICE
+       USED BY customizer.html
     ===================================================== */
 
-    if (cartToggle) {
+    window.addServiceToGlobalCart =
+        function (serviceName, price) {
 
-        cartToggle.addEventListener(
-            "click",
-            function () {
-
-                openCart();
-
-            }
-        );
-
-    }
+            const cart = getCart();
 
 
-    /* =====================================================
-       CLOSE BUTTON
-    ===================================================== */
-
-    if (cartClose) {
-
-        cartClose.addEventListener(
-            "click",
-            function () {
-
-                closeCart();
-
-            }
-        );
-
-    }
+            const numericPrice =
+                Number(
+                    String(price)
+                        .replace(/,/g, "")
+                ) || 0;
 
 
-    /* =====================================================
-       OVERLAY
-    ===================================================== */
+            /* CHECK DUPLICATE */
 
-    if (cartOverlay) {
+            const alreadyExists =
+                cart.some(function (item) {
 
-        cartOverlay.addEventListener(
-            "click",
-            function () {
+                    return item.name === serviceName;
 
-                closeCart();
-
-            }
-        );
-
-    }
+                });
 
 
-    /* =====================================================
-       ESC KEY
-    ===================================================== */
+            if (alreadyExists) {
 
-    document.addEventListener(
-        "keydown",
-        function (event) {
+                alert(
+                    serviceName +
+                    " is already in your order."
+                );
 
-            if (event.key === "Escape") {
+                openGlobalCart();
 
-                closeCart();
+                return;
 
             }
 
-        }
-    );
+
+            /* ADD SERVICE */
+
+            cart.push({
+
+                name: serviceName,
+
+                price: numericPrice,
+
+                type: "service"
+
+            });
+
+
+            saveCart(cart);
+
+            updateGlobalCart();
+
+            openGlobalCart();
+
+        };
 
 
     /* =====================================================
-       WHATSAPP ORDER
-       Works for BOTH services and templates
+       ADD TEMPLATE
+       USED BY shop.html
     ===================================================== */
 
-    function sendOrderOnWhatsApp() {
+    window.addTemplate =
+        function (templateName, price) {
+
+            const cart = getCart();
+
+
+            const numericPrice =
+                Number(
+                    String(price)
+                        .replace(/,/g, "")
+                ) || 0;
+
+
+            /* CHECK DUPLICATE */
+
+            const alreadyExists =
+                cart.some(function (item) {
+
+                    return item.name === templateName;
+
+                });
+
+
+            if (alreadyExists) {
+
+                alert(
+                    templateName +
+                    " is already in your order."
+                );
+
+                openGlobalCart();
+
+                return;
+
+            }
+
+
+            /* ADD TEMPLATE */
+
+            cart.push({
+
+                name: templateName,
+
+                price: numericPrice,
+
+                type: "template"
+
+            });
+
+
+            saveCart(cart);
+
+            updateGlobalCart();
+
+            openGlobalCart();
+
+        };
+
+
+    /* =====================================================
+       WHATSAPP CHECKOUT
+       SERVICES + TEMPLATES
+    ===================================================== */
+
+    function sendGlobalOrder() {
 
         const cart = getCart();
 
@@ -582,7 +584,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cart.length === 0) {
 
             alert(
-                "Your order is empty. Please select a service or template."
+                "Your order is empty. Please add a service or template first."
             );
 
             return;
@@ -661,12 +663,6 @@ Sai Graphic Designs Website`;
     }
 
 
-    /* MAKE AVAILABLE TO HTML */
-
-    window.sendOrderOnWhatsApp =
-        sendOrderOnWhatsApp;
-
-
     /* =====================================================
        CHECKOUT BUTTON
     ===================================================== */
@@ -677,7 +673,7 @@ Sai Graphic Designs Website`;
             "click",
             function () {
 
-                sendOrderOnWhatsApp();
+                sendGlobalOrder();
 
             }
         );
@@ -686,7 +682,15 @@ Sai Graphic Designs Website`;
 
 
     /* =====================================================
-       UPDATE CART IF ANOTHER PAGE CHANGES IT
+       MAKE CHECKOUT AVAILABLE GLOBALLY
+    ===================================================== */
+
+    window.sendGlobalOrder =
+        sendGlobalOrder;
+
+
+    /* =====================================================
+       UPDATE IF ANOTHER PAGE CHANGES CART
     ===================================================== */
 
     window.addEventListener(
@@ -695,7 +699,7 @@ Sai Graphic Designs Website`;
 
             if (event.key === CART_KEY) {
 
-                updateCart();
+                updateGlobalCart();
 
             }
 
@@ -704,9 +708,9 @@ Sai Graphic Designs Website`;
 
 
     /* =====================================================
-       INITIALIZE
+       INITIAL LOAD
     ===================================================== */
 
-    updateCart();
+    updateGlobalCart();
 
 });
