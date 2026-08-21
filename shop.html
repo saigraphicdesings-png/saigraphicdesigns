@@ -16,28 +16,67 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header class="shop-header">
+<header class="site-header">
 
-        <a href="index.html" class="shop-logo">
-            Sai Graphic Designs
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+            <div class="logo-icon">SG</div>
+
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
+            </span>
         </a>
 
-        <nav class="shop-nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="index.html#services">Services</a>
-            <a href="shop.html" class="active">Shop</a>
-            <a href="contact.html">Contact</a>
+
+        <!-- NAVIGATION -->
+        <nav class="main-nav" aria-label="Main Navigation">
+
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="about.html" class="nav-link">
+                About
+            </a>
+
+            <a href="customizer.html" class="nav-link">
+                Services
+            </a>
+               <a href="#shop" class="nav-link  active">
+                Shop
+            </a>
+            
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
+
         </nav>
 
-        <button class="shop-cart-button" onclick="openShopCart()">
-            🛒 Cart
-            <span id="shopCartCount">0</span>
-        </button>
 
-    </header>
+        <!-- ACTIONS -->
+        <div class="nav-actions">
 
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart"
+            >
+                🛒
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+
+            <a href="contact.html" class="btn-header">
+                Get Started <span>→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
 
     <!-- SHOP HERO -->
     <section class="shop-hero">
