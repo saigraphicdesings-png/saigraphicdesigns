@@ -1,56 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       GLOBAL CART
-       Used by BOTH Services page and Shop page
-    ===================================================== */
-
     const CART_KEY = "saiGraphicCart";
-
-
-    /* =====================================================
-       CART ELEMENTS
-    ===================================================== */
 
     const cartToggle = document.getElementById("cartToggle");
     const cartBadge = document.getElementById("cartBadge");
-
     const cartOverlay = document.getElementById("cartOverlay");
     const cartDrawer = document.getElementById("cartDrawer");
-
     const cartClose = document.getElementById("cartClose");
-
     const cartItemsList = document.getElementById("cartItemsList");
     const cartTotalVal = document.getElementById("cartTotalVal");
+    const cartCheckout = document.getElementById("cartCheckout");
 
-    const checkoutBtn = document.getElementById("checkoutBtn");
 
-
-    /* =====================================================
-       GET CART
-    ===================================================== */
+    /* ==========================================
+       LOAD CART
+    ========================================== */
 
     function getCart() {
 
         try {
 
-            const savedCart = localStorage.getItem(CART_KEY);
-
-            if (!savedCart) {
-                return [];
-            }
-
-            const cart = JSON.parse(savedCart);
-
-            if (!Array.isArray(cart)) {
-                return [];
-            }
-
-            return cart;
+            return JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
 
         } catch (error) {
-
-            console.error("Error loading cart:", error);
 
             return [];
 
@@ -59,9 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        SAVE CART
-    ===================================================== */
+    ========================================== */
 
     function saveCart(cart) {
 
@@ -73,73 +47,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
+    /* ==========================================
        FORMAT PRICE
-    ===================================================== */
+    ========================================== */
 
     function formatPrice(price) {
 
-        return "₹" + Number(price || 0)
-            .toLocaleString("en-IN");
+        return "₹" +
+            Number(price || 0)
+                .toLocaleString("en-IN");
 
     }
 
 
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
-
-    function escapeHTML(value) {
-
-        return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =====================================================
-       UPDATE CART BADGE
-    ===================================================== */
-
-    function updateCartBadge() {
-
-        const cart = getCart();
-
-        if (cartBadge) {
-
-            cartBadge.textContent = cart.length;
-
-        }
-
-    }
-
-
-    /* =====================================================
-       UPDATE CART DRAWER
-    ===================================================== */
+    /* ==========================================
+       UPDATE CART
+    ========================================== */
 
     function updateCart() {
 
         const cart = getCart();
 
-        updateCartBadge();
 
+        /* CART BADGE */
+
+        if (cartBadge) {
+
+            cartBadge.textContent =
+                cart.length;
+
+        }
+
+
+        /* CART CONTENT */
 
         if (!cartItemsList) {
+
             return;
+
         }
 
 
         cartItemsList.innerHTML = "";
 
 
-        /* =================================================
-           EMPTY CART
-        ================================================= */
+        /* EMPTY */
 
         if (cart.length === 0) {
 
@@ -148,12 +100,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="empty-cart">
 
                     <p>
-                        <strong>Your order is empty.</strong>
+                        <strong>
+                            No services selected yet.
+                        </strong>
                     </p>
 
                     <p>
-                        Choose a service or template
-                        to start your order.
+                        Choose a service and click
+                        "Add to Order".
                     </p>
 
                 </div>
@@ -163,39 +117,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (cartTotalVal) {
 
-                cartTotalVal.textContent = "₹0";
+                cartTotalVal.textContent =
+                    "₹0";
 
             }
 
 
-            if (checkoutBtn) {
+            if (cartCheckout) {
 
-                checkoutBtn.disabled = true;
+                cartCheckout.disabled = true;
 
             }
+
 
             return;
 
         }
 
 
-        /* =================================================
-           CART ITEMS
-        ================================================= */
+        /* TOTAL */
 
         let total = 0;
 
 
+        /* ITEMS */
+
         cart.forEach(function (item, index) {
 
-            const price = Number(item.price) || 0;
+            const price =
+                Number(item.price) || 0;
 
             total += price;
 
 
             const itemElement =
                 document.createElement("div");
-
 
             itemElement.className =
                 "cart-item";
@@ -205,23 +161,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 <div class="cart-item-info">
 
-                    <strong>
+                    <div class="cart-item-name">
                         ${escapeHTML(item.name)}
-                    </strong>
+                    </div>
 
-                    <span>
+                    <div class="cart-item-price">
                         ${formatPrice(price)}
-                    </span>
+                    </div>
 
                 </div>
-
 
                 <button
                     type="button"
                     class="cart-remove"
-                    data-index="${index}"
-                    aria-label="Remove ${escapeHTML(item.name)}"
-                >
+                    data-index="${index}">
                     ×
                 </button>
 
@@ -235,9 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-        /* =================================================
-           TOTAL
-        ================================================= */
+        /* TOTAL */
 
         if (cartTotalVal) {
 
@@ -247,34 +198,40 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (checkoutBtn) {
+        /* ENABLE CHECKOUT */
 
-            checkoutBtn.disabled = false;
+        if (cartCheckout) {
+
+            cartCheckout.disabled = false;
 
         }
 
     }
 
 
-    /* =====================================================
+    /* ==========================================
+       ESCAPE HTML
+    ========================================== */
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ==========================================
        OPEN CART
-    ===================================================== */
+    ========================================== */
 
     function openCart() {
 
         updateCart();
-
-
-        if (cartOverlay) {
-
-            cartOverlay.classList.add("active");
-
-            cartOverlay.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-        }
 
 
         if (cartDrawer) {
@@ -289,22 +246,37 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        document.body.style.overflow = "hidden";
+        if (cartOverlay) {
+
+            cartOverlay.classList.add("active");
+
+            cartOverlay.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
 
     }
 
 
-    /* =====================================================
+    /* ==========================================
        CLOSE CART
-    ===================================================== */
+    ========================================== */
 
     function closeCart() {
 
-        if (cartOverlay) {
+        if (cartDrawer) {
 
-            cartOverlay.classList.remove("active");
+            cartDrawer.classList.remove(
+                "active"
+            );
 
-            cartOverlay.setAttribute(
+            cartDrawer.setAttribute(
                 "aria-hidden",
                 "true"
             );
@@ -312,11 +284,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (cartDrawer) {
+        if (cartOverlay) {
 
-            cartDrawer.classList.remove("active");
+            cartOverlay.classList.remove(
+                "active"
+            );
 
-            cartDrawer.setAttribute(
+            cartOverlay.setAttribute(
                 "aria-hidden",
                 "true"
             );
@@ -329,231 +303,47 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       ADD SERVICE
-       Used by customizer.html
-    ===================================================== */
-
-    window.addServiceToGlobalCart =
-        function (serviceName, price) {
-
-            const cart = getCart();
-
-
-            const numericPrice =
-                Number(price) || 0;
-
-
-            /* CHECK DUPLICATE */
-
-            const exists =
-                cart.some(function (item) {
-
-                    return item.name === serviceName;
-
-                });
-
-
-            if (exists) {
-
-                alert(
-                    serviceName +
-                    " is already in your order."
-                );
-
-                openCart();
-
-                return;
-
-            }
-
-
-            /* ADD SERVICE */
-
-            cart.push({
-
-                name: serviceName,
-
-                price: numericPrice,
-
-                type: "service"
-
-            });
-
-
-            saveCart(cart);
-
-            updateCart();
-
-            openCart();
-
-        };
-
-
-    /* =====================================================
-       ADD SHOP TEMPLATE
-       Used by shop.html
-    ===================================================== */
-
-    window.addTemplate =
-        function (templateName, price) {
-
-            const cart = getCart();
-
-
-            const numericPrice =
-                Number(price) || 0;
-
-
-            /* CHECK DUPLICATE */
-
-            const exists =
-                cart.some(function (item) {
-
-                    return item.name === templateName;
-
-                });
-
-
-            if (exists) {
-
-                alert(
-                    templateName +
-                    " is already in your order."
-                );
-
-                openCart();
-
-                return;
-
-            }
-
-
-            /* ADD TEMPLATE */
-
-            cart.push({
-
-                name: templateName,
-
-                price: numericPrice,
-
-                type: "template"
-
-            });
-
-
-            saveCart(cart);
-
-            updateCart();
-
-            openCart();
-
-        };
-
-
-    /* =====================================================
-       REMOVE ITEM
-    ===================================================== */
-
-    if (cartItemsList) {
-
-        cartItemsList.addEventListener(
-            "click",
-            function (event) {
-
-                const button =
-                    event.target.closest(".cart-remove");
-
-
-                if (!button) {
-                    return;
-                }
-
-
-                const index =
-                    Number(button.dataset.index);
-
-
-                const cart = getCart();
-
-
-                if (
-                    Number.isInteger(index) &&
-                    index >= 0 &&
-                    index < cart.length
-                ) {
-
-                    cart.splice(index, 1);
-
-                    saveCart(cart);
-
-                    updateCart();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       HEADER CART BUTTON
-    ===================================================== */
+    /* ==========================================
+       CART BUTTON
+    ========================================== */
 
     if (cartToggle) {
 
         cartToggle.addEventListener(
             "click",
-            function () {
-
-                openCart();
-
-            }
+            openCart
         );
 
     }
 
 
-    /* =====================================================
-       CLOSE BUTTON
-    ===================================================== */
+    /* ==========================================
+       CLOSE
+    ========================================== */
 
     if (cartClose) {
 
         cartClose.addEventListener(
             "click",
-            function () {
-
-                closeCart();
-
-            }
+            closeCart
         );
 
     }
 
-
-    /* =====================================================
-       OVERLAY
-    ===================================================== */
 
     if (cartOverlay) {
 
         cartOverlay.addEventListener(
             "click",
-            function () {
-
-                closeCart();
-
-            }
+            closeCart
         );
 
     }
 
 
-    /* =====================================================
-       ESC KEY
-    ===================================================== */
+    /* ==========================================
+       ESCAPE KEY
+    ========================================== */
 
     document.addEventListener(
         "keydown",
@@ -569,115 +359,144 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =====================================================
-       WHATSAPP ORDER
-       Works for BOTH services and templates
-    ===================================================== */
+    /* ==========================================
+       REMOVE ITEM
+    ========================================== */
 
-    function sendOrderOnWhatsApp() {
+    if (cartItemsList) {
 
-        const cart = getCart();
+        cartItemsList.addEventListener(
+            "click",
+            function (event) {
 
+                if (
+                    !event.target.classList.contains(
+                        "cart-remove"
+                    )
+                ) {
 
-        if (cart.length === 0) {
+                    return;
 
-            alert(
-                "Your order is empty. Please select a service or template."
-            );
-
-            return;
-
-        }
-
-
-        let total = 0;
+                }
 
 
-        const products =
-            cart.map(function (item, index) {
-
-                const price =
-                    Number(item.price) || 0;
-
-
-                total += price;
+                const index =
+                    Number(
+                        event.target.dataset.index
+                    );
 
 
-                const type =
-                    item.type === "template"
-                        ? "Template"
-                        : "Service";
+                const cart = getCart();
 
 
-                return (
-                    (index + 1) +
-                    ". " +
-                    item.name +
-                    " (" +
-                    type +
-                    ") - " +
-                    formatPrice(price)
+                cart.splice(
+                    index,
+                    1
                 );
 
-            }).join("\n");
+
+                saveCart(cart);
+
+                updateCart();
+
+            }
+        );
+
+    }
 
 
-        const message =
+    /* ==========================================
+       CHECKOUT → WHATSAPP
+    ========================================== */
+
+    if (cartCheckout) {
+
+        cartCheckout.addEventListener(
+            "click",
+            function () {
+
+                const cart = getCart();
+
+
+                if (cart.length === 0) {
+
+                    return;
+
+                }
+
+
+                const total =
+                    cart.reduce(
+                        function (
+                            sum,
+                            item
+                        ) {
+
+                            return sum +
+                                Number(
+                                    item.price
+                                );
+
+                        },
+                        0
+                    );
+
+
+                const services =
+                    cart.map(
+                        function (
+                            item,
+                            index
+                        ) {
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - " +
+                                formatPrice(
+                                    item.price
+                                )
+                            );
+
+                        }
+                    ).join("\n");
+
+
+                const message =
 `Hello Sai Graphic Designs 👋
 
-I would like to place an order.
+I would like to order the following services:
 
 ━━━━━━━━━━━━━━━━━━
-SELECTED ITEMS
+SELECTED SERVICES
 ━━━━━━━━━━━━━━━━━━
 
-${products}
+${services}
 
 ━━━━━━━━━━━━━━━━━━
 ORDER SUMMARY
 ━━━━━━━━━━━━━━━━━━
 
-Total Items: ${cart.length}
+Number of Services: ${cart.length}
 
 Estimated Total: ${formatPrice(total)}
 
-Please contact me to confirm the order, payment and delivery details.
+Please contact me to discuss the project details and payment.
 
 Thank you!
 Sai Graphic Designs Website`;
 
 
-        const whatsappURL =
-            "https://wa.me/916381128781?text=" +
-            encodeURIComponent(message);
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
 
 
-        window.open(
-            whatsappURL,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    }
-
-
-    /* MAKE AVAILABLE TO HTML */
-
-    window.sendOrderOnWhatsApp =
-        sendOrderOnWhatsApp;
-
-
-    /* =====================================================
-       CHECKOUT BUTTON
-    ===================================================== */
-
-    if (checkoutBtn) {
-
-        checkoutBtn.addEventListener(
-            "click",
-            function () {
-
-                sendOrderOnWhatsApp();
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
 
             }
         );
@@ -685,28 +504,80 @@ Sai Graphic Designs Website`;
     }
 
 
-    /* =====================================================
-       UPDATE CART IF ANOTHER PAGE CHANGES IT
-    ===================================================== */
+    /* ==========================================
+       UPDATE WHEN RETURNING TO PAGE
+    ========================================== */
 
     window.addEventListener(
-        "storage",
-        function (event) {
+        "pageshow",
+        function () {
 
-            if (event.key === CART_KEY) {
-
-                updateCart();
-
-            }
+            updateCart();
 
         }
     );
 
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
+    /* ==========================================
+       INITIAL LOAD
+    ========================================== */
 
     updateCart();
+
+
+    /* ==========================================
+       SERVICE ADD FUNCTION
+    ========================================== */
+
+    window.addServiceToGlobalCart =
+        function (
+            serviceName,
+            price
+        ) {
+
+            const cart = getCart();
+
+
+            const exists =
+                cart.some(
+                    function (item) {
+
+                        return item.name ===
+                            serviceName;
+
+                    }
+                );
+
+
+            if (exists) {
+
+                alert(
+                    serviceName +
+                    " is already in your cart."
+                );
+
+                openCart();
+
+                return;
+
+            }
+
+
+            cart.push({
+
+                name: serviceName,
+
+                price: Number(price)
+
+            });
+
+
+            saveCart(cart);
+
+            updateCart();
+
+            openCart();
+
+        };
 
 });
