@@ -82,39 +82,112 @@
 
 
         <!-- HEADER ACTIONS -->
-        <div class="nav-actions">
+ <button
+        type="button"
+        class="cart-icon-btn"
+        id="cartToggle">
 
-<button
-    type="button"
-    class="cart-icon-btn"
-    id="cartToggle"
-    aria-label="Open shopping cart">
+        🛒
 
-    🛒
+        <span
+            class="cart-badge"
+            id="cartBadge">
+            0
+        </span>
 
-    <span
-        class="cart-badge"
-        id="cartBadge">
+    </button>
 
-        0
-
-    </span>
-
-</button>
+    ...
+</header>
 
 
-            <a
-                href="contact.html"
-                class="btn-header">
+<!-- ONE GLOBAL CART -->
 
-                Get Started →
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true">
+</div>
 
-            </a>
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
 
-        </div>
+    <div class="cart-header">
+
+        <h3>Selected Services</h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose">
+
+            ×
+
+        </button>
 
     </div>
 
+    <div
+        class="cart-items"
+        id="cartItemsList">
+    </div>
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>Estimated Total:</span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+        <button
+            type="button"
+            class="btn-checkout"
+            id="checkoutBtn"
+            disabled>
+
+            Continue Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- SHOP -->
+
+<section class="shop-section">
+
+    <div class="template-card">
+
+        ...
+
+        <button
+            type="button"
+            class="template-cart-btn"
+            onclick="addServiceToGlobalCart(
+                'Premium Visiting Card #01',
+                99
+            )">
+
+            🛒 Add to Order
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<script src="main.js"></script>
+<script src="shop.js"></script>
 </header>
 
 <!-- =====================================================
