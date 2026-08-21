@@ -1366,127 +1366,315 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const CART_KEY = "saiGraphicCart";
-const WHATSAPP_NUMBER = "916381128781";
 
-let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
 
-function formatPrice(price) {
-    return "₹" + Number(price).toLocaleString("en-IN");
-}
+    let cart = JSON.parse(
+        localStorage.getItem(CART_KEY)
+    ) || [];
 
-function saveCart() {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-}
 
-function getCartTotal() {
-    return cart.reduce(function (total, item) {
-        return total + Number(item.price);
-    }, 0);
-}
+    function formatPrice(price) {
 
-function addToCart(item) {
+        return "₹" +
+            Number(price).toLocaleString("en-IN");
 
-    const existing = cart.find(function (cartItem) {
-        return cartItem.id === item.id;
-    });
-
-    if (existing) {
-        alert(item.name + " is already in your cart.");
-        return false;
     }
 
-    cart.push({
-        id: item.id,
-        name: item.name,
-        price: Number(item.price),
-        type: item.type || "Service",
-        category: item.category || "Services",
-        icon: item.icon || "🎨"
-    });
 
-    saveCart();
+    function saveCart() {
 
-    return true;
-}
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
 
-function removeFromCart(index) {
-    cart.splice(index, 1);
-    saveCart();
-}
+    }
 
-function getCartGroups() {
 
-    const groups = {
-        "Services": [],
-        "Printing Designs": [],
-        "Digital & Social Media Designs": [],
-        "Packaging Designs": [],
-        "Icons": []
-    };
+    function selectService(option) {
 
-    cart.forEach(function (item) {
+        serviceOptions.forEach(function (item) {
 
-        if (!groups[item.category]) {
-            groups[item.category] = [];
-        }
-
-        groups[item.category].push(item);
-
-    });
-
-    return groups;
-}
-
-function createWhatsAppOrderMessage() {
-
-    const groups = getCartGroups();
-
-    let message = `Hello Sai Graphic Designs 👋
-
-I would like to order the following:
-
-`;
-
-    let itemNumber = 1;
-
-    Object.keys(groups).forEach(function (category) {
-
-        if (groups[category].length === 0) {
-            return;
-        }
-
-        message += `------------------------------
-${category.toUpperCase()}
-------------------------------
-
-`;
-
-        groups[category].forEach(function (item) {
-
-            message += `${itemNumber}. ${item.name} - ${formatPrice(item.price)}
-
-`;
-
-            itemNumber++;
+            item.classList.remove("active");
 
         });
 
+
+        option.classList.add("active");
+
+
+        selectedServiceData = {
+
+            name: option.dataset.service,
+
+            price: Number(
+                option.dataset.price
+            ),
+
+            icon: option.dataset.icon,
+
+            description:
+                option.dataset.description
+
+        };
+
+
+        selectedService.textContent =
+            selectedServiceData.name;
+
+        mockupTitle.textContent =
+            selectedServiceData.name;
+
+        mockupIcon.textContent =
+            selectedServiceData.icon;
+
+        mockupDescription.textContent =
+            selectedServiceData.description;
+
+        servicePrice.textContent =
+            formatPrice(
+                selectedServiceData.price
+            );
+
+    }
+
+
+    serviceOptions.forEach(function (option) {
+
+        option.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target.classList.contains(
+                        "add-service-btn"
+                    )
+                ) {
+                    return;
+                }
+
+                selectService(option);
+
+            }
+        );
+
+
+        const addButton =
+            option.querySelector(
+                ".add-service-btn"
+            );
+
+
+        addButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                selectService(option);
+
+                addServiceToCart();
+
+            }
+        );
+
     });
 
-    message += `------------------------------
-ORDER SUMMARY
-------------------------------
 
-Total Items: ${cart.length}
+    function openCart() {
 
-Estimated Total: ${formatPrice(getCartTotal())}
+        cartDrawer.classList.add("active");
 
-Please contact me regarding payment and delivery details.
+        cartOverlay.classList.add("active");
 
-Thank you!`;
+        document.body.style.overflow =
+            "hidden";
 
-    return message;
-}
+    }
+
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    function addServiceToCart() {
+
+        const existing =
+            cart.find(function (item) {
+
+                return item.name ===
+                    selectedServiceData.name;
+
+            });
+
+
+        if (existing) {
+
+            alert(
+                selectedServiceData.name +
+                " is already in your cart."
+            );
+
+            openCart();
+
+            return;
+
+        }
+
+
+        cart.push({
+
+            name: selectedServiceData.name,
+
+            price: Number(
+                selectedServiceData.price
+            )
+
+        });
+
+
+        saveCart();
+
+        updateCart();
+
+        openCart();
+
+    }
+
+
+    function updateCart() {
+
+        cartItemsList.innerHTML = "";
+
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <h3>Your cart is empty</h3>
+
+                    <p>
+                        Choose a service and click
+                        "Add to Order".
+                    </p>
+
+                </div>
+
+            `;
+
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            cartCheckout.disabled = true;
+
+            return;
+
+        }
+
+
+        let total = 0;
+
+
+        cart.forEach(function (item, index) {
+
+            total += Number(item.price);
+
+
+            const itemElement =
+                document.createElement("div");
+
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${item.name}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(item.price)}
+                    </div>
+
+                </div>
+
+                <button type="button"
+                    class="cart-remove"
+                    data-index="${index}">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                itemElement
+            );
+
+        });
+
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        cartTotalVal.textContent =
+            formatPrice(total);
+
+
+        cartCheckout.disabled =
+            false;
+
+
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+                    }
+                );
+
+            });
+
+    }
+
 
     cartToggle.addEventListener(
         "click",
