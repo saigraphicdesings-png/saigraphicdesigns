@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <p>
                         Select a template and click
-                        "Add to Cart".
+                        "Add to Order".
                     </p>
 
                 </div>
