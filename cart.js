@@ -610,65 +610,94 @@ document.addEventListener("DOMContentLoaded", function () {
     ADD SERVICE
     =====================================================
     */
+window.addServiceToGlobalCart = function (serviceName, price) {
 
-    window.addServiceToGlobalCart =
-        function (
-            serviceName,
-            price
+    const cart = getCart();
+
+    const numericPrice = Number(
+        String(price).replace(/,/g, "")
+    ) || 0;
+
+
+    /* ==========================================
+       CHECK IF ITEM ALREADY EXISTS
+    ========================================== */
+
+    const existingIndex = cart.findIndex(function (item) {
+
+        return item.name === serviceName;
+
+    });
+
+
+    /* ==========================================
+       ITEM ALREADY EXISTS
+    ========================================== */
+
+    if (existingIndex !== -1) {
+
+        /*
+         * IMPORTANT:
+         * If old cart contains ₹0,
+         * replace it with the correct price.
+         */
+
+        if (
+            Number(cart[existingIndex].price) === 0 &&
+            numericPrice > 0
         ) {
 
+            cart[existingIndex].price =
+                numericPrice;
 
-            /*
-            VALIDATE SERVICE NAME
-            */
+            cart[existingIndex].type =
+                "service";
 
-            if (!serviceName) {
+            saveCart(cart);
 
-                console.error(
-                    "Service name is missing."
-                );
+            updateGlobalCart();
 
-                return;
+            openGlobalCart();
 
-            }
+            return;
 
-
-            /*
-            NORMALIZE PRICE
-            */
-
-            const numericPrice =
-                normalizePrice(price);
+        }
 
 
-            /*
-            DO NOT ALLOW UNKNOWN PRICE
-            */
+        alert(
+            serviceName +
+            " is already in your order."
+        );
 
-            if (
-                price === undefined ||
-                price === null ||
-                numericPrice === null
-            ) {
+        openGlobalCart();
 
-                console.error(
-                    "Invalid service price:",
-                    serviceName,
-                    price
-                );
+        return;
+
+    }
 
 
-                alert(
-                    "Price is missing for " +
-                    serviceName +
-                    ". Please add the service price."
-                );
+    /* ==========================================
+       ADD NEW SERVICE
+    ========================================== */
+
+    cart.push({
+
+        name: serviceName,
+
+        price: numericPrice,
+
+        type: "service"
+
+    });
 
 
-                return;
+    saveCart(cart);
 
-            }
+    updateGlobalCart();
 
+    openGlobalCart();
+
+};
 
             /*
             LOAD CART
