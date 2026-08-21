@@ -2,39 +2,29 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Shop | Sai Graphic Designs</title>
 
-    <meta
-        name="description"
+    <meta name="description"
         content="Premium editable graphic design templates from Sai Graphic Designs.">
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="shop.css">
-
 </head>
-
 
 <body>
 
-
 <!-- =========================================
-     SAME HEADER AS ALL OTHER PAGES
+     SAME HEADER AS HOME PAGE
 ========================================= -->
 
 <header class="site-header">
 
     <div class="nav-container">
 
-
         <!-- LOGO -->
-
         <a href="index.html" class="logo">
 
             <div class="logo-icon">
@@ -48,78 +38,63 @@
         </a>
 
 
+        <!-- MOBILE MENU -->
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open navigation menu"
+            aria-expanded="false">
+
+            ☰
+
+        </button>
+
 
         <!-- NAVIGATION -->
-
         <nav
             class="main-nav"
+            id="mainNav"
             aria-label="Main Navigation">
 
-            <a
-                href="index.html"
-                class="nav-link">
-
+            <a href="index.html" class="nav-link">
                 Home
-
             </a>
 
-
-            <a
-                href="about.html"
-                class="nav-link">
-
+            <a href="about.html" class="nav-link">
                 About
-
             </a>
 
-
-            <a
-                href="customizer.html"
-                class="nav-link">
-
+            <a href="customizer.html" class="nav-link">
                 Services
-
             </a>
 
-
-            <!-- SHOP = SEPARATE PAGE -->
-
-            <a
-                href="shop.html"
-                class="nav-link active">
-
+            <!-- SHOP IS A SEPARATE PAGE -->
+            <a href="shop.html" class="nav-link active">
                 Shop
-
             </a>
 
-
-            <a
-                href="contact.html"
-                class="nav-link">
-
+            <a href="contact.html" class="nav-link">
                 Contact
-
             </a>
 
         </nav>
 
 
-
-        <!-- ACTIONS -->
-
+        <!-- HEADER ACTIONS -->
         <div class="nav-actions">
 
             <button
                 type="button"
                 class="cart-icon-btn"
-                id="cartToggle"
+                id="shopCartToggle"
                 aria-label="Open shopping cart">
 
                 🛒
 
                 <span
                     class="cart-badge"
-                    id="cartBadge">
+                    id="shopCartBadge">
 
                     0
 
@@ -143,7 +118,6 @@
 </header>
 
 
-
 <!-- =========================================
      SHOP HERO
 ========================================= -->
@@ -154,11 +128,9 @@
         SAI GRAPHIC DESIGNS SHOP
     </p>
 
-
     <h1>
         Premium Design Templates
     </h1>
-
 
     <p>
         Choose a ready-made professional design template,
@@ -169,9 +141,8 @@
 </section>
 
 
-
 <!-- =========================================
-     CATEGORY MENU
+     SHOP CATEGORY MENU
 ========================================= -->
 
 <div class="shop-categories">
@@ -195,7 +166,6 @@
 </div>
 
 
-
 <!-- =========================================
      PRINTING DESIGNS
 ========================================= -->
@@ -204,31 +174,34 @@
     class="shop-section"
     id="printing">
 
-
     <div class="shop-section-title">
 
-        <span>
-            01
-        </span>
+        <div>
 
-        <h2>
-            🖨️ Printing Designs
-        </h2>
+            <span>
+                01
+            </span>
 
-        <p>
-            Premium ready-to-use design templates
-        </p>
+            <h2>
+                🖨️ Printing Designs
+            </h2>
+
+            <p>
+                Premium ready-to-use design templates
+            </p>
+
+        </div>
+
+        <strong>
+            Premium Templates
+        </strong>
 
     </div>
 
 
-
     <h3 class="product-group-title">
-
         Premium Visiting Cards — ₹99
-
     </h3>
-
 
 
     <div class="shop-grid">
@@ -238,31 +211,68 @@
 
         <div class="template-card">
 
-            <img
-                src="Images/shop/visiting-card-01.jpg"
-                alt="Premium Visiting Card 01"
-                loading="lazy">
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-01.jpg"
+                    alt="Premium Visiting Card 01"
+                    loading="lazy">
+
+            </div>
 
 
-            <h4>
-                Premium Visiting Card #01
-            </h4>
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #01
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
 
 
-            <p>
-                ₹99
-            </p>
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
 
 
-            <button
-                onclick="addTemplate(
-                    'Premium Visiting Card #01',
-                    99
-                )">
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2301"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
 
-                Add to Cart
+                    💬 Message on WhatsApp
 
-            </button>
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #01',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -272,31 +282,68 @@
 
         <div class="template-card">
 
-            <img
-                src="Images/shop/visiting-card-02.jpg"
-                alt="Premium Visiting Card 02"
-                loading="lazy">
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-02.jpg"
+                    alt="Premium Visiting Card 02"
+                    loading="lazy">
+
+            </div>
 
 
-            <h4>
-                Premium Visiting Card #02
-            </h4>
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #02
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
 
 
-            <p>
-                ₹99
-            </p>
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
 
 
-            <button
-                onclick="addTemplate(
-                    'Premium Visiting Card #02',
-                    99
-                )">
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2302"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
 
-                Add to Cart
+                    💬 Message on WhatsApp
 
-            </button>
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #02',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -306,31 +353,68 @@
 
         <div class="template-card">
 
-            <img
-                src="Images/shop/visiting-card-03.jpg"
-                alt="Premium Visiting Card 03"
-                loading="lazy">
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-03.jpg"
+                    alt="Premium Visiting Card 03"
+                    loading="lazy">
+
+            </div>
 
 
-            <h4>
-                Premium Visiting Card #03
-            </h4>
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #03
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
 
 
-            <p>
-                ₹99
-            </p>
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
 
 
-            <button
-                onclick="addTemplate(
-                    'Premium Visiting Card #03',
-                    99
-                )">
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2303"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
 
-                Add to Cart
+                    💬 Message on WhatsApp
 
-            </button>
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #03',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -340,31 +424,68 @@
 
         <div class="template-card">
 
-            <img
-                src="Images/shop/visiting-card-04.jpg"
-                alt="Premium Visiting Card 04"
-                loading="lazy">
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-04.jpg"
+                    alt="Premium Visiting Card 04"
+                    loading="lazy">
+
+            </div>
 
 
-            <h4>
-                Premium Visiting Card #04
-            </h4>
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #04
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
 
 
-            <p>
-                ₹99
-            </p>
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
 
 
-            <button
-                onclick="addTemplate(
-                    'Premium Visiting Card #04',
-                    99
-                )">
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2304"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
 
-                Add to Cart
+                    💬 Message on WhatsApp
 
-            </button>
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #04',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
 
         </div>
 
@@ -374,72 +495,108 @@
 
         <div class="template-card">
 
-            <img
-                src="Images/shop/visiting-card-05.jpg"
-                alt="Premium Visiting Card 05"
-                loading="lazy">
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-05.jpg"
+                    alt="Premium Visiting Card 05"
+                    loading="lazy">
+
+            </div>
 
 
-            <h4>
-                Premium Visiting Card #05
-            </h4>
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #05
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
 
 
-            <p>
-                ₹99
-            </p>
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
 
 
-            <button
-                onclick="addTemplate(
-                    'Premium Visiting Card #05',
-                    99
-                )">
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2305"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
 
-                Add to Cart
+                    💬 Message on WhatsApp
 
-            </button>
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #05',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
 
-
     <!-- OTHER PRINTING PRODUCTS -->
-
     <div
         id="printingProducts"
         class="shop-grid">
-
     </div>
 
 </section>
 
 
-
 <!-- =========================================
-     DIGITAL & SOCIAL MEDIA
+     SOCIAL MEDIA
 ========================================= -->
 
 <section
     class="shop-section"
     id="social">
 
-
     <div class="shop-section-title">
 
-        <span>
-            02
-        </span>
+        <div>
 
-        <h2>
-            Digital & Social Media Designs
-        </h2>
+            <span>
+                02
+            </span>
 
-        <p>
-            Premium digital templates
-        </p>
+            <h2>
+                📱 Digital & Social Media Designs
+            </h2>
+
+            <p>
+                Premium digital templates
+            </p>
+
+        </div>
 
     </div>
 
@@ -447,11 +604,9 @@
     <div
         id="socialProducts"
         class="shop-grid">
-
     </div>
 
 </section>
-
 
 
 <!-- =========================================
@@ -462,20 +617,23 @@
     class="shop-section"
     id="packaging">
 
-
     <div class="shop-section-title">
 
-        <span>
-            03
-        </span>
+        <div>
 
-        <h2>
-            Packaging Designs
-        </h2>
+            <span>
+                03
+            </span>
 
-        <p>
-            Professional packaging templates
-        </p>
+            <h2>
+                📦 Packaging Designs
+            </h2>
+
+            <p>
+                Professional packaging templates
+            </p>
+
+        </div>
 
     </div>
 
@@ -483,11 +641,9 @@
     <div
         id="packagingProducts"
         class="shop-grid">
-
     </div>
 
 </section>
-
 
 
 <!-- =========================================
@@ -498,20 +654,23 @@
     class="shop-section"
     id="icons">
 
-
     <div class="shop-section-title">
 
-        <span>
-            04
-        </span>
+        <div>
 
-        <h2>
-            Icons
-        </h2>
+            <span>
+                04
+            </span>
 
-        <p>
-            Premium icon designs
-        </p>
+            <h2>
+                ⭐ Icons
+            </h2>
+
+            <p>
+                Premium icon designs
+            </p>
+
+        </div>
 
     </div>
 
@@ -519,83 +678,109 @@
     <div
         id="iconProducts"
         class="icon-grid">
-
     </div>
 
 </section>
 
 
-
 <!-- =========================================
-     SHOP CART OVERLAY
+     CART OVERLAY
 ========================================= -->
 
 <div
     class="shop-cart-overlay"
-    id="shopCartOverlay"
-    onclick="closeShopCart()">
+    id="shopCartOverlay">
 </div>
 
 
-
 <!-- =========================================
-     SHOP CART
+     CART DRAWER
 ========================================= -->
 
 <aside
     class="shop-cart"
-    id="shopCart">
+    id="shopCart"
+    aria-hidden="true">
 
+    <div class="shop-cart-header">
 
-    <button
-        class="close-cart"
-        onclick="closeShopCart()">
+        <h2>
+            Your Cart
+        </h2>
 
-        ×
+        <button
+            type="button"
+            class="close-cart"
+            id="shopCartClose"
+            aria-label="Close cart">
 
-    </button>
+            ×
 
-
-    <h2>
-        Template Cart
-    </h2>
-
-
-    <div id="shopCartItems">
-    </div>
-
-
-    <div class="shop-cart-total">
-
-        <span>
-            Total
-        </span>
-
-        <strong id="shopCartTotal">
-            ₹0
-        </strong>
+        </button>
 
     </div>
 
 
-    <button
-        class="whatsapp-order"
-        onclick="sendTemplateOrder()">
+    <div
+        class="shop-cart-items"
+        id="shopCartItems">
 
-        📲 Message Order on WhatsApp
+        <!-- Cart items inserted by JS -->
 
-    </button>
+    </div>
+
+
+    <div class="shop-cart-bottom">
+
+        <div class="shop-cart-total">
+
+            <span>
+                Total
+            </span>
+
+            <strong id="shopCartTotal">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="whatsapp-order"
+            id="shopWhatsappOrder">
+
+            📲 Message Order on WhatsApp
+
+        </button>
+
+    </div>
 
 </aside>
 
 
-
 <!-- =========================================
-     SHOP JAVASCRIPT
+     WHATSAPP FLOATING BUTTON
 ========================================= -->
 
-<script src="shop.js"></script>
+<a
+    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20design%20template."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-floating"
+    aria-label="Contact Sai Graphic Designs on WhatsApp">
 
+    💬
+
+</a>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script src="main.js"></script>
+<script src="shop.js"></script>
 
 </body>
 </html>
