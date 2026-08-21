@@ -16,32 +16,102 @@
 
 <body>
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+  <!-- =========================================
+     HEADER — SAME AS INDEX
+========================================= -->
 
-    <header class="shop-header">
+<header class="site-header">
 
-        <a href="index.html" class="shop-logo">
-            Sai <strong>Graphic Designs</strong>
+    <div class="nav-container">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                SG
+            </div>
+
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
+            </span>
+
         </a>
 
-        <nav class="shop-nav">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="customizer.html">Services</a>
-            <a href="shop.html" class="active">Shop</a>
-            <a href="contact.html">Contact</a>
-        </nav>
 
-        <button class="shop-cart-button" id="shopCartButton">
-            🛒 Cart
-            <span id="shopCartCount">0</span>
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open navigation menu"
+            aria-expanded="false">
+
+            ☰
+
         </button>
 
-    </header>
+
+        <nav
+            class="main-nav"
+            id="mainNav"
+            aria-label="Main Navigation">
+
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="about.html" class="nav-link">
+                About
+            </a>
+
+            <a href="customizer.html" class="nav-link">
+                Services
+            </a>
+
+            <a href="shop.html" class="nav-link active">
+                Shop
+            </a>
+
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
+
+        </nav>
 
 
+        <div class="nav-actions">
+
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                onclick="openShopCart()"
+                aria-label="Open shopping cart">
+
+                🛒
+
+                <span
+                    class="cart-badge"
+                    id="shopCartCount">
+
+                    0
+
+                </span>
+
+            </button>
+
+
+            <a
+                href="contact.html"
+                class="btn-header">
+
+                Get Started →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
     <!-- =========================
          HERO
     ========================== -->
