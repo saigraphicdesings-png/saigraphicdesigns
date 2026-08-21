@@ -18,9 +18,10 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* =====================================================
+
+        /* =========================
            PAGE HEADER
-        ===================================================== */
+        ========================= */
 
         .service-page-header {
             padding: 5rem 2rem 3.5rem;
@@ -44,10 +45,9 @@
             line-height: 1.8;
         }
 
-
-        /* =====================================================
+        /* =========================
            SERVICE STUDIO
-        ===================================================== */
+        ========================= */
 
         .service-studio {
             padding: 5rem 2rem;
@@ -71,10 +71,9 @@
             margin-top: 1rem;
         }
 
-
-        /* =====================================================
+        /* =========================
            SERVICE CATEGORY
-        ===================================================== */
+        ========================= */
 
         .service-category {
             margin-bottom: 4rem;
@@ -87,10 +86,9 @@
             color: var(--dark);
         }
 
-
-        /* =====================================================
+        /* =========================
            SERVICE GRID
-        ===================================================== */
+        ========================= */
 
         .service-grid {
             display: grid;
@@ -98,10 +96,9 @@
             gap: 1rem;
         }
 
-
-        /* =====================================================
+        /* =========================
            SERVICE CARD
-        ===================================================== */
+        ========================= */
 
         .service-option {
             border: 1px solid var(--border);
@@ -126,7 +123,6 @@
             box-shadow: 0 0 0 2px var(--primary);
         }
 
-
         .service-icon {
             width: 58px;
             height: 58px;
@@ -143,7 +139,6 @@
             background: var(--white);
         }
 
-
         .service-name {
             font-weight: 800;
             color: var(--dark);
@@ -157,10 +152,9 @@
             margin-bottom: 1rem;
         }
 
-
-        /* =====================================================
+        /* =========================
            ADD TO CART
-        ===================================================== */
+        ========================= */
 
         .add-service-btn {
             width: 100%;
@@ -183,10 +177,9 @@
             background: var(--primary);
         }
 
-
-        /* =====================================================
+        /* =========================
            MOCKUP STUDIO
-        ===================================================== */
+        ========================= */
 
         .mockup-studio {
             display: grid;
@@ -194,7 +187,6 @@
             gap: 2rem;
             margin-top: 4rem;
         }
-
 
         .mockup-preview {
             min-height: 520px;
@@ -220,7 +212,6 @@
             top: -100px;
             right: -100px;
         }
-
 
         .mockup-card {
             width: 80%;
@@ -263,10 +254,9 @@
             color: var(--primary);
         }
 
-
-        /* =====================================================
-           FORM PANEL
-        ===================================================== */
+        /* =========================
+           FORM
+        ========================= */
 
         .service-options-panel {
             border: 1px solid var(--border);
@@ -296,7 +286,6 @@
             margin-top: .25rem;
             color: var(--dark);
         }
-
 
         .form-group {
             margin-bottom: 1.3rem;
@@ -340,11 +329,6 @@
             line-height: 1.5;
         }
 
-
-        /* =====================================================
-           PRICE
-        ===================================================== */
-
         .project-price {
             display: flex;
             justify-content: space-between;
@@ -359,11 +343,6 @@
             color: var(--primary);
             font-size: 1.4rem;
         }
-
-
-        /* =====================================================
-           WHATSAPP BUTTON
-        ===================================================== */
 
         .whatsapp-submit {
             width: 100%;
@@ -382,10 +361,9 @@
             transform: translateY(-2px);
         }
 
-
-        /* =====================================================
+        /* =========================
            CART
-        ===================================================== */
+        ========================= */
 
         .cart-icon-btn {
             position: relative;
@@ -415,347 +393,153 @@
             font-weight: 800;
         }
 
-
-      /* =====================================================
-   OVERLAY
-===================================================== */
-
-.cart-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(17, 24, 39, .48);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 9998;
-    transition:
-        opacity .3s ease,
-        visibility .3s ease;
-}
-
-.cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-/* =====================================================
-   CART DRAWER
-===================================================== */
-
-.cart-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-
-    width: min(430px, 92vw);
-    height: 100vh;
-
-    background: var(--white);
-
-    z-index: 9999;
-
-    display: flex;
-    flex-direction: column;
-
-    box-shadow:
-        -15px 0 45px rgba(0, 0, 0, .16);
-
-    transform: translateX(100%);
-    visibility: hidden;
-
-    transition:
-        transform .3s ease,
-        visibility .3s ease;
-}
-
-.cart-drawer.active {
-    transform: translateX(0);
-    visibility: visible;
-}
-
-/* =====================================================
-   CART HEADER
-===================================================== */
-
-.cart-header {
-    min-height: 70px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 1rem 1.25rem;
-
-    border-bottom: 1px solid var(--border);
-    background: var(--white);
-
-    box-sizing: border-box;
-}
-
-.cart-header h3 {
-    margin: 0;
-    color: var(--dark);
-    font-size: 1.15rem;
-    font-weight: 800;
-}
-
-.cart-close {
-    width: 38px;
-    height: 38px;
-
-    border: 0;
-    border-radius: 10px;
-
-    background: var(--light);
-    color: var(--dark);
-
-    font-size: 1.7rem;
-    line-height: 1;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: .2s ease;
-}
-
-.cart-close:hover {
-    background: var(--primary-light);
-    color: var(--primary);
-}
-
-/* =====================================================
-   CART ITEMS
-===================================================== */
-
-.cart-items {
-    flex: 1;
-    overflow-y: auto;
-
-    padding: 1rem 1.25rem;
-
-    scrollbar-width: thin;
-}
-
-.cart-items::-webkit-scrollbar {
-    width: 6px;
-}
-
-.cart-items::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 20px;
-}
-
-/* =====================================================
-   EMPTY CART
-===================================================== */
-
-.empty-cart {
-    min-height: 300px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    color: var(--dark-muted);
-
-    padding: 2rem 1rem;
-}
-
-.empty-cart-icon {
-    width: 70px;
-    height: 70px;
-
-    border-radius: 50%;
-
-    background: var(--primary-light);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 2rem;
-
-    margin-bottom: 1rem;
-}
-
-.empty-cart p {
-    margin: .25rem 0;
-    line-height: 1.6;
-}
-
-.empty-cart strong {
-    color: var(--dark);
-}
-
-/* =====================================================
-   CART ITEM
-===================================================== */
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    padding: 1rem 0;
-
-    border-bottom: 1px solid var(--border);
-}
-
-.cart-item:last-child {
-    border-bottom: 0;
-}
-
-.cart-item-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.cart-item-name {
-    color: var(--dark);
-    font-weight: 800;
-    font-size: .95rem;
-
-    line-height: 1.4;
-
-    margin-bottom: .3rem;
-}
-
-.cart-item-price {
-    color: var(--primary);
-    font-weight: 700;
-    font-size: .9rem;
-}
-
-.cart-remove {
-    flex: 0 0 auto;
-
-    width: 34px;
-    height: 34px;
-
-    border: 0;
-    border-radius: 50%;
-
-    background: #f3f4f6;
-    color: #374151;
-
-    font-size: 1.25rem;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: .2s ease;
-}
-
-.cart-remove:hover {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-/* =====================================================
-   CART FOOTER
-===================================================== */
-
-.cart-footer {
-    padding: 1.2rem 1.25rem;
-
-    border-top: 1px solid var(--border);
-
-    background: var(--white);
-
-    box-shadow:
-        0 -5px 20px rgba(0, 0, 0, .04);
-}
-
-.cart-total {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 1rem;
-
-    color: var(--dark);
-
-    font-size: 1rem;
-    font-weight: 800;
-}
-
-.cart-total span:last-child {
-    color: var(--primary);
-    font-size: 1.25rem;
-}
-
-/* =====================================================
-   CHECKOUT
-===================================================== */
-
-.cart-checkout {
-    width: 100%;
-
-    border: 0;
-    border-radius: 10px;
-
-    padding: .95rem 1rem;
-
-    background: var(--dark);
-    color: #fff;
-
-    font-family: inherit;
-    font-size: .95rem;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition: .25s ease;
-}
-
-.cart-checkout:hover:not(:disabled) {
-    background: var(--primary);
-    transform: translateY(-2px);
-}
-
-.cart-checkout:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-}
-
-
-        /* =====================================================
-           CTA
-        ===================================================== */
-
-        .service-cta {
-            padding: 5rem 2rem;
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, .48);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 9998;
+            transition: .3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(430px, 92vw);
+            height: 100vh;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -15px 0 45px rgba(0, 0, 0, .16);
+            transform: translateX(100%);
+            visibility: hidden;
+            transition: .3s ease;
+        }
+
+        .cart-drawer.active {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .cart-header {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-header h3 {
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .cart-close {
+            width: 38px;
+            height: 38px;
+            border: 0;
+            border-radius: 10px;
             background: var(--light);
+            color: var(--dark);
+            font-size: 1.7rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.25rem;
+        }
+
+        .empty-cart {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-        }
-
-        .service-cta-inner {
-            max-width: 750px;
-            margin: auto;
-        }
-
-        .service-cta p {
             color: var(--dark-muted);
-            line-height: 1.7;
-            margin: 1rem auto 2rem;
         }
 
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
 
-        /* =====================================================
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: .3rem;
+        }
+
+        .cart-remove {
+            width: 34px;
+            height: 34px;
+            border: 0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .cart-footer {
+            padding: 1.2rem 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .cart-total span:last-child {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .cart-checkout {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: .95rem;
+            background: var(--dark);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .cart-checkout:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        /* =========================
            RESPONSIVE
-        ===================================================== */
+        ========================= */
 
         @media (max-width: 1000px) {
 
@@ -766,40 +550,26 @@
             .mockup-studio {
                 grid-template-columns: 1fr;
             }
-        }
 
+        }
 
         @media (max-width: 700px) {
 
-            .service-page-header {
-                padding: 4rem 1rem 2.5rem;
-            }
-
+            .service-page-header,
             .service-studio {
-                padding: 3rem 1rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
 
             .service-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .mockup-preview {
-                min-height: 400px;
-            }
-
-            .mockup-card {
-                width: 95%;
-            }
-
             .service-options-panel {
                 padding: 1.25rem;
             }
 
-            .service-category {
-                margin-bottom: 3rem;
-            }
         }
-
 
         @media (max-width: 500px) {
 
@@ -807,84 +577,54 @@
                 grid-template-columns: 1fr;
             }
 
-            .mockup-title {
-                font-size: 1.5rem;
-            }
-
-            .mockup-icon {
-                font-size: 4rem;
-            }
-
-            .service-category-title {
-                font-size: 1.2rem;
-            }
-
-            .service-page-header h1 {
-                font-size: 2rem;
-            }
         }
+
     </style>
+
 </head>
 
-
 <body>
-
-
-<!-- =================================
-     HEADER
-================================= -->
 
 <header class="site-header">
 
     <div class="nav-container">
 
-        <!-- LOGO -->
         <a href="index.html" class="logo">
+
             <div class="logo-icon">SG</div>
 
             <span class="logo-name">
                 Sai <strong>Graphic Designs</strong>
             </span>
+
         </a>
 
+        <nav class="main-nav">
 
-        <!-- NAVIGATION -->
-        <nav class="main-nav" aria-label="Main Navigation">
-
-            <a href="index.html" class="nav-link">
-                Home
-            </a>
-
-            <a href="about.html" class="nav-link">
-                About
-            </a>
-
-            <a href="customizer.html" class="nav-link active">
-                Services
-            </a>
-
-            <a href="contact.html" class="nav-link">
-                Contact
-            </a>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="customizer.html" class="nav-link active">Services</a>
+            <a href="contact.html" class="nav-link">Contact</a>
 
         </nav>
 
-
-        <!-- ACTIONS -->
         <div class="nav-actions">
 
-            <button
-                type="button"
+            <button type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
-                aria-label="Open shopping cart"
-            >
-                ??
-                <span class="cart-badge" id="cartBadge">0</span>
+                aria-label="Open shopping cart">
+
+                🛒
+
+                <span class="cart-badge" id="cartBadge">
+                    0
+                </span>
+
             </button>
 
             <a href="contact.html" class="btn-header">
-                Get Started <span>?</span>
+                Get Started <span>→</span>
             </a>
 
         </div>
@@ -892,9 +632,7 @@
     </div>
 
 </header>
-<!-- =====================================================
-     PAGE HERO
-===================================================== -->
+
 
 <section class="service-page-header">
 
@@ -919,14 +657,9 @@
 </section>
 
 
-<!-- =====================================================
-     SERVICE STUDIO
-===================================================== -->
-
 <section class="service-studio">
 
     <div class="service-studio-container">
-
 
         <div class="service-studio-header">
 
@@ -947,79 +680,57 @@
         </div>
 
 
-        <!-- =================================================
-             BRANDING
-        ================================================== -->
+        <!-- BRANDING -->
 
         <div class="service-category">
 
             <h3 class="service-category-title">
-                ?? Branding & Identity
+                🎨 Branding & Identity
             </h3>
 
             <div class="service-grid">
 
                 <div class="service-option active"
                     data-service="Logo Design"
-                    data-price="1,000"
-                    data-icon="??"
+                    data-price="1000"
+                    data-icon="✏️"
                     data-description="Professional logo design created according to your brand identity.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Logo Design
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?1,000
-                    </div>
+                    <div class="service-icon">✏️</div>
+                    <div class="service-name">Logo Design</div>
+                    <div class="service-price">Starting ₹1,000</div>
 
                     <button type="button" class="add-service-btn">
                         Add to Order
                     </button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Logo Recreation"
-                    data-price="1,500"
-                    data-icon="??"
+                    data-price="1500"
+                    data-icon="🔄"
                     data-description="Recreate your existing logo into a clean, professional and high-resolution format.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Logo Recreation
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?1,500
-                    </div>
+                    <div class="service-icon">🔄</div>
+                    <div class="service-name">Logo Recreation</div>
+                    <div class="service-price">Starting ₹1,500</div>
 
                     <button type="button" class="add-service-btn">
                         Add to Order
                     </button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Brand Identity"
                     data-price="5000"
-                    data-icon="???"
+                    data-icon="🏢"
                     data-description="Complete brand identity including logo, colours, typography and brand guidelines.">
 
-                    <div class="service-icon">???</div>
-
-                    <div class="service-name">
-                        Brand Identity
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?5,000
-                    </div>
+                    <div class="service-icon">🏢</div>
+                    <div class="service-name">Brand Identity</div>
+                    <div class="service-price">Starting ₹5,000</div>
 
                     <button type="button" class="add-service-btn">
                         Add to Order
@@ -1027,22 +738,15 @@
 
                 </div>
 
-
                 <div class="service-option"
                     data-service="Full Branding"
                     data-price="10000"
-                    data-icon="??"
+                    data-icon="🚀"
                     data-description="Complete branding solution for businesses, startups and organizations.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Full Branding
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?10,000
-                    </div>
+                    <div class="service-icon">🚀</div>
+                    <div class="service-name">Full Branding</div>
+                    <div class="service-price">Starting ₹10,000</div>
 
                     <button type="button" class="add-service-btn">
                         Add to Order
@@ -1055,14 +759,12 @@
         </div>
 
 
-        <!-- =================================================
-             PRINT DESIGN
-        ================================================== -->
+        <!-- PRINT DESIGN -->
 
         <div class="service-category">
 
             <h3 class="service-category-title">
-                ??? Print & Business Design
+                🖨️ Print & Business Design
             </h3>
 
             <div class="service-grid">
@@ -1070,183 +772,104 @@
                 <div class="service-option"
                     data-service="Visiting Card Design"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="💳"
                     data-description="Professional visiting card design for your business and personal brand.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Visiting Card
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">💳</div>
+                    <div class="service-name">Visiting Card</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Letterhead Design"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="📄"
                     data-description="Professional company letterhead design ready for printing.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Letterhead
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">📄</div>
+                    <div class="service-name">Letterhead</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Envelope Design"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="✉️"
                     data-description="Branded business envelope design matching your company identity.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Envelope
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">✉️</div>
+                    <div class="service-name">Envelope</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Brochure Design"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="📖"
                     data-description="Professional brochure design for products, services and businesses.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Brochure (Per Page)
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">📖</div>
+                    <div class="service-name">Brochure (Per Page)</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Flyer Design"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="📃"
                     data-description="Creative promotional flyers designed to attract customers.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Flyer Single Side
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">📃</div>
+                    <div class="service-name">Flyer Single Side</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Poster Design"
                     data-price="200"
-                    data-icon="???"
+                    data-icon="🖼️"
                     data-description="Eye-catching promotional poster designs for digital and print advertising.">
 
-                    <div class="service-icon">???</div>
-
-                    <div class="service-name">
-                        Poster Design
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🖼️</div>
+                    <div class="service-name">Poster Design</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Standee Design"
                     data-price="300"
-                    data-icon="??"
+                    data-icon="🪧"
                     data-description="Professional standee designs for exhibitions, shops and business promotions.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Standee
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?300
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🪧</div>
+                    <div class="service-name">Standee</div>
+                    <div class="service-price">Starting ₹300</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Name Board Design"
                     data-price="300"
-                    data-icon="??"
+                    data-icon="🏬"
                     data-description="Professional shop and company name board design.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Name Board
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?300
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🏬</div>
+                    <div class="service-name">Name Board</div>
+                    <div class="service-price">Starting ₹300</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
 
@@ -1255,14 +878,12 @@
         </div>
 
 
-        <!-- =================================================
-             DIGITAL
-        ================================================== -->
+        <!-- DIGITAL -->
 
         <div class="service-category">
 
             <h3 class="service-category-title">
-                ?? Digital & Social Media
+                📱 Digital & Social Media
             </h3>
 
             <div class="service-grid">
@@ -1270,91 +891,52 @@
                 <div class="service-option"
                     data-service="Social Media Poster"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="📱"
                     data-description="Professional Instagram and Facebook promotional poster design.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Social Media Poster
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">📱</div>
+                    <div class="service-name">Social Media Poster</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Social Media Video"
                     data-price="500"
-                    data-icon="??"
+                    data-icon="🎬"
                     data-description="Creative promotional videos and reels for social media marketing.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Social Media Video
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?500
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🎬</div>
+                    <div class="service-name">Social Media Video</div>
+                    <div class="service-price">Starting ₹500</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Video Editing"
                     data-price="500"
-                    data-icon="??"
+                    data-icon="🎞️"
                     data-description="Professional video editing for advertisements, reels and business content.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Video Editing
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?500
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🎞️</div>
+                    <div class="service-name">Video Editing</div>
+                    <div class="service-price">Starting ₹500</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Festival Poster"
                     data-price="200"
-                    data-icon="??"
+                    data-icon="🎉"
                     data-description="Creative festival and special occasion promotional designs.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Festival Poster
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?200
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🎉</div>
+                    <div class="service-name">Festival Poster</div>
+                    <div class="service-price">Starting ₹200</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
 
@@ -1363,14 +945,12 @@
         </div>
 
 
-        <!-- =================================================
-             PACKAGING
-        ================================================== -->
+        <!-- PACKAGING -->
 
         <div class="service-category">
 
             <h3 class="service-category-title">
-                ?? Packaging & Product Design
+                📦 Packaging & Product Design
             </h3>
 
             <div class="service-grid">
@@ -1378,68 +958,39 @@
                 <div class="service-option"
                     data-service="Packaging Design"
                     data-price="1500"
-                    data-icon="??"
+                    data-icon="📦"
                     data-description="Professional packaging design for products and FMCG brands.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Box Design
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?1,500
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">📦</div>
+                    <div class="service-name">Box Design</div>
+                    <div class="service-price">Starting ₹1,500</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Label Design"
                     data-price="1000"
-                    data-icon="???"
+                    data-icon="🏷️"
                     data-description="Creative product label design for bottles, boxes and packaging.">
 
-                    <div class="service-icon">???</div>
-
-                    <div class="service-name">
-                        Label Design
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?1,000
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🏷️</div>
+                    <div class="service-name">Label Design</div>
+                    <div class="service-price">Starting ₹1,000</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Pouch Design"
                     data-price="1500"
-                    data-icon="???"
+                    data-icon="🛍️"
                     data-description="Professional pouch packaging design for consumer products.">
 
-                    <div class="service-icon">???</div>
-
-                    <div class="service-name">
-                        Pouch Design
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?1,500
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🛍️</div>
+                    <div class="service-name">Pouch Design</div>
+                    <div class="service-price">Starting ₹1,500</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
 
@@ -1448,14 +999,12 @@
         </div>
 
 
-        <!-- =================================================
-             CUSTOM PRINTING
-        ================================================== -->
+        <!-- CUSTOM PRINTING -->
 
         <div class="service-category">
 
             <h3 class="service-category-title">
-                ?? Custom Printing Products
+                🎁 Custom Printing Products
             </h3>
 
             <div class="service-grid">
@@ -1463,91 +1012,52 @@
                 <div class="service-option"
                     data-service="Mug Printing"
                     data-price="250"
-                    data-icon="?"
+                    data-icon="☕"
                     data-description="Customized mug printing for gifts, businesses and special occasions.">
 
-                    <div class="service-icon">?</div>
-
-                    <div class="service-name">
-                        Mug Printing
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?250
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">☕</div>
+                    <div class="service-name">Mug Printing</div>
+                    <div class="service-price">Starting ₹250</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="T-Shirt Printing"
                     data-price="399"
-                    data-icon="??"
+                    data-icon="👕"
                     data-description="Custom T-shirt printing for events, businesses and personal designs.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        T-Shirt Printing
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?399
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">👕</div>
+                    <div class="service-name">T-Shirt Printing</div>
+                    <div class="service-price">Starting ₹399</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Keychain Printing"
                     data-price="150"
-                    data-icon="??"
+                    data-icon="🔑"
                     data-description="Customized keychains for gifts, businesses and promotional events.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Keychain
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?150
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🔑</div>
+                    <div class="service-name">Keychain</div>
+                    <div class="service-price">Starting ₹150</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
-
 
                 <div class="service-option"
                     data-service="Bottle Printing"
                     data-price="350"
-                    data-icon="??"
+                    data-icon="🍼"
                     data-description="Customized bottle printing for corporate gifts and promotional products.">
 
-                    <div class="service-icon">??</div>
-
-                    <div class="service-name">
-                        Bottle Printing
-                    </div>
-
-                    <div class="service-price">
-                        Starting ?350
-                    </div>
-
-                    <button type="button" class="add-service-btn">
-                        Add to Order
-                    </button>
+                    <div class="service-icon">🍼</div>
+                    <div class="service-name">Bottle Printing</div>
+                    <div class="service-price">Starting ₹350</div>
+                    <button type="button" class="add-service-btn">Add to Order</button>
 
                 </div>
 
@@ -1556,39 +1066,24 @@
         </div>
 
 
-        <!-- =================================================
-             PROJECT STUDIO
-        ================================================== -->
+        <!-- PROJECT STUDIO -->
 
         <div class="mockup-studio">
-
-
-            <!-- PREVIEW -->
 
             <div class="mockup-preview">
 
                 <div class="mockup-card">
 
-                    <div
-                        class="mockup-icon"
-                        id="mockupIcon"
-                    >
-                        ??
+                    <div class="mockup-icon" id="mockupIcon">
+                        ✏️
                     </div>
 
-                    <div
-                        class="mockup-title"
-                        id="mockupTitle"
-                    >
+                    <div class="mockup-title" id="mockupTitle">
                         Logo Design
                     </div>
 
-                    <p
-                        class="mockup-description"
-                        id="mockupDescription"
-                    >
-                        Professional logo design created
-                        according to your brand identity.
+                    <p class="mockup-description" id="mockupDescription">
+                        Professional logo design created according to your brand identity.
                     </p>
 
                     <div class="mockup-brand">
@@ -1600,8 +1095,6 @@
             </div>
 
 
-            <!-- FORM -->
-
             <div class="service-options-panel">
 
                 <div class="selected-service">
@@ -1610,10 +1103,7 @@
                         Selected Service
                     </div>
 
-                    <div
-                        class="selected-service-name"
-                        id="selectedService"
-                    >
+                    <div class="selected-service-name" id="selectedService">
                         Logo Design
                     </div>
 
@@ -1624,85 +1114,62 @@
 
                     <div class="form-group">
 
-                        <label
-                            for="customerName"
-                            class="form-label"
-                        >
+                        <label for="customerName" class="form-label">
                             Your Name
                         </label>
 
-                        <input
-                            type="text"
+                        <input type="text"
                             id="customerName"
                             class="form-control"
                             placeholder="Enter your name"
-                            autocomplete="name"
-                            required
-                        >
+                            required>
 
                     </div>
 
 
                     <div class="form-group">
 
-                        <label
-                            for="customerPhone"
-                            class="form-label"
-                        >
+                        <label for="customerPhone" class="form-label">
                             WhatsApp Number
                         </label>
 
-                        <input
-                            type="tel"
+                        <input type="tel"
                             id="customerPhone"
                             class="form-control"
                             placeholder="+91 XXXXX XXXXX"
-                            autocomplete="tel"
-                            required
-                        >
+                            required>
 
                     </div>
 
 
                     <div class="form-group">
 
-                        <label
-                            for="projectDetails"
-                            class="form-label"
-                        >
+                        <label for="projectDetails" class="form-label">
                             Project Requirement
                         </label>
 
-                        <textarea
-                            id="projectDetails"
+                        <textarea id="projectDetails"
                             class="form-control"
                             rows="5"
                             placeholder="Describe your design requirement..."
-                            required
-                        ></textarea>
+                            required></textarea>
 
                     </div>
 
 
                     <div class="form-group">
 
-                        <label
-                            for="projectFile"
-                            class="form-label"
-                        >
+                        <label for="projectFile" class="form-label">
                             Upload Your File
                         </label>
 
-                        <input
-                            type="file"
+                        <input type="file"
                             id="projectFile"
                             class="form-control"
-                            accept=".jpg,.jpeg,.png,.webp,.pdf,.ai,.psd,.cdr"
-                        >
+                            accept=".jpg,.jpeg,.png,.webp,.pdf,.ai,.psd,.cdr">
 
                         <small class="file-note">
                             Accepted: JPG, PNG, WEBP, PDF, AI, PSD and CDR.
-                            The selected file name will be included in WhatsApp.
                         </small>
 
                     </div>
@@ -1710,21 +1177,16 @@
 
                     <div class="project-price">
 
-                        <span>
-                            Starting Price
-                        </span>
+                        <span>Starting Price</span>
 
                         <strong id="servicePrice">
-                            ?1,000
+                            ₹1,000
                         </strong>
 
                     </div>
 
 
-                    <button
-                        type="submit"
-                        class="whatsapp-submit"
-                    >
+                    <button type="submit" class="whatsapp-submit">
                         Send Project Request on WhatsApp
                     </button>
 
@@ -1739,174 +1201,36 @@
 </section>
 
 
-<!-- =====================================================
-     WHY CHOOSE US
-===================================================== -->
+<!-- CART -->
 
-<section class="section custom-product">
-
-    <div class="section-header">
-
-        <span class="section-tag">
-            Why Choose Us
-        </span>
-
-        <h2 class="section-title">
-            Your Creative Partner for Business Growth
-        </h2>
-
-    </div>
-
-
-    <div class="products-grid">
-
-        <div class="custom-visual-card">
-
-            <div style="font-size:2.5rem;">
-                ??
-            </div>
-
-            <h4>
-                Creative Designs
-            </h4>
-
-            <p>
-                Unique and professional designs
-                created according to your brand.
-            </p>
-
-        </div>
-
-
-        <div class="custom-visual-card">
-
-            <div style="font-size:2.5rem;">
-                ?
-            </div>
-
-            <h4>
-                Fast Delivery
-            </h4>
-
-            <p>
-                We focus on delivering quality
-                projects within the promised time.
-            </p>
-
-        </div>
-
-
-        <div class="custom-visual-card">
-
-            <div style="font-size:2.5rem;">
-                ??
-            </div>
-
-            <h4>
-                Affordable Pricing
-            </h4>
-
-            <p>
-                Professional graphic design
-                services at affordable prices.
-            </p>
-
-        </div>
-
-
-        <div class="custom-visual-card">
-
-            <div style="font-size:2.5rem;">
-                ??
-            </div>
-
-            <h4>
-                Personal Support
-            </h4>
-
-            <p>
-                Direct communication and support
-                throughout your project.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CTA
-===================================================== -->
-
-<section class="service-cta">
-
-    <div class="service-cta-inner">
-
-        <span class="section-tag">
-            Start Your Project
-        </span>
-
-        <h2 class="section-title">
-            Let's Create Something Amazing
-        </h2>
-
-        <p>
-            Have a design requirement?
-            Send us your project details and
-            let's bring your idea to life.
-        </p>
-
-        <a
-            href="contact.html"
-            class="btn-dark"
-        >
-            Contact Sai Graphic Designs ?
-        </a>
-
-    </div>
-
-</section>
-    
-<!-- =====================================================
-CART OVERLAY
-===================================================== -->
-<div
-    class="cart-overlay"
+<div class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true">
-</div>
+    aria-hidden="true"></div>
 
 
-<!-- =====================================================
-CART DRAWER
-===================================================== -->
-<div
-    class="cart-drawer"
+<div class="cart-drawer"
     id="cartDrawer"
     aria-hidden="true">
 
     <div class="cart-header">
 
-        <h3>
-            Selected Services
-        </h3>
+        <h3>Selected Services</h3>
 
-        <button
-            type="button"
+        <button type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close selected services">
+            aria-label="Close cart">
+
             &times;
+
         </button>
 
     </div>
 
 
-    <div
-        class="cart-items"
+    <div class="cart-items"
         id="cartItemsList">
+
     </div>
 
 
@@ -1914,36 +1238,32 @@ CART DRAWER
 
         <div class="cart-total">
 
-            <span>
-                Estimated Total
-            </span>
+            <span>Estimated Total</span>
 
             <span id="cartTotalVal">
-                ?0
+                ₹0
             </span>
 
         </div>
 
 
-        <button
-            type="button"
+        <button type="button"
             class="cart-checkout"
             id="cartCheckout"
             disabled>
+
             Send Order on WhatsApp
+
         </button>
 
     </div>
 
 </div>
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+
 
 <footer>
 
     <div class="footer-container">
-
 
         <div class="footer-brand">
 
@@ -1958,159 +1278,14 @@ CART DRAWER
             </div>
 
             <p>
-                Professional graphic design,
-                branding, printing and digital
-                creative services for businesses.
+                Professional graphic design, branding,
+                printing and digital creative services
+                for businesses.
             </p>
-
-
-            <div class="footer-socials">
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Facebook"
-                >
-                    Fb
-                </a>
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Instagram"
-                >
-                    Ig
-                </a>
-
-                <a
-                    href="https://wa.me/916381128781"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-icon"
-                    aria-label="WhatsApp"
-                >
-                    Wa
-                </a>
-
-                <a
-                    href="#"
-                    class="social-icon"
-                    aria-label="Behance"
-                >
-                    Be
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div>
-
-            <h4 class="footer-col-title">
-                Services
-            </h4>
-
-            <ul class="footer-links">
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Logo Design
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Logo Recreation
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Brand Identity
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Social Media Design
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Packaging Design
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <div>
-
-            <h4 class="footer-col-title">
-                Company
-            </h4>
-
-            <ul class="footer-links">
-
-                <li class="footer-link">
-                    <a href="index.html">
-                        Home
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="about.html">
-                        About Us
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="customizer.html">
-                        Services
-                    </a>
-                </li>
-
-                <li class="footer-link">
-                    <a href="contact.html">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <div>
-
-            <h4 class="footer-col-title">
-                Contact
-            </h4>
-
-            <div class="footer-contact">
-
-                <p>
-                    Madurai, Tamil Nadu, India
-                </p>
-
-                <p>
-                    P: +91 63811 28781
-                </p>
-
-                <p>
-                    E: saigraphicdesings@gmail.com
-                </p>
-
-            </div>
 
         </div>
 
     </div>
-
 
     <div class="footer-bottom">
 
@@ -2128,17 +1303,9 @@ CART DRAWER
 </footer>
 
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
 
     const serviceOptions =
         document.querySelectorAll(".service-option");
@@ -2186,23 +1353,40 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("cartCheckout");
 
 
-    /* =====================================================
-       SELECTED SERVICE
-    ===================================================== */
-
     let selectedServiceData = {
+
         name: "Logo Design",
         price: 1000,
-        icon: "??",
+        icon: "✏️",
+
         description:
             "Professional logo design created according to your brand identity."
+
     };
+
+
+    const CART_KEY = "saiGraphicCart";
+
+
+    let cart = JSON.parse(
+        localStorage.getItem(CART_KEY)
+    ) || [];
 
 
     function formatPrice(price) {
 
-        return "?" +
+        return "₹" +
             Number(price).toLocaleString("en-IN");
+
+    }
+
+
+    function saveCart() {
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
 
     }
 
@@ -2255,20 +1439,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =====================================================
-       SERVICE CARD CLICK
-    ===================================================== */
-
     serviceOptions.forEach(function (option) {
 
         option.addEventListener(
             "click",
             function (event) {
 
-                /*
-                 * If user clicks Add to Order,
-                 * do not only select the card.
-                 */
                 if (
                     event.target.classList.contains(
                         "add-service-btn"
@@ -2277,7 +1453,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                selectService(this);
+                selectService(option);
 
             }
         );
@@ -2305,449 +1481,238 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-   /* =====================================================
-   CART
-===================================================== */
+    function openCart() {
 
-const CART_KEY = "saiGraphicCart";
+        cartDrawer.classList.add("active");
 
+        cartOverlay.classList.add("active");
 
-/* =====================================================
-   LOAD CART FROM LOCAL STORAGE
-===================================================== */
-
-let cart = JSON.parse(
-    localStorage.getItem(CART_KEY)
-) || [];
-
-
-/* =====================================================
-   SAVE CART
-===================================================== */
-
-function saveCart() {
-
-    localStorage.setItem(
-        CART_KEY,
-        JSON.stringify(cart)
-    );
-
-}
-
-
-/* =====================================================
-   OPEN CART
-===================================================== */
-
-function openCart() {
-
-    cartDrawer.classList.add("active");
-
-    cartOverlay.classList.add("active");
-
-    cartDrawer.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    cartOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-/* =====================================================
-   CLOSE CART
-===================================================== */
-
-function closeCart() {
-
-    cartDrawer.classList.remove("active");
-
-    cartOverlay.classList.remove("active");
-
-    cartDrawer.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    cartOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-/* =====================================================
-   ADD SERVICE TO CART
-===================================================== */
-
-function addServiceToCart() {
-
-    if (!selectedServiceData) {
-
-        return;
+        document.body.style.overflow =
+            "hidden";
 
     }
 
 
-    /* CHECK IF SERVICE ALREADY EXISTS */
+    function closeCart() {
 
-    const existing =
-        cart.find(function (item) {
+        cartDrawer.classList.remove("active");
 
-            return item.name ===
-                selectedServiceData.name;
+        cartOverlay.classList.remove("active");
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    function addServiceToCart() {
+
+        const existing =
+            cart.find(function (item) {
+
+                return item.name ===
+                    selectedServiceData.name;
+
+            });
+
+
+        if (existing) {
+
+            alert(
+                selectedServiceData.name +
+                " is already in your cart."
+            );
+
+            openCart();
+
+            return;
+
+        }
+
+
+        cart.push({
+
+            name: selectedServiceData.name,
+
+            price: Number(
+                selectedServiceData.price
+            )
 
         });
 
 
-    if (existing) {
-
-        alert(
-            selectedServiceData.name +
-            " is already in your cart."
-        );
+        saveCart();
 
         updateCart();
 
         openCart();
 
-        return;
-
     }
 
 
-    /* ADD SERVICE */
+    function updateCart() {
 
-    cart.push({
-
-        name:
-            selectedServiceData.name,
-
-        price:
-            Number(selectedServiceData.price)
-
-    });
+        cartItemsList.innerHTML = "";
 
 
-    /* SAVE CART */
+        if (cart.length === 0) {
 
-    saveCart();
+            cartItemsList.innerHTML = `
 
+                <div class="empty-cart">
 
-    /* UPDATE CART */
+                    <h3>Your cart is empty</h3>
 
-    updateCart();
+                    <p>
+                        Choose a service and click
+                        "Add to Order".
+                    </p>
 
-
-    /* OPEN CART */
-
-    openCart();
-
-}
-
-
-/* =====================================================
-   UPDATE CART
-===================================================== */
-
-function updateCart() {
-
-    /* GET LATEST CART */
-
-    cart = JSON.parse(
-        localStorage.getItem(CART_KEY)
-    ) || [];
-
-
-    /* CLEAR CART */
-
-    cartItemsList.innerHTML = "";
-
-
-    /* =================================================
-       EMPTY CART
-    ================================================= */
-
-    if (cart.length === 0) {
-
-        cartItemsList.innerHTML = `
-
-            <div class="empty-cart">
-
-                <p>
-                    <strong>
-                        No services selected yet.
-                    </strong>
-                </p>
-
-                <p>
-                    Choose a service and click
-                    "Add to Order".
-                </p>
-
-            </div>
-
-        `;
-
-
-        cartBadge.textContent =
-            "0";
-
-
-        cartTotalVal.textContent =
-            "?0";
-
-
-        cartCheckout.disabled =
-            true;
-
-
-        return;
-
-    }
-
-
-    /* =================================================
-       CALCULATE TOTAL
-    ================================================= */
-
-    let total = 0;
-
-
-    /* =================================================
-       DISPLAY CART ITEMS
-    ================================================= */
-
-    cart.forEach(function (item, index) {
-
-        const price =
-            Number(item.price) || 0;
-
-
-        total += price;
-
-
-        const itemElement =
-            document.createElement("div");
-
-
-        itemElement.className =
-            "cart-item";
-
-
-        itemElement.innerHTML = `
-
-            <div class="cart-item-info">
-
-                <div class="cart-item-name">
-                    ${escapeHTML(item.name)}
                 </div>
 
-                <div class="cart-item-price">
-                    ${formatPrice(price)}
+            `;
+
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            cartCheckout.disabled = true;
+
+            return;
+
+        }
+
+
+        let total = 0;
+
+
+        cart.forEach(function (item, index) {
+
+            total += Number(item.price);
+
+
+            const itemElement =
+                document.createElement("div");
+
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${item.name}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(item.price)}
+                    </div>
+
                 </div>
 
-            </div>
+                <button type="button"
+                    class="cart-remove"
+                    data-index="${index}">
+
+                    ×
+
+                </button>
+
+            `;
 
 
-            <button
-                type="button"
-                class="cart-remove"
-                data-index="${index}"
-                aria-label="Remove ${escapeHTML(item.name)}"
-            >
-                ×
-            </button>
-
-        `;
-
-
-        cartItemsList.appendChild(
-            itemElement
-        );
-
-    });
-
-
-    /* =================================================
-       UPDATE BADGE
-    ================================================= */
-
-    cartBadge.textContent =
-        cart.length;
-
-
-    /* =================================================
-       UPDATE TOTAL
-    ================================================= */
-
-    cartTotalVal.textContent =
-        formatPrice(total);
-
-
-    /* =================================================
-       ENABLE CHECKOUT
-    ================================================= */
-
-    cartCheckout.disabled =
-        false;
-
-
-    /* =================================================
-       REMOVE BUTTONS
-    ================================================= */
-
-    document
-        .querySelectorAll(".cart-remove")
-        .forEach(function (button) {
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    const index =
-                        Number(
-                            this.dataset.index
-                        );
-
-
-                    /* REMOVE */
-
-                    cart.splice(
-                        index,
-                        1
-                    );
-
-
-                    /* SAVE */
-
-                    saveCart();
-
-
-                    /* UPDATE */
-
-                    updateCart();
-
-                }
+            cartItemsList.appendChild(
+                itemElement
             );
 
         });
 
-}
+
+        cartBadge.textContent =
+            cart.length;
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHTML(value) {
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
+        cartTotalVal.textContent =
+            formatPrice(total);
 
 
-/* =====================================================
-   CART EVENTS
-===================================================== */
-
-cartToggle.addEventListener(
-    "click",
-    function () {
-
-        /* Load latest cart */
-
-        cart = JSON.parse(
-            localStorage.getItem(CART_KEY)
-        ) || [];
+        cartCheckout.disabled =
+            false;
 
 
-        updateCart();
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
 
-        openCart();
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+                    }
+                );
+
+            });
 
     }
-);
 
 
-cartClose.addEventListener(
-    "click",
-    closeCart
-);
+    cartToggle.addEventListener(
+        "click",
+        function () {
 
+            updateCart();
 
-cartOverlay.addEventListener(
-    "click",
-    closeCart
-);
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeCart();
+            openCart();
 
         }
-
-    }
-);
+    );
 
 
-/* =====================================================
-   INITIAL CART LOAD
-===================================================== */
+    cartClose.addEventListener(
+        "click",
+        closeCart
+    );
 
-updateCart();
+
+    cartOverlay.addEventListener(
+        "click",
+        closeCart
+    );
 
 
-    /* =====================================================
-       PROJECT FORM ? WHATSAPP
-    ===================================================== */
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeCart();
+
+            }
+
+        }
+    );
+
 
     serviceForm.addEventListener(
         "submit",
@@ -2758,27 +1723,21 @@ updateCart();
 
             const customerName =
                 document
-                    .getElementById(
-                        "customerName"
-                    )
+                    .getElementById("customerName")
                     .value
                     .trim();
 
 
             const customerPhone =
                 document
-                    .getElementById(
-                        "customerPhone"
-                    )
+                    .getElementById("customerPhone")
                     .value
                     .trim();
 
 
             const projectDetails =
                 document
-                    .getElementById(
-                        "projectDetails"
-                    )
+                    .getElementById("projectDetails")
                     .value
                     .trim();
 
@@ -2799,76 +1758,64 @@ updateCart();
                 "916381128781";
 
 
-            const message =
-
-`Hello Sai Graphic Designs ??
+            const message = `Hello Sai Graphic Designs 👋
 
 I would like to request a design service.
 
-??????????????????
+------------------------------
 SERVICE DETAILS
-??????????????????
+------------------------------
 
 Service: ${selectedServiceData.name}
 
 Starting Price: ${formatPrice(selectedServiceData.price)}
 
-??????????????????
+------------------------------
 CUSTOMER DETAILS
-??????????????????
+------------------------------
 
 Name: ${customerName}
 
 WhatsApp Number: ${customerPhone}
 
-??????????????????
+------------------------------
 PROJECT REQUIREMENT
-??????????????????
+------------------------------
 
 ${projectDetails}
 
-??????????????????
+------------------------------
 FILE DETAILS
-??????????????????
+------------------------------
 
 File Selected: ${fileName}
 
 Please contact me with the next steps.
 
-Thank you!
-Sai Graphic Designs Website`;
+Thank you!`;
 
 
             const whatsappURL =
                 "https://wa.me/" +
                 whatsappNumber +
                 "?text=" +
-                encodeURIComponent(
-                    message
-                );
+                encodeURIComponent(message);
 
 
             window.open(
                 whatsappURL,
-                "_blank",
-                "noopener,noreferrer"
+                "_blank"
             );
 
         }
     );
 
 
-    /* =====================================================
-       CART ? WHATSAPP
-    ===================================================== */
-
     cartCheckout.addEventListener(
         "click",
         function () {
 
-            if (
-                cart.length === 0
-            ) {
+            if (cart.length === 0) {
 
                 return;
 
@@ -2877,13 +1824,10 @@ Sai Graphic Designs Website`;
 
             const total =
                 cart.reduce(
-                    function (
-                        sum,
-                        item
-                    ) {
+                    function (sum, item) {
 
                         return sum +
-                            item.price;
+                            Number(item.price);
 
                     },
                     0
@@ -2891,45 +1835,35 @@ Sai Graphic Designs Website`;
 
 
             const serviceList =
-                cart
-                    .map(
-                        function (
-                            item,
-                            index
-                        ) {
+                cart.map(
+                    function (item, index) {
 
-                            return (
+                        return (
+                            (index + 1) +
+                            ". " +
+                            item.name +
+                            " - " +
+                            formatPrice(item.price)
+                        );
 
-                                (index + 1) +
-                                ". " +
-                                item.name +
-                                " - " +
-                                formatPrice(
-                                    item.price
-                                )
-
-                            );
-
-                        }
-                    )
-                    .join("\n");
+                    }
+                )
+                .join("\n");
 
 
-            const message =
-
-`Hello Sai Graphic Designs ??
+            const message = `Hello Sai Graphic Designs 👋
 
 I would like to order the following services:
 
-??????????????????
+------------------------------
 SELECTED SERVICES
-??????????????????
+------------------------------
 
 ${serviceList}
 
-??????????????????
+------------------------------
 ORDER SUMMARY
-??????????????????
+------------------------------
 
 Number of Services: ${cart.length}
 
@@ -2937,30 +1871,22 @@ Estimated Total: ${formatPrice(total)}
 
 Please contact me to discuss the project details and payment.
 
-Thank you!
-Sai Graphic Designs Website`;
+Thank you!`;
 
 
             const whatsappURL =
                 "https://wa.me/916381128781?text=" +
-                encodeURIComponent(
-                    message
-                );
+                encodeURIComponent(message);
 
 
             window.open(
                 whatsappURL,
-                "_blank",
-                "noopener,noreferrer"
+                "_blank"
             );
 
         }
     );
 
-
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
 
     updateCart();
 
