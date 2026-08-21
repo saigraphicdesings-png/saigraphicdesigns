@@ -1,450 +1,661 @@
-/* =====================================
-   SAI GRAPHIC DESIGNS
-   TEMPLATE SHOP
-===================================== */
+document.addEventListener("DOMContentLoaded", function () {
 
-let templateCart =
-    JSON.parse(localStorage.getItem("saiTemplateCart")) || [];
+    "use strict";
 
 
-/* =====================================
-   PRODUCTS
-===================================== */
+    /* =========================================
+       CART STORAGE
+    ========================================= */
 
-const socialProducts = [
-    ["Premium Social Media Poster #01", 99],
-    ["Premium Social Media Poster #02", 99],
-    ["Premium Social Media Poster #03", 99],
-    ["Premium Social Media Poster #04", 99],
-    ["Premium Social Media Poster #05", 99],
+    const CART_KEY = "saiGraphicShopCart";
 
-    ["5 Social Media Poster Bundle #01", 250],
-    ["5 Social Media Poster Bundle #02", 250],
-    ["5 Social Media Poster Bundle #03", 250],
-    ["5 Social Media Poster Bundle #04", 250],
-    ["5 Social Media Poster Bundle #05", 250]
-];
+    let cart = loadCart();
 
 
-const packagingProducts = [
-    ["Box Design #01", 250],
-    ["Box Design #02", 250],
-    ["Box Design #03", 250],
-    ["Box Design #04", 250],
-    ["Box Design #05", 250],
+    function loadCart() {
 
-    ["Premium Box Design #01", 500],
-    ["Premium Box Design #02", 500],
-    ["Premium Box Design #03", 500],
-    ["Premium Box Design #04", 500],
-    ["Premium Box Design #05", 500],
+        try {
 
-    ["Pouch Design #01", 250],
-    ["Pouch Design #02", 250],
-    ["Pouch Design #03", 250],
-    ["Pouch Design #04", 250],
-    ["Pouch Design #05", 250],
+            const saved =
+                localStorage.getItem(CART_KEY);
 
-    ["Premium Pouch Design #01", 500],
-    ["Premium Pouch Design #02", 500],
-    ["Premium Pouch Design #03", 500],
-    ["Premium Pouch Design #04", 500],
-    ["Premium Pouch Design #05", 500],
+            if (!saved) {
+                return [];
+            }
 
-    ["Label Design #01", 150],
-    ["Label Design #02", 150],
-    ["Label Design #03", 150],
-    ["Label Design #04", 150],
-    ["Label Design #05", 150],
+            const parsed =
+                JSON.parse(saved);
 
-    ["Premium Label Design #01", 300],
-    ["Premium Label Design #02", 300],
-    ["Premium Label Design #03", 300],
-    ["Premium Label Design #04", 300],
-    ["Premium Label Design #05", 300]
-];
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        } catch (error) {
+
+            console.error(
+                "Unable to load shop cart:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
 
 
-const iconProducts = [
-    ["Premium Icon #01", 99],
-    ["Premium Icon #02", 99],
-    ["Premium Icon #03", 99],
-    ["Premium Icon #04", 99],
-    ["Premium Icon #05", 99],
-    ["Premium Icon #06", 99],
-    ["Premium Icon #07", 99],
-    ["Premium Icon #08", 99],
-    ["Premium Icon #09", 99],
-    ["Premium Icon #10", 99]
-];
+    function saveCart() {
 
-
-/* =====================================
-   PRODUCT CARD GENERATOR
-===================================== */
-
-function createProductCard(name, price, imageName) {
-
-    return `
-        <div class="template-card">
-
-            <img
-                src="Images/shop/${imageName}"
-                alt="${name}"
-                onerror="this.src='Images/logo.png'"
-            >
-
-            <h4>${name}</h4>
-
-            <p>₹${price}</p>
-
-            <button
-                onclick="addTemplate('${name.replace(/'/g, "\\'")}', ${price})">
-                Add to Cart
-            </button>
-
-        </div>
-    `;
-}
-
-
-/* =====================================
-   LOAD SOCIAL PRODUCTS
-===================================== */
-
-function loadSocialProducts() {
-
-    const container =
-        document.getElementById("socialProducts");
-
-    if (!container) return;
-
-    let html = "";
-
-    socialProducts.forEach((product, index) => {
-
-        const image =
-            `social-poster-${String(index + 1).padStart(2, "0")}.jpg`;
-
-        html += createProductCard(
-            product[0],
-            product[1],
-            image
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
         );
 
-    });
-
-    container.innerHTML = html;
-}
+    }
 
 
-/* =====================================
-   LOAD PACKAGING
-===================================== */
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
-function loadPackagingProducts() {
-
-    const container =
-        document.getElementById("packagingProducts");
-
-    if (!container) return;
-
-    let html = "";
-
-    packagingProducts.forEach((product, index) => {
-
-        const image =
-            `packaging-${String(index + 1).padStart(2, "0")}.jpg`;
-
-        html += createProductCard(
-            product[0],
-            product[1],
-            image
+    const cartToggle =
+        document.getElementById(
+            "shopCartToggle"
         );
 
-    });
-
-    container.innerHTML = html;
-}
-
-
-/* =====================================
-   LOAD ICONS
-===================================== */
-
-function loadIcons() {
-
-    const container =
-        document.getElementById("iconProducts");
-
-    if (!container) return;
-
-    let html = "";
-
-    iconProducts.forEach((product, index) => {
-
-        const image =
-            `icon-${String(index + 1).padStart(2, "0")}.jpg`;
-
-        html += createProductCard(
-            product[0],
-            product[1],
-            image
+    const cartBadge =
+        document.getElementById(
+            "shopCartBadge"
         );
 
-    });
+    const cartDrawer =
+        document.getElementById(
+            "shopCart"
+        );
 
-    container.innerHTML = html;
-}
+    const cartOverlay =
+        document.getElementById(
+            "shopCartOverlay"
+        );
 
+    const cartClose =
+        document.getElementById(
+            "shopCartClose"
+        );
 
-/* =====================================
-   ADD TO CART
-===================================== */
+    const cartItems =
+        document.getElementById(
+            "shopCartItems"
+        );
 
-function addTemplate(name, price) {
+    const cartTotal =
+        document.getElementById(
+            "shopCartTotal"
+        );
 
-    templateCart.push({
-        name: name,
-        price: price
-    });
-
-    saveTemplateCart();
-
-    updateTemplateCart();
-
-    openShopCart();
-
-}
-
-
-/* =====================================
-   REMOVE
-===================================== */
-
-function removeTemplate(index) {
-
-    templateCart.splice(index, 1);
-
-    saveTemplateCart();
-
-    updateTemplateCart();
-
-}
+    const whatsappOrder =
+        document.getElementById(
+            "shopWhatsappOrder"
+        );
 
 
-/* =====================================
-   SAVE
-===================================== */
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
 
-function saveTemplateCart() {
+    function escapeHTML(value) {
 
-    localStorage.setItem(
-        "saiTemplateCart",
-        JSON.stringify(templateCart)
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================
+       OPEN CART
+    ========================================= */
+
+    function openShopCart() {
+
+        if (!cartDrawer) {
+            return;
+        }
+
+        updateCart();
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "shop-cart-open"
+        );
+
+    }
+
+
+    /* =========================================
+       CLOSE CART
+    ========================================= */
+
+    function closeShopCart() {
+
+        if (!cartDrawer) {
+            return;
+        }
+
+        cartDrawer.classList.remove(
+            "active"
+        );
+
+        cartOverlay.classList.remove(
+            "active"
+        );
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "shop-cart-open"
+        );
+
+    }
+
+
+    /* =========================================
+       ADD TEMPLATE
+    ========================================= */
+
+    window.addTemplate =
+        function (name, price) {
+
+            const product = {
+
+                id:
+                    name
+                        .toLowerCase()
+                        .replace(
+                            /[^a-z0-9]+/g,
+                            "-"
+                        ),
+
+                name: name,
+
+                price: Number(price) || 0
+
+            };
+
+
+            /*
+             * Allow the same product only once.
+             */
+
+            const existing =
+                cart.find(
+                    function (item) {
+
+                        return item.id === product.id;
+
+                    }
+                );
+
+
+            if (existing) {
+
+                alert(
+                    product.name +
+                    " is already in your cart."
+                );
+
+                openShopCart();
+
+                return;
+
+            }
+
+
+            cart.push(product);
+
+            saveCart();
+
+            updateCart();
+
+            openShopCart();
+
+        };
+
+
+    /* =========================================
+       REMOVE TEMPLATE
+    ========================================= */
+
+    function removeTemplate(index) {
+
+        if (
+            index < 0 ||
+            index >= cart.length
+        ) {
+
+            return;
+
+        }
+
+
+        cart.splice(index, 1);
+
+        saveCart();
+
+        updateCart();
+
+    }
+
+
+    /* =========================================
+       UPDATE CART
+    ========================================= */
+
+    function updateCart() {
+
+        cart =
+            loadCart();
+
+
+        if (!cartItems) {
+            return;
+        }
+
+
+        cartItems.innerHTML = "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = `
+
+                <div class="empty-shop-cart">
+
+                    <div class="empty-cart-icon">
+                        🛒
+                    </div>
+
+                    <h3>
+                        Your cart is empty
+                    </h3>
+
+                    <p>
+                        Add a design template to
+                        your cart to place an order.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            if (cartBadge) {
+                cartBadge.textContent = "0";
+            }
+
+
+            if (cartTotal) {
+                cartTotal.textContent = "₹0";
+            }
+
+
+            if (whatsappOrder) {
+                whatsappOrder.disabled = true;
+            }
+
+
+            return;
+
+        }
+
+
+        /* CART HAS ITEMS */
+
+        let total = 0;
+
+
+        cart.forEach(
+            function (item, index) {
+
+                const price =
+                    Number(item.price) || 0;
+
+                total += price;
+
+
+                const itemElement =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                itemElement.className =
+                    "shop-cart-item";
+
+
+                itemElement.innerHTML = `
+
+                    <div class="shop-cart-item-info">
+
+                        <h4>
+                            ${escapeHTML(
+                                item.name
+                            )}
+                        </h4>
+
+                        <strong>
+                            ₹${price.toLocaleString(
+                                "en-IN"
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="shop-cart-remove"
+                        data-index="${index}"
+                        aria-label="Remove item">
+
+                        ×
+
+                    </button>
+
+                `;
+
+
+                cartItems.appendChild(
+                    itemElement
+                );
+
+            }
+        );
+
+
+        /* CART COUNT */
+
+        if (cartBadge) {
+
+            cartBadge.textContent =
+                cart.length;
+
+        }
+
+
+        /* TOTAL */
+
+        if (cartTotal) {
+
+            cartTotal.textContent =
+                "₹" +
+                total.toLocaleString(
+                    "en-IN"
+                );
+
+        }
+
+
+        /* ENABLE ORDER */
+
+        if (whatsappOrder) {
+
+            whatsappOrder.disabled =
+                false;
+
+        }
+
+
+        /* REMOVE BUTTONS */
+
+        const removeButtons =
+            cartItems.querySelectorAll(
+                ".shop-cart-remove"
+            );
+
+
+        removeButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+                        removeTemplate(index);
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       CART TOGGLE
+    ========================================= */
+
+    if (cartToggle) {
+
+        cartToggle.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    cartDrawer.classList.contains(
+                        "active"
+                    )
+                ) {
+
+                    closeShopCart();
+
+                } else {
+
+                    openShopCart();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       CLOSE BUTTON
+    ========================================= */
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeShopCart
+        );
+
+    }
+
+
+    /* =========================================
+       OVERLAY
+    ========================================= */
+
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeShopCart
+        );
+
+    }
+
+
+    /* =========================================
+       ESC KEY
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeShopCart();
+
+            }
+
+        }
     );
 
-}
+
+    /* =========================================
+       WHATSAPP ORDER
+    ========================================= */
+
+    if (whatsappOrder) {
+
+        whatsappOrder.addEventListener(
+            "click",
+            function () {
+
+                cart =
+                    loadCart();
 
 
-/* =====================================
-   UPDATE CART
-===================================== */
+                if (
+                    cart.length === 0
+                ) {
 
-function updateTemplateCart() {
+                    return;
 
-    const items =
-        document.getElementById("shopCartItems");
-
-    const count =
-        document.getElementById("shopCartCount");
-
-    const totalElement =
-        document.getElementById("shopCartTotal");
+                }
 
 
-    if (!items) return;
+                let total = 0;
 
 
-    items.innerHTML = "";
+                const items =
+                    cart.map(
+                        function (
+                            item,
+                            index
+                        ) {
+
+                            const price =
+                                Number(
+                                    item.price
+                                ) || 0;
 
 
-    let total = 0;
+                            total += price;
 
 
-    templateCart.forEach((item, index) => {
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - ₹" +
+                                price.toLocaleString(
+                                    "en-IN"
+                                )
+                            );
 
-        total += Number(item.price);
-
-
-        items.innerHTML += `
-
-            <div class="cart-template-item">
-
-                <strong>
-                    ${item.name}
-                </strong>
-
-                <span>
-                    ₹${item.price}
-                </span>
-
-                <button
-                    onclick="removeTemplate(${index})">
-                    Remove
-                </button>
-
-            </div>
-
-        `;
-
-    });
+                        }
+                    );
 
 
-    if (templateCart.length === 0) {
+                const message =
+                    `Hello Sai Graphic Designs 👋
 
-        items.innerHTML = `
-            <p>Your template cart is empty.</p>
-        `;
+I would like to order the following design templates:
 
-    }
+━━━━━━━━━━━━━━━━━━
+SELECTED TEMPLATES
+━━━━━━━━━━━━━━━━━━
 
+${items.join("\n")}
 
-    count.textContent =
-        templateCart.length;
+━━━━━━━━━━━━━━━━━━
+ORDER SUMMARY
+━━━━━━━━━━━━━━━━━━
 
+Number of Templates: ${cart.length}
 
-    totalElement.textContent =
-        `₹${total}`;
+Total: ₹${total.toLocaleString(
+                        "en-IN"
+                    )}
 
-}
+Please contact me to confirm the order and payment.
 
-
-/* =====================================
-   OPEN CART
-===================================== */
-
-function openShopCart() {
-
-    document
-        .getElementById("shopCart")
-        .classList.add("show");
-
-    document
-        .getElementById("shopCartOverlay")
-        .classList.add("show");
-
-}
+Thank you!`;
 
 
-/* =====================================
-   CLOSE CART
-===================================== */
-
-function closeShopCart() {
-
-    document
-        .getElementById("shopCart")
-        .classList.remove("show");
-
-    document
-        .getElementById("shopCartOverlay")
-        .classList.remove("show");
-
-}
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(
+                        message
+                    );
 
 
-/* =====================================
-   WHATSAPP TEMPLATE MESSAGE
-===================================== */
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
 
-function sendTemplateOrder() {
-
-    if (templateCart.length === 0) {
-
-        alert("Please add a template to your cart first.");
-
-        return;
+            }
+        );
 
     }
 
 
-    /*
-       CHANGE THIS TO YOUR WHATSAPP NUMBER
+    /* =========================================
+       STORAGE CHANGE
+    ========================================= */
 
-       Example:
-       919876543210
+    window.addEventListener(
+        "storage",
+        function (event) {
 
-       Do NOT use + or spaces.
-    */
+            if (
+                event.key === CART_KEY
+            ) {
 
-    const whatsappNumber =
-        "919999999999";
+                updateCart();
 
+            }
 
-    let total = 0;
-
-
-    let message =
-        `🛍️ NEW TEMPLATE ORDER\n` +
-        `━━━━━━━━━━━━━━━━━━\n\n`;
-
-
-    message +=
-        `📦 Selected Templates:\n\n`;
-
-
-    templateCart.forEach((item, index) => {
-
-        total += Number(item.price);
-
-        message +=
-            `${index + 1}. ${item.name} — ₹${item.price}\n`;
-
-    });
-
-
-    message +=
-        `\n━━━━━━━━━━━━━━━━━━\n` +
-        `💰 TOTAL: ₹${total}\n\n`;
-
-
-    message +=
-        `📌 Order Type: Template Shop\n\n`;
-
-
-    message +=
-        `Please confirm my template order.`;
-
-
-    const whatsappURL =
-        `https://wa.me/${whatsappNumber}?text=` +
-        encodeURIComponent(message);
-
-
-    window.open(
-        whatsappURL,
-        "_blank"
+        }
     );
 
-}
 
+    /* =========================================
+       INITIALIZE
+    ========================================= */
 
-/* =====================================
-   START
-===================================== */
+    updateCart();
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        loadSocialProducts();
-
-        loadPackagingProducts();
-
-        loadIcons();
-
-        updateTemplateCart();
-
-    }
-);
+});
