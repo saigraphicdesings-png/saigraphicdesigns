@@ -82,112 +82,39 @@
 
 
         <!-- HEADER ACTIONS -->
- <button
-        type="button"
-        class="cart-icon-btn"
-        id="cartToggle">
+        <div class="nav-actions">
 
-        🛒
+          <button
+    type="button"
+    class="cart-icon-btn"
+    id="shopCartToggle"
+    aria-label="Open shopping cart">
 
-        <span
-            class="cart-badge"
-            id="cartBadge">
-            0
-        </span>
+    🛒
 
-    </button>
+    <span
+        class="cart-badge"
+        id="shopCartBadge">
 
-    ...
-</header>
+        0
+
+    </span>
+
+</button>
 
 
-<!-- ONE GLOBAL CART -->
+            <a
+                href="contact.html"
+                class="btn-header">
 
-<div
-    class="cart-overlay"
-    id="cartOverlay"
-    aria-hidden="true">
-</div>
+                Get Started →
 
-<div
-    class="cart-drawer"
-    id="cartDrawer"
-    aria-hidden="true">
-
-    <div class="cart-header">
-
-        <h3>Selected Services</h3>
-
-        <button
-            type="button"
-            class="cart-close"
-            id="cartClose">
-
-            ×
-
-        </button>
-
-    </div>
-
-    <div
-        class="cart-items"
-        id="cartItemsList">
-    </div>
-
-    <div class="cart-footer">
-
-        <div class="cart-total">
-
-            <span>Estimated Total:</span>
-
-            <span id="cartTotalVal">
-                ₹0
-            </span>
+            </a>
 
         </div>
 
-        <button
-            type="button"
-            class="btn-checkout"
-            id="checkoutBtn"
-            disabled>
-
-            Continue Order
-
-        </button>
-
     </div>
 
-</div>
-
-
-<!-- SHOP -->
-
-<section class="shop-section">
-
-    <div class="template-card">
-
-        ...
-
-        <button
-            type="button"
-            class="template-cart-btn"
-            onclick="addServiceToGlobalCart(
-                'Premium Visiting Card #01',
-                99
-            )">
-
-            🛒 Add to Order
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<script src="main.js"></script>
-<script src="shop.js"></script>
 </header>
 
 <!-- =====================================================
@@ -197,13 +124,19 @@
 <div
     class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true">
-</div>
+    aria-hidden="true"
+></div>
+
+
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
 
 <div
     class="cart-drawer"
     id="cartDrawer"
-    aria-hidden="true">
+    aria-hidden="true"
+>
 
     <div class="cart-header">
 
@@ -215,22 +148,31 @@
             type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close cart">
+            aria-label="Close cart"
+        >
             &times;
         </button>
 
     </div>
 
+
     <div
         class="cart-items"
-        id="cartItemsList">
+        id="cartItemsList"
+    >
 
         <div class="empty-cart">
-            <p>No services selected yet.</p>
-            <p>Choose a service to start your order.</p>
+            <p>
+                No services selected yet.
+            </p>
+
+            <p>
+                Choose a service to start your order.
+            </p>
         </div>
 
     </div>
+
 
     <div class="cart-footer">
 
@@ -246,19 +188,20 @@
 
         </div>
 
+
         <button
             type="button"
             class="btn-checkout"
             id="checkoutBtn"
-            disabled>
-
+            disabled
+        >
             Continue Order
-
         </button>
 
     </div>
 
 </div>
+
 <!-- =========================================
      SHOP HERO
 ========================================= -->
@@ -385,16 +328,16 @@
 
                     
                 <button
-    type="button"
-    class="template-cart-btn"
-    onclick="addServiceToGlobalCart(
-        'Premium Visiting Card #01',
-        99
-    )">
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #02',
+                        99
+                    )">
 
-    🛒 Add to Order
+                    Add to Order
 
-</button>
+                </button>
 
 
 
@@ -447,17 +390,17 @@
 
 
                
-             <button
-    type="button"
-    class="template-cart-btn"
-    onclick="addServiceToGlobalCart(
-        'Premium Visiting Card #01',
-        99
-    )">
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #02',
+                        99
+                    )">
 
-    🛒 Add to Order
+                    🛒 Add to Order
 
-</button>
+                </button>
 
             </div>
 
@@ -506,17 +449,17 @@
 
                 </div>
 
-<button
-    type="button"
-    class="template-cart-btn"
-    onclick="addServiceToGlobalCart(
-        'Premium Visiting Card #01',
-        99
-    )">
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #03',
+                        99
+                    )">
 
-    🛒 Add to Order
+                    🛒 Add to order
 
-</button>
+                </button>
 
             </div>
 
@@ -567,17 +510,17 @@
 
 
 
-<button
-    type="button"
-    class="template-cart-btn"
-    onclick="addServiceToGlobalCart(
-        'Premium Visiting Card #01',
-        99
-    )">
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #04',
+                        99
+                    )">
 
-    🛒 Add to Order
+                    🛒 Add to order
 
-</button>
+                </button>
 
             </div>
 
@@ -638,17 +581,17 @@
                 </a>
 
 
-    <button
-    type="button"
-    class="template-cart-btn"
-    onclick="addServiceToGlobalCart(
-        'Premium Visiting Card #01',
-        99
-    )">
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #05',
+                        99
+                    )">
 
-    🛒 Add to Order
+                    🛒 Add to Cart
 
-</button>
+                </button>
 
             </div>
 
@@ -776,6 +719,19 @@
 
 </section>
 
+
+<!-- =========================================
+     CART OVERLAY
+========================================= -->
+
+<div
+    class="shop-cart-overlay"
+    id="shopCartOverlay">
+</div>
+
+
+CART DRAWER
+
 <!-- =========================================
      WHATSAPP FLOATING BUTTON
 ========================================= -->
@@ -798,6 +754,63 @@
     class="shop-cart-overlay"
     id="shopCartOverlay">
 </div>
+
+
+<!-- ============================= -->
+<!-- SHOP CART -->
+<!-- ============================= -->
+
+<aside
+    class="shop-cart"
+    id="shopCart"
+    aria-hidden="true">
+
+    <button
+        type="button"
+        class="close-cart"
+        onclick="closeShopCart()"
+        aria-label="Close cart">
+
+        ×
+
+    </button>
+
+
+    <h2>
+        Template Cart
+    </h2>
+
+
+    <div
+        id="shopCartItems"
+        class="shop-cart-items">
+
+    </div>
+
+
+    <div class="shop-cart-total">
+
+        <span>
+            Total
+        </span>
+
+        <strong id="shopCartTotal">
+            ₹0
+        </strong>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="whatsapp-order"
+        onclick="sendTemplateOrder()">
+
+        💬 Message Order on WhatsApp
+
+    </button>
+
+</aside>
 
 
 <script src="shop.js"></script>
