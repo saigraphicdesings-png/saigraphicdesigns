@@ -773,7 +773,74 @@
     💬
 
 </a>
+<!-- ============================= -->
+<!-- SHOP CART OVERLAY -->
+<!-- ============================= -->
 
+<div
+    class="shop-cart-overlay"
+    id="shopCartOverlay">
+</div>
+
+
+<!-- ============================= -->
+<!-- SHOP CART -->
+<!-- ============================= -->
+
+<aside
+    class="shop-cart"
+    id="shopCart"
+    aria-hidden="true">
+
+    <button
+        type="button"
+        class="close-cart"
+        onclick="closeShopCart()"
+        aria-label="Close cart">
+
+        ×
+
+    </button>
+
+
+    <h2>
+        Template Cart
+    </h2>
+
+
+    <div
+        id="shopCartItems"
+        class="shop-cart-items">
+
+    </div>
+
+
+    <div class="shop-cart-total">
+
+        <span>
+            Total
+        </span>
+
+        <strong id="shopCartTotal">
+            ₹0
+        </strong>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="whatsapp-order"
+        onclick="sendTemplateOrder()">
+
+        💬 Message Order on WhatsApp
+
+    </button>
+
+</aside>
+
+
+<script src="shop.js"></script>
 
 <!-- =========================================
      JAVASCRIPT
