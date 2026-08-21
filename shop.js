@@ -97,7 +97,8 @@ window.addTemplate = function (templateName, price) {
         return;
 
     }
-
+<script src="main.js"></script>
+<script src="cart.js"></script>
 
     window.addServiceToGlobalCart(
         templateName,
