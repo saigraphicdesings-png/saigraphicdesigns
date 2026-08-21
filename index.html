@@ -2,2058 +2,1941 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-  <title>Ajith Kumar | Graphic Designer & Founder | Sai Graphic Designs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="description"
-    content="Ajith Kumar is a Graphic Designer and Founder of Sai Graphic Designs in Madurai, Tamil Nadu. Specializing in branding, logo design, social media design, print design, packaging and digital creatives."
-  >
+    <title>Sai Graphic Designs | Graphic Design & Printing Services</title>
 
-  <meta
-    name="keywords"
-    content="Ajith Kumar, Sai Graphic Designs, Graphic Designer Madurai, Logo Design, Branding, Social Media Design, Print Design, Packaging Design"
-  >
+    <meta name="description"
+        content="Sai Graphic Designs provides professional logo design, logo recreation, branding, visiting cards, social media designs, brochures, packaging, printing and creative design services.">
 
-  <meta name="author" content="Ajith Kumar">
+    <meta name="keywords"
+        content="Sai Graphic Designs, graphic designer Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services">
 
-  <!-- Favicon -->
-  <link
-    rel="shortcut icon"
-    href="./assets/images/logo.ico"
-    type="image/x-icon"
-  >
+    <meta name="author" content="Sai Graphic Designs">
 
-  <!-- Custom CSS -->
-  <link
-    rel="stylesheet"
-    href="./assets/css/style.css"
-  >
+    <meta name="robots" content="index, follow">
 
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
+    <link rel="canonical" href="index.html">
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-    rel="stylesheet"
-  >
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           HOMEPAGE EXTRA STYLES
+        ========================================= */
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+        }
+
+        .hero-meta-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .service-icon {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 16px;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .whatsapp-floating {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #25D366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            text-decoration: none;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            transition: transform 0.25s ease;
+        }
+
+        .whatsapp-floating:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+       Add to Order".
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 900px) {
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-actions .btn-header {
+                display: none;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero-meta-item {
+                font-size: 0.9rem;
+            }
+
+            .cta-box {
+                padding: 3rem 1.3rem;
+            }
+        }
+    </style>
 </head>
 
 
 <body>
 
-  <main>
+<!-- =========================================
+     HEADER
+========================================= -->
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+<header class="site-header">
 
-   <aside class="sidebar" data-sidebar>
+    <div class="nav-container">
 
-  <div class="sidebar-info">
+        <a href="index.html" class="logo">
 
-    <figure class="avatar-box">
-      <img
-        src="./assets/images/my-avatar.jpg"
-        alt="Ajith Kumar"
-        width="80"
-      >
-    </figure>
+            <div class="logo-icon">
+                SG
+            </div>
 
-    <div class="info-content">
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
+            </span>
 
-      <h1 class="name" title="Ajith Kumar">
-        Ajith Kumar
-      </h1>
+        </a>
 
-      <p class="title">
-        Graphic Designer & Founder
-      </p>
-
-    </div>
-
-    <button class="info-more-btn" data-sidebar-btn>
-      <ion-icon name="chevron-down"></ion-icon>
-      <span>Show Contacts</span>
-    </button>
-
-  </div>
 
         <button
-          class="info-more-btn"
-          data-sidebar-btn
-          aria-label="Show contact information"
-        >
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open navigation menu"
+            aria-expanded="false">
 
-          <span>
-            Show Contacts
-          </span>
-
-          <ion-icon name="chevron-down"></ion-icon>
+            ☰
 
         </button>
 
-      </div>
 
+        <nav
+            class="main-nav"
+            id="mainNav"
+            aria-label="Main Navigation">
 
-      <div class="sidebar-info-more">
-
-        <div class="separator"></div>
-
-
-        <!-- CONTACT DETAILS -->
-
-        <ul class="contacts-list">
-
-          <!-- EMAIL -->
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="mail-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-
-              <p class="contact-title">
-                Email
-              </p>
-
-              <a
-                href="mailto:saigraphicdesings@gmail.com"
-                class="contact-link"
-              >
-                saigraphicdesings@gmail.com
-              </a>
-
-            </div>
-
-          </li>
-
-
-          <!-- PHONE -->
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-
-              <p class="contact-title">
-                Phone
-              </p>
-
-              <a
-                href="tel:+916381128781"
-                class="contact-link"
-              >
-                +91 6381 128 781
-              </a>
-
-            </div>
-
-          </li>
-
-
-          <!-- BIRTHDAY -->
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="calendar-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-
-              <p class="contact-title">
-                Birthday
-              </p>
-
-              <time datetime="2001-03-11">
-                March 11, 2001
-              </time>
-
-            </div>
-
-          </li>
-
-
-          <!-- LOCATION -->
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="location-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-
-              <p class="contact-title">
-                Location
-              </p>
-
-              <address>
-                Madurai, Tamil Nadu, India
-              </address>
-
-            </div>
-
-          </li>
-
-        </ul>
-
-
-        <div class="separator"></div>
-
-
-        <!-- SOCIAL MEDIA -->
-
-        <ul class="social-list">
-
-          <!-- FACEBOOK -->
-
-          <li class="social-item">
-
-            <a
-              href="https://www.facebook.com/"
-              class="social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-            >
-              <ion-icon name="logo-facebook"></ion-icon>
+            <a href="index.html" class="nav-link active">
+                Home
             </a>
 
-          </li>
-
-
-          <!-- INSTAGRAM -->
-
-          <li class="social-item">
-
-            <a
-              href="https://www.instagram.com/"
-              class="social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >
-              <ion-icon name="logo-instagram"></ion-icon>
+            <a href="about.html" class="nav-link">
+                About
             </a>
 
-          </li>
-
-
-          <!-- WHATSAPP -->
-
-          <li class="social-item">
-
-            <a
-              href="https://wa.me/916381128781"
-              class="social-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp"
-            >
-              <ion-icon name="logo-whatsapp"></ion-icon>
+            <a href="customizer.html" class="nav-link">
+                Services
             </a>
 
-          </li>
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
 
-        </ul>
+        </nav>
 
-      </div>
 
-    </aside>
-
-
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
-
-    <div class="main-content">
-
-
-      <!-- =========================
-           NAVBAR
-      ========================== -->
-
-<nav class="navbar">
-
-  <ul class="navbar-list">
-
-    <li class="navbar-item">
-      <button
-        class="navbar-link active"
-        data-nav-link="about"
-        type="button"
-      >
-        About
-      </button>
-    </li>
-
-    <li class="navbar-item">
-     <button
-  class="navbar-link"
-  data-nav-link="resume"
-  type="button"
->
-  Resume
-</button>
-    </li>
-
-    <li class="navbar-item">
-      <button
-        class="navbar-link"
-        data-nav-link="portfolio"
-        type="button"
-      >
-        Portfolio
-      </button>
-    </li>
-
-    <li class="navbar-item">
-      <button
-        class="navbar-link"
-        data-nav-link="blog"
-        type="button"
-      >
-        Blog
-      </button>
-    </li>
-
-    <li class="navbar-item">
-      <button
-        class="navbar-link"
-        data-nav-link="contact"
-        type="button"
-      >
-        Contact
-      </button>
-    </li>
-
-  </ul>
-
-</nav>
-
-      <!-- =========================
-           ABOUT
-      ========================== -->
-
- <article class="about active" data-page="about">
-      >
-
-        <header>
-
-          <h2 class="h2 article-title">
-            About Me
-          </h2>
-
-        </header>
-
-
-        <!-- ABOUT TEXT -->
-
-        <section class="about-text">
-
-          <p>
-            I'm Ajith Kumar, a Graphic Designer and Founder of
-            <strong>Sai Graphic Designs</strong>, based in Madurai,
-            Tamil Nadu.
-          </p>
-
-          <p>
-            I specialize in creative graphic design, branding,
-            print media, social media creatives and digital
-            marketing visuals.
-          </p>
-
-          <p>
-            Since 2021, I have worked with 100+ clients and helped
-            businesses, startups and individuals build strong
-            visual identities through professional and creative
-            design solutions.
-          </p>
-
-          <p>
-            My work includes logo design, brand identity,
-            social media posters, brochures, packaging,
-            visiting cards and complete print media designs.
-          </p>
-
-          <p>
-            My goal is simple — understand the client's vision,
-            transform ideas into powerful visuals and create
-            designs that help brands stand out.
-          </p>
-
-        </section>
-
-
-        <!-- SERVICES -->
-
-        <section class="service">
-
-          <h3 class="h3 service-title">
-            What I'm Doing
-          </h3>
-
-
-          <ul class="service-list">
-
-
-            <!-- SERVICE 1 -->
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-
-                <img
-                  src="./assets/images/icon-design.svg"
-                  alt="Branding and Logo Design"
-                  width="40"
-                >
-
-              </div>
-
-              <div class="service-content-box">
-
-                <h4 class="h4 service-item-title">
-                  Branding & Logo Design
-                </h4>
-
-                <p class="service-item-text">
-                  Logo design, brand identity, visiting cards,
-                  letterheads and complete branding solutions.
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <!-- SERVICE 2 -->
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-
-                <img
-                  src="./assets/images/icon-dev.svg"
-                  alt="Social Media Design"
-                  width="40"
-                >
-
-              </div>
-
-              <div class="service-content-box">
-
-                <h4 class="h4 service-item-title">
-                  Social Media Design
-                </h4>
-
-                <p class="service-item-text">
-                  Creative Instagram, Facebook and social media
-                  posters, advertisements and promotional designs.
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <!-- SERVICE 3 -->
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-
-                <img
-                  src="./assets/images/icon-app.svg"
-                  alt="Print Design"
-                  width="40"
-                >
-
-              </div>
-
-              <div class="service-content-box">
-
-                <h4 class="h4 service-item-title">
-                  Print Design
-                </h4>
-
-                <p class="service-item-text">
-                  Brochures, flyers, visiting cards, letterheads,
-                  envelopes, posters, standees and print materials.
-                </p>
-
-              </div>
-
-            </li>
-
-
-            <!-- SERVICE 4 -->
-
-            <li class="service-item">
-
-              <div class="service-icon-box">
-
-                <img
-                  src="./assets/images/icon-photo.svg"
-                  alt="Packaging Design"
-                  width="40"
-                >
-
-              </div>
-
-              <div class="service-content-box">
-
-                <h4 class="h4 service-item-title">
-                  Packaging Design
-                </h4>
-
-                <p class="service-item-text">
-                  Professional label, pouch, box and product
-                  packaging designs for businesses and brands.
-                </p>
-
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-
-        <!-- COMPANY -->
-
-        <section class="service">
-
-          <h3 class="h3 service-title">
-            Sai Graphic Designs
-          </h3>
-
-          <section class="about-text">
-
-            <p>
-              Sai Graphic Designs provides professional graphic
-              design and printing solutions for businesses,
-              startups, freelancers and individuals.
-            </p>
-
-            <p>
-              Our services include Logo Design, Brand Identity,
-              Social Media Design, Brochure Design, Package Design,
-              Poster Design, Video Editing, Label Design,
-              Pouch Design, Box Design and complete print branding.
-            </p>
-
-          </section>
-
-        </section>
-
-
-        <!-- TESTIMONIALS -->
-
-        <section class="testimonials">
-
-          <h3 class="h3 testimonials-title">
-            Client Experience
-          </h3>
-
-          <ul class="testimonials-list has-scrollbar">
-
-
-            <li class="testimonials-item">
-
-              <div
-                class="content-card"
-                data-testimonials-item
-              >
-
-                <figure class="testimonials-avatar-box">
-
-                  <img
-                    src="./assets/images/avatar-1.png"
-                    alt="Client"
-                    width="60"
-                    data-testimonials-avatar
-                  >
-
-                </figure>
-
-                <h4
-                  class="h4 testimonials-item-title"
-                  data-testimonials-title
-                >
-                  100+ Clients
-                </h4>
-
-                <div
-                  class="testimonials-text"
-                  data-testimonials-text
-                >
-
-                  <p>
-                    Successfully worked with 100+ clients across
-                    different industries, delivering creative and
-                    professional graphic design solutions.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </li>
-
-
-            <li class="testimonials-item">
-
-              <div
-                class="content-card"
-                data-testimonials-item
-              >
-
-                <figure class="testimonials-avatar-box">
-
-                  <img
-                    src="./assets/images/avatar-2.png"
-                    alt="Business Client"
-                    width="60"
-                    data-testimonials-avatar
-                  >
-
-                </figure>
-
-                <h4
-                  class="h4 testimonials-item-title"
-                  data-testimonials-title
-                >
-                  Business Branding
-                </h4>
-
-                <div
-                  class="testimonials-text"
-                  data-testimonials-text
-                >
-
-                  <p>
-                    Helping businesses create professional brand
-                    identities through logos, visiting cards,
-                    social media designs and print materials.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </li>
-
-
-            <li class="testimonials-item">
-
-              <div
-                class="content-card"
-                data-testimonials-item
-              >
-
-                <figure class="testimonials-avatar-box">
-
-                  <img
-                    src="./assets/images/avatar-3.png"
-                    alt="Social Media Client"
-                    width="60"
-                    data-testimonials-avatar
-                  >
-
-                </figure>
-
-                <h4
-                  class="h4 testimonials-item-title"
-                  data-testimonials-title
-                >
-                  Social Media Design
-                </h4>
-
-                <div
-                  class="testimonials-text"
-                  data-testimonials-text
-                >
-
-                  <p>
-                    Creating attractive social media posters,
-                    promotional creatives and visual content
-                    designed to increase brand visibility.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-
-        <!-- CLIENTS -->
-
-        <section class="clients">
-
-          <h3 class="h3 clients-title">
-            Selected Clients
-          </h3>
-
-          <ul class="clients-list has-scrollbar">
-
-            <li class="clients-item">
-
-              <a href="#">
-
-                <img
-                  src="./assets/images/logo-1-color.png"
-                  alt="Client logo"
-                >
-
-              </a>
-
-            </li>
-
-
-            <li class="clients-item">
-
-              <a href="#">
-
-                <img
-                  src="./assets/images/logo-2-color.png"
-                  alt="Client logo"
-                >
-
-              </a>
-
-            </li>
-
-
-            <li class="clients-item">
-
-              <a href="#">
-
-                <img
-                  src="./assets/images/logo-3-color.png"
-                  alt="Client logo"
-                >
-
-              </a>
-
-            </li>
-
-
-            <li class="clients-item">
-
-              <a href="#">
-
-                <img
-                  src="./assets/images/logo-4-color.png"
-                  alt="Client logo"
-                >
-
-              </a>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-      <!-- =========================
-           RESUME
-      ========================== -->
-
-<article class="resume" data-page="resume">
-
-        <header>
-
-          <h2 class="h2 article-title">
-            Resume
-          </h2>
-
-        </header>
-
-
-        <!-- EXPERIENCE -->
-
-        <section class="timeline">
-
-          <div class="title-wrapper">
-
-            <div class="icon-box">
-              <ion-icon name="briefcase-outline"></ion-icon>
-            </div>
-
-            <h3 class="h3">
-              Professional Experience
-            </h3>
-
-          </div>
-
-
-          <ol class="timeline-list">
-
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                Linga Chemicals - Madurai
-              </h4>
-
-              <span>
-                Senior Graphic Designer | 4+ Years
-              </span>
-
-              <p class="timeline-text">
-                Senior Graphic Designer responsible for branding,
-                social media creatives, print designs and marketing
-                materials.
-              </p>
-
-            </li>
-
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                Best Service - Madurai
-              </h4>
-
-              <span>
-                Graphic Designer | 8+ Months
-              </span>
-
-              <p class="timeline-text">
-                Created promotional designs, advertisements and
-                digital creatives for business requirements.
-              </p>
-
-            </li>
-
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                Mithrai Software - Madurai
-              </h4>
-
-              <span>
-                Graphic Designer | 1+ Year
-              </span>
-
-              <p class="timeline-text">
-                Worked on digital media, branding and visual
-                communication projects.
-              </p>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-
-        <!-- CLIENT EXPERIENCE -->
-
-        <section class="timeline">
-
-          <div class="title-wrapper">
-
-            <div class="icon-box">
-              <ion-icon name="people-outline"></ion-icon>
-            </div>
-
-            <h3 class="h3">
-              Client Experience
-            </h3>
-
-          </div>
-
-
-          <ol class="timeline-list">
-
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                100+ Clients
-              </h4>
-
-              <span>
-                2021 — Present
-              </span>
-
-              <p class="timeline-text">
-                Successfully worked with 100+ clients from
-                different industries, providing professional
-                graphic design and branding solutions.
-              </p>
-
-            </li>
-
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                Sai Graphic Designs
-              </h4>
-
-              <span>
-                Founder | 2022 — Present
-              </span>
-
-              <p class="timeline-text">
-                Founder of Sai Graphic Designs, providing
-                professional graphic design, branding,
-                social media, print and packaging design
-                services.
-              </p>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-
-        <!-- EDUCATION -->
-
-        <section class="timeline">
-
-          <div class="title-wrapper">
-
-            <div class="icon-box">
-              <ion-icon name="book-outline"></ion-icon>
-            </div>
-
-            <h3 class="h3">
-              Education
-            </h3>
-
-          </div>
-
-
-          <ol class="timeline-list">
-
-            <li class="timeline-item">
-
-              <h4 class="h4 timeline-item-title">
-                Education
-              </h4>
-
-              <span>
-                Add your education details
-              </span>
-
-              <p class="timeline-text">
-                Add your college, course and education details here.
-              </p>
-
-            </li>
-
-          </ol>
-
-        </section>
-
-
-        <!-- SKILLS -->
-
-        <section class="skill">
-
-          <h3 class="h3 skills-title">
-            My Skills
-          </h3>
-
-
-          <ul class="skills-list content-card">
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Graphic Design
-                </h5>
-
-                <data value="95">
-                  95%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 95%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Branding & Logo Design
-                </h5>
-
-                <data value="90">
-                  90%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 90%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Social Media Design
-                </h5>
-
-                <data value="95">
-                  95%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 95%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Print Design
-                </h5>
-
-                <data value="90">
-                  90%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 90%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Packaging Design
-                </h5>
-
-                <data value="85">
-                  85%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 85%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-
-            <li class="skills-item">
-
-              <div class="title-wrapper">
-
-                <h5 class="h5">
-                  Video Editing
-                </h5>
-
-                <data value="80">
-                  80%
-                </data>
-
-              </div>
-
-              <div class="skill-progress-bg">
-
-                <div
-                  class="skill-progress-fill"
-                  style="width: 80%;"
-                ></div>
-
-              </div>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-      <!-- =========================
-           PORTFOLIO
-      ========================== -->
-
-<article class="portfolio" data-page="portfolio">
-
-        <header>
-
-          <h2 class="h2 article-title">
-            Portfolio
-          </h2>
-
-        </header>
-
-
-        <section class="projects">
-
-
-          <!-- DESKTOP FILTER -->
-
-          <ul class="filter-list">
-
-            <li class="filter-item">
-
-              <button
-                class="active"
-                data-filter-btn
-              >
-                All
-              </button>
-
-            </li>
-
-            <li class="filter-item">
-
-              <button data-filter-btn>
-                Branding
-              </button>
-
-            </li>
-
-            <li class="filter-item">
-
-              <button data-filter-btn>
-                Social Media
-              </button>
-
-            </li>
-
-            <li class="filter-item">
-
-              <button data-filter-btn>
-                Print Design
-              </button>
-
-            </li>
-
-            <li class="filter-item">
-
-              <button data-filter-btn>
-                Packaging
-              </button>
-
-            </li>
-
-          </ul>
-
-
-          <!-- MOBILE FILTER -->
-
-          <div class="filter-select-box">
+        <div class="nav-actions">
 
             <button
-              class="filter-select"
-              data-select
-              type="button"
-            >
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart">
 
-              <div
-                class="select-value"
-                data-select-value
-              >
-                Select category
-              </div>
+                🛒
 
-              <div class="select-icon">
+                <span
+                    class="cart-badge"
+                    id="cartBadge">
 
-                <ion-icon name="chevron-down"></ion-icon>
+                    0
 
-              </div>
+                </span>
 
             </button>
 
 
-            <ul class="select-list">
-
-              <li class="select-item">
-
-                <button data-select-item>
-                  All
-                </button>
-
-              </li>
-
-              <li class="select-item">
-
-                <button data-select-item>
-                  Branding
-                </button>
-
-              </li>
-
-              <li class="select-item">
-
-                <button data-select-item>
-                  Social Media
-                </button>
-
-              </li>
-
-              <li class="select-item">
-
-                <button data-select-item>
-                  Print Design
-                </button>
-
-              </li>
-
-              <li class="select-item">
-
-                <button data-select-item>
-                  Packaging
-                </button>
-
-              </li>
-
-            </ul>
-
-          </div>
-
-
-          <!-- PROJECTS -->
-
-          <ul class="project-list">
-
-
-<!-- PROJECT 1 -->
-
-<li
-  class="project-item active"
-  data-filter-item
-  data-category="branding"
->
-
-  <a href="./assets/images/project-1.jpg" target="_blank">
-
-    <figure class="project-img">
-
-      <div class="project-item-icon-box">
-        <ion-icon name="eye-outline"></ion-icon>
-      </div>
-
-      <img
-        src="./assets/images/project-1.jpg"
-        alt="Logo Design"
-        loading="lazy"
-      >
-
-    </figure>
-
-    <h3 class="project-title">
-      Logo Design
-    </h3>
-
-    <p class="project-category">
-      Branding
-    </p>
-
-  </a>
-
-</li>
-
-
-            <!-- PROJECT 2 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="branding"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-2.png"
-                    alt="Brand Identity"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Brand Identity
-                </h3>
-
-                <p class="project-category">
-                  Branding
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 3 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="social media"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-3.jpg"
-                    alt="Social Media Poster"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Social Media Posters
-                </h3>
-
-                <p class="project-category">
-                  Social Media
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 4 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="print design"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-4.png"
-                    alt="Business Card"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Business Card Design
-                </h3>
-
-                <p class="project-category">
-                  Print Design
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 5 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="print design"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-5.png"
-                    alt="Brochure Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Brochure Design
-                </h3>
-
-                <p class="project-category">
-                  Print Design
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 6 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="packaging"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-6.png"
-                    alt="Packaging Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Packaging Design
-                </h3>
-
-                <p class="project-category">
-                  Packaging
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 7 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="social media"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-7.png"
-                    alt="Festival Poster"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Festival Posters
-                </h3>
-
-                <p class="project-category">
-                  Social Media
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 8 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="print design"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-8.jpg"
-                    alt="Poster Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Poster Design
-                </h3>
-
-                <p class="project-category">
-                  Print Design
-                </p>
-
-              </a>
-
-            </li>
-
-
-            <!-- PROJECT 9 -->
-
-            <li
-              class="project-item active"
-              data-filter-item
-              data-category="packaging"
-            >
-
-              <a href="#">
-
-                <figure class="project-img">
-
-                  <div class="project-item-icon-box">
-
-                    <ion-icon name="eye-outline"></ion-icon>
-
-                  </div>
-
-                  <img
-                    src="./assets/images/project-9.png"
-                    alt="Label Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <h3 class="project-title">
-                  Label Design
-                </h3>
-
-                <p class="project-category">
-                  Packaging
-                </p>
-
-              </a>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-      <!-- =========================
-           BLOG
-      ========================== -->
-
-  <article class="blog" data-page="blog">
-      >
-
-        <header>
-
-          <h2 class="h2 article-title">
-            Blog
-          </h2>
-
-        </header>
-
-
-        <section class="blog-posts">
-
-          <ul class="blog-posts-list">
-
-
-            <!-- BLOG 1 -->
-
-            <li class="blog-post-item">
-
-              <a href="#">
-
-                <figure class="blog-banner-box">
-
-                  <img
-                    src="./assets/images/blog-1.jpg"
-                    alt="Graphic Design Tips"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-
-                    <p class="blog-category">
-                      Graphic Design
-                    </p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2026">
-                      2026
-                    </time>
-
-                  </div>
-
-                  <h3 class="h3 blog-item-title">
-                    Graphic Design Tips for Businesses
-                  </h3>
-
-                  <p class="blog-text">
-                    Simple design strategies that help businesses
-                    build a strong and professional visual identity.
-                  </p>
-
-                </div>
-
-              </a>
-
-            </li>
-
-
-            <!-- BLOG 2 -->
-
-            <li class="blog-post-item">
-
-              <a href="#">
-
-                <figure class="blog-banner-box">
-
-                  <img
-                    src="./assets/images/blog-2.jpg"
-                    alt="Brand Identity"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-
-                    <p class="blog-category">
-                      Branding
-                    </p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2026">
-                      2026
-                    </time>
-
-                  </div>
-
-                  <h3 class="h3 blog-item-title">
-                    Why Brand Identity Matters
-                  </h3>
-
-                  <p class="blog-text">
-                    Learn why a consistent visual identity is
-                    important for building customer trust.
-                  </p>
-
-                </div>
-
-              </a>
-
-            </li>
-
-
-            <!-- BLOG 3 -->
-
-            <li class="blog-post-item">
-
-              <a href="#">
-
-                <figure class="blog-banner-box">
-
-                  <img
-                    src="./assets/images/blog-3.jpg"
-                    alt="Social Media Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-
-                    <p class="blog-category">
-                      Social Media
-                    </p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2026">
-                      2026
-                    </time>
-
-                  </div>
-
-                  <h3 class="h3 blog-item-title">
-                    Social Media Design That Gets Attention
-                  </h3>
-
-                  <p class="blog-text">
-                    Creative ideas for designing social media
-                    posts that attract attention and communicate
-                    your message clearly.
-                  </p>
-
-                </div>
-
-              </a>
-
-            </li>
-
-
-            <!-- BLOG 4 -->
-
-            <li class="blog-post-item">
-
-              <a href="#">
-
-                <figure class="blog-banner-box">
-
-                  <img
-                    src="./assets/images/blog-4.jpg"
-                    alt="Packaging Design"
-                    loading="lazy"
-                  >
-
-                </figure>
-
-                <div class="blog-content">
-
-                  <div class="blog-meta">
-
-                    <p class="blog-category">
-                      Packaging
-                    </p>
-
-                    <span class="dot"></span>
-
-                    <time datetime="2026">
-                      2026
-                    </time>
-
-                  </div>
-
-                  <h3 class="h3 blog-item-title">
-                    The Importance of Packaging Design
-                  </h3>
-
-                  <p class="blog-text">
-                    How professional packaging can make a product
-                    more attractive and memorable.
-                  </p>
-
-                </div>
-
-              </a>
-
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-      <!-- =========================
-           CONTACT
-      ========================== -->
-
-<article class="contact" data-page="contact">
-      >
-
-        <header>
-
-          <h2 class="h2 article-title">
-            Contact
-          </h2>
-
-        </header>
-
-
-        <!-- CONTACT INFORMATION -->
-
-        <section class="about-text">
-
-          <p>
-            Have a design project in mind?
-            Let's work together and create something professional
-            for your brand.
-          </p>
-
-          <p>
-
-            <strong>
-              Sai Graphic Designs
-            </strong>
-            <br>
-
-            Madurai, Tamil Nadu, India
-
-          </p>
-
-
-          <p>
-
-            <strong>
-              Phone:
-            </strong>
-
-            <a href="tel:+916381128781">
-              +91 6381 128 781
+            <a href="contact.html" class="btn-header">
+                Get Started →
             </a>
 
-          </p>
-
-
-          <p>
-
-            <strong>
-              Email:
-            </strong>
-
-            <a href="mailto:saigraphicdesings@gmail.com">
-              saigraphicdesings@gmail.com
-            </a>
-
-          </p>
-
-        </section>
-
-
-        <!-- GOOGLE MAP -->
-
-        <section class="mapbox" data-mapbox>
-
-  <figure>
-    <iframe
-      src="https://www.google.com/maps?q=9.9259036,78.0875013&z=17&output=embed"
-      width="400"
-      height="300"
-      style="border:0;"
-      loading="lazy"
-      allowfullscreen
-      referrerpolicy="no-referrer-when-downgrade"
-      title="Sai Graphic Designs location"
-    ></iframe>
-  </figure>
-
-</section
-
-
-        <!-- CONTACT FORM -->
-
-        <section class="contact-form">
-
-          <h3 class="h3 form-title">
-            Contact Form
-          </h3>
-
-
-          <form
-            action="#"
-            class="form"
-            data-form
-          >
-
-            <div class="input-wrapper">
-
-              <input
-                type="text"
-                name="fullname"
-                class="form-input"
-                placeholder="Full name"
-                autocomplete="name"
-                required
-                data-form-input
-              >
-
-
-              <input
-                type="email"
-                name="email"
-                class="form-input"
-                placeholder="Email address"
-                autocomplete="email"
-                required
-                data-form-input
-              >
-
-            </div>
-
-
-            <textarea
-              name="message"
-              class="form-input"
-              placeholder="Your Message"
-              required
-              data-form-input
-            ></textarea>
-
-
-            <button
-              class="form-btn"
-              type="submit"
-              disabled
-              data-form-btn
-            >
-
-              <ion-icon name="paper-plane"></ion-icon>
-
-              <span>
-                Send Message
-              </span>
-
-            </button>
-
-          </form>
-
-        </section>
-
-      </article>
+        </div>
 
     </div>
 
-  </main>
+</header>
 
 
-  <!-- =========================
-       CUSTOM JS
-  ========================== -->
+<!-- =========================================
+     HERO
+========================================= -->
 
-  <!-- =========================
-       IONICONS
-  ========================== -->
+<section class="hero">
 
-  <script src="assets/js/script.js"></script>
+    <div class="hero-container">
 
-<script
-  type="module"
-  src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js">
+        <div>
+
+            <span class="hero-badge">
+                Creative Graphic Design Studio
+            </span>
+
+
+            <h1 class="hero-title">
+
+                Designing Ideas
+
+                <span>
+                    Into Reality
+                </span>
+
+            </h1>
+
+
+            <p class="hero-desc">
+
+                Sai Graphic Designs provides professional graphic design,
+                branding and printing solutions for businesses, startups,
+                freelancers and individuals.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="customizer.html"
+                    class="btn-dark">
+
+                    Explore Services →
+
+                </a>
+
+
+                <div class="hero-meta-item">
+
+                    <span class="hero-meta-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        100+ Clients Served
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-img-wrap">
+
+            <img
+                src="Images/Hero image.png"
+                alt="Graphic designer working on a creative branding project"
+                class="hero-img"
+                loading="eager">
+
+            <div class="hero-stat-card">
+
+                <span class="hero-stat-num">
+                    100+
+                </span>
+
+                <span class="hero-stat-lbl">
+                    Happy Clients & Projects
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     BENEFITS
+========================================= -->
+
+<div class="meta-row">
+
+    <div class="meta-container">
+
+        <div class="meta-item">
+            <span>✓</span>
+            Professional Designs
+        </div>
+
+        <div class="meta-item">
+            <span>✓</span>
+            Fast Delivery
+        </div>
+
+        <div class="meta-item">
+            <span>✓</span>
+            Affordable Pricing
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     SERVICES
+========================================= -->
+
+<section class="section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Services
+        </span>
+
+        <h2 class="section-title">
+            Everything Your Brand Needs
+        </h2>
+
+    </div>
+
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+
+            <div class="service-icon">
+                ✦
+            </div>
+
+            <h3 class="feature-title">
+                Logo Design & Recreation
+            </h3>
+
+            <p class="feature-desc">
+
+                Create a professional new logo or recreate your existing
+                logo in high-quality vector format.
+
+            </p>
+
+            <a
+                href="customizer.html"
+                class="btn-primary">
+
+                View Service →
+
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="service-icon">
+                ◈
+            </div>
+
+            <h3 class="feature-title">
+                Branding & Brand Identity
+            </h3>
+
+            <p class="feature-desc">
+
+                Build a strong and professional brand identity with
+                consistent colours, typography and visual elements.
+
+            </p>
+
+            <a
+                href="customizer.html"
+                class="btn-primary">
+
+                View Service →
+
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="service-icon">
+                ◎
+            </div>
+
+            <h3 class="feature-title">
+                Social Media Designs
+            </h3>
+
+            <p class="feature-desc">
+
+                Attractive Instagram, Facebook and promotional creatives
+                designed to make your business stand out online.
+
+            </p>
+
+            <a
+                href="customizer.html"
+                class="btn-primary">
+
+                View Service →
+
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="service-icon">
+                ▣
+            </div>
+
+            <h3 class="feature-title">
+                Print & Marketing Designs
+            </h3>
+
+            <p class="feature-desc">
+
+                Professional visiting cards, brochures, flyers, posters,
+                letterheads, envelopes and other print materials.
+
+            </p>
+
+            <a
+                href="customizer.html"
+                class="btn-primary">
+
+                View Service →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     WHY US
+========================================= -->
+
+<section class="section custom-product">
+
+    <div class="custom-product-container">
+
+        <div class="custom-visual-grid">
+
+            <div class="custom-visual-card">
+
+                <img
+                    src="Images/Designing.png"
+                    alt="Creative graphic design workspace"
+                    class="custom-visual-img"
+                    loading="lazy">
+
+                <p style="font-weight:700;margin-top:1rem;">
+                    Design Service
+                </p>
+
+            </div>
+
+
+            <div class="custom-visual-card">
+
+                <img
+                    src="Images/Printing.png"
+                    alt="Professional printing service"
+                    class="custom-visual-img"
+                    loading="lazy">
+
+                <p style="font-weight:700;margin-top:1rem;">
+                    Printing Service
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="who-right">
+
+            <span class="section-tag">
+                Why Sai Graphic Designs?
+            </span>
+
+
+            <h2
+                class="section-title"
+                style="text-align:left;color:var(--dark);">
+
+                Creative Designs That Help Your Business Grow
+
+            </h2>
+
+
+            <p>
+
+                We combine creativity, professional design knowledge and
+                business understanding to create designs that communicate
+                your brand clearly and professionally.
+
+            </p>
+
+
+            <ul class="custom-bullet-list">
+
+                <li class="custom-bullet-item">
+
+                    <span class="custom-bullet-icon">
+                        ✓
+                    </span>
+
+                    Professional & Creative Designs
+
+                </li>
+
+
+                <li class="custom-bullet-item">
+
+                    <span class="custom-bullet-icon">
+                        ✓
+                    </span>
+
+                    Affordable Packages for Businesses
+
+                </li>
+
+
+                <li class="custom-bullet-item">
+
+                    <span class="custom-bullet-icon">
+                        ✓
+                    </span>
+
+                    Fast & Reliable Delivery
+
+                </li>
+
+
+                <li class="custom-bullet-item">
+
+                    <span class="custom-bullet-icon">
+                        ✓
+                    </span>
+
+                    Design Support for Startups & Businesses
+
+                </li>
+
+            </ul>
+
+
+            <a
+                href="about.html"
+                class="btn-dark">
+
+                About Sai Graphic Designs →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CREATIVE WORK
+========================================= -->
+
+<section class="section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Creative Work
+        </span>
+
+        <h2 class="section-title">
+            Explore Our Design Services
+        </h2>
+
+    </div>
+
+
+    <div class="collections-grid">
+
+        <div class="collection-gallery">
+
+            <div class="collection-img-wrap large">
+
+                <img
+                    src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=85"
+                    alt="Professional brand identity and stationery design"
+                    class="collection-img"
+                    loading="lazy">
+
+                <div class="portfolio-label">
+                    Branding & Identity
+                </div>
+
+            </div>
+
+
+            <div class="collection-img-wrap">
+
+                <img
+                    src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=85"
+                    alt="Creative graphic design project"
+                    class="collection-img"
+                    loading="lazy">
+
+                <div class="portfolio-label">
+                    Social Media
+                </div>
+
+            </div>
+
+
+            <div class="collection-img-wrap">
+
+                <img
+                    src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=900&q=85"
+                    alt="Creative digital design project"
+                    class="collection-img"
+                    loading="lazy">
+
+                <div class="portfolio-label">
+                    Digital Design
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="collection-gallery">
+
+            <div
+                class="collection-img-wrap"
+                style="grid-column:span 2;height:500px;">
+
+                <img
+                    src="https://images.unsplash.com/photo-1523726491678-bf852e717f6a?auto=format&fit=crop&w=1400&q=85"
+                    alt="Professional graphic designer workspace"
+                    class="collection-img"
+                    loading="lazy">
+
+                <div class="portfolio-label">
+                    Creative Design Studio
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PROCESS
+========================================= -->
+
+<section class="section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Simple Process
+        </span>
+
+        <h2 class="section-title">
+            From Idea to Final Design
+        </h2>
+
+    </div>
+
+
+    <div class="process-grid">
+
+        <div class="process-card">
+
+            <div class="process-number">
+                01
+            </div>
+
+            <h3>
+                Choose a Service
+            </h3>
+
+            <p>
+                Select the design service you need from our available
+                services.
+            </p>
+
+        </div>
+
+
+        <div class="process-card">
+
+            <div class="process-number">
+                02
+            </div>
+
+            <h3>
+                Share Your Details
+            </h3>
+
+            <p>
+                Tell us about your business, requirements and design
+                preferences.
+            </p>
+
+        </div>
+
+
+        <div class="process-card">
+
+            <div class="process-number">
+                03
+            </div>
+
+            <h3>
+                We Create
+            </h3>
+
+            <p>
+                Our design process turns your idea into a professional
+                creative solution.
+            </p>
+
+        </div>
+
+
+        <div class="process-card">
+
+            <div class="process-number">
+                04
+            </div>
+
+            <h3>
+                Final Delivery
+            </h3>
+
+            <p>
+                Receive your final approved design in the required format.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     WHY CHOOSE US
+========================================= -->
+
+<section
+    class="section custom-product"
+    style="padding-top:5rem;padding-bottom:5rem;">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Why Choose Us
+        </span>
+
+        <h2 class="section-title">
+            Design Services You Can Trust
+        </h2>
+
+    </div>
+
+
+    <div class="products-grid">
+
+        <div class="custom-visual-card">
+
+            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+                🏆
+            </div>
+
+            <h4 style="margin-bottom:0.5rem;">
+                Professional Quality
+            </h4>
+
+            <p style="font-size:0.85rem;">
+
+                High-quality creative designs created with attention
+                to detail and brand consistency.
+
+            </p>
+
+        </div>
+
+
+        <div class="custom-visual-card">
+
+            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+                💰
+            </div>
+
+            <h4 style="margin-bottom:0.5rem;">
+                Affordable Pricing
+            </h4>
+
+            <p style="font-size:0.85rem;">
+
+                Flexible pricing options suitable for individuals,
+                startups and established businesses.
+
+            </p>
+
+        </div>
+
+
+        <div class="custom-visual-card">
+
+            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+                ⚡
+            </div>
+
+            <h4 style="margin-bottom:0.5rem;">
+                Fast Delivery
+            </h4>
+
+            <p style="font-size:0.85rem;">
+
+                We focus on delivering quality work within the
+                agreed project timeline.
+
+            </p>
+
+        </div>
+
+
+        <div class="custom-visual-card">
+
+            <div style="font-size:2rem;color:var(--primary);margin-bottom:1rem;">
+                🤝
+            </div>
+
+            <h4 style="margin-bottom:0.5rem;">
+                Customer Support
+            </h4>
+
+            <p style="font-size:0.85rem;">
+
+                Friendly communication and design support throughout
+                your project.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     MARQUEE
+========================================= -->
+
+<div class="ticker-wrap">
+
+    <div class="ticker">
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Logo Design
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Branding
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Social Media Design
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Print Design
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Packaging Design
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Logo Recreation
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Video Editing
+        </span>
+
+        <span class="ticker-item">
+            <span class="ticker-star">*</span>
+            Printing Services
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     CTA
+========================================= -->
+
+<section class="cta-section">
+
+    <div class="cta-box">
+
+        <h2>
+            Ready to Build Your Brand?
+        </h2>
+
+        <p>
+
+            Let's create professional designs that make your business
+            look better, communicate clearly and stand out from the crowd.
+
+        </p>
+
+
+        <div class="cta-buttons">
+
+            <a
+                href="contact.html"
+                class="btn-white">
+
+                Start Your Project →
+
+            </a>
+
+
+            <a
+                href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20would%20like%20to%20discuss%20a%20design%20project"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-whatsapp">
+
+                WhatsApp Us
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CART OVERLAY
+========================================= -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true">
+</div>
+
+
+<!-- =========================================
+     CART DRAWER
+========================================= -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
+
+    <div class="cart-header">
+
+        <h3>
+            Selected Services
+        </h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart">
+
+            &times;
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsList">
+
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn-checkout"
+            id="checkoutBtn"
+            disabled>
+
+            Continue Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     WHATSAPP FLOATING
+========================================= -->
+
+<a
+    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20graphic%20design%20service"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-floating"
+    aria-label="Contact Sai Graphic Designs on WhatsApp">
+
+    💬
+
+</a>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    SG
+                </div>
+
+                Sai
+                <span>
+                    Graphic Designs
+                </span>
+
+            </div>
+
+
+            <p>
+
+                Professional graphic design, branding and printing
+                solutions for businesses, startups and individuals.
+
+            </p>
+
+
+            <div class="footer-socials">
+
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    Fb
+                </a>
+
+                <a href="#" class="social-icon" aria-label="X">
+                    X
+                </a>
+
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    Li
+                </a>
+
+                <a href="#" class="social-icon" aria-label="Instagram">
+                    Ig
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Services
+            </h4>
+
+            <ul class="footer-links">
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Logo Design
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Logo Recreation
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Branding
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Social Media Design
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Print Design
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Company
+            </h4>
+
+            <ul class="footer-links">
+
+                <li class="footer-link">
+                    <a href="index.html">
+                        Home
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="about.html">
+                        About Us
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Services
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="contact.html">
+                        Contact
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Contact
+            </h4>
+
+            <div class="footer-contact">
+
+                <p>
+                    Madurai, Tamil Nadu, India
+                </p>
+
+                <p>
+                    P: +91 63811 28781
+                </p>
+
+                <p>
+                    E: saigraphicdesings@gmail.com
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            &copy; 2026 Sai Graphic Designs.
+            All rights reserved.
+        </p>
+
+        <p>
+            Designing Ideas into Reality
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     MAIN JAVASCRIPT
+========================================= -->
+
+<script src="main.js"></script>
+
+
+<!-- =========================================
+     CART JAVASCRIPT
+========================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /*
+    =====================================================
+    IMPORTANT
+    =====================================================
+
+    This key MUST be exactly the same on customizer.html
+    and every other page.
+
+    =====================================================
+    */
+
+    const CART_KEY = "saiGraphicCart";
+
+    let cart = loadCart();
+
+
+    /* =========================================
+       LOAD CART
+    ========================================= */
+
+    function loadCart() {
+
+        try {
+
+            const savedCart =
+                localStorage.getItem(CART_KEY);
+
+            if (!savedCart) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(savedCart);
+
+            if (!Array.isArray(parsed)) {
+                return [];
+            }
+
+            return parsed;
+
+        } catch (error) {
+
+            console.error(
+                "Cart loading error:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================================
+       SAVE CART
+    ========================================= */
+
+    function saveCart() {
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+
+    }
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const cartToggle =
+        document.getElementById("cartToggle");
+
+    const cartClose =
+        document.getElementById("cartClose");
+
+    const cartDrawer =
+        document.getElementById("cartDrawer");
+
+    const cartOverlay =
+        document.getElementById("cartOverlay");
+
+    const cartBadge =
+        document.getElementById("cartBadge");
+
+    const cartItemsList =
+        document.getElementById("cartItemsList");
+
+    const cartTotalVal =
+        document.getElementById("cartTotalVal");
+
+    const checkoutBtn =
+        document.getElementById("checkoutBtn");
+
+
+    /* =========================================
+       OPEN CART
+    ========================================= */
+
+    function openCart() {
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =========================================
+       CLOSE CART
+    ========================================= */
+
+    function closeCart() {
+
+        cartDrawer.classList.remove(
+            "active"
+        );
+
+        cartOverlay.classList.remove(
+            "active"
+        );
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================
+       UPDATE CART
+    ========================================= */
+
+    function updateCart() {
+
+        /*
+        Reload localStorage every time.
+        This makes the cart work after moving
+        between Home and Services pages.
+        */
+
+        cart = loadCart();
+
+
+        cartItemsList.innerHTML = "";
+
+
+        /* EMPTY */
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <p>
+                        No services selected yet.
+                    </p>
+
+                    <p>
+                        Go to Services and choose a service.
+                    </p>
+
+                </div>
+
+            `;
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            checkoutBtn.disabled = true;
+
+            return;
+
+        }
+
+
+        let total = 0;
+
+
+        /* ITEMS */
+
+        cart.forEach(function (item, index) {
+
+            const price =
+                Number(item.price) || 0;
+
+            total += price;
+
+
+            const cartItem =
+                document.createElement("div");
+
+            cartItem.className =
+                "cart-item";
+
+
+            cartItem.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+
+                        ${escapeHTML(
+                            item.name ||
+                            "Unnamed Service"
+                        )}
+
+                    </div>
+
+                    <div class="cart-item-price">
+
+                        ₹${price.toLocaleString("en-IN")}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove service">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                cartItem
+            );
+
+        });
+
+
+        /* TOTAL */
+
+        cartBadge.textContent =
+            cart.length;
+
+        cartTotalVal.textContent =
+            "₹" + total.toLocaleString("en-IN");
+
+        checkoutBtn.disabled =
+            false;
+
+
+        /* REMOVE */
+
+        cartItemsList
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        if (
+                            Number.isInteger(index) &&
+                            index >= 0 &&
+                            index < cart.length
+                        ) {
+
+                            cart.splice(
+                                index,
+                                1
+                            );
+
+                            saveCart();
+
+                            updateCart();
+
+                        }
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* =========================================
+       CART OPEN BUTTON
+    ========================================= */
+
+    if (cartToggle) {
+
+        cartToggle.addEventListener(
+            "click",
+            function () {
+
+                updateCart();
+
+                openCart();
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       CLOSE BUTTON
+    ========================================= */
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    /* =========================================
+       OVERLAY
+    ========================================= */
+
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    /* =========================================
+       ESC KEY
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeCart();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       CHECKOUT
+    ========================================= */
+
+    if (checkoutBtn) {
+
+        checkoutBtn.addEventListener(
+            "click",
+            function () {
+
+                cart = loadCart();
+
+
+                if (cart.length === 0) {
+
+                    return;
+
+                }
+
+
+                let total = 0;
+
+
+                const serviceList =
+                    cart
+                        .map(function (item, index) {
+
+                            const price =
+                                Number(item.price) || 0;
+
+                            total += price;
+
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - ₹" +
+                                price.toLocaleString(
+                                    "en-IN"
+                                )
+                            );
+
+                        })
+                        .join("\n");
+
+
+                const message =
+
+`Hello Sai Graphic Designs 👋
+
+I would like to order the following services:
+
+━━━━━━━━━━━━━━━━━━
+SELECTED SERVICES
+━━━━━━━━━━━━━━━━━━
+
+${serviceList}
+
+━━━━━━━━━━━━━━━━━━
+ORDER SUMMARY
+━━━━━━━━━━━━━━━━━━
+
+Number of Services: ${cart.length}
+Estimated Total: ₹${total.toLocaleString("en-IN")}
+
+Please contact me to discuss the project details and payment.
+
+Thank you!`;
+
+
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       LISTEN FOR STORAGE CHANGES
+    ========================================= */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (
+                event.key === CART_KEY
+            ) {
+
+                updateCart();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    updateCart();
+
+});
+
 </script>
 
-<script
-  nomodule
-  src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js">
+
+<!-- =========================================
+     MOBILE MENU
+========================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuButton =
+            document.getElementById(
+                "mobileMenuBtn"
+            );
+
+        const mainNav =
+            document.getElementById(
+                "mainNav"
+            );
+
+
+        if (
+            !menuButton ||
+            !mainNav
+        ) {
+
+            return;
+
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                const isOpen =
+                    mainNav.classList.toggle(
+                        "mobile-active"
+                    );
+
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    isOpen
+                        ? "true"
+                        : "false"
+                );
+
+
+                menuButton.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+
+                menuButton.textContent =
+                    isOpen
+                        ? "×"
+                        : "☰";
+
+            }
+        );
+
+
+        mainNav
+            .querySelectorAll(".nav-link")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        mainNav.classList.remove(
+                            "mobile-active"
+                        );
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                        menuButton.setAttribute(
+                            "aria-label",
+                            "Open navigation menu"
+                        );
+
+                        menuButton.textContent =
+                            "☰";
+
+                    }
+                );
+
+            });
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    mainNav.classList.remove(
+                        "mobile-active"
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    menuButton.textContent =
+                        "☰";
+
+                }
+
+            }
+        );
+
+    }
+);
+
 </script>
+
 
 </body>
-
 </html>
