@@ -6379,7 +6379,6 @@ footer {
 /* =====================================================
    SMALL MOBILE
 ===================================================== */
-
 @media (max-width: 650px) {
 
     .nav-container {
@@ -6387,29 +6386,25 @@ footer {
         padding-right: 1rem;
     }
 
-
     .logo-name {
         font-size: 1rem;
     }
 
-
     .logo-icon {
         width: 34px;
         height: 34px;
-
         font-size: 0.85rem;
     }
-
 
     .mobile-menu-btn {
         width: 42px;
         height: 42px;
-
         font-size: 1.35rem;
     }
-
 
     .cart-icon-btn {
         width: 42px;
         height: 42px;
     }
+
+}
