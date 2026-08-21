@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | Sai Graphic Designs</title>
+
+    <meta name="description"
+        content="Learn about Sai Graphic Designs, our mission, vision, creative works and achievements in professional graphic design, branding and printing.">
+
+    <meta name="keywords"
+        content="Sai Graphic Designs, graphic design company, graphic designer Madurai, branding, logo design, print design, social media design">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =================================
+           ABOUT PAGE
+        ================================= */
+
+        .about-page {
+            background: var(--white);
+        }
+
+        /* =================================
+           HERO
+        ================================= */
+
+        .about-hero {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: var(--light);
+        }
+
+        .about-hero-content {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .about-hero p {
+            max-width: 680px;
+            margin: 1.25rem auto 0;
+            line-height: 1.8;
+            color: var(--dark-muted);
+        }
+
+        /* =================================
+           MAIN ABOUT
+        ================================= */
+
+        .about-company {
+            padding: 6rem 2rem;
+        }
+
+        .about-company-container {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-company-content p {
+            margin-top: 1rem;
+            line-height: 1.8;
+            color: var(--dark-muted);
+        }
+
+        .about-company-image {
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--light);
+        }
+
+        .about-company-image img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* =================================
+           MISSION & VISION
+        ================================= */
+
+        .mission-vision {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+
+        .mission-vision-grid {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 2rem;
+        }
+
+        .mission-card,
+        .vision-card {
+            padding: 3rem;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            background: var(--white);
+
+            transition: var(--transition);
+        }
+
+        .mission-card:hover,
+        .vision-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mv-icon {
+            width: 60px;
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            font-size: 1.5rem;
+            font-weight: 800;
+
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-card h3,
+        .vision-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .mission-card p,
+        .vision-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+
+        /* =================================
+           OUR WORKS
+        ================================= */
+
+        .works-section {
+            padding: 6rem 2rem;
+        }
+
+        .works-grid {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 1.5rem;
+        }
+
+        .work-card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            padding: 2rem;
+
+            background: var(--white);
+
+            transition: var(--transition);
+        }
+
+        .work-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .work-number {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--primary);
+
+            margin-bottom: 1rem;
+        }
+
+        .work-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .work-card p {
+            color: var(--dark-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* =================================
+           ACHIEVEMENTS
+        ================================= */
+
+        .achievements-section {
+            padding: 6rem 2rem;
+            background: var(--light);
+        }
+
+        .achievement-grid {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 1.5rem;
+        }
+
+        .achievement-card {
+            padding: 2rem;
+
+            text-align: center;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            background: var(--white);
+        }
+
+        .achievement-number {
+            display: block;
+
+            font-size: 2.5rem;
+            font-weight: 850;
+
+            color: var(--primary);
+
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .achievement-description {
+            margin-top: 0.5rem;
+
+            font-size: 0.9rem;
+            line-height: 1.6;
+
+            color: var(--dark-muted);
+        }
+
+        /* =================================
+           CTA
+        ================================= */
+
+        .about-cta {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .about-cta-content {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .about-cta p {
+            margin: 1rem auto 2rem;
+
+            max-width: 600px;
+
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+
+        /* =================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 900px) {
+
+            .about-company-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mission-vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .works-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .achievement-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .about-hero,
+            .about-company,
+            .mission-vision,
+            .works-section,
+            .achievements-section,
+            .about-cta {
+                padding: 4rem 1rem;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .achievement-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-company-image img {
+                height: 300px;
+            }
+
+            .mission-card,
+            .vision-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body class="about-page">
+
+
+<!-- =================================
+     HEADER
+================================= -->
+
+<header class="site-header">
+
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+            <div class="logo-icon">SG</div>
+
+            <span class="logo-name">
+                Sai <strong>Graphic Designs</strong>
+            </span>
+        </a>
+
+
+        <!-- NAVIGATION -->
+        <nav class="main-nav" aria-label="Main Navigation">
+
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="about.html" class="nav-link active">
+                About
+            </a>
+
+            <a href="customizer.html" class="nav-link">
+                Services
+            </a>
+
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <!-- ACTIONS -->
+        <div class="nav-actions">
+
+            <button
+                type="button"
+                class="cart-icon-btn"
+                id="cartToggle"
+                aria-label="Open shopping cart"
+            >
+                🛒
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+
+            <a href="contact.html" class="btn-header">
+                Get Started <span>→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+<!-- =================================
+     ABOUT HERO
+================================= -->
+
+<section class="about-hero">
+
+    <div class="about-hero-content">
+
+        <span class="section-tag">
+            About Sai Graphic Designs
+        </span>
+
+        <h1 class="section-title">
+            Designing Ideas Into Reality
+        </h1>
+
+        <p>
+            We create professional, creative and meaningful visual
+            solutions that help businesses build strong brands,
+            communicate better and stand out from the competition.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     ABOUT COMPANY
+================================= -->
+
+<section class="about-company">
+
+    <div class="about-company-container">
+
+
+        <!-- CONTENT -->
+
+        <div class="about-company-content">
+
+            <span class="section-tag">
+                Who We Are
+            </span>
+
+            <h2
+                class="section-title"
+                style="text-align:left;"
+            >
+                Creative Design That Builds Brands
+            </h2>
+
+            <p>
+                Sai Graphic Designs is a creative graphic design and
+                printing company focused on helping businesses,
+                startups, freelancers and individuals create a strong
+                visual identity.
+            </p>
+
+            <p>
+                We work across branding, logo design, print design,
+                social media creatives, packaging, promotional
+                materials and other visual communication needs.
+            </p>
+
+            <p>
+                Every project starts with understanding the client's
+                idea, business and target audience. We then transform
+                that idea into a clean, professional and memorable
+                visual design.
+            </p>
+
+            <p>
+                Our philosophy is simple:
+                <strong>
+                    good design should not only look beautiful,
+                    it should communicate clearly and create value.
+                </strong>
+            </p>
+
+        </div>
+
+
+        <!-- IMAGE -->
+
+        <div class="about-company-image">
+
+            <img
+                src="Images/About image.png"
+                alt="Sai Graphic Designs Creative Studio"
+                loading="lazy"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     MISSION & VISION
+================================= -->
+
+<section class="mission-vision">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Purpose
+        </span>
+
+        <h2 class="section-title">
+            Mission &amp; Vision
+        </h2>
+
+    </div>
+
+
+    <div class="mission-vision-grid">
+
+
+        <!-- MISSION -->
+
+        <div class="mission-card">
+
+            <div class="mv-icon">
+                M
+            </div>
+
+            <h3>
+                Our Mission
+            </h3>
+
+            <p>
+                Our mission is to provide high-quality, creative and
+                affordable graphic design solutions that help
+                businesses communicate their ideas professionally.
+            </p>
+
+            <p style="margin-top:1rem;">
+                We aim to understand every client's unique requirements
+                and turn their ideas into designs that are visually
+                powerful, meaningful and effective.
+            </p>
+
+        </div>
+
+
+
+        <!-- VISION -->
+
+        <div class="vision-card">
+
+            <div class="mv-icon">
+                V
+            </div>
+
+            <h3>
+                Our Vision
+            </h3>
+
+            <p>
+                Our vision is to become a trusted creative design
+                partner for businesses and individuals by delivering
+                innovative, professional and memorable visual
+                experiences.
+            </p>
+
+            <p style="margin-top:1rem;">
+                We want to build a creative brand known for quality,
+                reliability, originality and customer satisfaction.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     OUR WORKS
+================================= -->
+
+<section class="works-section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Works
+        </span>
+
+        <h2 class="section-title">
+            What We Create
+        </h2>
+
+        <p
+            style="
+                max-width:650px;
+                margin:1rem auto;
+                color:var(--dark-muted);
+            "
+        >
+            From the first idea to the final artwork, we create
+            professional visual designs for digital and print
+            communication.
+        </p>
+
+    </div>
+
+
+    <div class="works-grid">
+
+
+        <!-- WORK 01 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                01 — BRANDING
+            </div>
+
+            <h3>
+                Logo &amp; Brand Identity
+            </h3>
+
+            <p>
+                Professional logo design, logo recreation, brand
+                colours, typography and visual identity systems
+                that create a strong brand presence.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 02 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                02 — PRINT DESIGN
+            </div>
+
+            <h3>
+                Business &amp; Print Materials
+            </h3>
+
+            <p>
+                Visiting cards, letterheads, envelopes, brochures,
+                flyers, posters, standees and other professional
+                print materials.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 03 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                03 — SOCIAL MEDIA
+            </div>
+
+            <h3>
+                Social Media Creatives
+            </h3>
+
+            <p>
+                Creative Instagram and Facebook posts, promotional
+                advertisements, festival creatives, reels graphics
+                and digital campaigns.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 04 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                04 — PACKAGING
+            </div>
+
+            <h3>
+                Product &amp; Packaging Design
+            </h3>
+
+            <p>
+                Product labels, pouches, boxes, bottles and packaging
+                designs that help products look professional and
+                attract customers.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 05 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                05 — ADVERTISING
+            </div>
+
+            <h3>
+                Marketing Creatives
+            </h3>
+
+            <p>
+                Promotional posters, advertisements, offer creatives,
+                business campaigns and marketing visuals designed
+                to capture attention.
+            </p>
+
+        </div>
+
+
+
+        <!-- WORK 06 -->
+
+        <div class="work-card">
+
+            <div class="work-number">
+                06 — DIGITAL DESIGN
+            </div>
+
+            <h3>
+                Digital &amp; Creative Design
+            </h3>
+
+            <p>
+                Website graphics, digital banners, presentations,
+                promotional content and custom visual solutions
+                for modern businesses.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     ACHIEVEMENTS
+================================= -->
+
+<section class="achievements-section">
+
+    <div class="section-header">
+
+        <span class="section-tag">
+            Our Achievements
+        </span>
+
+        <h2 class="section-title">
+            Growing Through Creativity
+        </h2>
+
+        <p
+            style="
+                max-width:650px;
+                margin:1rem auto;
+                color:var(--dark-muted);
+            "
+        >
+            Our journey is built on creativity, client relationships,
+            consistent quality and a passion for design.
+        </p>
+
+    </div>
+
+
+    <div class="achievement-grid">
+
+
+        <!-- ACHIEVEMENT 01 -->
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                100+
+            </span>
+
+            <div class="achievement-title">
+                Clients Served
+            </div>
+
+            <p class="achievement-description">
+                Businesses, startups, freelancers and individuals
+                served with professional design solutions.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACHIEVEMENT 02 -->
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                5+
+            </span>
+
+            <div class="achievement-title">
+                Years of Experience
+            </div>
+
+            <p class="achievement-description">
+                Years of practical experience creating professional
+                digital and print designs.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACHIEVEMENT 03 -->
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                20+
+            </span>
+
+            <div class="achievement-title">
+                Design Services
+            </div>
+
+            <p class="achievement-description">
+                Creative solutions covering branding, print,
+                social media, packaging and more.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACHIEVEMENT 04 -->
+
+        <div class="achievement-card">
+
+            <span class="achievement-number">
+                2021
+            </span>
+
+            <div class="achievement-title">
+                Founded
+            </div>
+
+            <p class="achievement-description">
+                Sai Graphic Designs began its journey with a focus
+                on professional and creative design.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     CTA
+================================= -->
+
+<section class="about-cta">
+
+    <div class="about-cta-content">
+
+        <span class="section-tag">
+            Let's Create Together
+        </span>
+
+        <h2 class="section-title">
+            Have an Idea?
+            Let's Turn It Into Reality.
+        </h2>
+
+        <p>
+            Whether you need a logo, branding, social media design,
+            print design or a complete visual identity, we are ready
+            to bring your idea to life.
+        </p>
+
+        <a
+            href="contact.html"
+            class="btn-dark"
+        >
+            Start Your Project &gt;
+        </a>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     CART OVERLAY
+===================================================== -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true"
+></div>
+
+
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true"
+>
+
+    <div class="cart-header">
+
+        <h3>
+            Selected Services
+        </h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart"
+        >
+            &times;
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsList"
+    >
+
+        <div class="empty-cart">
+            <p>
+                No services selected yet.
+            </p>
+
+            <p>
+                Choose a service to start your order.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn-checkout"
+            id="checkoutBtn"
+            disabled
+        >
+            Continue Order
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =================================
+     MINI CART
+================================= -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+    <div class="cart-header">
+
+        <h3
+            style="
+                font-family:var(--font-sans);
+                font-weight:800;
+            "
+        >
+            Selected Services
+        </h3>
+
+        <button
+            class="cart-close"
+            id="cartClose"
+            type="button"
+            aria-label="Close cart"
+        >
+            &times;
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsList"
+    >
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            class="btn-checkout"
+            type="button"
+            onclick="window.location.href='contact.html';"
+        >
+            Continue Order
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================
+     FOOTER
+================================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    SG
+                </div>
+
+                Sai
+                <span>
+                    Graphic Designs
+                </span>
+
+            </div>
+
+
+            <p>
+                Professional graphic design, branding and printing
+                solutions for businesses, startups, freelancers
+                and individuals.
+            </p>
+
+
+            <div class="footer-socials">
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Facebook"
+                >
+                    Fb
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="X"
+                >
+                    X
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="LinkedIn"
+                >
+                    Li
+                </a>
+
+                <a
+                    href="#"
+                    class="social-icon"
+                    aria-label="Instagram"
+                >
+                    Ig
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SERVICES -->
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Services
+            </h4>
+
+            <ul class="footer-links">
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Logo Design
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Logo Recreation
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Brand Identity
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Social Media Design
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Print Design
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- COMPANY -->
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Company
+            </h4>
+
+            <ul class="footer-links">
+
+                <li class="footer-link">
+                    <a href="index.html">
+                        Home
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="about.html">
+                        About Us
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="customizer.html">
+                        Services
+                    </a>
+                </li>
+
+                <li class="footer-link">
+                    <a href="contact.html">
+                        Contact Us
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+        <!-- CONTACT -->
+
+        <div>
+
+            <h4 class="footer-col-title">
+                Contact
+            </h4>
+
+            <div class="footer-contact">
+
+                <p>
+                    Madurai, Tamil Nadu, India
+                </p>
+
+                <p>
+                    P:
+                    <a href="tel:+916381128781">
+                        +91 63811 28781
+                    </a>
+                </p>
+
+                <p>
+                    E:
+                    <a href="mailto:saigraphicdesings@gmail.com">
+                        saigraphicdesings@gmail.com
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+        <p>
+            &copy; 2026 Sai Graphic Designs.
+            All rights reserved.
+        </p>
+
+        <p>
+            Designing Ideas into Reality
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =================================
+     JAVASCRIPT
+================================= -->
+
+<script src="main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       CART STORAGE
+    ===================================================== */
+
+    const CART_KEY = "saiGraphicCart";
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const cartToggle =
+        document.getElementById("cartToggle");
+
+    const cartClose =
+        document.getElementById("cartClose");
+
+    const cartOverlay =
+        document.getElementById("cartOverlay");
+
+    const cartDrawer =
+        document.getElementById("cartDrawer");
+
+    const cartBadge =
+        document.getElementById("cartBadge");
+
+    const cartItemsList =
+        document.getElementById("cartItemsList");
+
+    const cartTotalVal =
+        document.getElementById("cartTotalVal");
+
+    const cartCheckout =
+        document.getElementById("cartCheckout");
+
+
+    /* =====================================================
+       CHECK CART ELEMENTS
+    ===================================================== */
+
+    if (
+        !cartToggle ||
+        !cartDrawer ||
+        !cartOverlay ||
+        !cartItemsList ||
+        !cartBadge
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       LOAD CART
+    ===================================================== */
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(CART_KEY)
+        ) || [];
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ===================================================== */
+
+    function formatPrice(price) {
+
+        return "₹" +
+            Number(price).toLocaleString("en-IN");
+
+    }
+
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
+
+    function saveCart() {
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    function updateCart() {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
+
+
+        cartItemsList.innerHTML = "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+                <div class="empty-cart">
+
+                    <p>
+                        <strong>
+                            No services selected yet.
+                        </strong>
+                    </p>
+
+                    <p>
+                        Go to Services and click
+                        "Add to Order".
+                    </p>
+
+                </div>
+            `;
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            if (cartCheckout) {
+                cartCheckout.disabled = true;
+            }
+
+            return;
+        }
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        let total = 0;
+
+
+        /* =================================================
+           CART ITEMS
+        ================================================= */
+
+        cart.forEach(function (item, index) {
+
+            const price =
+                Number(item.price) || 0;
+
+            total += price;
+
+
+            const itemElement =
+                document.createElement("div");
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(price)}
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove service">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                itemElement
+            );
+
+        });
+
+
+        /* =================================================
+           BADGE
+        ================================================= */
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        cartTotalVal.textContent =
+            formatPrice(total);
+
+
+        /* =================================================
+           CHECKOUT
+        ================================================= */
+
+        if (cartCheckout) {
+
+            cartCheckout.disabled = false;
+
+        }
+
+
+        /* =================================================
+           REMOVE SERVICES
+        ================================================= */
+
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replaceAll("&", "&amp;")
+
+            .replaceAll("<", "&lt;")
+
+            .replaceAll(">", "&gt;")
+
+            .replaceAll('"', "&quot;")
+
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =====================================================
+       OPEN CART
+    ===================================================== */
+
+    function openCart() {
+
+        updateCart();
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =====================================================
+       CLOSE CART
+    ===================================================== */
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /* =====================================================
+       CART BUTTON
+    ===================================================== */
+
+    cartToggle.addEventListener(
+        "click",
+        function () {
+
+            openCart();
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    cartOverlay.addEventListener(
+        "click",
+        closeCart
+    );
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeCart();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       WHATSAPP CHECKOUT
+    ===================================================== */
+
+    if (cartCheckout) {
+
+        cartCheckout.addEventListener(
+            "click",
+            function () {
+
+                if (cart.length === 0) {
+                    return;
+                }
+
+
+                const total =
+                    cart.reduce(
+                        function (sum, item) {
+
+                            return sum +
+                                Number(item.price);
+
+                        },
+                        0
+                    );
+
+
+                const serviceList =
+                    cart.map(
+                        function (item, index) {
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - " +
+                                formatPrice(
+                                    item.price
+                                )
+                            );
+
+                        }
+                    ).join("\n");
+
+
+                const message = `
+Hello Sai Graphic Designs 👋
+
+I would like to order the following services:
+
+━━━━━━━━━━━━━━━━━━
+SELECTED SERVICES
+━━━━━━━━━━━━━━━━━━
+
+${serviceList}
+
+━━━━━━━━━━━━━━━━━━
+ORDER SUMMARY
+━━━━━━━━━━━━━━━━━━
+
+Number of Services: ${cart.length}
+
+Estimated Total: ${formatPrice(total)}
+
+Please contact me to discuss the project details and payment.
+
+Thank you!
+Sai Graphic Designs Website
+`;
+
+
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIAL CART LOAD
+    ===================================================== */
+
+    updateCart();
+
+});
+</script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       CART STORAGE
+    ===================================================== */
+
+    const CART_KEY = "saiGraphicCart";
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const cartToggle =
+        document.getElementById("cartToggle");
+
+    const cartClose =
+        document.getElementById("cartClose");
+
+    const cartOverlay =
+        document.getElementById("cartOverlay");
+
+    const cartDrawer =
+        document.getElementById("cartDrawer");
+
+    const cartBadge =
+        document.getElementById("cartBadge");
+
+    const cartItemsList =
+        document.getElementById("cartItemsList");
+
+    const cartTotalVal =
+        document.getElementById("cartTotalVal");
+
+    const cartCheckout =
+        document.getElementById("cartCheckout");
+
+
+    /* =====================================================
+       CHECK CART ELEMENTS
+    ===================================================== */
+
+    if (
+        !cartToggle ||
+        !cartDrawer ||
+        !cartOverlay ||
+        !cartItemsList ||
+        !cartBadge
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       LOAD CART
+    ===================================================== */
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(CART_KEY)
+        ) || [];
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ===================================================== */
+
+    function formatPrice(price) {
+
+        return "₹" +
+            Number(price).toLocaleString("en-IN");
+
+    }
+
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
+
+    function saveCart() {
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    function updateCart() {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
+
+
+        cartItemsList.innerHTML = "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+                <div class="empty-cart">
+
+                    <p>
+                        <strong>
+                            No services selected yet.
+                        </strong>
+                    </p>
+
+                    <p>
+                        Go to Services and click
+                        "Add to Order".
+                    </p>
+
+                </div>
+            `;
+
+            cartBadge.textContent = "0";
+
+            cartTotalVal.textContent = "₹0";
+
+            if (cartCheckout) {
+                cartCheckout.disabled = true;
+            }
+
+            return;
+        }
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        let total = 0;
+
+
+        /* =================================================
+           CART ITEMS
+        ================================================= */
+
+        cart.forEach(function (item, index) {
+
+            const price =
+                Number(item.price) || 0;
+
+            total += price;
+
+
+            const itemElement =
+                document.createElement("div");
+
+            itemElement.className =
+                "cart-item";
+
+
+            itemElement.innerHTML = `
+
+                <div class="cart-item-info">
+
+                    <div class="cart-item-name">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+                    <div class="cart-item-price">
+                        ${formatPrice(price)}
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="cart-remove"
+                    data-index="${index}"
+                    aria-label="Remove service">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            cartItemsList.appendChild(
+                itemElement
+            );
+
+        });
+
+
+        /* =================================================
+           BADGE
+        ================================================= */
+
+        cartBadge.textContent =
+            cart.length;
+
+
+        /* =================================================
+           TOTAL
+        ================================================= */
+
+        cartTotalVal.textContent =
+            formatPrice(total);
+
+
+        /* =================================================
+           CHECKOUT
+        ================================================= */
+
+        if (cartCheckout) {
+
+            cartCheckout.disabled = false;
+
+        }
+
+
+        /* =================================================
+           REMOVE SERVICES
+        ================================================= */
+
+        document
+            .querySelectorAll(".cart-remove")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        saveCart();
+
+                        updateCart();
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value)
+
+            .replaceAll("&", "&amp;")
+
+            .replaceAll("<", "&lt;")
+
+            .replaceAll(">", "&gt;")
+
+            .replaceAll('"', "&quot;")
+
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =====================================================
+       OPEN CART
+    ===================================================== */
+
+    function openCart() {
+
+        updateCart();
+
+        cartDrawer.classList.add("active");
+
+        cartOverlay.classList.add("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =====================================================
+       CLOSE CART
+    ===================================================== */
+
+    function closeCart() {
+
+        cartDrawer.classList.remove("active");
+
+        cartOverlay.classList.remove("active");
+
+        cartDrawer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        cartOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /* =====================================================
+       CART BUTTON
+    ===================================================== */
+
+    cartToggle.addEventListener(
+        "click",
+        function () {
+
+            openCart();
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    cartOverlay.addEventListener(
+        "click",
+        closeCart
+    );
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeCart();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       WHATSAPP CHECKOUT
+    ===================================================== */
+
+    if (cartCheckout) {
+
+        cartCheckout.addEventListener(
+            "click",
+            function () {
+
+                if (cart.length === 0) {
+                    return;
+                }
+
+
+                const total =
+                    cart.reduce(
+                        function (sum, item) {
+
+                            return sum +
+                                Number(item.price);
+
+                        },
+                        0
+                    );
+
+
+                const serviceList =
+                    cart.map(
+                        function (item, index) {
+
+                            return (
+                                (index + 1) +
+                                ". " +
+                                item.name +
+                                " - " +
+                                formatPrice(
+                                    item.price
+                                )
+                            );
+
+                        }
+                    ).join("\n");
+
+
+                const message = `
+Hello Sai Graphic Designs 👋
+
+I would like to order the following services:
+
+━━━━━━━━━━━━━━━━━━
+SELECTED SERVICES
+━━━━━━━━━━━━━━━━━━
+
+${serviceList}
+
+━━━━━━━━━━━━━━━━━━
+ORDER SUMMARY
+━━━━━━━━━━━━━━━━━━
+
+Number of Services: ${cart.length}
+
+Estimated Total: ${formatPrice(total)}
+
+Please contact me to discuss the project details and payment.
+
+Thank you!
+Sai Graphic Designs Website
+`;
+
+
+                const whatsappURL =
+                    "https://wa.me/916381128781?text=" +
+                    encodeURIComponent(message);
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIAL CART LOAD
+    ===================================================== */
+
+    updateCart();
+
+});
+</script>
+</body>
+
+</html>
