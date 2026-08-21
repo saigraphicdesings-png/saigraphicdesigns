@@ -46,7 +46,6 @@
         </a>
 
 
-
         <!-- MOBILE MENU -->
 
         <button
@@ -54,11 +53,11 @@
             class="mobile-menu-btn"
             id="mobileMenuBtn"
             aria-label="Open navigation menu"
-            aria-expanded="false"
-        >
-            ☰
-        </button>
+            aria-expanded="false">
 
+            ☰
+
+        </button>
 
 
         <!-- NAVIGATION -->
@@ -66,8 +65,7 @@
         <nav
             class="main-nav"
             id="mainNav"
-            aria-label="Main Navigation"
-        >
+            aria-label="Main Navigation">
 
             <a href="index.html" class="nav-link">
                 Home
@@ -92,27 +90,24 @@
         </nav>
 
 
-
         <!-- HEADER ACTIONS -->
 
         <div class="nav-actions">
 
 
-            <!-- SAME CART USED BY SERVICES -->
+            <!-- SAME GLOBAL CART AS SERVICES -->
 
             <button
                 type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
-                aria-label="Open shopping cart"
-            >
+                aria-label="Open shopping cart">
 
                 🛒
 
                 <span
                     class="cart-badge"
-                    id="cartBadge"
-                >
+                    id="cartBadge">
                     0
                 </span>
 
@@ -121,9 +116,10 @@
 
             <a
                 href="contact.html"
-                class="btn-header"
-            >
+                class="btn-header">
+
                 Get Started →
+
             </a>
 
         </div>
@@ -132,6 +128,105 @@
 
 </header>
 
+
+
+<!-- =====================================================
+     SAME GLOBAL CART AS SERVICES
+===================================================== -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true">
+</div>
+
+
+<aside
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
+
+
+    <!-- CART HEADER -->
+
+    <div class="cart-header">
+
+        <h3>
+            Selected Services & Templates
+        </h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart">
+
+            &times;
+
+        </button>
+
+    </div>
+
+
+    <!-- CART ITEMS -->
+
+    <div
+        class="cart-items"
+        id="cartItemsList">
+
+        <div class="empty-cart">
+
+            <p>
+                <strong>
+                    Your cart is empty.
+                </strong>
+            </p>
+
+            <p>
+                Choose a service or template
+                to start your order.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CART FOOTER -->
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <!-- IMPORTANT:
+             ID MUST BE cartCheckout
+             because cart.js uses this ID.
+        -->
+
+        <button
+            type="button"
+            class="btn-checkout"
+            id="cartCheckout"
+            disabled>
+
+            Send Order on WhatsApp
+
+        </button>
+
+    </div>
+
+</aside>
 
 
 
@@ -159,7 +254,6 @@
 
 
 
-
 <!-- =====================================================
      CATEGORY MENU
 ===================================================== -->
@@ -182,15 +276,13 @@
 
 
 
-
 <!-- =====================================================
      PRINTING TEMPLATES
 ===================================================== -->
 
 <section
     class="shop-section"
-    id="printing"
->
+    id="printing">
 
     <div class="shop-section-title">
 
@@ -217,19 +309,15 @@
     </div>
 
 
-
     <h3 class="product-group-title">
         Premium Visiting Cards
     </h3>
 
 
-
     <div class="shop-grid">
 
 
-        <!-- =================================================
-             VISITING CARD 01
-        ================================================= -->
+        <!-- VISITING CARD 01 -->
 
         <article class="template-card">
 
@@ -242,8 +330,7 @@
                 <img
                     src="Images/shop/visiting-card-01.jpg"
                     alt="Premium Visiting Card Template 01"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -277,9 +364,10 @@
                     onclick="addTemplate(
                         'Premium Visiting Card #01',
                         99
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -288,9 +376,7 @@
 
 
 
-        <!-- =================================================
-             VISITING CARD 02
-        ================================================= -->
+        <!-- VISITING CARD 02 -->
 
         <article class="template-card">
 
@@ -303,8 +389,7 @@
                 <img
                     src="Images/shop/visiting-card-02.jpg"
                     alt="Premium Visiting Card Template 02"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -338,9 +423,10 @@
                     onclick="addTemplate(
                         'Premium Visiting Card #02',
                         99
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -349,9 +435,7 @@
 
 
 
-        <!-- =================================================
-             VISITING CARD 03
-        ================================================= -->
+        <!-- VISITING CARD 03 -->
 
         <article class="template-card">
 
@@ -364,8 +448,7 @@
                 <img
                     src="Images/shop/visiting-card-03.jpg"
                     alt="Premium Visiting Card Template 03"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -399,9 +482,10 @@
                     onclick="addTemplate(
                         'Premium Visiting Card #03',
                         99
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -410,9 +494,7 @@
 
 
 
-        <!-- =================================================
-             VISITING CARD 04
-        ================================================= -->
+        <!-- VISITING CARD 04 -->
 
         <article class="template-card">
 
@@ -425,8 +507,7 @@
                 <img
                     src="Images/shop/visiting-card-04.jpg"
                     alt="Premium Visiting Card Template 04"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -460,9 +541,10 @@
                     onclick="addTemplate(
                         'Premium Visiting Card #04',
                         99
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -471,9 +553,7 @@
 
 
 
-        <!-- =================================================
-             VISITING CARD 05
-        ================================================= -->
+        <!-- VISITING CARD 05 -->
 
         <article class="template-card">
 
@@ -486,8 +566,7 @@
                 <img
                     src="Images/shop/visiting-card-05.jpg"
                     alt="Premium Visiting Card Template 05"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -521,9 +600,10 @@
                     onclick="addTemplate(
                         'Premium Visiting Card #05',
                         99
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -537,15 +617,13 @@
 
 
 
-
 <!-- =====================================================
      SOCIAL MEDIA TEMPLATES
 ===================================================== -->
 
 <section
     class="shop-section"
-    id="social"
->
+    id="social">
 
     <div class="shop-section-title">
 
@@ -560,7 +638,8 @@
             </h2>
 
             <p>
-                Ready-made designs for Instagram, Facebook and digital marketing
+                Ready-made designs for Instagram,
+                Facebook and digital marketing
             </p>
 
         </div>
@@ -572,16 +651,12 @@
     </div>
 
 
-
     <div
         id="socialProducts"
-        class="shop-grid"
-    >
+        class="shop-grid">
 
-        <!--
-            Add social media products here.
-            Example is provided below.
-        -->
+
+        <!-- SOCIAL TEMPLATE 01 -->
 
         <article class="template-card">
 
@@ -594,8 +669,7 @@
                 <img
                     src="Images/shop/social-media-01.jpg"
                     alt="Social Media Template 01"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -629,9 +703,10 @@
                     onclick="addTemplate(
                         'Social Media Template #01',
                         149
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -645,15 +720,13 @@
 
 
 
-
 <!-- =====================================================
      PACKAGING TEMPLATES
 ===================================================== -->
 
 <section
     class="shop-section"
-    id="packaging"
->
+    id="packaging">
 
     <div class="shop-section-title">
 
@@ -680,12 +753,12 @@
     </div>
 
 
-
     <div
         id="packagingProducts"
-        class="shop-grid"
-    >
+        class="shop-grid">
 
+
+        <!-- PACKAGING TEMPLATE 01 -->
 
         <article class="template-card">
 
@@ -698,8 +771,7 @@
                 <img
                     src="Images/shop/packaging-01.jpg"
                     alt="Packaging Template 01"
-                    loading="lazy"
-                >
+                    loading="lazy">
 
             </div>
 
@@ -733,9 +805,10 @@
                     onclick="addTemplate(
                         'Packaging Template #01',
                         299
-                    )"
-                >
+                    )">
+
                     🛒 Add to Order
+
                 </button>
 
             </div>
@@ -749,110 +822,20 @@
 
 
 
-
-<!-- =====================================================
-     SAME CART AS SERVICES
-===================================================== -->
-
-<div
-    class="cart-overlay"
-    id="cartOverlay"
-    aria-hidden="true"
-></div>
-
-
-
-<aside
-    class="cart-drawer"
-    id="cartDrawer"
-    aria-hidden="true"
->
-
-    <div class="cart-header">
-
-        <h3>
-            Selected Services
-        </h3>
-
-        <button
-            type="button"
-            class="cart-close"
-            id="cartClose"
-            aria-label="Close cart"
-        >
-            ×
-        </button>
-
-    </div>
-
-
-
-    <div
-        class="cart-items"
-        id="cartItemsList"
-    >
-
-        <div class="empty-cart">
-
-            <p>
-                No services selected yet.
-            </p>
-
-            <p>
-                Choose a service or template to start your order.
-            </p>
-
-        </div>
-
-    </div>
-
-
-
-    <div class="cart-footer">
-
-        <div class="cart-total">
-
-            <span>
-                Estimated Total:
-            </span>
-
-            <span id="cartTotalVal">
-                ₹0
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="btn-checkout"
-            id="checkoutBtn"
-            disabled
-        >
-            Send Order on WhatsApp
-        </button>
-
-    </div>
-
-</aside>
-
-
-
-
 <!-- =====================================================
      FLOATING WHATSAPP
 ===================================================== -->
 
 <a
-    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20design%20template."
+    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20design%20template"
     target="_blank"
     rel="noopener noreferrer"
     class="whatsapp-floating"
-    aria-label="Contact Sai Graphic Designs on WhatsApp"
->
-    💬
-</a>
+    aria-label="Contact Sai Graphic Designs on WhatsApp">
 
+    💬
+
+</a>
 
 
 
