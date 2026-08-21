@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="shop.css">
 </head>
 
+
 <body>
 
 <!-- =========================================
@@ -116,6 +117,90 @@
 
 </header>
 
+<!-- =====================================================
+     CART OVERLAY
+===================================================== -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true"
+></div>
+
+
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true"
+>
+
+    <div class="cart-header">
+
+        <h3>
+            Selected Services
+        </h3>
+
+        <button
+            type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart"
+        >
+            &times;
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItemsList"
+    >
+
+        <div class="empty-cart">
+            <p>
+                No services selected yet.
+            </p>
+
+            <p>
+                Choose a service to start your order.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn-checkout"
+            id="checkoutBtn"
+            disabled
+        >
+            Continue Order
+        </button>
+
+    </div>
+
+</div>
 
 <!-- =========================================
      SHOP HERO
