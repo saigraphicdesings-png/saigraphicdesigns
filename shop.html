@@ -16,14 +16,15 @@
 
 <body>
 
-  <!-- =========================================
-     HEADER — SAME AS INDEX
+<!-- =========================================
+     SAME HEADER AS HOME PAGE
 ========================================= -->
 
 <header class="site-header">
 
     <div class="nav-container">
 
+        <!-- LOGO -->
         <a href="index.html" class="logo">
 
             <div class="logo-icon">
@@ -37,6 +38,7 @@
         </a>
 
 
+        <!-- MOBILE MENU -->
         <button
             type="button"
             class="mobile-menu-btn"
@@ -49,6 +51,7 @@
         </button>
 
 
+        <!-- NAVIGATION -->
         <nav
             class="main-nav"
             id="mainNav"
@@ -77,20 +80,20 @@
         </nav>
 
 
+        <!-- HEADER ACTIONS -->
         <div class="nav-actions">
 
             <button
                 type="button"
                 class="cart-icon-btn"
-                id="cartToggle"
-                onclick="openShopCart()"
+                id="shopCartToggle"
                 aria-label="Open shopping cart">
 
                 🛒
 
                 <span
                     class="cart-badge"
-                    id="shopCartCount">
+                    id="shopCartBadge">
 
                     0
 
@@ -112,484 +115,630 @@
     </div>
 
 </header>
-    <!-- =========================
-         HERO
-    ========================== -->
 
-    <section class="shop-hero">
 
-        <p class="shop-small-title">
-            SAI GRAPHIC DESIGNS
-        </p>
+<!-- =========================================
+     SHOP HERO
+========================================= -->
 
-        <h1>
-            Premium Design Templates
-        </h1>
+<section class="shop-hero">
 
-        <p>
-            Choose your favourite template and send your order
-            directly to us on WhatsApp.
-        </p>
+    <p class="shop-small-title">
+        SAI GRAPHIC DESIGNS SHOP
+    </p>
 
-    </section>
+    <h1>
+        Premium Design Templates
+    </h1>
 
+    <p>
+        Choose a ready-made professional design template,
+        select your favourite design and contact us directly
+        on WhatsApp to place your order.
+    </p>
 
-    <!-- =========================
-         CATEGORY MENU
-    ========================== -->
+</section>
 
-    <div class="shop-categories">
 
-        <a href="#printing">
-            Printing Designs
-        </a>
+<!-- =========================================
+     SHOP CATEGORY MENU
+========================================= -->
 
-        <a href="#social">
-            Digital & Social Media
-        </a>
+<div class="shop-categories">
 
-        <a href="#packaging">
-            Packaging Designs
-        </a>
+    <a href="#printing">
+        Printing Designs
+    </a>
 
-        <a href="#icons">
-            Icons
-        </a>
+    <a href="#social">
+        Digital & Social Media Designs
+    </a>
 
-    </div>
+    <a href="#packaging">
+        Packaging Designs
+    </a>
 
+    <a href="#icons">
+        Icons
+    </a>
 
-    <!-- =========================
-         PRINTING DESIGNS
-    ========================== -->
+</div>
 
-    <section class="shop-section" id="printing">
 
-        <div class="shop-section-title">
-            <span>01</span>
+<!-- =========================================
+     PRINTING DESIGNS
+========================================= -->
 
-            <div>
-                <h2>Printing Designs</h2>
+<section
+    class="shop-section"
+    id="printing">
 
-                <p>
-                    Premium ready-to-use printing templates
-                </p>
-            </div>
-        </div>
+    <div class="shop-section-title">
 
+        <div>
 
-        <!-- Premium Visiting Cards -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Visiting Cards
-                <span>₹99</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumVisitingCards"></div>
-
-        </div>
-
-
-        <!-- Business Cards -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Business Card — 5 Card Bundle
-                <span>₹150</span>
-            </h3>
-
-            <div class="shop-grid" id="businessCards"></div>
-
-        </div>
-
-
-        <!-- Letterheads -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Letterhead — 3 Letterhead Bundle
-                <span>₹150</span>
-            </h3>
-
-            <div class="shop-grid" id="letterheads"></div>
-
-        </div>
-
-
-        <!-- Envelopes -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Envelope — 3 Envelope Bundle
-                <span>₹150</span>
-            </h3>
-
-            <div class="shop-grid" id="envelopes"></div>
-
-        </div>
-
-
-        <!-- Full Branding -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Full Branding
-                <span>₹200</span>
-            </h3>
-
-            <div class="shop-grid" id="fullBranding"></div>
-
-        </div>
-
-
-        <!-- Brochure -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Brochure
-                <span>₹500</span>
-            </h3>
-
-            <div class="shop-grid" id="brochures"></div>
-
-        </div>
-
-
-        <!-- Flyers -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Flyers
-                <span>₹200</span>
-            </h3>
-
-            <div class="shop-grid" id="flyers"></div>
-
-        </div>
-
-
-        <!-- Premium Photo Frame -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Photo Frame
-                <span>₹99</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumPhotoFrames"></div>
-
-        </div>
-
-
-        <!-- 2 Premium Photo Frames -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                2 Premium Photo Frame Bundle
-                <span>₹150</span>
-            </h3>
-
-            <div class="shop-grid" id="twoPhotoFrames"></div>
-
-        </div>
-
-
-        <!-- 5 Photo Frames -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                5 Photo Frame Bundle
-                <span>₹250</span>
-            </h3>
-
-            <div class="shop-grid" id="fivePhotoFrames"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         DIGITAL & SOCIAL MEDIA
-    ========================== -->
-
-    <section class="shop-section" id="social">
-
-        <div class="shop-section-title">
-
-            <span>02</span>
-
-            <div>
-
-                <h2>
-                    Digital & Social Media Designs
-                </h2>
-
-                <p>
-                    Premium digital templates for your business
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- Premium Social Media -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Social Media Poster
-                <span>₹99</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumSocialPosters"></div>
-
-        </div>
-
-
-        <!-- 5 Social Media Posters -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                5 Social Media Poster Bundle
-                <span>₹250</span>
-            </h3>
-
-            <div class="shop-grid" id="fiveSocialPosters"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         PACKAGING
-    ========================== -->
-
-    <section class="shop-section" id="packaging">
-
-        <div class="shop-section-title">
-
-            <span>03</span>
-
-            <div>
-
-                <h2>
-                    Packaging Designs
-                </h2>
-
-                <p>
-                    Professional packaging templates
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- Box -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Box Design
-                <span>₹250</span>
-            </h3>
-
-            <div class="shop-grid" id="boxDesigns"></div>
-
-        </div>
-
-
-        <!-- Premium Box -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Box Design
-                <span>₹500</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumBoxDesigns"></div>
-
-        </div>
-
-
-        <!-- Pouch -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Pouch Design
-                <span>₹250</span>
-            </h3>
-
-            <div class="shop-grid" id="pouchDesigns"></div>
-
-        </div>
-
-
-        <!-- Premium Pouch -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Pouch Design
-                <span>₹500</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumPouchDesigns"></div>
-
-        </div>
-
-
-        <!-- Label -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Label Design
-                <span>₹150</span>
-            </h3>
-
-            <div class="shop-grid" id="labelDesigns"></div>
-
-        </div>
-
-
-        <!-- Premium Label -->
-
-        <div class="product-group">
-
-            <h3 class="product-group-title">
-                Premium Label Design
-                <span>₹300</span>
-            </h3>
-
-            <div class="shop-grid" id="premiumLabelDesigns"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         ICONS
-    ========================== -->
-
-    <section class="shop-section" id="icons">
-
-        <div class="shop-section-title">
-
-            <span>04</span>
-
-            <div>
-
-                <h2>
-                    Icons
-                </h2>
-
-                <p>
-                    Premium icon designs
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="icon-grid" id="iconProducts"></div>
-
-    </section>
-
-
-    <!-- =========================
-         CART OVERLAY
-    ========================== -->
-
-    <div
-        class="shop-cart-overlay"
-        id="shopCartOverlay">
-    </div>
-
-
-    <!-- =========================
-         CART
-    ========================== -->
-
-    <aside
-        class="shop-cart"
-        id="shopCart">
-
-        <div class="shop-cart-header">
+            <span>
+                01
+            </span>
 
             <h2>
-                Your Order
+                🖨️ Printing Designs
             </h2>
 
-            <button
-                class="close-cart"
-                id="closeShopCart">
-                ×
-            </button>
+            <p>
+                Premium ready-to-use design templates
+            </p>
 
         </div>
 
+        <strong>
+            Premium Templates
+        </strong>
 
-        <div
-            id="shopCartItems"
-            class="shop-cart-items">
-
-        </div>
+    </div>
 
 
-        <div class="shop-cart-bottom">
+    <h3 class="product-group-title">
+        Premium Visiting Cards — ₹99
+    </h3>
 
-            <div class="shop-cart-total">
 
-                <span>
-                    Estimated Total
+    <div class="shop-grid">
+
+
+        <!-- PRODUCT 01 -->
+
+        <div class="template-card">
+
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
                 </span>
 
-                <strong id="shopCartTotal">
-                    ₹0
-                </strong>
+                <img
+                    src="Images/shop/visiting-card-01.jpg"
+                    alt="Premium Visiting Card 01"
+                    loading="lazy">
 
             </div>
 
 
-            <button
-                class="whatsapp-order"
-                id="whatsappOrder">
+            <div class="template-content">
 
-                📲 Message Order on WhatsApp
+                <h4>
+                    Premium Visiting Card #01
+                </h4>
 
-            </button>
+                <p>
+                    Professional ready-to-use design template.
+                </p>
+
+
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #01',
+                        99
+                    )">
+
+                    🛒 Add to Order
+
+                </button>
+
+            </div>
 
         </div>
 
-    </aside>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+        <!-- PRODUCT 02 -->
 
-    <script src="shop.js"></script>
+        <div class="template-card">
+
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-02.jpg"
+                    alt="Premium Visiting Card 02"
+                    loading="lazy">
+
+            </div>
+
+
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #02
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
+
+
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
+
+
+               
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #02',
+                        99
+                    )">
+
+                    🛒 Add to Order
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 03 -->
+
+        <div class="template-card">
+
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-03.jpg"
+                    alt="Premium Visiting Card 03"
+                    loading="lazy">
+
+            </div>
+
+
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #03
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
+
+
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #03',
+                        99
+                    )">
+
+                    🛒 Add to order
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 04 -->
+
+        <div class="template-card">
+
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-04.jpg"
+                    alt="Premium Visiting Card 04"
+                    loading="lazy">
+
+            </div>
+
+
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #04
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
+
+
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #04',
+                        99
+                    )">
+
+                    🛒 Add to order
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 05 -->
+
+        <div class="template-card">
+
+            <div class="template-image">
+
+                <span class="premium-label">
+                    PREMIUM
+                </span>
+
+                <img
+                    src="Images/shop/visiting-card-05.jpg"
+                    alt="Premium Visiting Card 05"
+                    loading="lazy">
+
+            </div>
+
+
+            <div class="template-content">
+
+                <h4>
+                    Premium Visiting Card #05
+                </h4>
+
+                <p>
+                    Professional ready-to-use design template.
+                </p>
+
+
+                <div class="template-price">
+
+                    <strong>
+                        ₹99
+                    </strong>
+
+                    <span>
+                        TEMPLATE
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20am%20interested%20in%20Premium%20Visiting%20Card%20%2305"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="template-whatsapp">
+
+                    💬 Message on WhatsApp
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="template-cart-btn"
+                    onclick="addTemplate(
+                        'Premium Visiting Card #05',
+                        99
+                    )">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OTHER PRINTING PRODUCTS -->
+    <div
+        id="printingProducts"
+        class="shop-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     SOCIAL MEDIA
+========================================= -->
+
+<section
+    class="shop-section"
+    id="social">
+
+    <div class="shop-section-title">
+
+        <div>
+
+            <span>
+                02
+            </span>
+
+            <h2>
+                📱 Digital & Social Media Designs
+            </h2>
+
+            <p>
+                Premium digital templates
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="socialProducts"
+        class="shop-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PACKAGING
+========================================= -->
+
+<section
+    class="shop-section"
+    id="packaging">
+
+    <div class="shop-section-title">
+
+        <div>
+
+            <span>
+                03
+            </span>
+
+            <h2>
+                📦 Packaging Designs
+            </h2>
+
+            <p>
+                Professional packaging templates
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="packagingProducts"
+        class="shop-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     ICONS
+========================================= -->
+
+<section
+    class="shop-section"
+    id="icons">
+
+    <div class="shop-section-title">
+
+        <div>
+
+            <span>
+                04
+            </span>
+
+            <h2>
+                ⭐ Icons
+            </h2>
+
+            <p>
+                Premium icon designs
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="iconProducts"
+        class="icon-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CART OVERLAY
+========================================= -->
+
+<div
+    class="shop-cart-overlay"
+    id="shopCartOverlay">
+</div>
+
+
+CART DRAWER
+
+<!-- =========================================
+     WHATSAPP FLOATING BUTTON
+========================================= -->
+
+<a
+    href="https://wa.me/916381128781?text=Hello%20Sai%20Graphic%20Designs%2C%20I%20need%20a%20design%20template."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-floating"
+    aria-label="Contact Sai Graphic Designs on WhatsApp">
+
+    💬
+
+</a>
+<!-- ============================= -->
+<!-- SHOP CART OVERLAY -->
+<!-- ============================= -->
+
+<div
+    class="shop-cart-overlay"
+    id="shopCartOverlay">
+</div>
+
+
+<!-- ============================= -->
+<!-- SHOP CART -->
+<!-- ============================= -->
+
+<aside
+    class="shop-cart"
+    id="shopCart"
+    aria-hidden="true">
+
+    <button
+        type="button"
+        class="close-cart"
+        onclick="closeShopCart()"
+        aria-label="Close cart">
+
+        ×
+
+    </button>
+
+
+    <h2>
+        Template Cart
+    </h2>
+
+
+    <div
+        id="shopCartItems"
+        class="shop-cart-items">
+
+    </div>
+
+
+    <div class="shop-cart-total">
+
+        <span>
+            Total
+        </span>
+
+        <strong id="shopCartTotal">
+            ₹0
+        </strong>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="whatsapp-order"
+        onclick="sendTemplateOrder()">
+
+        💬 Message Order on WhatsApp
+
+    </button>
+
+</aside>
+
+
+<script src="shop.js"></script>
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script src="main.js"></script>
+<script src="shop.js"></script>
 
 </body>
-
 </html>
