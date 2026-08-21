@@ -1,57 +1,107 @@
-document.addEventListener("DOMContentLoaded", function () {
+/*
+=====================================================
+SHOP TEMPLATE SYSTEM
+USES THE SAME CART AS SERVICES
+=====================================================
+*/
+
+window.addTemplate = function (templateName, price) {
 
     /*
-    =====================================================
-    SHOP → SAME CART AS SERVICES
-    =====================================================
+    Convert price safely.
+
+    Examples:
+    99
+    "99"
+    "₹99"
+    "₹1,299"
     */
 
-    window.addTemplate = function (templateName, price) {
+    const numericPrice = Number(
+        String(price ?? "")
+            .replace(/[₹,\s]/g, "")
+    );
 
-        // Make sure price is a real number
-        const numericPrice = Number(
-            String(price).replace(/[₹,\s]/g, "")
+
+    /*
+    Validate template name
+    */
+
+    if (!templateName) {
+
+        console.error(
+            "Template name is missing."
         );
 
-        if (!templateName) {
-            console.error("Template name is missing.");
-            return;
-        }
+        return;
 
-        if (isNaN(numericPrice)) {
-            console.error(
-                "Invalid template price:",
-                price
-            );
-            return;
-        }
+    }
 
-        /*
-        Use the EXISTING SERVICE CART function.
 
-        This is the important part.
-        Shop templates are added to the same
-        saiGraphicCart used by Services.
-        */
+    /*
+    Validate price
+    */
 
-        if (
-            typeof window.addServiceToGlobalCart ===
-            "function"
-        ) {
+    if (
+        price === undefined ||
+        price === null ||
+        isNaN(numericPrice)
+    ) {
 
-            window.addServiceToGlobalCart(
-                templateName,
-                numericPrice
-            );
+        console.error(
+            "Invalid template price:",
+            templateName,
+            price
+        );
 
-        } else {
+        alert(
+            "Unable to add this template because its price is invalid."
+        );
 
-            console.error(
-                "addServiceToGlobalCart() is not available. Make sure cart.js is loaded."
-            );
+        return;
 
-        }
+    }
 
-    };
 
-});
+    /*
+    IMPORTANT:
+
+    Use the SAME function used by Services.
+
+    This means:
+
+    Shop
+       ↓
+    addTemplate()
+       ↓
+    addServiceToGlobalCart()
+       ↓
+    saiGraphicCart
+       ↓
+    SAME CART DRAWER
+    */
+
+    if (
+        typeof window.addServiceToGlobalCart !==
+        "function"
+    ) {
+
+        console.error(
+            "Shared cart is not loaded."
+        );
+
+        alert(
+            "Cart system could not be loaded. Please refresh the page."
+        );
+
+        return;
+
+    }
+
+
+    window.addServiceToGlobalCart(
+        templateName,
+        numericPrice
+    );
+
+};
