@@ -1,57 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     /*
-     * SHOP USES THE SAME CART AS SERVICES
-     *
-     * Cart storage:
-     * saiGraphicCart
-     *
-     * The actual cart drawer, remove buttons,
-     * total and WhatsApp checkout are controlled
-     * by your existing service cart JavaScript.
-     */
-
-
-    /* =====================================================
-       ADD SHOP TEMPLATE TO SAME CART
-    ===================================================== */
+    =====================================================
+    SHOP → SAME CART AS SERVICES
+    =====================================================
+    */
 
     window.addTemplate = function (templateName, price) {
 
-        const finalPrice = Number(price) || 0;
+        // Make sure price is a real number
+        const numericPrice = Number(
+            String(price).replace(/[₹,\s]/g, "")
+        );
 
+        if (!templateName) {
+            console.error("Template name is missing.");
+            return;
+        }
+
+        if (isNaN(numericPrice)) {
+            console.error(
+                "Invalid template price:",
+                price
+            );
+            return;
+        }
 
         /*
-         * Use the existing service cart function.
-         */
+        Use the EXISTING SERVICE CART function.
+
+        This is the important part.
+        Shop templates are added to the same
+        saiGraphicCart used by Services.
+        */
 
         if (
-            typeof window.addServiceToGlobalCart === "function"
+            typeof window.addServiceToGlobalCart ===
+            "function"
         ) {
 
             window.addServiceToGlobalCart(
                 templateName,
-                finalPrice
+                numericPrice
             );
 
-            return;
+        } else {
+
+            console.error(
+                "addServiceToGlobalCart() is not available. Make sure cart.js is loaded."
+            );
+
         }
 
-
-        /*
-         * If this appears, main.js/cart.js is not loaded
-         * before shop.js.
-         */
-
-        console.error(
-            "addServiceToGlobalCart() is not available."
-        );
-
-        alert(
-            "Cart is not available. Please refresh the page."
-        );
-
     };
-
 
 });
