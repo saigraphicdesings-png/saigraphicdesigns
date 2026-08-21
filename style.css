@@ -187,7 +187,7 @@ header,
 
 /* =========================================
    NAVIGATION
-   HOME / ABOUT / SERVICES / CONTACT
+   HOME / ABOUT / SERVICES / SHOP / CONTACT
 ========================================= */
 
 .main-nav {
@@ -200,6 +200,7 @@ header,
        Home
        About
        Services
+       Shop
        Contact
     */
     gap: 2.5rem;
