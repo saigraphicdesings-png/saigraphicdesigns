@@ -145,14 +145,14 @@ document.addEventListener("DOMContentLoaded", function () {
 {
             id: "business-card-Bundle",
 
-            name: " Business Card Bundle",
+            name: "4 Business Card Bundle",
 
             price: 150,
 
             category: "Printing Designs",
 
             description:
-                "5 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card template suitable for Hotel businesses editable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-01/1.jpg",
