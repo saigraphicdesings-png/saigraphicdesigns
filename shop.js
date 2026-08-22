@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
        Example:
 
-       images/shop/business-card-01/1.jpg
-       images/shop/business-card-01/2.jpg
-       images/shop/business-card-01/3.jpg
+       Images/Shop/business-card-01/1.jpg
+       Images/Shop/business-card-01/2.jpg
+       Images/Shop/business-card-01/3.jpg
 
 
        You can change the filenames below.
