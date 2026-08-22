@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "Elegant editable business card design for corporate and professional use.",
+                "Elegant editable business card template suitable for International Travel businesses editable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-04/1.jpg",
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "Premium creative business card template with multiple preview designs.",
+                "Premium creative business card template suitable for Hospital/Clinic businesses editable CDR Files",
 
             images: [
                 "Images/Shop/business-card-05/1.jpg",
@@ -142,7 +142,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             ]
         },
+{
+            id: "business-card-Bundle",
 
+            name: " Business Card Bundle",
+
+            price: 150,
+
+            category: "Printing Designs",
+
+            description:
+                "5 Business card template suitable for Hotel businesses editable CDR Files.",
+
+            images: [
+                "Images/Shop/business-Bundel-01/1.jpg",
+                "Images/Shop/business-Bundel-01/2.jpg",
+                "Images/Shop/business-Bundel-01/3.jpg",
+
+            ]
+        },
 
         /* =================================================
            DIGITAL & SOCIAL MEDIA
