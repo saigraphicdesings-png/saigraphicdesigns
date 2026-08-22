@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             name: "4 Business Card Bundle",
 
-            price: 150,
+            price: 199,
 
             category: "Printing Designs",
 
