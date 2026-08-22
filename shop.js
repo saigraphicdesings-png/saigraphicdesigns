@@ -142,10 +142,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             ]
         },
-{
-            id: "business-card-Bundle",
+        {
+            id: "business-card-Bundle-01",
 
-            name: "4 Business Card Bundle",
+            name: "4 Business Card Bundle 01",
 
             price: 199,
 
@@ -163,7 +163,90 @@ document.addEventListener("DOMContentLoaded", function () {
 
             ]
         },
+        {
+            id: "business-card-Bundle-02",
 
+            name: "4 Business Card Bundle 02",
+
+            price: 199,
+
+            category: "Printing Designs",
+
+            description:
+                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+
+            images: [
+                "Images/Shop/business-card-Bundel-02/1.jpg",
+                "Images/Shop/business-card-Bundel-02/2.jpg",
+                "Images/Shop/business-card-Bundel-02/3.jpg",
+                "Images/Shop/business-card-Bundel-02/4.jpg",
+                "Images/Shop/business-card-Bundel-02/5.jpg",
+
+            ]
+        },
+        {
+            id: "business-card-Bundle-03",
+
+            name: "4 Business Card Bundle 03",
+
+            price: 199,
+
+            category: "Printing Designs",
+
+            description:
+                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+
+            images: [
+                "Images/Shop/business-card-Bundel-03/1.jpg",
+                "Images/Shop/business-card-Bundel-03/2.jpg",
+                "Images/Shop/business-card-Bundel-03/3.jpg",
+                "Images/Shop/business-card-Bundel-03/4.jpg",
+                "Images/Shop/business-card-Bundel-03/5.jpg",
+
+            ]
+        },
+        {
+            id: "business-card-Bundle-04",
+
+            name: "4 Business Card Bundle 04",
+
+            price: 199,
+
+            category: "Printing Designs",
+
+            description:
+                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+
+            images: [
+                "Images/Shop/business-card-Bundel-04/1.jpg",
+                "Images/Shop/business-card-Bundel-04/2.jpg",
+                "Images/Shop/business-card-Bundel-04/3.jpg",
+                "Images/Shop/business-card-Bundel-04/4.jpg",
+                "Images/Shop/business-card-Bundel-041/5.jpg",
+
+            ]
+        },
+        {
+            id: "business-card-Bundle-05",
+
+            name: "4 Business Card Bundle 05",
+
+            price: 199,
+
+            category: "Printing Designs",
+
+            description:
+                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+
+            images: [
+                "Images/Shop/business-card-Bundel-05/1.jpg",
+                "Images/Shop/business-card-Bundel-05/2.jpg",
+                "Images/Shop/business-card-Bundel-05/3.jpg",
+                "Images/Shop/business-card-Bundel-05/4.jpg",
+                "Images/Shop/business-card-Bundel-05/5.jpg",
+
+            ]
+        },
         /* =================================================
            DIGITAL & SOCIAL MEDIA
         ================================================= */
