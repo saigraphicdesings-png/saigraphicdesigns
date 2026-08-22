@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card templateeditable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-01/1.jpg",
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card templateeditable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-02/1.jpg",
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card templateeditable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-03/1.jpg",
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card templateeditable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-04/1.jpg",
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "4 Business card template suitable for Hotel businesses editable CDR Files.",
+                "4 Business card templateeditable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-Bundel-05/1.jpg",
