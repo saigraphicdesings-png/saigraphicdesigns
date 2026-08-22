@@ -23,8 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
        images/shop/business-card-01/1.jpg
        images/shop/business-card-01/2.jpg
        images/shop/business-card-01/3.jpg
-       images/shop/business-card-01/4.jpg
-       images/shop/business-card-01/5.jpg
+
 
        You can change the filenames below.
     */
@@ -56,8 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/business-card-01/1.jpg",
                 "images/shop/business-card-01/2.jpg",
                 "images/shop/business-card-01/3.jpg",
-                "images/shop/business-card-01/4.jpg",
-                "images/shop/business-card-01/5.jpg"
+
             ]
         },
 
@@ -78,8 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/business-card-02/1.jpg",
                 "images/shop/business-card-02/2.jpg",
                 "images/shop/business-card-02/3.jpg",
-                "images/shop/business-card-02/4.jpg",
-                "images/shop/business-card-02/5.jpg"
+
             ]
         },
 
@@ -100,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/business-card-03/1.jpg",
                 "images/shop/business-card-03/2.jpg",
                 "images/shop/business-card-03/3.jpg",
-                "images/shop/business-card-03/4.jpg",
-                "images/shop/business-card-03/5.jpg"
+
             ]
         },
 
@@ -122,8 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/business-card-04/1.jpg",
                 "images/shop/business-card-04/2.jpg",
                 "images/shop/business-card-04/3.jpg",
-                "images/shop/business-card-04/4.jpg",
-                "images/shop/business-card-04/5.jpg"
+
             ]
         },
 
@@ -144,8 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/business-card-05/1.jpg",
                 "images/shop/business-card-05/2.jpg",
                 "images/shop/business-card-05/3.jpg",
-                "images/shop/business-card-05/4.jpg",
-                "images/shop/business-card-05/5.jpg"
+
             ]
         },
 
