@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "Premium editable business card design suitable for professional businesses and brands.",
+                "Premium business card template suitable for Travel agency businesses editable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-01/3.jpg",
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "Modern premium business card template with editable CDR and PSD files.",
+                "Modern premium business card template suitable for Mackup Studio businesses editable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-02/1.jpg",
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Printing Designs",
 
             description:
-                "Creative professional business card template ready for editing and printing.",
+                "Creative professional business card template suitable for Hotel businesses editable CDR Files.",
 
             images: [
                 "Images/Shop/business-card-03/1.jpg",
