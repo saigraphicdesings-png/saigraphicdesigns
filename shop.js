@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-
     /* =====================================================
        SETTINGS
     ===================================================== */
@@ -8,26 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const CART_KEY = "saiGraphicCart";
 
     const WHATSAPP_NUMBER = "916381128781";
-
-
-    /*
-       =====================================================
-       IMPORTANT
-
-       Your product images should be placed inside:
-
-       images/shop/
-
-       Example:
-
-       images/shop/business-card-01/1.jpg
-       images/shop/business-card-01/2.jpg
-       images/shop/business-card-01/3.jpg
-       images/shop/business-card-01/4.jpg
-       images/shop/business-card-01/5.jpg
-
-       You can change the filenames below.
-    */
 
 
     /* =====================================================
@@ -42,12 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {
             id: "business-card-01",
-
             name: "Premium Business Card 01",
-
             price: 99,
-
             category: "Printing Designs",
+            badge: "Premium",
+            formats: ["CDR", "PSD"],
+            type: "Editable Template",
 
             description:
                 "Premium editable business card design suitable for professional businesses and brands.",
@@ -61,15 +40,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "business-card-02",
-
             name: "Premium Business Card 02",
-
             price: 99,
-
             category: "Printing Designs",
+            badge: "Premium",
+            formats: ["CDR", "PSD"],
+            type: "Editable Template",
 
             description:
                 "Modern premium business card template with editable CDR and PSD files.",
@@ -83,15 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "business-card-03",
-
             name: "Premium Business Card 03",
-
             price: 99,
-
             category: "Printing Designs",
+            badge: "Premium",
+            formats: ["CDR", "PSD"],
+            type: "Editable Template",
 
             description:
                 "Creative professional business card template ready for editing and printing.",
@@ -105,15 +82,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "business-card-04",
-
             name: "Premium Business Card 04",
-
             price: 99,
-
             category: "Printing Designs",
+            badge: "Premium",
+            formats: ["CDR", "PSD"],
+            type: "Editable Template",
 
             description:
                 "Elegant editable business card design for corporate and professional use.",
@@ -127,15 +103,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "business-card-05",
-
             name: "Premium Business Card 05",
-
             price: 99,
-
             category: "Printing Designs",
+            badge: "Premium",
+            formats: ["CDR", "PSD"],
+            type: "Editable Template",
 
             description:
                 "Premium creative business card template with multiple preview designs.",
@@ -156,12 +131,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {
             id: "social-media-01",
-
             name: "Premium Social Media Design 01",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
+            badge: "Premium",
+            formats: ["PSD", "AI"],
+            type: "Editable Template",
 
             description:
                 "Premium editable social media poster template for digital marketing.",
@@ -175,15 +150,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "social-media-02",
-
             name: "Premium Social Media Design 02",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
+            badge: "Premium",
+            formats: ["PSD", "AI"],
+            type: "Editable Template",
 
             description:
                 "Creative social media design template for businesses and promotions.",
@@ -197,15 +171,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "social-media-03",
-
             name: "Premium Social Media Design 03",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
+            badge: "Premium",
+            formats: ["PSD", "AI"],
+            type: "Editable Template",
 
             description:
                 "Professional editable social media marketing design.",
@@ -219,15 +192,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "social-media-04",
-
             name: "Premium Social Media Design 04",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
+            badge: "Premium",
+            formats: ["PSD", "AI"],
+            type: "Editable Template",
 
             description:
                 "Modern premium social media poster template.",
@@ -241,15 +213,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "social-media-05",
-
             name: "Premium Social Media Design 05",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
+            badge: "Premium",
+            formats: ["PSD", "AI"],
+            type: "Editable Template",
 
             description:
                 "Premium editable digital marketing design template.",
@@ -270,12 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {
             id: "packaging-01",
-
             name: "Premium Packaging Design 01",
-
             price: 250,
-
             category: "Packaging Designs",
+            badge: "Premium",
+            formats: ["CDR", "AI"],
+            type: "Editable Template",
 
             description:
                 "Professional editable packaging template for product branding.",
@@ -289,15 +260,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "packaging-02",
-
             name: "Premium Packaging Design 02",
-
             price: 250,
-
             category: "Packaging Designs",
+            badge: "Premium",
+            formats: ["CDR", "AI"],
+            type: "Editable Template",
 
             description:
                 "Creative editable packaging design suitable for commercial products.",
@@ -311,15 +281,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "packaging-03",
-
             name: "Premium Packaging Design 03",
-
             price: 300,
-
             category: "Packaging Designs",
+            badge: "Premium",
+            formats: ["CDR", "AI"],
+            type: "Editable Template",
 
             description:
                 "Premium product packaging template with professional presentation.",
@@ -333,15 +302,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "packaging-04",
-
             name: "Premium Packaging Design 04",
-
             price: 300,
-
             category: "Packaging Designs",
+            badge: "Premium",
+            formats: ["CDR", "AI"],
+            type: "Editable Template",
 
             description:
                 "Editable premium packaging template for modern brands.",
@@ -355,15 +323,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-
         {
             id: "packaging-05",
-
             name: "Premium Packaging Design 05",
-
             price: 500,
-
             category: "Packaging Designs",
+            badge: "Premium",
+            formats: ["CDR", "AI"],
+            type: "Editable Template",
 
             description:
                 "High-quality editable packaging design for premium products.",
@@ -375,10 +342,227 @@ document.addEventListener("DOMContentLoaded", function () {
                 "images/shop/packaging-05/4.jpg",
                 "images/shop/packaging-05/5.jpg"
             ]
+        },
+
+
+        /* =================================================
+           ICONS
+           
+           ADD / CHANGE THESE IMAGE PATHS
+           TO MATCH YOUR ACTUAL ICON FILES.
+        ================================================= */
+
+        {
+            id: "icon-01",
+            name: "Business Icons Pack 01",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Premium business icon collection for branding, websites and creative projects.",
+
+            images: [
+                "images/shop/icons/icon-01/1.jpg",
+                "images/shop/icons/icon-01/2.jpg",
+                "images/shop/icons/icon-01/3.jpg",
+                "images/shop/icons/icon-01/4.jpg",
+                "images/shop/icons/icon-01/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-02",
+            name: "Business Icons Pack 02",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Professional editable icon collection for business and digital designs.",
+
+            images: [
+                "images/shop/icons/icon-02/1.jpg",
+                "images/shop/icons/icon-02/2.jpg",
+                "images/shop/icons/icon-02/3.jpg",
+                "images/shop/icons/icon-02/4.jpg",
+                "images/shop/icons/icon-02/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-03",
+            name: "Social Media Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Modern social media icon collection for posts, websites and branding.",
+
+            images: [
+                "images/shop/icons/icon-03/1.jpg",
+                "images/shop/icons/icon-03/2.jpg",
+                "images/shop/icons/icon-03/3.jpg",
+                "images/shop/icons/icon-03/4.jpg",
+                "images/shop/icons/icon-03/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-04",
+            name: "Food Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Creative food and restaurant icon collection for menus and promotional designs.",
+
+            images: [
+                "images/shop/icons/icon-04/1.jpg",
+                "images/shop/icons/icon-04/2.jpg",
+                "images/shop/icons/icon-04/3.jpg",
+                "images/shop/icons/icon-04/4.jpg",
+                "images/shop/icons/icon-04/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-05",
+            name: "Medical Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Professional medical and healthcare icon collection.",
+
+            images: [
+                "images/shop/icons/icon-05/1.jpg",
+                "images/shop/icons/icon-05/2.jpg",
+                "images/shop/icons/icon-05/3.jpg",
+                "images/shop/icons/icon-05/4.jpg",
+                "images/shop/icons/icon-05/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-06",
+            name: "Education Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Education and learning icon collection for schools, institutes and digital content.",
+
+            images: [
+                "images/shop/icons/icon-06/1.jpg",
+                "images/shop/icons/icon-06/2.jpg",
+                "images/shop/icons/icon-06/3.jpg",
+                "images/shop/icons/icon-06/4.jpg",
+                "images/shop/icons/icon-06/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-07",
+            name: "Technology Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Modern technology and digital service icon collection.",
+
+            images: [
+                "images/shop/icons/icon-07/1.jpg",
+                "images/shop/icons/icon-07/2.jpg",
+                "images/shop/icons/icon-07/3.jpg",
+                "images/shop/icons/icon-07/4.jpg",
+                "images/shop/icons/icon-07/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-08",
+            name: "Travel Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Travel and tourism icon collection for posters, websites and promotional designs.",
+
+            images: [
+                "images/shop/icons/icon-08/1.jpg",
+                "images/shop/icons/icon-08/2.jpg",
+                "images/shop/icons/icon-08/3.jpg",
+                "images/shop/icons/icon-08/4.jpg",
+                "images/shop/icons/icon-08/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-09",
+            name: "Business Services Icons",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Professional service and business icon collection.",
+
+            images: [
+                "images/shop/icons/icon-09/1.jpg",
+                "images/shop/icons/icon-09/2.jpg",
+                "images/shop/icons/icon-09/3.jpg",
+                "images/shop/icons/icon-09/4.jpg",
+                "images/shop/icons/icon-09/5.jpg"
+            ]
+        },
+
+        {
+            id: "icon-10",
+            name: "Creative Icons Pack",
+            price: 99,
+            category: "Icons",
+            badge: "Premium",
+            formats: ["AI", "SVG"],
+            type: "Icon Pack",
+
+            description:
+                "Creative multipurpose icon collection for graphic designers and digital creators.",
+
+            images: [
+                "images/shop/icons/icon-10/1.jpg",
+                "images/shop/icons/icon-10/2.jpg",
+                "images/shop/icons/icon-10/3.jpg",
+                "images/shop/icons/icon-10/4.jpg",
+                "images/shop/icons/icon-10/5.jpg"
+            ]
         }
 
     ];
-
 
 
     /* =====================================================
@@ -393,6 +577,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const packagingProducts =
         document.getElementById("packagingProducts");
+
+    const iconProducts =
+        document.getElementById("iconProducts");
 
 
     const productModal =
@@ -423,6 +610,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const modalProductCategory =
         document.getElementById("modalProductCategory");
+
+    const modalProductFeatures =
+        document.getElementById("modalProductFeatures");
 
     const modalAddCart =
         document.getElementById("modalAddCart");
@@ -460,6 +650,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("cartCheckout");
 
 
+    const filterButtons =
+        document.querySelectorAll(".shop-filter-btn");
+
+
+    const categorySections =
+        document.querySelectorAll(".shop-category");
+
 
     /* =====================================================
        CART
@@ -481,6 +678,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /*
+       Convert old cart items into
+       the new quantity format.
+    */
+
+    cart = cart.map(function (item) {
+
+        return {
+            ...item,
+            quantity:
+                Number(item.quantity) > 0
+                    ? Number(item.quantity)
+                    : 1
+        };
+
+    });
+
 
     /* =====================================================
        CURRENT PRODUCT
@@ -489,7 +703,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentProduct = null;
 
     let currentImageIndex = 0;
-
 
 
     /* =====================================================
@@ -504,7 +717,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        ESCAPE HTML
     ===================================================== */
@@ -512,19 +724,53 @@ document.addEventListener("DOMContentLoaded", function () {
     function escapeHTML(value) {
 
         return String(value)
-
             .replace(/&/g, "&amp;")
-
             .replace(/</g, "&lt;")
-
             .replace(/>/g, "&gt;")
-
             .replace(/"/g, "&quot;")
-
             .replace(/'/g, "&#039;");
 
     }
 
+
+    /* =====================================================
+       GET PRODUCT
+    ===================================================== */
+
+    function getProductById(id) {
+
+        return products.find(function (product) {
+
+            return product.id === id;
+
+        });
+
+    }
+
+
+    /* =====================================================
+       RENDER PRODUCT FORMATS
+    ===================================================== */
+
+    function renderFormats(product) {
+
+        if (!product.formats) {
+
+            return "";
+
+        }
+
+        return product.formats.map(function (format) {
+
+            return `
+                <span class="product-format">
+                    ${escapeHTML(format)}
+                </span>
+            `;
+
+        }).join("");
+
+    }
 
 
     /* =====================================================
@@ -532,7 +778,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ===================================================== */
 
     function renderProducts() {
-
 
         const categoryContainers = {
 
@@ -543,7 +788,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 digitalProducts,
 
             "Packaging Designs":
-                packagingProducts
+                packagingProducts,
+
+            "Icons":
+                iconProducts
 
         };
 
@@ -551,14 +799,17 @@ document.addEventListener("DOMContentLoaded", function () {
         Object.keys(categoryContainers)
             .forEach(function (category) {
 
-                categoryContainers[category]
-                    .innerHTML = "";
+                if (categoryContainers[category]) {
+
+                    categoryContainers[category]
+                        .innerHTML = "";
+
+                }
 
             });
 
 
         products.forEach(function (product) {
-
 
             const container =
                 categoryContainers[
@@ -585,6 +836,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 product.id;
 
 
+            card.dataset.category =
+                product.category;
+
+
             card.innerHTML = `
 
                 <div class="product-preview">
@@ -593,6 +848,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         src="${product.images[0]}"
                         alt="${escapeHTML(product.name)}"
                         loading="lazy">
+
+                    <span class="product-badge">
+                        ${escapeHTML(product.badge || "Premium")}
+                    </span>
 
                 </div>
 
@@ -604,9 +863,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     </h3>
 
 
-                    <p>
-                        ${escapeHTML(product.description)}
-                    </p>
+                    <div class="product-meta">
+
+                        <span>
+                            ${escapeHTML(product.type)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="product-formats">
+
+                        ${renderFormats(product)}
+
+                        <span class="editable-badge">
+                            Editable
+                        </span>
+
+                    </div>
 
 
                     <div class="product-bottom">
@@ -618,13 +892,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <button
                             type="button"
-                            class="add-product-btn">
+                            class="preview-product-btn">
 
-                            Add to Cart
+                            Preview
 
                         </button>
 
                     </div>
+
+
+                    <button
+                        type="button"
+                        class="add-product-btn">
+
+                        Add to Cart
+
+                    </button>
 
                 </div>
 
@@ -641,6 +924,28 @@ document.addEventListener("DOMContentLoaded", function () {
             card.addEventListener(
                 "click",
                 function () {
+
+                    openProductModal(product);
+
+                }
+            );
+
+
+            /* ---------------------------------------------
+               PREVIEW BUTTON
+            --------------------------------------------- */
+
+            const previewButton =
+                card.querySelector(
+                    ".preview-product-btn"
+                );
+
+
+            previewButton.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
 
                     openProductModal(product);
 
@@ -674,13 +979,96 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /* =====================================================
+       CATEGORY FILTER
+    ===================================================== */
+
+    function filterProducts(category) {
+
+        categorySections.forEach(function (section) {
+
+            const sectionCategory =
+                section.dataset.category;
+
+
+            if (
+                category === "all" ||
+                sectionCategory === category
+            ) {
+
+                section.style.display = "";
+
+            } else {
+
+                section.style.display = "none";
+
+            }
+
+        });
+
+
+        filterButtons.forEach(function (button) {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.filter === category
+            );
+
+        });
+
+
+        /*
+           Scroll to products when
+           a category is selected.
+        */
+
+        if (category !== "all") {
+
+            const target =
+                document.querySelector(
+                    `.shop-category[data-category="${CSS.escape(category)}"]`
+                );
+
+
+            if (target) {
+
+                setTimeout(function () {
+
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }, 50);
+
+            }
+
+        }
+
+    }
+
+
+    filterButtons.forEach(function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                filterProducts(
+                    this.dataset.filter
+                );
+
+            }
+        );
+
+    });
+
 
     /* =====================================================
        OPEN PRODUCT MODAL
     ===================================================== */
 
     function openProductModal(product) {
-
 
         currentProduct = product;
 
@@ -703,10 +1091,34 @@ document.addEventListener("DOMContentLoaded", function () {
             product.category;
 
 
+        if (modalProductFeatures) {
+
+            modalProductFeatures.innerHTML = `
+
+                <span>
+                    ${escapeHTML(product.type)}
+                </span>
+
+                ${renderFormats(product)}
+
+                <span>
+                    Editable
+                </span>
+
+                <span>
+                    Premium
+                </span>
+
+            `;
+
+        }
+
+
         renderProductImages();
 
 
         productModal.classList.add("active");
+
 
         productModal.setAttribute(
             "aria-hidden",
@@ -720,13 +1132,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        RENDER PRODUCT IMAGES
     ===================================================== */
 
     function renderProductImages() {
-
 
         if (!currentProduct) {
 
@@ -739,7 +1149,10 @@ document.addEventListener("DOMContentLoaded", function () {
             currentProduct.images;
 
 
-        if (!images.length) {
+        if (
+            !images ||
+            images.length === 0
+        ) {
 
             return;
 
@@ -761,7 +1174,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         images.forEach(
             function (image, index) {
-
 
                 const thumbnail =
                     document.createElement("button");
@@ -791,7 +1203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <img
                         src="${image}"
-                        alt="Preview ${index + 1}"
+                        alt="${escapeHTML(currentProduct.name)} preview ${index + 1}"
                         loading="lazy">
 
                 `;
@@ -820,13 +1232,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        NEXT IMAGE
     ===================================================== */
 
     function nextImage() {
-
 
         if (!currentProduct) {
 
@@ -853,13 +1263,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        PREVIOUS IMAGE
     ===================================================== */
 
     function previousImage() {
-
 
         if (!currentProduct) {
 
@@ -884,13 +1292,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        CLOSE PRODUCT MODAL
     ===================================================== */
 
     function closeProductModal() {
-
 
         productModal.classList.remove(
             "active"
@@ -911,7 +1317,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        SAVE CART
     ===================================================== */
@@ -926,13 +1331,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
-       ADD TO CART
+       ADD PRODUCT TO CART
     ===================================================== */
 
     function addProductToCart(product) {
-
 
         const existing =
             cart.find(function (item) {
@@ -944,34 +1347,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (existing) {
 
-            alert(
-                product.name +
-                " is already in your cart."
-            );
+            existing.quantity =
+                Number(existing.quantity || 1) + 1;
 
+        } else {
 
-            updateCart();
+            cart.push({
 
-            openCart();
+                id: product.id,
 
-            return;
+                name: product.name,
+
+                price: Number(product.price),
+
+                category: product.category,
+
+                image: product.images[0],
+
+                quantity: 1
+
+            });
 
         }
-
-
-        cart.push({
-
-            id: product.id,
-
-            name: product.name,
-
-            price: Number(product.price),
-
-            category: product.category,
-
-            image: product.images[0]
-
-        });
 
 
         saveCart();
@@ -985,13 +1382,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /* =====================================================
+       CHANGE QUANTITY
+    ===================================================== */
+
+    function changeQuantity(id, amount) {
+
+        const item =
+            cart.find(function (cartItem) {
+
+                return cartItem.id === id;
+
+            });
+
+
+        if (!item) {
+
+            return;
+
+        }
+
+
+        item.quantity =
+            Number(item.quantity || 1) + amount;
+
+
+        if (item.quantity <= 0) {
+
+            removeFromCart(id);
+
+            return;
+
+        }
+
+
+        saveCart();
+
+        updateCart();
+
+    }
+
 
     /* =====================================================
        REMOVE CART ITEM
     ===================================================== */
 
     function removeFromCart(id) {
-
 
         cart =
             cart.filter(function (item) {
@@ -1008,7 +1444,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        CART TOTAL
     ===================================================== */
@@ -1019,7 +1454,10 @@ document.addEventListener("DOMContentLoaded", function () {
             function (total, item) {
 
                 return total +
-                    Number(item.price);
+                    (
+                        Number(item.price) *
+                        Number(item.quantity || 1)
+                    );
 
             },
             0
@@ -1028,6 +1466,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /* =====================================================
+       CART ITEM COUNT
+    ===================================================== */
+
+    function getCartItemCount() {
+
+        return cart.reduce(
+            function (total, item) {
+
+                return total +
+                    Number(item.quantity || 1);
+
+            },
+            0
+        );
+
+    }
+
 
     /* =====================================================
        GROUP CART
@@ -1035,12 +1491,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function groupCartItems() {
 
-
         const groups = {};
 
 
         cart.forEach(function (item) {
-
 
             if (
                 !groups[item.category]
@@ -1063,13 +1517,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        UPDATE CART
     ===================================================== */
 
     function updateCart() {
-
 
         cartItemsList.innerHTML = "";
 
@@ -1080,7 +1532,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (cart.length === 0) {
 
-
             cartItemsList.innerHTML = `
 
                 <div class="empty-cart">
@@ -1089,11 +1540,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         🛒
                     </div>
 
-
                     <h3>
                         Your cart is empty
                     </h3>
-
 
                     <p>
                         Add your favourite
@@ -1123,7 +1572,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-
         /* ---------------------------------------------
            GROUP PRODUCTS
         --------------------------------------------- */
@@ -1137,9 +1585,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const title =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
 
                 title.className =
@@ -1159,10 +1605,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     .forEach(function (item) {
 
 
+                        const quantity =
+                            Number(item.quantity || 1);
+
+
+                        const subtotal =
+                            Number(item.price) *
+                            quantity;
+
+
                         const itemElement =
-                            document.createElement(
-                                "div"
-                            );
+                            document.createElement("div");
 
 
                         itemElement.className =
@@ -1192,6 +1645,48 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="cart-item-price">
 
                                     ${formatPrice(item.price)}
+                                    each
+
+                                </div>
+
+
+                                <div class="cart-item-quantity">
+
+                                    <button
+                                        type="button"
+                                        class="quantity-btn quantity-minus"
+                                        data-id="${item.id}"
+                                        aria-label="Decrease quantity">
+
+                                        −
+
+                                    </button>
+
+
+                                    <span class="quantity-value">
+
+                                        ${quantity}
+
+                                    </span>
+
+
+                                    <button
+                                        type="button"
+                                        class="quantity-btn quantity-plus"
+                                        data-id="${item.id}"
+                                        aria-label="Increase quantity">
+
+                                        +
+
+                                    </button>
+
+                                </div>
+
+
+                                <div class="cart-item-subtotal">
+
+                                    Subtotal:
+                                    ${formatPrice(subtotal)}
 
                                 </div>
 
@@ -1220,13 +1715,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
 
-
         /* ---------------------------------------------
            TOTAL
         --------------------------------------------- */
 
         cartBadge.textContent =
-            cart.length;
+            getCartItemCount();
 
 
         cartTotalVal.textContent =
@@ -1239,17 +1733,55 @@ document.addEventListener("DOMContentLoaded", function () {
             false;
 
 
+        /* ---------------------------------------------
+           QUANTITY BUTTONS
+        --------------------------------------------- */
+
+        cartItemsList
+            .querySelectorAll(".quantity-minus")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        changeQuantity(
+                            this.dataset.id,
+                            -1
+                        );
+
+                    }
+                );
+
+            });
+
+
+        cartItemsList
+            .querySelectorAll(".quantity-plus")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        changeQuantity(
+                            this.dataset.id,
+                            1
+                        );
+
+                    }
+                );
+
+            });
+
 
         /* ---------------------------------------------
            REMOVE BUTTONS
         --------------------------------------------- */
 
         cartItemsList
-            .querySelectorAll(
-                ".cart-remove"
-            )
+            .querySelectorAll(".cart-remove")
             .forEach(function (button) {
-
 
                 button.addEventListener(
                     "click",
@@ -1267,13 +1799,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        OPEN CART
     ===================================================== */
 
     function openCart() {
-
 
         updateCart();
 
@@ -1294,13 +1824,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        CLOSE CART
     ===================================================== */
 
     function closeCart() {
-
 
         cartDrawer.classList.remove(
             "active"
@@ -1318,13 +1846,88 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    /* =====================================================
+       WHATSAPP MESSAGE
+    ===================================================== */
+
+    function getProductOrderMessage(item) {
+
+        const quantity =
+            Number(item.quantity || 1);
+
+
+        const subtotal =
+            Number(item.price) * quantity;
+
+
+        if (
+            item.category ===
+            "Printing Designs"
+        ) {
+
+            return `Product: ${item.name}
+Type: Printing Design
+Quantity: ${quantity}
+Price: ${formatPrice(item.price)}
+Subtotal: ${formatPrice(subtotal)}`;
+
+        }
+
+
+        if (
+            item.category ===
+            "Digital & Social Media Designs"
+        ) {
+
+            return `Product: ${item.name}
+Type: Digital & Social Media Design
+Quantity: ${quantity}
+Price: ${formatPrice(item.price)}
+Subtotal: ${formatPrice(subtotal)}`;
+
+        }
+
+
+        if (
+            item.category ===
+            "Packaging Designs"
+        ) {
+
+            return `Product: ${item.name}
+Type: Packaging Design
+Quantity: ${quantity}
+Price: ${formatPrice(item.price)}
+Subtotal: ${formatPrice(subtotal)}`;
+
+        }
+
+
+        if (
+            item.category === "Icons"
+        ) {
+
+            return `Product: ${item.name}
+Type: Icon Pack
+Quantity: ${quantity}
+Price: ${formatPrice(item.price)}
+Subtotal: ${formatPrice(subtotal)}`;
+
+        }
+
+
+        return `Product: ${item.name}
+Quantity: ${quantity}
+Price: ${formatPrice(item.price)}
+Subtotal: ${formatPrice(subtotal)}`;
+
+    }
+
 
     /* =====================================================
        WHATSAPP CHECKOUT
     ===================================================== */
 
     function checkoutWhatsApp() {
-
 
         if (cart.length === 0) {
 
@@ -1341,14 +1944,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 `Hello Sai Graphic Designs 👋
 
-I would like to order the following design templates:
+I would like to order the following design products:
 
 `;
 
 
-
         let itemNumber = 1;
-
 
 
         Object.keys(groups)
@@ -1356,10 +1957,11 @@ I would like to order the following design templates:
 
 
                 message +=
+
 `
-------------------------------
+━━━━━━━━━━━━━━━━━━━━
 ${category.toUpperCase()}
-------------------------------
+━━━━━━━━━━━━━━━━━━━━
 
 `;
 
@@ -1370,8 +1972,7 @@ ${category.toUpperCase()}
 
                         message +=
 
-`${itemNumber}. ${item.name}
-Price: ${formatPrice(item.price)}
+`${itemNumber}. ${getProductOrderMessage(item)}
 
 `;
 
@@ -1383,24 +1984,22 @@ Price: ${formatPrice(item.price)}
             });
 
 
-
         message +=
 
-`------------------------------
+`━━━━━━━━━━━━━━━━━━━━
 ORDER SUMMARY
-------------------------------
+━━━━━━━━━━━━━━━━━━━━
 
-Total Items: ${cart.length}
+Total Products: ${cart.length}
+Total Quantity: ${getCartItemCount()}
 
-Estimated Total: ${formatPrice(
-            getCartTotal()
-        )}
+Estimated Total:
+${formatPrice(getCartTotal())}
 
 Please contact me regarding payment,
 file delivery and other details.
 
 Thank you!`;
-
 
 
         const whatsappURL =
@@ -1413,7 +2012,6 @@ Thank you!`;
             );
 
 
-
         window.open(
             whatsappURL,
             "_blank"
@@ -1422,83 +2020,115 @@ Thank you!`;
     }
 
 
-
     /* =====================================================
        MODAL EVENTS
     ===================================================== */
 
-    productModalClose.addEventListener(
-        "click",
-        closeProductModal
-    );
+    if (productModalClose) {
+
+        productModalClose.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
 
 
-    productModalOverlay.addEventListener(
-        "click",
-        closeProductModal
-    );
+    if (productModalOverlay) {
+
+        productModalOverlay.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
 
 
-    viewerNext.addEventListener(
-        "click",
-        nextImage
-    );
+    if (viewerNext) {
+
+        viewerNext.addEventListener(
+            "click",
+            nextImage
+        );
+
+    }
 
 
-    viewerPrev.addEventListener(
-        "click",
-        previousImage
-    );
+    if (viewerPrev) {
+
+        viewerPrev.addEventListener(
+            "click",
+            previousImage
+        );
+
+    }
 
 
-    modalAddCart.addEventListener(
-        "click",
-        function () {
+    if (modalAddCart) {
+
+        modalAddCart.addEventListener(
+            "click",
+            function () {
+
+                if (!currentProduct) {
+
+                    return;
+
+                }
 
 
-            if (!currentProduct) {
-
-                return;
+                addProductToCart(
+                    currentProduct
+                );
 
             }
+        );
 
-
-            addProductToCart(
-                currentProduct
-            );
-
-        }
-    );
-
+    }
 
 
     /* =====================================================
        CART EVENTS
     ===================================================== */
 
-    cartToggle.addEventListener(
-        "click",
-        openCart
-    );
+    if (cartToggle) {
+
+        cartToggle.addEventListener(
+            "click",
+            openCart
+        );
+
+    }
 
 
-    cartClose.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    cartOverlay.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    cartCheckout.addEventListener(
-        "click",
-        checkoutWhatsApp
-    );
+    if (cartCheckout) {
 
+        cartCheckout.addEventListener(
+            "click",
+            checkoutWhatsApp
+        );
+
+    }
 
 
     /* =====================================================
@@ -1510,15 +2140,15 @@ Thank you!`;
         function (event) {
 
 
+            /* ESC */
+
             if (
-                event.key ===
-                "Escape"
+                event.key === "Escape"
             ) {
 
-
                 if (
-                    productModal.classList
-                        .contains("active")
+                    productModal &&
+                    productModal.classList.contains("active")
                 ) {
 
                     closeProductModal();
@@ -1527,8 +2157,8 @@ Thank you!`;
 
 
                 if (
-                    cartDrawer.classList
-                        .contains("active")
+                    cartDrawer &&
+                    cartDrawer.classList.contains("active")
                 ) {
 
                     closeCart();
@@ -1538,35 +2168,120 @@ Thank you!`;
             }
 
 
+            /* NEXT IMAGE */
 
             if (
-                productModal.classList
-                    .contains("active")
+                productModal &&
+                productModal.classList.contains("active") &&
+                event.key === "ArrowRight"
             ) {
 
+                nextImage();
 
-                if (
-                    event.key === "ArrowRight"
-                ) {
-
-                    nextImage();
-
-                }
+            }
 
 
-                if (
-                    event.key === "ArrowLeft"
-                ) {
+            /* PREVIOUS IMAGE */
 
-                    previousImage();
+            if (
+                productModal &&
+                productModal.classList.contains("active") &&
+                event.key === "ArrowLeft"
+            ) {
 
-                }
+                previousImage();
 
             }
 
         }
     );
 
+
+    /* =====================================================
+       TOUCH / SWIPE SUPPORT
+    ===================================================== */
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+
+    if (mainProductImage) {
+
+        mainProductImage.addEventListener(
+            "touchstart",
+            function (event) {
+
+                touchStartX =
+                    event.changedTouches[0].screenX;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        mainProductImage.addEventListener(
+            "touchend",
+            function (event) {
+
+                touchEndX =
+                    event.changedTouches[0].screenX;
+
+
+                const difference =
+                    touchStartX - touchEndX;
+
+
+                if (Math.abs(difference) < 50) {
+
+                    return;
+
+                }
+
+
+                if (difference > 0) {
+
+                    nextImage();
+
+                } else {
+
+                    previousImage();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       IMAGE ERROR HANDLING
+    ===================================================== */
+
+    document.addEventListener(
+        "error",
+        function (event) {
+
+            if (
+                event.target &&
+                event.target.tagName === "IMG"
+            ) {
+
+                event.target.classList.add(
+                    "image-load-error"
+                );
+
+            }
+
+        },
+        true
+    );
 
 
     /* =====================================================
@@ -1576,5 +2291,7 @@ Thank you!`;
     renderProducts();
 
     updateCart();
+
+    filterProducts("all");
 
 });
