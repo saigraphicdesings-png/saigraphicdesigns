@@ -73,9 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Modern premium business card template with editable CDR and PSD files.",
 
             images: [
-                "images/shop/business-card-02/1.jpg",
-                "images/shop/business-card-02/2.jpg",
-                "images/shop/business-card-02/3.jpg",
+                "Images/Shop/business-card-02/1.jpg",
+                "Images/Shop/business-card-02/2.jpg",
+                "Images/Shop/business-card-02/3.jpg",
 
             ]
         },
@@ -94,9 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Creative professional business card template ready for editing and printing.",
 
             images: [
-                "images/shop/business-card-03/1.jpg",
-                "images/shop/business-card-03/2.jpg",
-                "images/shop/business-card-03/3.jpg",
+                "Images/Shop/business-card-03/1.jpg",
+                "Images/Shop/business-card-03/2.jpg",
+                "Images/Shop/business-card-03/3.jpg",
 
             ]
         },
@@ -115,9 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Elegant editable business card design for corporate and professional use.",
 
             images: [
-                "images/shop/business-card-04/1.jpg",
-                "images/shop/business-card-04/2.jpg",
-                "images/shop/business-card-04/3.jpg",
+                "Images/Shop/business-card-04/1.jpg",
+                "Images/Shop/business-card-04/2.jpg",
+                "Images/Shop/business-card-04/3.jpg",
 
             ]
         },
@@ -136,9 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Premium creative business card template with multiple preview designs.",
 
             images: [
-                "images/shop/business-card-05/1.jpg",
-                "images/shop/business-card-05/2.jpg",
-                "images/shop/business-card-05/3.jpg",
+                "Images/Shop/business-card-05/1.jpg",
+                "Images/Shop/business-card-05/2.jpg",
+                "Images/Shop/business-card-05/3.jpg",
 
             ]
         },
