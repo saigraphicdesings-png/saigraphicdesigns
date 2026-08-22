@@ -52,9 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Premium editable business card design suitable for professional businesses and brands.",
 
             images: [
-                "images/shop/business-card-01/1.jpg",
-                "images/shop/business-card-01/2.jpg",
-                "images/shop/business-card-01/3.jpg",
+                "Images/Shop/business-card-01/1.jpg",
+                "Images/Shop/business-card-01/2.jpg",
+                "Images/Shop/business-card-01/3.jpg",
 
             ]
         },
