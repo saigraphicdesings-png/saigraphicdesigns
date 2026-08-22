@@ -155,9 +155,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 "5 Business card template suitable for Hotel businesses editable CDR Files.",
 
             images: [
-                "Images/Shop/business-Bundel-01/1.jpg",
-                "Images/Shop/business-Bundel-01/2.jpg",
-                "Images/Shop/business-Bundel-01/3.jpg",
+                "Images/Shop/business-card-Bundel-01/1.jpg",
+                "Images/Shop/business-card-Bundel-01/2.jpg",
+                "Images/Shop/business-card-Bundel-01/3.jpg",
+                "Images/Shop/business-card-Bundel-01/4.jpg",
+                "Images/Shop/business-card-Bundel-01/5.jpg",
 
             ]
         },
