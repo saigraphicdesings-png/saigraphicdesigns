@@ -2332,6 +2332,97 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mobileMenuBtn =
+        document.getElementById("mobileMenuBtn");
+
+    const mainNav =
+        document.querySelector(".main-nav");
+
+
+    if (!mobileMenuBtn || !mainNav) {
+        return;
+    }
+
+
+    /* OPEN / CLOSE MENU */
+
+    mobileMenuBtn.addEventListener("click", function () {
+
+        const isOpen =
+            mainNav.classList.toggle("mobile-active");
+
+
+        mobileMenuBtn.classList.toggle(
+            "active",
+            isOpen
+        );
+
+
+        mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+    });
+
+
+    /* CLOSE AFTER CLICKING A LINK */
+
+    mainNav
+        .querySelectorAll(".nav-link")
+        .forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                mainNav.classList.remove(
+                    "mobile-active"
+                );
+
+                mobileMenuBtn.classList.remove(
+                    "active"
+                );
+
+                mobileMenuBtn.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            });
+
+        });
+
+
+    /* CLOSE WITH ESC */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                mainNav.classList.remove(
+                    "mobile-active"
+                );
+
+                mobileMenuBtn.classList.remove(
+                    "active"
+                );
+
+                mobileMenuBtn.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        }
+    );
+
+});
+</script>
 </script>
 </body>
 
