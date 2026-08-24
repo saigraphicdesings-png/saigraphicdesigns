@@ -2335,44 +2335,38 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       MOBILE MENU
-    ===================================================== */
-
     const mobileMenuBtn =
         document.getElementById("mobileMenuBtn");
 
     const mainNav =
         document.querySelector(".main-nav");
 
-
     if (!mobileMenuBtn || !mainNav) {
-        console.log("Mobile menu elements not found");
+        console.log("Mobile menu not found");
         return;
     }
-
-
-    /* OPEN / CLOSE MENU */
 
     mobileMenuBtn.addEventListener("click", function () {
 
         const isOpen =
             mainNav.classList.toggle("mobile-active");
 
-        mobileMenuBtn.classList.toggle(
-            "active",
-            isOpen
-        );
-
         mobileMenuBtn.setAttribute(
             "aria-expanded",
             isOpen ? "true" : "false"
         );
 
+        mobileMenuBtn.setAttribute(
+            "aria-label",
+            isOpen
+                ? "Close navigation menu"
+                : "Open navigation menu"
+        );
+
     });
 
 
-    /* CLOSE MENU WHEN LINK IS CLICKED */
+    /* Close menu after clicking a link */
 
     mainNav
         .querySelectorAll(".nav-link")
@@ -2384,13 +2378,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     "mobile-active"
                 );
 
-                mobileMenuBtn.classList.remove(
-                    "active"
-                );
-
                 mobileMenuBtn.setAttribute(
                     "aria-expanded",
                     "false"
+                );
+
+                mobileMenuBtn.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
                 );
 
             });
@@ -2398,7 +2393,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-    /* CLOSE MENU WHEN ESCAPE IS PRESSED */
+    /* Close menu when pressing ESC */
 
     document.addEventListener(
         "keydown",
@@ -2408,10 +2403,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 mainNav.classList.remove(
                     "mobile-active"
-                );
-
-                mobileMenuBtn.classList.remove(
-                    "active"
                 );
 
                 mobileMenuBtn.setAttribute(
