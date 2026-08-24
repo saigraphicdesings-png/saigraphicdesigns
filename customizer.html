@@ -734,6 +734,7 @@
 
     <div class="nav-container">
 
+        <!-- LOGO -->
         <a href="index.html" class="logo">
 
             <div class="logo-icon">SG</div>
@@ -744,33 +745,71 @@
 
         </a>
 
-        <nav class="main-nav">
 
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="about.html" class="nav-link">About</a>
-            <a href="customizer.html" class="nav-link active">Services</a>
-            <a href="shop.html" class="nav-link">Shop</a>
-            <a href="contact.html" class="nav-link">Contact</a>
+        <!-- MOBILE MENU BUTTON -->
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open navigation menu"
+            aria-expanded="false">
+
+            ☰
+
+        </button>
+
+
+        <!-- NAVIGATION -->
+        <nav class="main-nav" aria-label="Main Navigation">
+
+            <a href="index.html" class="nav-link">
+                Home
+            </a>
+
+            <a href="about.html" class="nav-link">
+                About
+            </a>
+
+            <a href="customizer.html" class="nav-link active">
+                Services
+            </a>
+
+            <a href="shop.html" class="nav-link">
+                Shop
+            </a>
+
+            <a href="contact.html" class="nav-link">
+                Contact
+            </a>
 
         </nav>
 
+
+        <!-- ACTIONS -->
         <div class="nav-actions">
 
-            <button type="button"
+            <button
+                type="button"
                 class="cart-icon-btn"
                 id="cartToggle"
                 aria-label="Open shopping cart">
 
                 🛒
 
-                <span class="cart-badge" id="cartBadge">
+                <span
+                    class="cart-badge"
+                    id="cartBadge">
                     0
                 </span>
 
             </button>
 
-            <a href="contact.html" class="btn-header">
+            <a
+                href="contact.html"
+                class="btn-header">
+
                 Get Started <span>→</span>
+
             </a>
 
         </div>
