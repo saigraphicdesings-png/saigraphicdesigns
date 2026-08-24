@@ -1326,17 +1326,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCart() {
 
-        /*
-        Reload localStorage every time.
-        This makes the cart work after moving
-        between Home and Services pages.
-        */
-
-        cart = loadCart();
+        cart =
+            JSON.parse(
+                localStorage.getItem(CART_KEY)
+            ) || [];
 
 
         cartItemsList.innerHTML = "";
-
 
         /* EMPTY */
 
