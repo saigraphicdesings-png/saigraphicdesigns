@@ -2332,8 +2332,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-    <script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
 
     const mobileMenuBtn =
         document.getElementById("mobileMenuBtn");
@@ -2343,6 +2347,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (!mobileMenuBtn || !mainNav) {
+        console.log("Mobile menu elements not found");
         return;
     }
 
@@ -2354,12 +2359,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const isOpen =
             mainNav.classList.toggle("mobile-active");
 
-
         mobileMenuBtn.classList.toggle(
             "active",
             isOpen
         );
-
 
         mobileMenuBtn.setAttribute(
             "aria-expanded",
@@ -2369,7 +2372,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    /* CLOSE AFTER CLICKING A LINK */
+    /* CLOSE MENU WHEN LINK IS CLICKED */
 
     mainNav
         .querySelectorAll(".nav-link")
@@ -2395,7 +2398,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-    /* CLOSE WITH ESC */
+    /* CLOSE MENU WHEN ESCAPE IS PRESSED */
 
     document.addEventListener(
         "keydown",
@@ -2422,7 +2425,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
-</script>
 </script>
 </body>
 
