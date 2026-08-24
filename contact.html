@@ -1347,71 +1347,88 @@
     </section>
 
 
-    <!-- =========================================
-         MINI CART
-    ========================================= -->
+  <!-- =====================================================
+     CART OVERLAY
+===================================================== -->
+
+<div class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true"></div>
+
+
+
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
+
+<div class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
+
+    <div class="cart-header">
+
+        <h3>Selected Services</h3>
+
+        <button type="button"
+            class="cart-close"
+            id="cartClose"
+            aria-label="Close cart">
+
+            &times;
+
+        </button>
+
+    </div>
 
     <div
-        class="cart-drawer"
-        id="cartDrawer"
-        aria-hidden="true"
+        class="cart-items"
+        id="cartItemsList"
     >
 
-        <div class="cart-header">
+        <div class="empty-cart">
+            <p>
+                Your cart is empty.
+            </p>
 
-            <h3
-                style="
-                    font-family:var(--font-sans);
-                    font-weight:800;
-                "
-            >
-                Selected Services
-            </h3>
-
-            <button
-                class="cart-close"
-                id="cartClose"
-                type="button"
-                aria-label="Close cart"
-            >
-                &times;
-            </button>
-
-        </div>
-
-
-        <div
-            class="cart-items"
-            id="cartItemsList"
-        ></div>
-
-
-        <div class="cart-footer">
-
-            <div class="cart-total">
-
-                <span>
-                    Estimated Total:
-                </span>
-
-                <span id="cartTotalVal">
-                    ₹0
-                </span>
-
-            </div>
-
-            <button
-                class="btn-checkout"
-                type="button"
-                id="continueOrderBtn"
-            >
-                Continue Order
-            </button>
-
+            <p>
+                Choose a service and click "Add to Order".
+            </p>
         </div>
 
     </div>
 
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Estimated Total:
+            </span>
+
+           <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>Estimated Total</span>
+
+            <span id="cartTotalVal">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button type="button"
+            class="cart-checkout"
+            id="cartCheckout"
+            disabled>
+
+            Continue order
+
+        </button>
+
+    </div>
 
   <!-- =========================================
      FOOTER
