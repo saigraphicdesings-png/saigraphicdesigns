@@ -1126,153 +1126,82 @@ document.addEventListener("DOMContentLoaded", function () {
        5. MOBILE MENU
     ===================================================== */
 
-    function initMobileMenu() {
+   document.addEventListener("DOMContentLoaded", function () {
 
-        const mobileMenuBtn =
-            document.getElementById(
-                "mobileMenuBtn"
-            );
+    const mobileMenuToggle =
+        document.getElementById("mobileMenuToggle");
 
-        const mainNav =
-            document.getElementById(
-                "mainNav"
-            );
+    const mainNav =
+        document.getElementById("mainNav");
+
+    if (!mobileMenuToggle || !mainNav) {
+        return;
+    }
+
+    mobileMenuToggle.addEventListener("click", function () {
+
+        const isOpen =
+            mainNav.classList.toggle("mobile-open");
+
+        mobileMenuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+        mobileMenuToggle.innerHTML =
+            isOpen ? "✕" : "☰";
+
+    });
 
 
-        if (!mobileMenuBtn || !mainNav) {
+    /* Close menu when a link is clicked */
 
-            return;
-        }
+    mainNav.querySelectorAll(".nav-link")
+        .forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                mainNav.classList.remove(
+                    "mobile-open"
+                );
+
+                mobileMenuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                mobileMenuToggle.innerHTML = "☰";
+
+            });
+
+        });
 
 
-        function closeMobileMenu() {
+    /* Close when clicking outside */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !mainNav.contains(event.target) &&
+            !mobileMenuToggle.contains(event.target)
+        ) {
 
             mainNav.classList.remove(
-                "mobile-menu-open"
+                "mobile-open"
             );
 
-            mobileMenuBtn.setAttribute(
+            mobileMenuToggle.setAttribute(
                 "aria-expanded",
                 "false"
             );
 
-            mobileMenuBtn.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
-
-            mobileMenuBtn.innerHTML =
-                "☰";
+            mobileMenuToggle.innerHTML = "☰";
 
         }
 
+    });
 
-        mobileMenuBtn.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                const isOpen =
-                    mainNav.classList.toggle(
-                        "mobile-menu-open"
-                    );
-
-                mobileMenuBtn.setAttribute(
-                    "aria-expanded",
-                    String(isOpen)
-                );
-
-
-                if (isOpen) {
-
-                    mobileMenuBtn.setAttribute(
-                        "aria-label",
-                        "Close navigation menu"
-                    );
-
-                    mobileMenuBtn.innerHTML =
-                        "✕";
-
-                } else {
-
-                    closeMobileMenu();
-
-                }
-
-            }
-        );
-
-
-        const navLinks =
-            mainNav.querySelectorAll(
-                ".nav-link"
-            );
-
-
-        navLinks.forEach(
-            function (link) {
-
-                link.addEventListener(
-                    "click",
-                    function () {
-
-                        closeMobileMenu();
-
-                    }
-                );
-
-            }
-        );
-
-
-        document.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    !mainNav.contains(event.target) &&
-                    !mobileMenuBtn.contains(event.target)
-                ) {
-
-                    closeMobileMenu();
-
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-
-                    closeMobileMenu();
-
-                }
-
-            }
-        );
-
-
-        window.addEventListener(
-            "resize",
-            function () {
-
-                if (window.innerWidth > 900) {
-
-                    closeMobileMenu();
-
-                }
-
-            }
-        );
-
-    }
-
-
+});
     /* =====================================================
        INITIALIZE EVERYTHING
     ===================================================== */
