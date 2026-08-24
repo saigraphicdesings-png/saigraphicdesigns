@@ -1555,77 +1555,56 @@ footer {
 }
 
 
-/* =====================================================
-   SHARED CART - SAI GRAPHIC DESIGNS
-===================================================== */
+        /* =========================
+           CART
+        ========================= */
 
-.cart-icon-btn {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--border);
-    background: var(--white);
-    color: var(--dark);
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: .25s ease;
-}
+        .cart-icon-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
 
-.cart-icon-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-    transform: translateY(-2px);
-}
+        .cart-badge {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background: var(--primary);
+            color: #fff;
+            font-size: .7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
 
-.cart-badge {
-    position: absolute;
-    top: -7px;
-    right: -7px;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    border-radius: 50px;
-    background: var(--primary);
-    color: #fff;
-    font-size: .7rem;
-    line-height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    box-sizing: border-box;
-}
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, .48);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 9998;
+            transition: .3s ease;
+        }
 
-/* =====================================================
-   OVERLAY
-===================================================== */
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
 
-.cart-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(17, 24, 39, .48);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 9998;
-    transition:
-        opacity .3s ease,
-        visibility .3s ease;
-}
-
-.cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-/* =====================================================
+        /* =====================================================
    CART DRAWER
 ===================================================== */
 
@@ -1880,6 +1859,22 @@ footer {
     font-size: 1.25rem;
 }
 
+
+        .cart-checkout {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: .95rem;
+            background: var(--dark);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .cart-checkout:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
 /* =====================================================
    CHECKOUT
 ===================================================== */
