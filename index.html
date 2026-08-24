@@ -853,25 +853,26 @@
 
 </div>
 
-<!-- =========================================
+<!-- =====================================================
      CART OVERLAY
-========================================= -->
+===================================================== -->
 
 <div
     class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true">
-</div>
+    aria-hidden="true"
+></div>
 
 
-<!-- =========================================
+<!-- =====================================================
      CART DRAWER
-========================================= -->
+===================================================== -->
 
 <div
     class="cart-drawer"
     id="cartDrawer"
-    aria-hidden="true">
+    aria-hidden="true"
+>
 
     <div class="cart-header">
 
@@ -883,10 +884,9 @@
             type="button"
             class="cart-close"
             id="cartClose"
-            aria-label="Close cart">
-
+            aria-label="Close cart"
+        >
             &times;
-
         </button>
 
     </div>
@@ -894,7 +894,18 @@
 
     <div
         class="cart-items"
-        id="cartItemsList">
+        id="cartItemsList"
+    >
+
+        <div class="empty-cart">
+            <p>
+                No services selected yet.
+            </p>
+
+            <p>
+                Choose a service to start your order.
+            </p>
+        </div>
 
     </div>
 
@@ -918,16 +929,14 @@
             type="button"
             class="btn-checkout"
             id="checkoutBtn"
-            disabled>
-
+            disabled
+        >
             Continue Order
-
         </button>
 
     </div>
 
 </div>
-
 
 <!-- =========================================
      WHATSAPP FLOATING
