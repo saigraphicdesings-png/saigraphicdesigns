@@ -3081,7 +3081,6 @@ footer {
         pointer-events: none;
     }
 
-    /* OPEN MENU */
     .main-nav.mobile-active {
         opacity: 1;
         visibility: visible;
@@ -3089,7 +3088,6 @@ footer {
         pointer-events: auto;
     }
 
-    /* MENU LINKS */
     .main-nav .nav-link {
         display: block;
         width: 100%;
