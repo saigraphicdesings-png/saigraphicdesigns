@@ -2971,49 +2971,145 @@ footer {
 
 @media (max-width: 768px) {
 
-    .site-header {
-        position: relative;
-        z-index: 1000;
-    }
-
+    /* ================================
+       MOBILE HEADER
+    ================================= */
 
     .nav-container {
         position: relative;
-
-        display: flex;
-        align-items: center;
-
-        width: 100%;
-    }
-
-
-    /* LOGO */
-
-    .logo {
-        flex: 1;
-        min-width: 0;
-    }
-
-
-    .logo-name {
-        white-space: nowrap;
     }
 
 
     /* MOBILE MENU BUTTON */
 
     .mobile-menu-btn {
-        display: flex !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
 
-        margin-left: 8px;
-        margin-right: 8px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
 
-        position: relative;
-        z-index: 1005;
+        background: var(--white);
+        color: var(--dark);
+
+        font-size: 1.5rem;
+
+        cursor: pointer;
+
+        z-index: 1001;
     }
 
+
+    /* NAVIGATION */
+
+    .main-nav {
+        position: absolute;
+
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+
+        width: 100%;
+
+        padding: .6rem;
+
+        background: var(--white);
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        box-shadow: var(--shadow-lg);
+
+        display: flex;
+        flex-direction: column;
+
+        gap: .25rem;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform: translateY(-10px);
+
+        pointer-events: none;
+
+        transition:
+            opacity .25s ease,
+            visibility .25s ease,
+            transform .25s ease;
+
+        z-index: 1000;
+    }
+
+
+    /* OPEN MENU */
+
+    .main-nav.mobile-active {
+        opacity: 1;
+        visibility: visible;
+
+        transform: translateY(0);
+
+        pointer-events: auto;
+    }
+
+
+    /* MENU LINKS */
+
+    .main-nav .nav-link {
+        display: block;
+
+        width: 100%;
+
+        padding: 13px 15px;
+
+        border-radius: 9px;
+
+        color: var(--dark);
+
+        text-decoration: none;
+
+        box-sizing: border-box;
+    }
+
+
+    .main-nav .nav-link:hover {
+        background: var(--light);
+    }
+
+
+    .main-nav .nav-link.active {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+
+    /* ACTIONS */
+
+    .nav-actions {
+        margin-left: auto;
+    }
+
+
+    .btn-header {
+        display: none;
+    }
+
+}
+
+
+/* DESKTOP */
+
+@media (min-width: 769px) {
+
+    .mobile-menu-btn {
+        display: none;
+    }
+
+}
 
     /* CART */
 
