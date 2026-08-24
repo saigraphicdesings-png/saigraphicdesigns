@@ -1554,8 +1554,7 @@ footer {
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-
-        /* =========================
+   /* =========================
            CART
         ========================= */
 
@@ -1875,39 +1874,50 @@ footer {
             opacity: .45;
             cursor: not-allowed;
         }
-/* =====================================================
-   CHECKOUT
-===================================================== */
 
-.cart-checkout {
-    width: 100%;
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
-    border: 0;
-    border-radius: 10px;
+        @media (max-width: 1000px) {
 
-    padding: .95rem 1rem;
+            .service-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
 
-    background: var(--dark);
-    color: #fff;
+            .mockup-studio {
+                grid-template-columns: 1fr;
+            }
 
-    font-family: inherit;
-    font-size: .95rem;
-    font-weight: 800;
+        }
 
-    cursor: pointer;
+        @media (max-width: 700px) {
 
-    transition: .25s ease;
-}
+            .service-page-header,
+            .service-studio {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
 
-.cart-checkout:hover:not(:disabled) {
-    background: var(--primary);
-    transform: translateY(-2px);
-}
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-.cart-checkout:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-}
+            .service-options-panel {
+                padding: 1.25rem;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 /* =====================================================
    MOBILE
