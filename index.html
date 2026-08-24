@@ -1235,7 +1235,9 @@ document.addEventListener("DOMContentLoaded", function () {
        OPEN CART
     ========================================= */
 
-    function openCart() {
+ function openCart() {
+
+        updateCart();
 
         cartDrawer.classList.add("active");
 
@@ -1255,7 +1257,6 @@ document.addEventListener("DOMContentLoaded", function () {
             "hidden";
 
     }
-
 
     /* =========================================
        CLOSE CART
