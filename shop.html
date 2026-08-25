@@ -5,8 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Shop | Sai Graphic Designs</title>
 
@@ -14,7 +13,7 @@
         content="Shop premium editable CDR and PSD design templates from Sai Graphic Designs.">
 
     <link rel="stylesheet" href="style.css">
-   <link rel="stylesheet" href="shop.css">
+    <link rel="stylesheet" href="shop.css">
 
 </head>
 
@@ -45,28 +44,23 @@
 
         <nav class="main-nav">
 
-            <a href="index.html"
-               class="nav-link">
+            <a href="index.html" class="nav-link">
                 Home
             </a>
 
-            <a href="about.html"
-               class="nav-link">
+            <a href="about.html" class="nav-link">
                 About
             </a>
 
-            <a href="customizer.html"
-               class="nav-link">
+            <a href="customizer.html" class="nav-link">
                 Services
             </a>
 
-            <a href="shop.html"
-               class="nav-link active">
+            <a href="shop.html" class="nav-link active">
                 Shop
             </a>
 
-            <a href="contact.html"
-               class="nav-link">
+            <a href="contact.html" class="nav-link">
                 Contact
             </a>
 
@@ -81,9 +75,7 @@
                 id="cartToggle"
                 aria-label="Open shopping cart">
 
-                <span class="cart-symbol">
-                    🛒
-                </span>
+                <span class="cart-symbol">🛒</span>
 
                 <span
                     class="cart-badge"
@@ -94,13 +86,9 @@
             </button>
 
 
-            <a href="contact.html"
-               class="btn-header">
-
+            <a href="contact.html" class="btn-header">
                 Get Started
-
                 <span>→</span>
-
             </a>
 
         </div>
@@ -130,24 +118,18 @@
 
 
         <p>
-
             Explore premium ready-to-use design templates
             for printing, social media, packaging and more.
-
             Click any product to view multiple design previews
             before adding it to your cart.
-
         </p>
 
 
         <div class="shop-file-tags">
 
             <span>CDR</span>
-
             <span>PSD</span>
-
             <span>Editable</span>
-
             <span>Premium Designs</span>
 
         </div>
@@ -189,20 +171,19 @@
 
 
                 <p>
-
                     Premium business cards,
                     letterheads, envelopes,
                     brochures and flyer templates.
-
                 </p>
 
             </div>
 
 
+            <!-- PRODUCTS ARE CREATED BY shop.js -->
+
             <div
                 class="shop-grid"
                 id="printingProducts">
-
             </div>
 
         </section>
@@ -231,10 +212,8 @@
 
 
                 <p>
-
                     Ready-to-use premium designs
                     for social media marketing.
-
                 </p>
 
             </div>
@@ -243,7 +222,6 @@
             <div
                 class="shop-grid"
                 id="digitalProducts">
-
             </div>
 
         </section>
@@ -272,10 +250,8 @@
 
 
                 <p>
-
                     Professional editable templates
                     for product packaging.
-
                 </p>
 
             </div>
@@ -284,11 +260,9 @@
             <div
                 class="shop-grid"
                 id="packagingProducts">
-
             </div>
 
         </section>
-
 
     </div>
 
@@ -306,8 +280,9 @@
     aria-hidden="true">
 
 
-    <div class="product-modal-overlay"
-         id="productModalOverlay">
+    <div
+        class="product-modal-overlay"
+        id="productModalOverlay">
     </div>
 
 
@@ -328,7 +303,7 @@
 
 
 
-        <!-- IMAGE AREA -->
+        <!-- IMAGE VIEWER -->
 
         <div class="product-viewer">
 
@@ -373,7 +348,6 @@
         <div
             class="product-thumbnails"
             id="productThumbnails">
-
         </div>
 
 
@@ -391,13 +365,11 @@
                 </span>
 
 
-                <h2
-                    id="modalProductName">
+                <h2 id="modalProductName">
                 </h2>
 
 
-                <p
-                    id="modalProductDescription">
+                <p id="modalProductDescription">
                 </p>
 
             </div>
@@ -405,15 +377,14 @@
 
             <div class="modal-product-bottom">
 
-                <strong
-                    id="modalProductPrice">
+                <strong id="modalProductPrice">
                     ₹0
                 </strong>
 
 
                 <button
                     type="button"
-                    class="modal-add-cart"
+                    class="modal-add-cart btn-add-cart"
                     id="modalAddCart">
 
                     Add to Order
@@ -423,7 +394,6 @@
             </div>
 
         </div>
-
 
     </div>
 
@@ -435,9 +405,11 @@
      CART OVERLAY
 ===================================================== -->
 
-<div class="cart-overlay"
+<div
+    class="cart-overlay"
     id="cartOverlay"
-    aria-hidden="true"></div>
+    aria-hidden="true">
+</div>
 
 
 
@@ -445,58 +417,86 @@
      CART DRAWER
 ===================================================== -->
 
-<div class="cart-drawer"
+<aside
+    class="cart-drawer"
     id="cartDrawer"
     aria-hidden="true">
 
+
+    <!-- CART HEADER -->
+
     <div class="cart-header">
 
-        <h3>Selected Services</h3>
+        <h3>
+            Selected Services
+        </h3>
 
-        <button type="button"
+
+        <button
+            type="button"
             class="cart-close"
             id="cartClose"
             aria-label="Close cart">
 
-            &times;
+            ×
 
         </button>
 
     </div>
 
 
+
+    <!-- CART ITEMS -->
+
     <div
         class="cart-items"
-        id="cartItemsList"
-    >
+        id="cartItemsList">
+
 
         <div class="empty-cart">
-            <p>
-                Your cart is empty.
-            </p>
+
+            <div class="empty-cart-icon">
+                🛒
+            </div>
+
+
+            <strong>
+                Your cart is empty
+            </strong>
+
 
             <p>
-                Choose a service and click "Add to Order".
+                Add your favourite design templates
+                to your cart.
             </p>
+
         </div>
 
     </div>
 
 
-        <div class="cart-footer">
+
+    <!-- CART FOOTER -->
+
+    <div class="cart-footer">
+
 
         <div class="cart-total">
 
-            <span>Estimated Total</span>
-
-            <span id="cartTotalVal">
-                ₹0
+            <span>
+                Estimated Total
             </span>
+
+
+            <strong id="cartTotalVal">
+                ₹0
+            </strong>
 
         </div>
 
 
-        <button type="button"
+        <button
+            type="button"
             class="cart-checkout"
             id="cartCheckout"
             disabled>
@@ -507,17 +507,20 @@
 
     </div>
 
-</div>
+</aside>
 
 
 
-<!-- =========================================
+<!-- =====================================================
      FOOTER
-========================================= -->
+===================================================== -->
 
 <footer>
 
     <div class="footer-container">
+
+
+        <!-- BRAND -->
 
         <div class="footer-brand">
 
@@ -536,28 +539,31 @@
 
 
             <p>
-
-                Professional graphic design, branding and printing
-                solutions for businesses, startups and individuals.
-
+                Professional graphic design,
+                branding and printing solutions
+                for businesses, startups and individuals.
             </p>
 
 
             <div class="footer-socials">
 
-                <a href="#" class="social-icon" aria-label="Facebook">
+                <a href="#" class="social-icon"
+                   aria-label="Facebook">
                     Fb
                 </a>
 
-                <a href="#" class="social-icon" aria-label="X">
+                <a href="#" class="social-icon"
+                   aria-label="X">
                     X
                 </a>
 
-                <a href="#" class="social-icon" aria-label="LinkedIn">
+                <a href="#" class="social-icon"
+                   aria-label="LinkedIn">
                     Li
                 </a>
 
-                <a href="#" class="social-icon" aria-label="Instagram">
+                <a href="#" class="social-icon"
+                   aria-label="Instagram">
                     Ig
                 </a>
 
@@ -565,6 +571,9 @@
 
         </div>
 
+
+
+        <!-- SERVICES -->
 
         <div>
 
@@ -609,6 +618,9 @@
         </div>
 
 
+
+        <!-- COMPANY -->
+
         <div>
 
             <h4 class="footer-col-title">
@@ -646,11 +658,15 @@
         </div>
 
 
+
+        <!-- CONTACT -->
+
         <div>
 
             <h4 class="footer-col-title">
                 Contact
             </h4>
+
 
             <div class="footer-contact">
 
@@ -673,10 +689,13 @@
     </div>
 
 
+
+    <!-- FOOTER BOTTOM -->
+
     <div class="footer-bottom">
 
         <p>
-            &copy; 2021 Sai Graphic Designs.
+            &copy; 2026 Sai Graphic Designs.
             All rights reserved.
         </p>
 
@@ -689,7 +708,207 @@
 </footer>
 
 
+
+<!-- =====================================================
+     SHOP JAVASCRIPT
+===================================================== -->
+
 <script src="shop.js"></script>
+
+
+
+<!-- =====================================================
+     CART SAFETY / BUTTON FIX
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /*
+     * Make sure the cart drawer is above the overlay.
+     */
+
+    const overlay = document.getElementById("cartOverlay");
+    const drawer = document.getElementById("cartDrawer");
+
+    if (overlay) {
+        overlay.style.zIndex = "10000";
+    }
+
+    if (drawer) {
+        drawer.style.zIndex = "10001";
+    }
+
+
+    /*
+     * ----------------------------------------------------
+     * Make product cards clickable without preventing
+     * Add to Cart buttons from working.
+     * ----------------------------------------------------
+     */
+
+    document.addEventListener("click", function (event) {
+
+        const addButton =
+            event.target.closest(
+                ".add-product-btn, .btn-add-cart, .modal-add-cart"
+            );
+
+
+        if (addButton) {
+
+            /*
+             * IMPORTANT:
+             * Do NOT allow the product-card click
+             * to interfere with the Add to Cart button.
+             */
+
+            event.stopPropagation();
+
+        }
+
+    }, true);
+
+
+    /*
+     * ----------------------------------------------------
+     * If shop.js creates product cards without an
+     * Add to Cart button, create one automatically.
+     * ----------------------------------------------------
+     */
+
+    function ensureProductButtons() {
+
+        const products =
+            document.querySelectorAll(".shop-product");
+
+
+        products.forEach(function (product, index) {
+
+            /*
+             * Don't create duplicate buttons.
+             */
+
+            if (
+                product.querySelector(
+                    ".add-product-btn, .btn-add-cart"
+                )
+            ) {
+                return;
+            }
+
+
+            const info =
+                product.querySelector(".product-info");
+
+
+            if (!info) {
+                return;
+            }
+
+
+            const bottom =
+                info.querySelector(".product-bottom");
+
+
+            if (!bottom) {
+                return;
+            }
+
+
+            const nameElement =
+                info.querySelector("h3");
+
+
+            const priceElement =
+                bottom.querySelector("strong");
+
+
+            const imageElement =
+                product.querySelector("img");
+
+
+            const name =
+                nameElement
+                    ? nameElement.textContent.trim()
+                    : "Design Template";
+
+
+            const priceText =
+                priceElement
+                    ? priceElement.textContent
+                    : "₹0";
+
+
+            const price =
+                parseFloat(
+                    priceText
+                        .replace(/[^\d.]/g, "")
+                ) || 0;
+
+
+            const image =
+                imageElement
+                    ? imageElement.src
+                    : "";
+
+
+            const button =
+                document.createElement("button");
+
+
+            button.type = "button";
+
+            button.className =
+                "add-product-btn btn-add-cart";
+
+
+            button.textContent =
+                "Add to Order";
+
+
+            button.dataset.id =
+                product.dataset.id ||
+                "shop-product-" + index;
+
+
+            button.dataset.name =
+                name;
+
+
+            button.dataset.price =
+                price;
+
+
+            button.dataset.image =
+                image;
+
+
+            bottom.appendChild(button);
+
+        });
+
+    }
+
+
+    /*
+     * shop.js may generate the products after
+     * DOMContentLoaded, so check several times.
+     */
+
+    ensureProductButtons();
+
+    setTimeout(ensureProductButtons, 100);
+    setTimeout(ensureProductButtons, 300);
+    setTimeout(ensureProductButtons, 700);
+    setTimeout(ensureProductButtons, 1200);
+
+
+});
+
+</script>
+
 
 </body>
 
