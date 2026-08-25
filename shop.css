@@ -16,6 +16,16 @@
 
     --accent-orange: #f97316;
 
+    /* SHOP ALIASES */
+    --shop-primary: #10b981;
+    --shop-primary-dark: #059669;
+    --shop-border: #e5e7eb;
+    --shop-dark: #111827;
+    --shop-muted: #4b5563;
+    --shop-text: #374151;
+    --shop-bg: #ffffff;
+    --shop-radius: 14px;
+
     --font-sans: 'Plus Jakarta Sans', sans-serif;
 
     --shadow-sm:
@@ -32,7 +42,6 @@
     --transition:
         all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 
 /* =====================================================
    HERO
