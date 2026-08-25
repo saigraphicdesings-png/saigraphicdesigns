@@ -3,55 +3,39 @@
 /* =========================================
    ROOT VARIABLES
 ========================================= */
+
 :root {
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --primary-light: #ecfdf5;
 
-    /* PRIMARY BRAND */
-    --primary: #111827;
-    --primary-dark: #0f172a;
-    --primary-light: #1f2937;
-
-    /* TEXT */
     --dark: #111827;
-    --text: #334155;
-    --muted: #64748b;
-    --light-text: #94a3b8;
+    --dark-muted: #4b5563;
 
-    /* BACKGROUND */
-    --background: #ffffff;
-    --light-bg: #f8fafc;
-    --soft-bg: #f1f5f9;
-
-    /* BORDER */
+    --light: #f9fafb;
+    --white: #ffffff;
     --border: #e5e7eb;
-    --border-light: #f1f5f9;
 
-    /* SUCCESS */
-    --success: #25d366;
+    --accent-orange: #f97316;
 
-    /* DANGER */
-    --danger: #dc2626;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-    /* RADIUS */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-
-    /* SHADOW */
     --shadow-sm:
-        0 4px 12px rgba(0, 0, 0, 0.06);
+        0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
     --shadow-md:
-        0 10px 30px rgba(0, 0, 0, 0.08);
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
     --shadow-lg:
-        0 20px 50px rgba(0, 0, 0, 0.12);
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-    /* TRANSITION */
     --transition:
-        all 0.25s ease;
-
+        all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+
 /* =========================================
    RESET
 ========================================= */
