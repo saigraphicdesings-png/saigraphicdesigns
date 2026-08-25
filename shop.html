@@ -435,10 +435,9 @@
      CART OVERLAY
 ===================================================== -->
 
-<div
-    class="cart-overlay"
-    id="cartOverlay">
-</div>
+<div class="cart-overlay"
+    id="cartOverlay"
+    aria-hidden="true"></div>
 
 
 
@@ -446,87 +445,69 @@
      CART DRAWER
 ===================================================== -->
 
-<aside
-    class="cart-drawer"
-    id="cartDrawer">
-
+<div class="cart-drawer"
+    id="cartDrawer"
+    aria-hidden="true">
 
     <div class="cart-header">
 
-        <div>
+        <h3>Selected Services</h3>
 
-            <span class="cart-header-small">
-                Sai Graphic Designs
-            </span>
-
-            <h3>
-                Your Cart
-            </h3>
-
-        </div>
-
-
-        <button
-            type="button"
+        <button type="button"
             class="cart-close"
             id="cartClose"
             aria-label="Close cart">
 
-            ×
+            &times;
 
         </button>
 
     </div>
-
 
 
     <div
         class="cart-items"
-        id="cartItemsList">
+        id="cartItemsList"
+    >
+
+        <div class="empty-cart">
+            <p>
+                Your cart is empty.
+            </p>
+
+            <p>
+                Choose a service and click "Add to Order".
+            </p>
+        </div>
 
     </div>
 
 
-
-    <div class="cart-footer">
-
+        <div class="cart-footer">
 
         <div class="cart-total">
 
-            <span>
-                Estimated Total
-            </span>
+            <span>Estimated Total</span>
 
-            <strong
-                id="cartTotalVal">
+            <span id="cartTotalVal">
                 ₹0
-            </strong>
+            </span>
 
         </div>
 
 
-        <button
-            type="button"
+        <button type="button"
             class="cart-checkout"
             id="cartCheckout"
             disabled>
 
-            Send Order on WhatsApp
+            Continue order
 
         </button>
 
-
-        <p class="cart-note">
-
-            Payment and delivery details
-            will be confirmed through WhatsApp.
-
-        </p>
-
     </div>
 
-
-</aside>
+</div>
 
 
 
