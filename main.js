@@ -1,7 +1,7 @@
 /* =========================================================
    SAI GRAPHIC DESIGNS - MAIN JAVASCRIPT
    ONE SHARED CART FOR ALL PAGES
-   Home / About / Services / Contact
+   Home / About / Services / Shop / Contact
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
