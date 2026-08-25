@@ -3,21 +3,34 @@
 ===================================================== */
 
 :root {
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --primary-light: #ecfdf5;
 
-    --shop-primary: #10b981;
-    --shop-primary-dark: #059669;
+    --dark: #111827;
+    --dark-muted: #4b5563;
 
-    --shop-dark: #111827;
-    --shop-text: #374151;
-    --shop-muted: #6b7280;
+    --light: #f9fafb;
+    --white: #ffffff;
+    --border: #e5e7eb;
 
-    --shop-border: #e5e7eb;
+    --accent-orange: #f97316;
 
-    --shop-bg: #f8fafc;
-    --shop-white: #ffffff;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-    --shop-radius: 18px;
+    --shadow-sm:
+        0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
+    --shadow-md:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    --shadow-lg:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    --transition:
+        all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
