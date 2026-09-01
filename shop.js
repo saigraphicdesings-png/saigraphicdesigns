@@ -1130,34 +1130,29 @@ document.addEventListener("DOMContentLoaded", function () {
        GROUP CART
     ===================================================== */
 
-    function groupCartItems() {
+    const groups = {};
 
+    cart.forEach(function (item) {
 
-        const groups = {};
+        // Service items have no product image
+        // and may not have a category
+        const category =
+            item.type === "service" ||
+            item.category === "Services" ||
+            !item.image
+                ? "Services"
+                : item.category;
 
+        if (!groups[category]) {
+            groups[category] = [];
+        }
 
-        cart.forEach(function (item) {
+        groups[category].push(item);
 
+    });
 
-            if (
-                !groups[item.category]
-            ) {
-
-                groups[item.category] = [];
-
-            }
-
-
-            groups[item.category].push(
-                item
-            );
-
-        });
-
-
-        return groups;
-
-    }
+    return groups;
+}
 
 
 
