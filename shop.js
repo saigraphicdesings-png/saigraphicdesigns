@@ -1277,6 +1277,22 @@ if (isService) {
     `;
 
 } else {
+const isService =
+    item.type === "service" ||
+    item.category === "Services" ||
+    !item.image;
+
+let visualHTML = "";
+
+if (isService) {
+
+    visualHTML = `
+        <div class="cart-item-icon">
+            <i class="${item.icon || "fas fa-paint-brush"}"></i>
+        </div>
+    `;
+
+} else {
 
     visualHTML = `
         <div class="cart-item-image">
@@ -1289,6 +1305,7 @@ if (isService) {
     `;
 
 }
+
 
 itemElement.innerHTML = `
 
@@ -1317,7 +1334,6 @@ itemElement.innerHTML = `
     </button>
 
 `;
-
 
                         cartItemsList.appendChild(
                             itemElement
