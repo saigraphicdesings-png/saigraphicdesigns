@@ -1261,46 +1261,62 @@ document.addEventListener("DOMContentLoaded", function () {
                             "cart-item";
 
 
-                        itemElement.innerHTML = `
+                        const isService =
+    item.type === "service" ||
+    item.category === "Services" ||
+    !item.image;
 
-                            <div class="cart-item-image">
+let visualHTML = "";
 
-                                <img
-                                    src="${item.image}"
-                                    alt="${escapeHTML(item.name)}">
+if (isService) {
 
-                            </div>
+    visualHTML = `
+        <div class="cart-item-icon service-cart-icon">
+            <i class="${item.icon || "fas fa-paint-brush"}"></i>
+        </div>
+    `;
 
+} else {
 
-                            <div class="cart-item-info">
+    visualHTML = `
+        <div class="cart-item-image">
 
-                                <div class="cart-item-name">
+            <img
+                src="${item.image}"
+                alt="${escapeHTML(item.name)}">
 
-                                    ${escapeHTML(item.name)}
+        </div>
+    `;
 
-                                </div>
+}
 
+itemElement.innerHTML = `
 
-                                <div class="cart-item-price">
+    ${visualHTML}
 
-                                    ${formatPrice(item.price)}
+    <div class="cart-item-info">
 
-                                </div>
+        <div class="cart-item-name">
+            ${escapeHTML(item.name)}
+        </div>
 
-                            </div>
+        <div class="cart-item-price">
+            ${formatPrice(item.price)}
+        </div>
 
+    </div>
 
-                            <button
-                                type="button"
-                                class="cart-remove"
-                                data-id="${item.id}"
-                                aria-label="Remove item">
+    <button
+        type="button"
+        class="cart-remove"
+        data-id="${item.id}"
+        aria-label="Remove item">
 
-                                ×
+        ×
 
-                            </button>
+    </button>
 
-                        `;
+`;
 
 
                         cartItemsList.appendChild(
