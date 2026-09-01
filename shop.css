@@ -1106,30 +1106,41 @@
 
 
 .cart-item-image {
-
+    position: relative;
     flex: 0 0 55px;
-
     width: 55px;
-
     height: 55px;
-
     overflow: hidden;
-
     border-radius: 9px;
-
     background: #f1f5f9;
-
 }
 
-
 .cart-item-image img {
-
     width: 100%;
-
     height: 100%;
-
     object-fit: cover;
+}
 
+/* Icon */
+.cart-item-image .cart-item-icon {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+    border-radius: 50%;
+
+    font-size: 11px;
+    color: #10b981;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 
