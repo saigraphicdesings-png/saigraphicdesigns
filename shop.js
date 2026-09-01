@@ -1261,79 +1261,47 @@ document.addEventListener("DOMContentLoaded", function () {
                             "cart-item";
 
 
-                        const isService =
-    item.type === "service" ||
-    item.category === "Services" ||
-    !item.image;
+                        itemElement.innerHTML = `
 
-let visualHTML = "";
+                            <div class="cart-item-image">
 
-if (isService) {
+                                <img
+                                    src="${item.image}"
+                                    alt="${escapeHTML(item.name)}">
 
-    visualHTML = `
-        <div class="cart-item-icon service-cart-icon">
-            <i class="${item.icon || "fas fa-paint-brush"}"></i>
-        </div>
-    `;
-
-} else {
-const isService =
-    item.type === "service" ||
-    item.category === "Services" ||
-    !item.image;
-
-let visualHTML = "";
-
-if (isService) {
-
-    visualHTML = `
-        <div class="cart-item-icon">
-            <i class="${item.icon || "fas fa-paint-brush"}"></i>
-        </div>
-    `;
-
-} else {
-
-    visualHTML = `
-        <div class="cart-item-image">
-
-            <img
-                src="${item.image}"
-                alt="${escapeHTML(item.name)}">
-
-        </div>
-    `;
-
-}
+                            </div>
 
 
-itemElement.innerHTML = `
+                            <div class="cart-item-info">
 
-    ${visualHTML}
+                                <div class="cart-item-name">
 
-    <div class="cart-item-info">
+                                    ${escapeHTML(item.name)}
 
-        <div class="cart-item-name">
-            ${escapeHTML(item.name)}
-        </div>
+                                </div>
 
-        <div class="cart-item-price">
-            ${formatPrice(item.price)}
-        </div>
 
-    </div>
+                                <div class="cart-item-price">
 
-    <button
-        type="button"
-        class="cart-remove"
-        data-id="${item.id}"
-        aria-label="Remove item">
+                                    ${formatPrice(item.price)}
 
-        ×
+                                </div>
 
-    </button>
+                            </div>
 
-`;
+
+                            <button
+                                type="button"
+                                class="cart-remove"
+                                data-id="${item.id}"
+                                aria-label="Remove item">
+
+                                ×
+
+                            </button>
+
+                        `;
+
 
                         cartItemsList.appendChild(
                             itemElement
