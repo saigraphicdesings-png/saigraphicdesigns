@@ -1,458 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-
     /* =====================================================
        SETTINGS
     ===================================================== */
 
     const CART_KEY = "saiGraphicCart";
-
     const WHATSAPP_NUMBER = "916381128781";
 
 
-    /*
-       =====================================================
-       IMPORTANT
-
-       Your product images should be placed inside:
-
-       images/shop/
-
-       Example:
-
-       Images/Shop/business-card-01/1.jpg
-       Images/Shop/business-card-01/2.jpg
-       Images/Shop/business-card-01/3.jpg
-
-
-       You can change the filenames below.
-    */
-/* =====================================================
-   BROCHURE FLIPBOOK
-===================================================== */
-
-function getBrochurePages() {
-
-    if (
-        !currentProduct ||
-        currentProduct.type !== "brochure" ||
-        !Array.isArray(currentProduct.pages)
-    ) {
-        return [];
-    }
-
-    const pages = [...currentProduct.pages];
-
-    /*
-       If odd number of pages,
-       add a blank page.
-    */
-
-    if (pages.length % 2 !== 0) {
-        pages.push(null);
-    }
-
-    return pages;
-}
-
-
-/* =====================================================
-   SET PAGE IMAGE
-===================================================== */
-
-function setFlipbookPage(element, image) {
-
-    if (!element) {
-        return;
-    }
-
-    element.innerHTML = "";
-
-    if (!image) {
-        return;
-    }
-
-    const img =
-        document.createElement("img");
-
-    img.src = image;
-
-    img.alt = "Brochure page";
-
-    element.appendChild(img);
-}
-
-
-/* =====================================================
-   SET FLIP FACE
-===================================================== */
-
-function setFlipbookFace(element, image) {
-
-    if (!element) {
-        return;
-    }
-
-    element.innerHTML = "";
-
-    if (!image) {
-        return;
-    }
-
-    const img =
-        document.createElement("img");
-
-    img.src = image;
-
-    img.alt = "Brochure page";
-
-    element.appendChild(img);
-}
-
-
-/* =====================================================
-   RENDER CURRENT SPREAD
-===================================================== */
-
-function renderFlipbookSpread() {
-
-    const pages =
-        getBrochurePages();
-
-    if (!pages.length) {
-        return;
-    }
-
-
-    const leftPage =
-        pages[flipbookSpread] || null;
-
-    const rightPage =
-        pages[flipbookSpread + 1] || null;
-
-
-    setFlipbookPage(
-        flipbookLeft,
-        leftPage
-    );
-
-
-    setFlipbookPage(
-        flipbookRight,
-        rightPage
-    );
-
-
-    /*
-       Page counter
-    */
-
-    const firstPage =
-        flipbookSpread + 1;
-
-    const secondPage =
-        Math.min(
-            flipbookSpread + 2,
-            pages.length
-        );
-
-
-    flipbookCounter.textContent =
-        `${firstPage}–${secondPage} / ${pages.length}`;
-
-
-    /*
-       Button states
-    */
-
-    flipbookPrev.disabled =
-        flipbookSpread <= 0;
-
-
-    flipbookNext.disabled =
-        flipbookSpread + 2 >= pages.length;
-}
-
-
-/* =====================================================
-   RESET TURNING PAGE
-===================================================== */
-
-function resetTurningPage() {
-
-    if (!flipbookTurningPage) {
-        return;
-    }
-
-    flipbookTurningPage.className =
-        "flipbook-turning-page";
-
-    flipbookTurningPage.style.visibility =
-        "hidden";
-
-    flipbookTurningPage.style.left =
-        "";
-
-    flipbookTurningPage.style.right =
-        "";
-
-    flipbookAnimating = false;
-}
-
-
-/* =====================================================
-   NEXT BROCHURE PAGE
-===================================================== */
-
-function nextBrochurePage() {
-
-    const pages =
-        getBrochurePages();
-
-    if (
-        !pages.length ||
-        flipbookAnimating ||
-        flipbookSpread + 2 >= pages.length
-    ) {
-        return;
-    }
-
-
-    const currentRight =
-        pages[flipbookSpread + 1];
-
-    const nextLeft =
-        pages[flipbookSpread + 2];
-
-
-    /*
-       FRONT = current right page
-       BACK  = next left page
-    */
-
-    setFlipbookFace(
-        flipbookFront,
-        currentRight
-    );
-
-    setFlipbookFace(
-        flipbookBack,
-        nextLeft
-    );
-
-
-    flipbookAnimating = true;
-
-
-    flipbookTurningPage.className =
-        "flipbook-turning-page turn-next";
-
-
-    flipbookTurningPage.style.visibility =
-        "visible";
-
-
-    /*
-       Force browser to register
-       initial state before animation.
-    */
-
-    void flipbookTurningPage.offsetWidth;
-
-
-    requestAnimationFrame(function () {
-
-        flipbookTurningPage.classList.add(
-            "is-flipping"
-        );
-
-    });
-
-
-    setTimeout(function () {
-
-        flipbookSpread += 2;
-
-        renderFlipbookSpread();
-
-        resetTurningPage();
-
-    }, 680);
-}
-
-
-/* =====================================================
-   PREVIOUS BROCHURE PAGE
-===================================================== */
-
-function previousBrochurePage() {
-
-    const pages =
-        getBrochurePages();
-
-    if (
-        !pages.length ||
-        flipbookAnimating ||
-        flipbookSpread <= 0
-    ) {
-        return;
-    }
-
-
-    const currentLeft =
-        pages[flipbookSpread];
-
-    const previousRight =
-        pages[flipbookSpread - 1];
-
-
-    /*
-       FRONT = current left
-       BACK  = previous right
-    */
-
-    setFlipbookFace(
-        flipbookFront,
-        currentLeft
-    );
-
-    setFlipbookFace(
-        flipbookBack,
-        previousRight
-    );
-
-
-    flipbookAnimating = true;
-
-
-    flipbookTurningPage.className =
-        "flipbook-turning-page turn-prev";
-
-
-    flipbookTurningPage.style.visibility =
-        "visible";
-
-
-    void flipbookTurningPage.offsetWidth;
-
-
-    requestAnimationFrame(function () {
-
-        flipbookTurningPage.classList.add(
-            "is-flipping"
-        );
-
-    });
-
-
-    setTimeout(function () {
-
-        flipbookSpread -= 2;
-
-        renderFlipbookSpread();
-
-        resetTurningPage();
-
-    }, 680);
-}
-
-
-/* =====================================================
-   OPEN BROCHURE FLIPBOOK
-===================================================== */
-
-function openBrochureFlipbook() {
-
-    flipbookSpread = 0;
-
-    flipbookAnimating = false;
-
-
-    /*
-       Hide normal viewer
-    */
-
-    const normalViewer =
-        document.querySelector(".product-viewer");
-
-    if (normalViewer) {
-
-        normalViewer.style.display =
-            "none";
-
-    }
-
-
-    /*
-       Hide thumbnails
-    */
-
-    productThumbnails.style.display =
-        "none";
-
-
-    /*
-       Show flipbook
-    */
-
-    brochureViewer.classList.add(
-        "active"
-    );
-
-
-    brochureViewer.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    renderFlipbookSpread();
-
-    resetTurningPage();
-}
-
-
-/* =====================================================
-   CLOSE BROCHURE FLIPBOOK
-===================================================== */
-
-function closeBrochureFlipbook() {
-
-    if (!brochureViewer) {
-        return;
-    }
-
-
-    brochureViewer.classList.remove(
-        "active"
-    );
-
-
-    brochureViewer.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    const normalViewer =
-        document.querySelector(".product-viewer");
-
-    if (normalViewer) {
-
-        normalViewer.style.display =
-            "";
-
-    }
-
-
-    productThumbnails.style.display =
-        "";
-
-
-    resetTurningPage();
-}
-
-    
     /* =====================================================
        PRODUCT DATA
     ===================================================== */
@@ -465,241 +20,188 @@ function closeBrochureFlipbook() {
 
         {
             id: "business-card-01",
-
             name: "Premium Business Card 01",
-
             price: 99,
-
             category: "Printing Designs",
-
             description:
-                "Premium business card template suitable for Travel agency businesses editable CDR Files.",
-
+                "Premium business card template suitable for Travel Agency businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-01/3.jpg",
                 "Images/Shop/business-card-01/1.jpg",
-                "Images/Shop/business-card-01/2.jpg",
-
+                "Images/Shop/business-card-01/2.jpg"
             ]
         },
-
 
         {
             id: "business-card-02",
-
             name: "Premium Business Card 02",
-
             price: 99,
-
             category: "Printing Designs",
-
             description:
-                "Modern premium business card template suitable for Mackup Studio businesses editable CDR Files.",
-
+                "Modern premium business card template suitable for Makeup Studio businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-02/1.jpg",
                 "Images/Shop/business-card-02/2.jpg",
-                "Images/Shop/business-card-02/3.jpg",
-
+                "Images/Shop/business-card-02/3.jpg"
             ]
         },
-
 
         {
             id: "business-card-03",
-
             name: "Premium Business Card 03",
-
             price: 99,
-
             category: "Printing Designs",
-
             description:
-                "Creative professional business card template suitable for Hotel businesses editable CDR Files.",
-
+                "Creative professional business card template suitable for Hotel businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-03/1.jpg",
                 "Images/Shop/business-card-03/2.jpg",
-                "Images/Shop/business-card-03/3.jpg",
-
+                "Images/Shop/business-card-03/3.jpg"
             ]
         },
-
 
         {
             id: "business-card-04",
-
             name: "Premium Business Card 04",
-
             price: 99,
-
             category: "Printing Designs",
-
             description:
-                "Elegant editable business card template suitable for International Travel businesses editable CDR Files.",
-
+                "Elegant editable business card template suitable for International Travel businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-04/1.jpg",
                 "Images/Shop/business-card-04/2.jpg",
-                "Images/Shop/business-card-04/3.jpg",
-
+                "Images/Shop/business-card-04/3.jpg"
             ]
         },
-
 
         {
             id: "business-card-05",
-
             name: "Premium Business Card 05",
-
             price: 99,
-
             category: "Printing Designs",
-
             description:
-                "Premium creative business card template suitable for Hospital/Clinic businesses editable CDR Files",
-
+                "Premium creative business card template suitable for Hospital and Clinic businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-05/1.jpg",
                 "Images/Shop/business-card-05/2.jpg",
-                "Images/Shop/business-card-05/3.jpg",
-
+                "Images/Shop/business-card-05/3.jpg"
             ]
         },
+
         {
             id: "business-card-Bundle-01",
-
             name: "4 Business Card Bundle 01",
-
             price: 199,
-
             category: "Printing Designs",
-
             description:
-                "4 Business card templateeditable CDR Files.",
-
+                "Bundle of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-01/1.jpg",
                 "Images/Shop/business-card-Bundel-01/2.jpg",
                 "Images/Shop/business-card-Bundel-01/3.jpg",
                 "Images/Shop/business-card-Bundel-01/4.jpg",
-                "Images/Shop/business-card-Bundel-01/5.jpg",
-
+                "Images/Shop/business-card-Bundel-01/5.jpg"
             ]
         },
+
         {
             id: "business-card-Bundle-02",
-
             name: "4 Business Card Bundle 02",
-
             price: 199,
-
             category: "Printing Designs",
-
             description:
-                "4 Business card templateeditable CDR Files.",
-
+                "Bundle of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-02/1.jpg",
                 "Images/Shop/business-card-Bundel-02/2.jpg",
                 "Images/Shop/business-card-Bundel-02/3.jpg",
                 "Images/Shop/business-card-Bundel-02/4.jpg",
-                "Images/Shop/business-card-Bundel-02/5.jpg",
-
+                "Images/Shop/business-card-Bundel-02/5.jpg"
             ]
         },
+
         {
             id: "business-card-Bundle-03",
-
             name: "4 Business Card Bundle 03",
-
             price: 199,
-
             category: "Printing Designs",
-
             description:
-                "4 Business card templateeditable CDR Files.",
-
+                "Bundle of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-03/1.jpg",
                 "Images/Shop/business-card-Bundel-03/2.jpg",
                 "Images/Shop/business-card-Bundel-03/3.jpg",
                 "Images/Shop/business-card-Bundel-03/4.jpg",
-                "Images/Shop/business-card-Bundel-03/5.jpg",
-
+                "Images/Shop/business-card-Bundel-03/5.jpg"
             ]
         },
+
         {
             id: "business-card-Bundle-04",
-
             name: "4 Business Card Bundle 04",
-
             price: 199,
-
             category: "Printing Designs",
-
             description:
-                "4 Business card templateeditable CDR Files.",
-
+                "Bundle of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-04/1.jpg",
                 "Images/Shop/business-card-Bundel-04/2.jpg",
                 "Images/Shop/business-card-Bundel-04/3.jpg",
                 "Images/Shop/business-card-Bundel-04/4.jpg",
-                "Images/Shop/business-card-Bundel-041/5.jpg",
-
+                "Images/Shop/business-card-Bundel-04/5.jpg"
             ]
         },
+
         {
             id: "business-card-Bundle-05",
-
             name: "4 Business Card Bundle 05",
-
             price: 199,
-
             category: "Printing Designs",
-
             description:
-                "4 Business card templateeditable CDR Files.",
-
+                "Bundle of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-05/1.jpg",
                 "Images/Shop/business-card-Bundel-05/2.jpg",
                 "Images/Shop/business-card-Bundel-05/3.jpg",
                 "Images/Shop/business-card-Bundel-05/4.jpg",
-                "Images/Shop/business-card-Bundel-05/5.jpg",
-
+                "Images/Shop/business-card-Bundel-05/5.jpg"
             ]
         },
-        
-{
-    id: "brochure-01",
 
-    name: "Premium Corporate Brochure 01",
 
-    price: 200,
+        /* =================================================
+           BROCHURE
+        ================================================= */
 
-    category: "Printing Designs",
+        {
+            id: "brochure-01",
 
-    type: "brochure",
+            name: "Premium Corporate Brochure 01",
 
-    description:
-        "Premium editable corporate brochure template in CDR format.",
+            price: 200,
 
-    images: [
-        "Images/Shop/brochure-01/cover.jpg"
-    ],
+            category: "Printing Designs",
 
-    pages: [
-        "Images/Shop/brochure-01/cover.jpg",
-        "Images/Shop/brochure-01/page-2.jpg",
-        "Images/Shop/brochure-01/page-3.jpg",
-        "Images/Shop/brochure-01/page-4.jpg",
-        "Images/Shop/brochure-01/page-5.jpg",
-        "Images/Shop/brochure-01/page-6.jpg",
-        "Images/Shop/brochure-01/back.jpg"
-    ]
-},
+            type: "brochure",
+
+            description:
+                "Premium editable corporate brochure template in CDR format.",
+
+            images: [
+                "Images/Shop/brochure-01/cover.jpg"
+            ],
+
+            pages: [
+                "Images/Shop/brochure-01/cover.jpg",
+                "Images/Shop/brochure-01/page-2.jpg",
+                "Images/Shop/brochure-01/page-3.jpg",
+                "Images/Shop/brochure-01/page-4.jpg",
+                "Images/Shop/brochure-01/page-5.jpg",
+                "Images/Shop/brochure-01/page-6.jpg",
+                "Images/Shop/brochure-01/back.jpg"
+            ]
+        },
+
 
         /* =================================================
            DIGITAL & SOCIAL MEDIA
@@ -707,110 +209,81 @@ function closeBrochureFlipbook() {
 
         {
             id: "social-media-01",
-
             name: "Premium Social Media Design 01",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
-
             description:
                 "Premium editable social media poster template for digital marketing.",
-
             images: [
-                "images/shop/social-media-01/1.jpg",
-                "images/shop/social-media-01/2.jpg",
-                "images/shop/social-media-01/3.jpg",
-                "images/shop/social-media-01/4.jpg",
-                "images/shop/social-media-01/5.jpg"
+                "Images/Shop/social-media-01/1.jpg",
+                "Images/Shop/social-media-01/2.jpg",
+                "Images/Shop/social-media-01/3.jpg",
+                "Images/Shop/social-media-01/4.jpg",
+                "Images/Shop/social-media-01/5.jpg"
             ]
         },
-
 
         {
             id: "social-media-02",
-
             name: "Premium Social Media Design 02",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
-
             description:
                 "Creative social media design template for businesses and promotions.",
-
             images: [
-                "images/shop/social-media-02/1.jpg",
-                "images/shop/social-media-02/2.jpg",
-                "images/shop/social-media-02/3.jpg",
-                "images/shop/social-media-02/4.jpg",
-                "images/shop/social-media-02/5.jpg"
+                "Images/Shop/social-media-02/1.jpg",
+                "Images/Shop/social-media-02/2.jpg",
+                "Images/Shop/social-media-02/3.jpg",
+                "Images/Shop/social-media-02/4.jpg",
+                "Images/Shop/social-media-02/5.jpg"
             ]
         },
-
 
         {
             id: "social-media-03",
-
             name: "Premium Social Media Design 03",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
-
             description:
                 "Professional editable social media marketing design.",
-
             images: [
-                "images/shop/social-media-03/1.jpg",
-                "images/shop/social-media-03/2.jpg",
-                "images/shop/social-media-03/3.jpg",
-                "images/shop/social-media-03/4.jpg",
-                "images/shop/social-media-03/5.jpg"
+                "Images/Shop/social-media-03/1.jpg",
+                "Images/Shop/social-media-03/2.jpg",
+                "Images/Shop/social-media-03/3.jpg",
+                "Images/Shop/social-media-03/4.jpg",
+                "Images/Shop/social-media-03/5.jpg"
             ]
         },
-
 
         {
             id: "social-media-04",
-
             name: "Premium Social Media Design 04",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
-
             description:
                 "Modern premium social media poster template.",
-
             images: [
-                "images/shop/social-media-04/1.jpg",
-                "images/shop/social-media-04/2.jpg",
-                "images/shop/social-media-04/3.jpg",
-                "images/shop/social-media-04/4.jpg",
-                "images/shop/social-media-04/5.jpg"
+                "Images/Shop/social-media-04/1.jpg",
+                "Images/Shop/social-media-04/2.jpg",
+                "Images/Shop/social-media-04/3.jpg",
+                "Images/Shop/social-media-04/4.jpg",
+                "Images/Shop/social-media-04/5.jpg"
             ]
         },
 
-
         {
             id: "social-media-05",
-
             name: "Premium Social Media Design 05",
-
             price: 99,
-
             category: "Digital & Social Media Designs",
-
             description:
                 "Premium editable digital marketing design template.",
-
             images: [
-                "images/shop/social-media-05/1.jpg",
-                "images/shop/social-media-05/2.jpg",
-                "images/shop/social-media-05/3.jpg",
-                "images/shop/social-media-05/4.jpg",
-                "images/shop/social-media-05/5.jpg"
+                "Images/Shop/social-media-05/1.jpg",
+                "Images/Shop/social-media-05/2.jpg",
+                "Images/Shop/social-media-05/3.jpg",
+                "Images/Shop/social-media-05/4.jpg",
+                "Images/Shop/social-media-05/5.jpg"
             ]
         },
 
@@ -821,115 +294,85 @@ function closeBrochureFlipbook() {
 
         {
             id: "packaging-01",
-
             name: "Premium Packaging Design 01",
-
             price: 250,
-
             category: "Packaging Designs",
-
             description:
                 "Professional editable packaging template for product branding.",
-
             images: [
-                "images/shop/packaging-01/1.jpg",
-                "images/shop/packaging-01/2.jpg",
-                "images/shop/packaging-01/3.jpg",
-                "images/shop/packaging-01/4.jpg",
-                "images/shop/packaging-01/5.jpg"
+                "Images/Shop/packaging-01/1.jpg",
+                "Images/Shop/packaging-01/2.jpg",
+                "Images/Shop/packaging-01/3.jpg",
+                "Images/Shop/packaging-01/4.jpg",
+                "Images/Shop/packaging-01/5.jpg"
             ]
         },
-
 
         {
             id: "packaging-02",
-
             name: "Premium Packaging Design 02",
-
             price: 250,
-
             category: "Packaging Designs",
-
             description:
                 "Creative editable packaging design suitable for commercial products.",
-
             images: [
-                "images/shop/packaging-02/1.jpg",
-                "images/shop/packaging-02/2.jpg",
-                "images/shop/packaging-02/3.jpg",
-                "images/shop/packaging-02/4.jpg",
-                "images/shop/packaging-02/5.jpg"
+                "Images/Shop/packaging-02/1.jpg",
+                "Images/Shop/packaging-02/2.jpg",
+                "Images/Shop/packaging-02/3.jpg",
+                "Images/Shop/packaging-02/4.jpg",
+                "Images/Shop/packaging-02/5.jpg"
             ]
         },
-
 
         {
             id: "packaging-03",
-
             name: "Premium Packaging Design 03",
-
             price: 300,
-
             category: "Packaging Designs",
-
             description:
                 "Premium product packaging template with professional presentation.",
-
             images: [
-                "images/shop/packaging-03/1.jpg",
-                "images/shop/packaging-03/2.jpg",
-                "images/shop/packaging-03/3.jpg",
-                "images/shop/packaging-03/4.jpg",
-                "images/shop/packaging-03/5.jpg"
+                "Images/Shop/packaging-03/1.jpg",
+                "Images/Shop/packaging-03/2.jpg",
+                "Images/Shop/packaging-03/3.jpg",
+                "Images/Shop/packaging-03/4.jpg",
+                "Images/Shop/packaging-03/5.jpg"
             ]
         },
-
 
         {
             id: "packaging-04",
-
             name: "Premium Packaging Design 04",
-
             price: 300,
-
             category: "Packaging Designs",
-
             description:
                 "Editable premium packaging template for modern brands.",
-
             images: [
-                "images/shop/packaging-04/1.jpg",
-                "images/shop/packaging-04/2.jpg",
-                "images/shop/packaging-04/3.jpg",
-                "images/shop/packaging-04/4.jpg",
-                "images/shop/packaging-04/5.jpg"
+                "Images/Shop/packaging-04/1.jpg",
+                "Images/Shop/packaging-04/2.jpg",
+                "Images/Shop/packaging-04/3.jpg",
+                "Images/Shop/packaging-04/4.jpg",
+                "Images/Shop/packaging-04/5.jpg"
             ]
         },
 
-
         {
             id: "packaging-05",
-
             name: "Premium Packaging Design 05",
-
             price: 500,
-
             category: "Packaging Designs",
-
             description:
                 "High-quality editable packaging design for premium products.",
-
             images: [
-                "images/shop/packaging-05/1.jpg",
-                "images/shop/packaging-05/2.jpg",
-                "images/shop/packaging-05/3.jpg",
-                "images/shop/packaging-05/4.jpg",
-                "images/shop/packaging-05/5.jpg"
+                "Images/Shop/packaging-05/1.jpg",
+                "Images/Shop/packaging-05/2.jpg",
+                "Images/Shop/packaging-05/3.jpg",
+                "Images/Shop/packaging-05/4.jpg",
+                "Images/Shop/packaging-05/5.jpg"
             ]
         }
 
     ];
-
 
 
     /* =====================================================
@@ -985,52 +428,53 @@ function closeBrochureFlipbook() {
     const viewerNext =
         document.getElementById("viewerNext");
 
-/* =====================================================
-   BROCHURE FLIPBOOK ELEMENTS
-===================================================== */
 
-const brochureViewer =
-    document.getElementById("brochureViewer");
+    /* =====================================================
+       BROCHURE FLIPBOOK ELEMENTS
+    ===================================================== */
 
-const flipbookBook =
-    document.getElementById("flipbookBook");
+    const brochureViewer =
+        document.getElementById("brochureViewer");
 
-const flipbookLeft =
-    document.getElementById("flipbookLeft");
+    const flipbookBook =
+        document.getElementById("flipbookBook");
 
-const flipbookRight =
-    document.getElementById("flipbookRight");
+    const flipbookLeft =
+        document.getElementById("flipbookLeft");
 
-const flipbookTurningPage =
-    document.getElementById("flipbookTurningPage");
+    const flipbookRight =
+        document.getElementById("flipbookRight");
 
-const flipbookFront =
-    flipbookTurningPage
-        ? flipbookTurningPage.querySelector(".flipbook-front")
-        : null;
+    const flipbookTurningPage =
+        document.getElementById("flipbookTurningPage");
 
-const flipbookBack =
-    flipbookTurningPage
-        ? flipbookTurningPage.querySelector(".flipbook-back")
-        : null;
+    const flipbookFront =
+        flipbookTurningPage
+            ? flipbookTurningPage.querySelector(".flipbook-front")
+            : null;
 
-const flipbookPrev =
-    document.getElementById("flipbookPrev");
+    const flipbookBack =
+        flipbookTurningPage
+            ? flipbookTurningPage.querySelector(".flipbook-back")
+            : null;
 
-const flipbookNext =
-    document.getElementById("flipbookNext");
+    const flipbookPrev =
+        document.getElementById("flipbookPrev");
 
-const flipbookCounter =
-    document.getElementById("flipbookCounter");
+    const flipbookNext =
+        document.getElementById("flipbookNext");
 
-const flipbookFullscreen =
-    document.getElementById("flipbookFullscreen");
+    const flipbookCounter =
+        document.getElementById("flipbookCounter");
+
+    const flipbookFullscreen =
+        document.getElementById("flipbookFullscreen");
 
 
-let flipbookSpread = 0;
+    /* =====================================================
+       CART ELEMENTS
+    ===================================================== */
 
-let flipbookAnimating = false;
-    
     const cartToggle =
         document.getElementById("cartToggle");
 
@@ -1056,7 +500,6 @@ let flipbookAnimating = false;
         document.getElementById("cartCheckout");
 
 
-
     /* =====================================================
        CART
     ===================================================== */
@@ -1065,17 +508,30 @@ let flipbookAnimating = false;
 
     try {
 
-        cart =
-            JSON.parse(
-                localStorage.getItem(CART_KEY)
-            ) || [];
+        const savedCart =
+            localStorage.getItem(CART_KEY);
+
+        if (savedCart) {
+
+            const parsedCart =
+                JSON.parse(savedCart);
+
+            if (Array.isArray(parsedCart)) {
+                cart = parsedCart;
+            }
+
+        }
 
     } catch (error) {
+
+        console.error(
+            "Unable to load cart:",
+            error
+        );
 
         cart = [];
 
     }
-
 
 
     /* =====================================================
@@ -1083,22 +539,27 @@ let flipbookAnimating = false;
     ===================================================== */
 
     let currentProduct = null;
-
     let currentImageIndex = 0;
 
 
+    /* =====================================================
+       FLIPBOOK STATE
+    ===================================================== */
+
+    let flipbookSpread = 0;
+    let flipbookAnimating = false;
+
 
     /* =====================================================
-       PRICE
+       PRICE FORMAT
     ===================================================== */
 
     function formatPrice(price) {
 
         return "₹" +
-            Number(price).toLocaleString("en-IN");
+            Number(price || 0).toLocaleString("en-IN");
 
     }
-
 
 
     /* =====================================================
@@ -1107,20 +568,54 @@ let flipbookAnimating = false;
 
     function escapeHTML(value) {
 
-        return String(value)
-
+        return String(value ?? "")
             .replace(/&/g, "&amp;")
-
             .replace(/</g, "&lt;")
-
             .replace(/>/g, "&gt;")
-
             .replace(/"/g, "&quot;")
-
             .replace(/'/g, "&#039;");
 
     }
 
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
+
+    function saveCart() {
+
+        try {
+
+            localStorage.setItem(
+                CART_KEY,
+                JSON.stringify(cart)
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Unable to save cart:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT BY ID
+    ===================================================== */
+
+    function getProductById(id) {
+
+        return products.find(function (product) {
+
+            return product.id === id;
+
+        });
+
+    }
 
 
     /* =====================================================
@@ -1128,7 +623,6 @@ let flipbookAnimating = false;
     ===================================================== */
 
     function renderProducts() {
-
 
         const categoryContainers = {
 
@@ -1144,38 +638,48 @@ let flipbookAnimating = false;
         };
 
 
-        Object.keys(categoryContainers)
-            .forEach(function (category) {
+        Object.keys(categoryContainers).forEach(
+            function (category) {
 
-                categoryContainers[category]
-                    .innerHTML = "";
+                const container =
+                    categoryContainers[category];
 
-            });
+                if (container) {
+                    container.innerHTML = "";
+                }
+
+            }
+        );
 
 
         products.forEach(function (product) {
 
-
             const container =
-                categoryContainers[
-                    product.category
-                ];
-
+                categoryContainers[product.category];
 
             if (!container) {
+                return;
+            }
+
+
+            if (
+                !Array.isArray(product.images) ||
+                product.images.length === 0
+            ) {
+                console.warn(
+                    "No images found for:",
+                    product.name
+                );
 
                 return;
-
             }
 
 
             const card =
                 document.createElement("article");
 
-
             card.className =
                 "shop-product";
-
 
             card.dataset.id =
                 product.id;
@@ -1186,12 +690,11 @@ let flipbookAnimating = false;
                 <div class="product-preview">
 
                     <img
-                        src="${product.images[0]}"
+                        src="${escapeHTML(product.images[0])}"
                         alt="${escapeHTML(product.name)}"
                         loading="lazy">
 
                 </div>
-
 
                 <div class="product-info">
 
@@ -1199,18 +702,15 @@ let flipbookAnimating = false;
                         ${escapeHTML(product.name)}
                     </h3>
 
-
                     <p>
                         ${escapeHTML(product.description)}
                     </p>
-
 
                     <div class="product-bottom">
 
                         <strong>
                             ${formatPrice(product.price)}
                         </strong>
-
 
                         <button
                             type="button"
@@ -1230,9 +730,7 @@ let flipbookAnimating = false;
             container.appendChild(card);
 
 
-            /* ---------------------------------------------
-               OPEN PRODUCT
-            --------------------------------------------- */
+            /* Open product */
 
             card.addEventListener(
                 "click",
@@ -1244,9 +742,7 @@ let flipbookAnimating = false;
             );
 
 
-            /* ---------------------------------------------
-               ADD TO CART
-            --------------------------------------------- */
+            /* Add to cart */
 
             const addButton =
                 card.querySelector(
@@ -1254,74 +750,127 @@ let flipbookAnimating = false;
                 );
 
 
-            addButton.addEventListener(
-                "click",
-                function (event) {
+            if (addButton) {
 
-                    event.stopPropagation();
+                addButton.addEventListener(
+                    "click",
+                    function (event) {
 
-                    addProductToCart(product);
+                        event.stopPropagation();
 
-                }
-            );
+                        addProductToCart(product);
+
+                    }
+                );
+
+            }
+
+
+            /* Image error */
+
+            const productImage =
+                card.querySelector(
+                    ".product-preview img"
+                );
+
+
+            if (productImage) {
+
+                productImage.addEventListener(
+                    "error",
+                    function () {
+
+                        console.error(
+                            "Image not found:",
+                            product.images[0]
+                        );
+
+                    }
+                );
+
+            }
 
         });
 
     }
 
 
-
     /* =====================================================
        OPEN PRODUCT MODAL
     ===================================================== */
 
-  function openProductModal(product) {
+    function openProductModal(product) {
 
-    currentProduct = product;
-
-    currentImageIndex = 0;
-
-
-    modalProductName.textContent =
-        product.name;
+        if (!product) {
+            return;
+        }
 
 
-    modalProductDescription.textContent =
-        product.description;
+        currentProduct = product;
+        currentImageIndex = 0;
 
 
-    modalProductPrice.textContent =
-        formatPrice(product.price);
+        if (modalProductName) {
+
+            modalProductName.textContent =
+                product.name;
+
+        }
 
 
-    modalProductCategory.textContent =
-        product.category;
+        if (modalProductDescription) {
+
+            modalProductDescription.textContent =
+                product.description;
+
+        }
 
 
-    if (product.type === "brochure") {
+        if (modalProductPrice) {
 
-        openBrochureFlipbook();
+            modalProductPrice.textContent =
+                formatPrice(product.price);
 
-    } else {
+        }
 
-        closeBrochureFlipbook();
 
-        renderProductImages();
+        if (modalProductCategory) {
+
+            modalProductCategory.textContent =
+                product.category;
+
+        }
+
+
+        if (product.type === "brochure") {
+
+            openBrochureFlipbook();
+
+        } else {
+
+            closeBrochureFlipbook();
+
+            renderProductImages();
+
+        }
+
+
+        if (productModal) {
+
+            productModal.classList.add("active");
+
+            productModal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
 
     }
-
-
-    productModal.classList.add("active");
-
-    productModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-}
 
 
     /* =====================================================
@@ -1330,28 +879,48 @@ let flipbookAnimating = false;
 
     function renderProductImages() {
 
-
         if (!currentProduct) {
+            return;
+        }
+
+
+        const images =
+            Array.isArray(currentProduct.images)
+                ? currentProduct.images
+                : [];
+
+
+        if (
+            !mainProductImage ||
+            !productThumbnails
+        ) {
+            return;
+        }
+
+
+        if (images.length === 0) {
+
+            mainProductImage.removeAttribute("src");
+
+            productThumbnails.innerHTML = "";
 
             return;
 
         }
 
 
-        const images =
-            currentProduct.images;
+        if (
+            currentImageIndex < 0 ||
+            currentImageIndex >= images.length
+        ) {
 
-
-        if (!images.length) {
-
-            return;
+            currentImageIndex = 0;
 
         }
 
 
         mainProductImage.src =
             images[currentImageIndex];
-
 
         mainProductImage.alt =
             currentProduct.name +
@@ -1365,22 +934,18 @@ let flipbookAnimating = false;
         images.forEach(
             function (image, index) {
 
-
                 const thumbnail =
                     document.createElement("button");
 
-
                 thumbnail.type =
                     "button";
-
 
                 thumbnail.className =
                     "product-thumbnail";
 
 
                 if (
-                    index ===
-                    currentImageIndex
+                    index === currentImageIndex
                 ) {
 
                     thumbnail.classList.add(
@@ -1393,7 +958,7 @@ let flipbookAnimating = false;
                 thumbnail.innerHTML = `
 
                     <img
-                        src="${image}"
+                        src="${escapeHTML(image)}"
                         alt="Preview ${index + 1}"
                         loading="lazy">
 
@@ -1402,7 +967,9 @@ let flipbookAnimating = false;
 
                 thumbnail.addEventListener(
                     "click",
-                    function () {
+                    function (event) {
+
+                        event.stopPropagation();
 
                         currentImageIndex =
                             index;
@@ -1423,18 +990,23 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        NEXT IMAGE
     ===================================================== */
 
     function nextImage() {
 
-
         if (!currentProduct) {
-
             return;
+        }
 
+
+        const images =
+            currentProduct.images || [];
+
+
+        if (images.length <= 1) {
+            return;
         }
 
 
@@ -1443,7 +1015,7 @@ let flipbookAnimating = false;
 
         if (
             currentImageIndex >=
-            currentProduct.images.length
+            images.length
         ) {
 
             currentImageIndex = 0;
@@ -1456,18 +1028,23 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        PREVIOUS IMAGE
     ===================================================== */
 
     function previousImage() {
 
-
         if (!currentProduct) {
-
             return;
+        }
 
+
+        const images =
+            currentProduct.images || [];
+
+
+        if (images.length <= 1) {
+            return;
         }
 
 
@@ -1477,7 +1054,7 @@ let flipbookAnimating = false;
         if (currentImageIndex < 0) {
 
             currentImageIndex =
-                currentProduct.images.length - 1;
+                images.length - 1;
 
         }
 
@@ -1487,64 +1064,629 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        CLOSE PRODUCT MODAL
     ===================================================== */
 
-  function closeProductModal() {
+    function closeProductModal() {
 
-    closeBrochureFlipbook();
-
-
-    productModal.classList.remove(
-        "active"
-    );
+        closeBrochureFlipbook();
 
 
-    productModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+        if (productModal) {
+
+            productModal.classList.remove(
+                "active"
+            );
+
+            productModal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }
 
 
-    currentProduct = null;
+        currentProduct = null;
+        currentImageIndex = 0;
 
 
-    document.body.style.overflow = "";
+        document.body.style.overflow = "";
 
-}
-
+    }
 
 
     /* =====================================================
-       SAVE CART
+       BROCHURE PAGES
     ===================================================== */
 
-    function saveCart() {
+    function getBrochurePages() {
 
-        localStorage.setItem(
-            CART_KEY,
-            JSON.stringify(cart)
+        if (
+            !currentProduct ||
+            currentProduct.type !== "brochure" ||
+            !Array.isArray(currentProduct.pages)
+        ) {
+            return [];
+        }
+
+
+        const pages =
+            [...currentProduct.pages];
+
+
+        /*
+            If odd number of pages,
+            add blank page.
+        */
+
+        if (pages.length % 2 !== 0) {
+
+            pages.push(null);
+
+        }
+
+
+        return pages;
+
+    }
+
+
+    /* =====================================================
+       SET FLIPBOOK PAGE
+    ===================================================== */
+
+    function setFlipbookPage(element, image) {
+
+        if (!element) {
+            return;
+        }
+
+
+        element.innerHTML = "";
+
+
+        if (!image) {
+            return;
+        }
+
+
+        const img =
+            document.createElement("img");
+
+        img.src =
+            image;
+
+        img.alt =
+            "Brochure page";
+
+
+        element.appendChild(img);
+
+    }
+
+
+    /* =====================================================
+       SET FLIPBOOK FACE
+    ===================================================== */
+
+    function setFlipbookFace(element, image) {
+
+        if (!element) {
+            return;
+        }
+
+
+        element.innerHTML = "";
+
+
+        if (!image) {
+            return;
+        }
+
+
+        const img =
+            document.createElement("img");
+
+        img.src =
+            image;
+
+        img.alt =
+            "Brochure page";
+
+
+        element.appendChild(img);
+
+    }
+
+
+    /* =====================================================
+       RENDER FLIPBOOK SPREAD
+    ===================================================== */
+
+    function renderFlipbookSpread() {
+
+        const pages =
+            getBrochurePages();
+
+
+        if (
+            !pages.length ||
+            !flipbookLeft ||
+            !flipbookRight
+        ) {
+            return;
+        }
+
+
+        if (
+            flipbookSpread < 0
+        ) {
+
+            flipbookSpread = 0;
+
+        }
+
+
+        if (
+            flipbookSpread >= pages.length
+        ) {
+
+            flipbookSpread =
+                Math.max(
+                    0,
+                    pages.length - 2
+                );
+
+        }
+
+
+        const leftPage =
+            pages[flipbookSpread] || null;
+
+        const rightPage =
+            pages[flipbookSpread + 1] || null;
+
+
+        setFlipbookPage(
+            flipbookLeft,
+            leftPage
+        );
+
+
+        setFlipbookPage(
+            flipbookRight,
+            rightPage
+        );
+
+
+        /* Counter */
+
+        const firstPage =
+            flipbookSpread + 1;
+
+        const secondPage =
+            Math.min(
+                flipbookSpread + 2,
+                pages.length
+            );
+
+
+        if (flipbookCounter) {
+
+            flipbookCounter.textContent =
+                `${firstPage}–${secondPage} / ${pages.length}`;
+
+        }
+
+
+        /* Previous */
+
+        if (flipbookPrev) {
+
+            flipbookPrev.disabled =
+                flipbookSpread <= 0;
+
+        }
+
+
+        /* Next */
+
+        if (flipbookNext) {
+
+            flipbookNext.disabled =
+                flipbookSpread + 2 >= pages.length;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RESET TURNING PAGE
+    ===================================================== */
+
+    function resetTurningPage() {
+
+        if (!flipbookTurningPage) {
+            return;
+        }
+
+
+        flipbookTurningPage.className =
+            "flipbook-turning-page";
+
+
+        flipbookTurningPage.style.visibility =
+            "hidden";
+
+
+        flipbookTurningPage.style.left =
+            "";
+
+        flipbookTurningPage.style.right =
+            "";
+
+
+        flipbookAnimating = false;
+
+    }
+
+
+    /* =====================================================
+       NEXT BROCHURE PAGE
+    ===================================================== */
+
+    function nextBrochurePage() {
+
+        const pages =
+            getBrochurePages();
+
+
+        if (
+            !pages.length ||
+            flipbookAnimating ||
+            flipbookSpread + 2 >= pages.length
+        ) {
+            return;
+        }
+
+
+        const currentRight =
+            pages[flipbookSpread + 1];
+
+        const nextLeft =
+            pages[flipbookSpread + 2];
+
+
+        setFlipbookFace(
+            flipbookFront,
+            currentRight
+        );
+
+
+        setFlipbookFace(
+            flipbookBack,
+            nextLeft
+        );
+
+
+        flipbookAnimating = true;
+
+
+        if (!flipbookTurningPage) {
+
+            flipbookSpread += 2;
+
+            renderFlipbookSpread();
+
+            flipbookAnimating = false;
+
+            return;
+
+        }
+
+
+        flipbookTurningPage.className =
+            "flipbook-turning-page turn-next";
+
+
+        flipbookTurningPage.style.visibility =
+            "visible";
+
+
+        void flipbookTurningPage.offsetWidth;
+
+
+        requestAnimationFrame(
+            function () {
+
+                flipbookTurningPage.classList.add(
+                    "is-flipping"
+                );
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                flipbookSpread += 2;
+
+                renderFlipbookSpread();
+
+                resetTurningPage();
+
+            },
+            680
         );
 
     }
 
 
+    /* =====================================================
+       PREVIOUS BROCHURE PAGE
+    ===================================================== */
+
+    function previousBrochurePage() {
+
+        const pages =
+            getBrochurePages();
+
+
+        if (
+            !pages.length ||
+            flipbookAnimating ||
+            flipbookSpread <= 0
+        ) {
+            return;
+        }
+
+
+        const currentLeft =
+            pages[flipbookSpread];
+
+        const previousRight =
+            pages[flipbookSpread - 1];
+
+
+        setFlipbookFace(
+            flipbookFront,
+            currentLeft
+        );
+
+
+        setFlipbookFace(
+            flipbookBack,
+            previousRight
+        );
+
+
+        flipbookAnimating = true;
+
+
+        if (!flipbookTurningPage) {
+
+            flipbookSpread -= 2;
+
+            renderFlipbookSpread();
+
+            flipbookAnimating = false;
+
+            return;
+
+        }
+
+
+        flipbookTurningPage.className =
+            "flipbook-turning-page turn-prev";
+
+
+        flipbookTurningPage.style.visibility =
+            "visible";
+
+
+        void flipbookTurningPage.offsetWidth;
+
+
+        requestAnimationFrame(
+            function () {
+
+                flipbookTurningPage.classList.add(
+                    "is-flipping"
+                );
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                flipbookSpread -= 2;
+
+                renderFlipbookSpread();
+
+                resetTurningPage();
+
+            },
+            680
+        );
+
+    }
+
 
     /* =====================================================
-       ADD TO CART
+       OPEN BROCHURE FLIPBOOK
+    ===================================================== */
+
+    function openBrochureFlipbook() {
+
+        if (!brochureViewer) {
+            return;
+        }
+
+
+        flipbookSpread = 0;
+        flipbookAnimating = false;
+
+
+        /* Hide normal image viewer */
+
+        const normalViewer =
+            document.querySelector(".product-viewer");
+
+
+        if (normalViewer) {
+
+            normalViewer.style.display =
+                "none";
+
+        }
+
+
+        /* Hide thumbnails */
+
+        if (productThumbnails) {
+
+            productThumbnails.style.display =
+                "none";
+
+        }
+
+
+        /* Show flipbook */
+
+        brochureViewer.classList.add(
+            "active"
+        );
+
+
+        brochureViewer.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        renderFlipbookSpread();
+
+        resetTurningPage();
+
+    }
+
+
+    /* =====================================================
+       CLOSE BROCHURE FLIPBOOK
+    ===================================================== */
+
+    function closeBrochureFlipbook() {
+
+        if (!brochureViewer) {
+            return;
+        }
+
+
+        brochureViewer.classList.remove(
+            "active"
+        );
+
+
+        brochureViewer.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        const normalViewer =
+            document.querySelector(".product-viewer");
+
+
+        if (normalViewer) {
+
+            normalViewer.style.display =
+                "";
+
+        }
+
+
+        if (productThumbnails) {
+
+            productThumbnails.style.display =
+                "";
+
+        }
+
+
+        resetTurningPage();
+
+    }
+
+
+    /* =====================================================
+       FULLSCREEN FLIPBOOK
+    ===================================================== */
+
+    async function toggleFlipbookFullscreen() {
+
+        if (!brochureViewer) {
+            return;
+        }
+
+
+        try {
+
+            if (!document.fullscreenElement) {
+
+                if (
+                    brochureViewer.requestFullscreen
+                ) {
+
+                    await brochureViewer.requestFullscreen();
+
+                }
+
+            } else {
+
+                if (document.exitFullscreen) {
+
+                    await document.exitFullscreen();
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Fullscreen error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ADD PRODUCT TO CART
     ===================================================== */
 
     function addProductToCart(product) {
 
+        if (!product) {
+            return;
+        }
+
 
         const existing =
-            cart.find(function (item) {
+            cart.find(
+                function (item) {
 
-                return item.id === product.id;
+                    return item.id === product.id;
 
-            });
+                }
+            );
 
 
         if (existing) {
@@ -1570,11 +1712,15 @@ let flipbookAnimating = false;
 
             name: product.name,
 
-            price: Number(product.price),
+            price: Number(product.price) || 0,
 
             category: product.category,
 
-            image: product.images[0]
+            image:
+                product.images &&
+                product.images.length
+                    ? product.images[0]
+                    : ""
 
         });
 
@@ -1590,20 +1736,20 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        REMOVE CART ITEM
     ===================================================== */
 
     function removeFromCart(id) {
 
-
         cart =
-            cart.filter(function (item) {
+            cart.filter(
+                function (item) {
 
-                return item.id !== id;
+                    return item.id !== id;
 
-            });
+                }
+            );
 
 
         saveCart();
@@ -1611,7 +1757,6 @@ let flipbookAnimating = false;
         updateCart();
 
     }
-
 
 
     /* =====================================================
@@ -1624,7 +1769,7 @@ let flipbookAnimating = false;
             function (total, item) {
 
                 return total +
-                    Number(item.price);
+                    (Number(item.price) || 0);
 
             },
             0
@@ -1633,40 +1778,39 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        GROUP CART
     ===================================================== */
 
     function groupCartItems() {
 
-
         const groups = {};
 
 
-        cart.forEach(function (item) {
+        cart.forEach(
+            function (item) {
+
+                const category =
+                    item.category ||
+                    "Other";
 
 
-            if (
-                !groups[item.category]
-            ) {
+                if (!groups[category]) {
 
-                groups[item.category] = [];
+                    groups[category] = [];
+
+                }
+
+
+                groups[category].push(item);
 
             }
-
-
-            groups[item.category].push(
-                item
-            );
-
-        });
+        );
 
 
         return groups;
 
     }
-
 
 
     /* =====================================================
@@ -1675,16 +1819,24 @@ let flipbookAnimating = false;
 
     function updateCart() {
 
+        if (
+            !cartItemsList ||
+            !cartBadge ||
+            !cartTotalVal ||
+            !cartCheckout
+        ) {
+            return;
+        }
+
 
         cartItemsList.innerHTML = "";
 
 
-        /* ---------------------------------------------
+        /* =================================================
            EMPTY CART
-        --------------------------------------------- */
+        ================================================= */
 
         if (cart.length === 0) {
-
 
             cartItemsList.innerHTML = `
 
@@ -1694,11 +1846,9 @@ let flipbookAnimating = false;
                         🛒
                     </div>
 
-
                     <h3>
                         Your cart is empty
                     </h3>
-
 
                     <p>
                         Add your favourite
@@ -1728,18 +1878,16 @@ let flipbookAnimating = false;
         }
 
 
-
-        /* ---------------------------------------------
+        /* =================================================
            GROUP PRODUCTS
-        --------------------------------------------- */
+        ================================================= */
 
         const groups =
             groupCartItems();
 
 
-        Object.keys(groups)
-            .forEach(function (category) {
-
+        Object.keys(groups).forEach(
+            function (category) {
 
                 const title =
                     document.createElement(
@@ -1760,9 +1908,8 @@ let flipbookAnimating = false;
                 );
 
 
-                groups[category]
-                    .forEach(function (item) {
-
+                groups[category].forEach(
+                    function (item) {
 
                         const itemElement =
                             document.createElement(
@@ -1779,11 +1926,10 @@ let flipbookAnimating = false;
                             <div class="cart-item-image">
 
                                 <img
-                                    src="${item.image}"
+                                    src="${escapeHTML(item.image || "")}"
                                     alt="${escapeHTML(item.name)}">
 
                             </div>
-
 
                             <div class="cart-item-info">
 
@@ -1793,7 +1939,6 @@ let flipbookAnimating = false;
 
                                 </div>
 
-
                                 <div class="cart-item-price">
 
                                     ${formatPrice(item.price)}
@@ -1802,11 +1947,10 @@ let flipbookAnimating = false;
 
                             </div>
 
-
                             <button
                                 type="button"
                                 class="cart-remove"
-                                data-id="${item.id}"
+                                data-id="${escapeHTML(item.id)}"
                                 aria-label="Remove item">
 
                                 ×
@@ -1820,15 +1964,16 @@ let flipbookAnimating = false;
                             itemElement
                         );
 
-                    });
+                    }
+                );
 
-            });
+            }
+        );
 
 
-
-        /* ---------------------------------------------
+        /* =================================================
            TOTAL
-        --------------------------------------------- */
+        ================================================= */
 
         cartBadge.textContent =
             cart.length;
@@ -1844,33 +1989,32 @@ let flipbookAnimating = false;
             false;
 
 
-
-        /* ---------------------------------------------
+        /* =================================================
            REMOVE BUTTONS
-        --------------------------------------------- */
+        ================================================= */
 
         cartItemsList
             .querySelectorAll(
                 ".cart-remove"
             )
-            .forEach(function (button) {
+            .forEach(
+                function (button) {
 
+                    button.addEventListener(
+                        "click",
+                        function () {
 
-                button.addEventListener(
-                    "click",
-                    function () {
+                            removeFromCart(
+                                this.dataset.id
+                            );
 
-                        removeFromCart(
-                            this.dataset.id
-                        );
+                        }
+                    );
 
-                    }
-                );
-
-            });
+                }
+            );
 
     }
-
 
 
     /* =====================================================
@@ -1879,18 +2023,25 @@ let flipbookAnimating = false;
 
     function openCart() {
 
-
         updateCart();
 
 
-        cartDrawer.classList.add(
-            "active"
-        );
+        if (cartDrawer) {
+
+            cartDrawer.classList.add(
+                "active"
+            );
+
+        }
 
 
-        cartOverlay.classList.add(
-            "active"
-        );
+        if (cartOverlay) {
+
+            cartOverlay.classList.add(
+                "active"
+            );
+
+        }
 
 
         document.body.style.overflow =
@@ -1899,22 +2050,28 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        CLOSE CART
     ===================================================== */
 
     function closeCart() {
 
+        if (cartDrawer) {
 
-        cartDrawer.classList.remove(
-            "active"
-        );
+            cartDrawer.classList.remove(
+                "active"
+            );
+
+        }
 
 
-        cartOverlay.classList.remove(
-            "active"
-        );
+        if (cartOverlay) {
+
+            cartOverlay.classList.remove(
+                "active"
+            );
+
+        }
 
 
         document.body.style.overflow =
@@ -1923,18 +2080,17 @@ let flipbookAnimating = false;
     }
 
 
-
     /* =====================================================
        WHATSAPP CHECKOUT
     ===================================================== */
 
     function checkoutWhatsApp() {
 
-
-        if (cart.length === 0) {
-
+        if (
+            !cart.length ||
+            !WHATSAPP_NUMBER
+        ) {
             return;
-
         }
 
 
@@ -1943,7 +2099,6 @@ let flipbookAnimating = false;
 
 
         let message =
-
 `Hello Sai Graphic Designs 👋
 
 I would like to order the following design templates:
@@ -1951,14 +2106,11 @@ I would like to order the following design templates:
 `;
 
 
-
         let itemNumber = 1;
 
 
-
-        Object.keys(groups)
-            .forEach(function (category) {
-
+        Object.keys(groups).forEach(
+            function (category) {
 
                 message +=
 `
@@ -1969,28 +2121,25 @@ ${category.toUpperCase()}
 `;
 
 
-                groups[category]
-                    .forEach(function (item) {
-
+                groups[category].forEach(
+                    function (item) {
 
                         message +=
-
 `${itemNumber}. ${item.name}
 Price: ${formatPrice(item.price)}
 
 `;
 
-
                         itemNumber++;
 
-                    });
+                    }
+                );
 
-            });
-
+            }
+        );
 
 
         message +=
-
 `------------------------------
 ORDER SUMMARY
 ------------------------------
@@ -2007,159 +2156,171 @@ file delivery and other details.
 Thank you!`;
 
 
-
         const whatsappURL =
-
             "https://wa.me/" +
             WHATSAPP_NUMBER +
             "?text=" +
-            encodeURIComponent(
-                message
-            );
-
+            encodeURIComponent(message);
 
 
         window.open(
             whatsappURL,
-            "_blank"
+            "_blank",
+            "noopener,noreferrer"
         );
 
     }
-
 
 
     /* =====================================================
        MODAL EVENTS
     ===================================================== */
 
-    productModalClose.addEventListener(
-        "click",
-        closeProductModal
-    );
+    if (productModalClose) {
+
+        productModalClose.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
 
 
-    productModalOverlay.addEventListener(
-        "click",
-        closeProductModal
-    );
+    if (productModalOverlay) {
+
+        productModalOverlay.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
 
 
-    viewerNext.addEventListener(
-        "click",
-        nextImage
-    );
+    if (viewerNext) {
+
+        viewerNext.addEventListener(
+            "click",
+            nextImage
+        );
+
+    }
 
 
-    viewerPrev.addEventListener(
-        "click",
-        previousImage
-    );
+    if (viewerPrev) {
+
+        viewerPrev.addEventListener(
+            "click",
+            previousImage
+        );
+
+    }
+
 
     /* =====================================================
-   FLIPBOOK EVENTS
-===================================================== */
+       FLIPBOOK EVENTS
+    ===================================================== */
 
-if (flipbookNext) {
+    if (flipbookNext) {
 
-    flipbookNext.addEventListener(
-        "click",
-        nextBrochurePage
-    );
+        flipbookNext.addEventListener(
+            "click",
+            nextBrochurePage
+        );
 
-}
-
-
-if (flipbookPrev) {
-
-    flipbookPrev.addEventListener(
-        "click",
-        previousBrochurePage
-    );
-
-}
+    }
 
 
-/* =====================================================
-   FULLSCREEN
-===================================================== */
+    if (flipbookPrev) {
 
-if (flipbookFullscreen) {
+        flipbookPrev.addEventListener(
+            "click",
+            previousBrochurePage
+        );
 
-    flipbookFullscreen.addEventListener(
-        "click",
-        function () {
+    }
 
-            if (
-                !document.fullscreenElement
-            ) {
 
-                if (
-                    brochureViewer.requestFullscreen
-                ) {
+    /* =====================================================
+       FULLSCREEN EVENT
+    ===================================================== */
 
-                    brochureViewer.requestFullscreen();
+    if (flipbookFullscreen) {
 
+        flipbookFullscreen.addEventListener(
+            "click",
+            toggleFlipbookFullscreen
+        );
+
+    }
+
+
+    /* =====================================================
+       ADD TO CART FROM MODAL
+    ===================================================== */
+
+    if (modalAddCart) {
+
+        modalAddCart.addEventListener(
+            "click",
+            function () {
+
+                if (!currentProduct) {
+                    return;
                 }
 
-            } else {
 
-                document.exitFullscreen();
-
-            }
-
-        }
-    );
-
-}
-
-    modalAddCart.addEventListener(
-        "click",
-        function () {
-
-
-            if (!currentProduct) {
-
-                return;
+                addProductToCart(
+                    currentProduct
+                );
 
             }
+        );
 
-
-            addProductToCart(
-                currentProduct
-            );
-
-        }
-    );
-
+    }
 
 
     /* =====================================================
        CART EVENTS
     ===================================================== */
 
-    cartToggle.addEventListener(
-        "click",
-        openCart
-    );
+    if (cartToggle) {
+
+        cartToggle.addEventListener(
+            "click",
+            openCart
+        );
+
+    }
 
 
-    cartClose.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    cartOverlay.addEventListener(
-        "click",
-        closeCart
-    );
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
 
 
-    cartCheckout.addEventListener(
-        "click",
-        checkoutWhatsApp
-    );
+    if (cartCheckout) {
 
+        cartCheckout.addEventListener(
+            "click",
+            checkoutWhatsApp
+        );
+
+    }
 
 
     /* =====================================================
@@ -2170,16 +2331,15 @@ if (flipbookFullscreen) {
         "keydown",
         function (event) {
 
+            /* Escape */
 
-            if (
-                event.key ===
-                "Escape"
-            ) {
-
+            if (event.key === "Escape") {
 
                 if (
-                    productModal.classList
-                        .contains("active")
+                    productModal &&
+                    productModal.classList.contains(
+                        "active"
+                    )
                 ) {
 
                     closeProductModal();
@@ -2188,8 +2348,10 @@ if (flipbookFullscreen) {
 
 
                 if (
-                    cartDrawer.classList
-                        .contains("active")
+                    cartDrawer &&
+                    cartDrawer.classList.contains(
+                        "active"
+                    )
                 ) {
 
                     closeCart();
@@ -2199,52 +2361,60 @@ if (flipbookFullscreen) {
             }
 
 
+            /* Product viewer keyboard navigation */
 
             if (
-                productModal.classList
-                    .contains("active")
+                productModal &&
+                productModal.classList.contains(
+                    "active"
+                )
             ) {
 
+                if (
+                    event.key === "ArrowRight"
+                ) {
 
-if (
-    event.key === "ArrowRight"
-) {
+                    if (
+                        currentProduct &&
+                        currentProduct.type ===
+                            "brochure"
+                    ) {
 
-    if (
-        currentProduct &&
-        currentProduct.type === "brochure"
-    ) {
+                        nextBrochurePage();
 
-        nextBrochurePage();
+                    } else {
 
-    } else {
+                        nextImage();
 
-        nextImage();
+                    }
 
-    }
-
-}
+                }
 
 
-if (
-    event.key === "ArrowLeft"
-) {
+                if (
+                    event.key === "ArrowLeft"
+                ) {
 
-    if (
-        currentProduct &&
-        currentProduct.type === "brochure"
-    ) {
+                    if (
+                        currentProduct &&
+                        currentProduct.type ===
+                            "brochure"
+                    ) {
 
-        previousBrochurePage();
+                        previousBrochurePage();
 
-    } else {
+                    } else {
 
-        previousImage();
+                        previousImage();
 
-    }
+                    }
 
-}
+                }
 
+            }
+
+        }
+    );
 
 
     /* =====================================================
@@ -2254,5 +2424,15 @@ if (
     renderProducts();
 
     updateCart();
+
+
+    console.log(
+        "Sai Graphic Designs Shop initialized successfully."
+    );
+
+    console.log(
+        "Products loaded:",
+        products.length
+    );
 
 });
