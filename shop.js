@@ -1126,37 +1126,31 @@ function openProductModal(product) {
        BROCHURE PAGES
     ===================================================== */
 
-    function getBrochurePages() {
+   function getBrochurePages() {
 
-        if (
-            !currentProduct ||
-            currentProduct.type !== "brochure" ||
-            !Array.isArray(currentProduct.pages)
-        ) {
-            return [];
-        }
-
-
-        const pages =
-            [...currentProduct.pages];
+    if (
+        !currentProduct ||
+        currentProduct.type !== "brochure" ||
+        !Array.isArray(currentProduct.pages)
+    ) {
+        return [];
+    }
 
 
-        /*
-            If odd number of pages,
-            add blank page.
-        */
-
-        if (pages.length % 2 !== 0) {
-
-            pages.push(null);
-
-        }
+    const pages =
+        [...currentProduct.pages];
 
 
-        return pages;
+    if (pages.length % 2 !== 0) {
+
+        pages.push(null);
 
     }
 
+
+    return pages;
+
+}
 
     /* =====================================================
        SET FLIPBOOK PAGE
@@ -1226,85 +1220,103 @@ function openProductModal(product) {
     }
 
 
-    /* =====================================================
-       RENDER FLIPBOOK SPREAD
-    ===================================================== */
+   /* =====================================================
+   RENDER FLIPBOOK SPREAD
+===================================================== */
 
-    function renderFlipbookSpread() {
+function renderFlipbookSpread() {
 
     if (!currentProduct) {
         return;
     }
 
-    const pages = currentProduct.pages;
 
-    if (!pages || pages.length === 0) {
+    const pages =
+        getBrochurePages();
+
+
+    if (!pages.length) {
         return;
     }
 
-    const leftIndex = flipbookSpread * 2;
-    const rightIndex = leftIndex + 1;
 
-    const leftPage = pages[leftIndex];
-    const rightPage = pages[rightIndex];
+    /*
+        flipbookSpread already represents
+        the actual page index.
 
-    // LEFT PAGE
+        0 = pages 1–2
+        2 = pages 3–4
+        4 = pages 5–6
+        etc.
+    */
+
+    const leftIndex =
+        flipbookSpread;
+
+    const rightIndex =
+        flipbookSpread + 1;
+
+
+    const leftPage =
+        pages[leftIndex];
+
+    const rightPage =
+        pages[rightIndex];
+
+
+    /* =================================================
+       LEFT PAGE
+    ================================================= */
+
     if (flipbookLeft) {
 
-        if (leftPage) {
+        setFlipbookPage(
+            flipbookLeft,
+            leftPage
+        );
 
-            flipbookLeft.innerHTML = `
-                <img
-                    src="${leftPage}"
-                    alt="Brochure Page ${leftIndex + 1}"
-                    draggable="false"
-                >
-            `;
-
-        } else {
-
-            flipbookLeft.innerHTML = "";
-
-        }
     }
 
-    // RIGHT PAGE
+
+    /* =================================================
+       RIGHT PAGE
+    ================================================= */
+
     if (flipbookRight) {
 
-        if (rightPage) {
+        setFlipbookPage(
+            flipbookRight,
+            rightPage
+        );
 
-            flipbookRight.innerHTML = `
-                <img
-                    src="${rightPage}"
-                    alt="Brochure Page ${rightIndex + 1}"
-                    draggable="false"
-                >
-            `;
-
-        } else {
-
-            flipbookRight.innerHTML = "";
-
-        }
     }
 
-    // PAGE COUNTER
+
+    /* =================================================
+       PAGE COUNTER
+    ================================================= */
+
     if (flipbookCounter) {
 
         if (rightPage) {
 
             flipbookCounter.textContent =
-                `${leftIndex + 1}–${rightIndex + 1} / ${pages.length}`;
+                `Pages ${leftIndex + 1}–${rightIndex + 1} / ${pages.length}`;
 
         } else {
 
             flipbookCounter.textContent =
-                `${leftIndex + 1} / ${pages.length}`;
+                `Page ${leftIndex + 1} / ${pages.length}`;
 
         }
+
     }
 
-    // PREVIOUS BUTTON
+
+    /* =================================================
+       PREVIOUS
+    ================================================= */
+
     if (flipbookPrev) {
 
         flipbookPrev.disabled =
@@ -1312,13 +1324,18 @@ function openProductModal(product) {
 
     }
 
-    // NEXT BUTTON
+
+    /* =================================================
+       NEXT
+    ================================================= */
+
     if (flipbookNext) {
 
         flipbookNext.disabled =
             rightIndex >= pages.length - 1;
 
     }
+
 }
 
     /* =====================================================
@@ -1540,55 +1557,86 @@ function openProductModal(product) {
        OPEN BROCHURE FLIPBOOK
     ===================================================== */
 
-    function openBrochureFlipbook() {
+   function openBrochureFlipbook() {
 
     if (!brochureViewer) {
+
         console.error(
-            "ERROR: #brochureViewer was not found in shop.html"
+            "ERROR: #brochureViewer was not found"
         );
+
         return;
     }
 
+
     if (!currentProduct) {
+
         console.error(
             "ERROR: currentProduct is empty"
         );
+
         return;
     }
 
-    if (
-        !currentProduct.pages ||
-        !Array.isArray(currentProduct.pages) ||
-        currentProduct.pages.length === 0
-    ) {
+
+    const pages =
+        getBrochurePages();
+
+
+    if (!pages.length) {
+
         console.error(
             "ERROR: No brochure pages found",
             currentProduct
         );
+
         return;
     }
 
+
     console.log(
         "Opening Flipbook:",
-        currentProduct.pages
+        pages
     );
 
-    // Show flipbook
-    brochureViewer.style.display = "flex";
-    brochureViewer.classList.add("active");
 
-    // Reset spread
+    /* SHOW FLIPBOOK */
+
+    brochureViewer.style.display =
+        "block";
+
+    brochureViewer.classList.add(
+        "active"
+    );
+
+
+    /* RESET */
+
     flipbookSpread = 0;
+
     flipbookAnimating = false;
 
-    // Render first two pages
+
+    /* RESET TURNING PAGE */
+
+    if (flipbookTurningPage) {
+
+        flipbookTurningPage.className =
+            "flipbook-turning-page";
+
+        flipbookTurningPage.style.display =
+            "block";
+
+        flipbookTurningPage.style.visibility =
+            "hidden";
+
+    }
+
+
+    /* RENDER FIRST SPREAD */
+
     renderFlipbookSpread();
 
-    // Hide animation layer initially
-    if (flipbookTurningPage) {
-        flipbookTurningPage.style.display = "none";
-        flipbookTurningPage.classList.remove("turning");
-    }
 }
 
 
