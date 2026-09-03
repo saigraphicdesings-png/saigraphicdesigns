@@ -322,11 +322,11 @@
 
     <div class="flipbook-stage">
 
-        <!-- PREVIOUS BUTTON -->
+        <!-- PREVIOUS -->
         <button
             type="button"
-            class="flipbook-arrow flipbook-prev"
-            id="flipbookPrev"
+            class="flipbook-arrow"
+            id="viewerPrev"
             aria-label="Previous page">
             ‹
         </button>
@@ -335,18 +335,22 @@
         <!-- BOOK -->
         <div class="flipbook-book-wrap">
 
-            <div class="flipbook-book" id="flipbookBook">
+            <div
+                class="flipbook-book"
+                id="productFlipbook">
 
                 <!-- LEFT STATIC PAGE -->
-               <div class="flipbook-static-page flipbook-left">
-                <img src="page-1.jpg">
+                <div
+                    class="flipbook-static-page flipbook-left"
+                    id="flipbookLeft">
                 </div>
 
 
                 <!-- RIGHT STATIC PAGE -->
-                <div class="flipbook-static-page flipbook-right">
-                <img src="page-2.jpg">
-                 </div>
+                <div
+                    class="flipbook-static-page flipbook-right"
+                    id="flipbookRight">
+                </div>
 
 
                 <!-- TURNING PAGE -->
@@ -356,12 +360,15 @@
 
                     <!-- FRONT -->
                     <div
-                        class="flipbook-face flipbook-front">
+                        class="flipbook-face flipbook-front"
+                        id="flipbookFront">
                     </div>
+
 
                     <!-- BACK -->
                     <div
-                        class="flipbook-face flipbook-back">
+                        class="flipbook-face flipbook-back"
+                        id="flipbookBack">
                     </div>
 
                 </div>
@@ -371,11 +378,11 @@
         </div>
 
 
-        <!-- NEXT BUTTON -->
+        <!-- NEXT -->
         <button
             type="button"
-            class="flipbook-arrow flipbook-next"
-            id="flipbookNext"
+            class="flipbook-arrow"
+            id="viewerNext"
             aria-label="Next page">
             ›
         </button>
@@ -383,35 +390,37 @@
     </div>
 
 
-    <!-- =====================================
-         FLIPBOOK CONTROLS
-    ====================================== -->
+    <!-- CONTROLS -->
 
     <div class="flipbook-controls">
 
         <button
             type="button"
-            id="flipbookFullscreen"
             class="flipbook-control-btn"
-            aria-label="Fullscreen">
-            ⛶ Fullscreen
+            id="flipbookPrevBtn">
+            ← Previous
         </button>
 
+
         <span
-            id="flipbookCounter"
-            class="flipbook-counter">
-            1–2 / 8
+            class="flipbook-counter"
+            id="flipbookCounter">
+            1–2 / 10
         </span>
+
+
+        <button
+            type="button"
+            class="flipbook-control-btn"
+            id="flipbookNextBtn">
+            Next →
+        </button>
 
     </div>
 
 
-    <!-- =====================================
-         HINT
-    ====================================== -->
-
     <p class="flipbook-hint">
-        Click the arrows or use ← → keys to turn pages
+        Click the arrows to turn the brochure pages
     </p>
 
 </div>
