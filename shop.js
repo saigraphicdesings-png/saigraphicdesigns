@@ -198,6 +198,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Images/Shop/brochure-01/page-4.jpg",
                 "Images/Shop/brochure-01/page-5.jpg",
                 "Images/Shop/brochure-01/page-6.jpg",
+                "Images/Shop/brochure-01/page-7.jpg",
+                "Images/Shop/brochure-01/page-8.jpg",
+                "Images/Shop/brochure-01/page-9.jpg",
                 "Images/Shop/brochure-01/back.jpg"
             ]
         },
