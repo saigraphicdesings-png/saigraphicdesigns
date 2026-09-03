@@ -27,8 +27,432 @@ document.addEventListener("DOMContentLoaded", function () {
 
        You can change the filenames below.
     */
+/* =====================================================
+   BROCHURE FLIPBOOK
+===================================================== */
+
+function getBrochurePages() {
+
+    if (
+        !currentProduct ||
+        currentProduct.type !== "brochure" ||
+        !Array.isArray(currentProduct.pages)
+    ) {
+        return [];
+    }
+
+    const pages = [...currentProduct.pages];
+
+    /*
+       If odd number of pages,
+       add a blank page.
+    */
+
+    if (pages.length % 2 !== 0) {
+        pages.push(null);
+    }
+
+    return pages;
+}
 
 
+/* =====================================================
+   SET PAGE IMAGE
+===================================================== */
+
+function setFlipbookPage(element, image) {
+
+    if (!element) {
+        return;
+    }
+
+    element.innerHTML = "";
+
+    if (!image) {
+        return;
+    }
+
+    const img =
+        document.createElement("img");
+
+    img.src = image;
+
+    img.alt = "Brochure page";
+
+    element.appendChild(img);
+}
+
+
+/* =====================================================
+   SET FLIP FACE
+===================================================== */
+
+function setFlipbookFace(element, image) {
+
+    if (!element) {
+        return;
+    }
+
+    element.innerHTML = "";
+
+    if (!image) {
+        return;
+    }
+
+    const img =
+        document.createElement("img");
+
+    img.src = image;
+
+    img.alt = "Brochure page";
+
+    element.appendChild(img);
+}
+
+
+/* =====================================================
+   RENDER CURRENT SPREAD
+===================================================== */
+
+function renderFlipbookSpread() {
+
+    const pages =
+        getBrochurePages();
+
+    if (!pages.length) {
+        return;
+    }
+
+
+    const leftPage =
+        pages[flipbookSpread] || null;
+
+    const rightPage =
+        pages[flipbookSpread + 1] || null;
+
+
+    setFlipbookPage(
+        flipbookLeft,
+        leftPage
+    );
+
+
+    setFlipbookPage(
+        flipbookRight,
+        rightPage
+    );
+
+
+    /*
+       Page counter
+    */
+
+    const firstPage =
+        flipbookSpread + 1;
+
+    const secondPage =
+        Math.min(
+            flipbookSpread + 2,
+            pages.length
+        );
+
+
+    flipbookCounter.textContent =
+        `${firstPage}–${secondPage} / ${pages.length}`;
+
+
+    /*
+       Button states
+    */
+
+    flipbookPrev.disabled =
+        flipbookSpread <= 0;
+
+
+    flipbookNext.disabled =
+        flipbookSpread + 2 >= pages.length;
+}
+
+
+/* =====================================================
+   RESET TURNING PAGE
+===================================================== */
+
+function resetTurningPage() {
+
+    if (!flipbookTurningPage) {
+        return;
+    }
+
+    flipbookTurningPage.className =
+        "flipbook-turning-page";
+
+    flipbookTurningPage.style.visibility =
+        "hidden";
+
+    flipbookTurningPage.style.left =
+        "";
+
+    flipbookTurningPage.style.right =
+        "";
+
+    flipbookAnimating = false;
+}
+
+
+/* =====================================================
+   NEXT BROCHURE PAGE
+===================================================== */
+
+function nextBrochurePage() {
+
+    const pages =
+        getBrochurePages();
+
+    if (
+        !pages.length ||
+        flipbookAnimating ||
+        flipbookSpread + 2 >= pages.length
+    ) {
+        return;
+    }
+
+
+    const currentRight =
+        pages[flipbookSpread + 1];
+
+    const nextLeft =
+        pages[flipbookSpread + 2];
+
+
+    /*
+       FRONT = current right page
+       BACK  = next left page
+    */
+
+    setFlipbookFace(
+        flipbookFront,
+        currentRight
+    );
+
+    setFlipbookFace(
+        flipbookBack,
+        nextLeft
+    );
+
+
+    flipbookAnimating = true;
+
+
+    flipbookTurningPage.className =
+        "flipbook-turning-page turn-next";
+
+
+    flipbookTurningPage.style.visibility =
+        "visible";
+
+
+    /*
+       Force browser to register
+       initial state before animation.
+    */
+
+    void flipbookTurningPage.offsetWidth;
+
+
+    requestAnimationFrame(function () {
+
+        flipbookTurningPage.classList.add(
+            "is-flipping"
+        );
+
+    });
+
+
+    setTimeout(function () {
+
+        flipbookSpread += 2;
+
+        renderFlipbookSpread();
+
+        resetTurningPage();
+
+    }, 680);
+}
+
+
+/* =====================================================
+   PREVIOUS BROCHURE PAGE
+===================================================== */
+
+function previousBrochurePage() {
+
+    const pages =
+        getBrochurePages();
+
+    if (
+        !pages.length ||
+        flipbookAnimating ||
+        flipbookSpread <= 0
+    ) {
+        return;
+    }
+
+
+    const currentLeft =
+        pages[flipbookSpread];
+
+    const previousRight =
+        pages[flipbookSpread - 1];
+
+
+    /*
+       FRONT = current left
+       BACK  = previous right
+    */
+
+    setFlipbookFace(
+        flipbookFront,
+        currentLeft
+    );
+
+    setFlipbookFace(
+        flipbookBack,
+        previousRight
+    );
+
+
+    flipbookAnimating = true;
+
+
+    flipbookTurningPage.className =
+        "flipbook-turning-page turn-prev";
+
+
+    flipbookTurningPage.style.visibility =
+        "visible";
+
+
+    void flipbookTurningPage.offsetWidth;
+
+
+    requestAnimationFrame(function () {
+
+        flipbookTurningPage.classList.add(
+            "is-flipping"
+        );
+
+    });
+
+
+    setTimeout(function () {
+
+        flipbookSpread -= 2;
+
+        renderFlipbookSpread();
+
+        resetTurningPage();
+
+    }, 680);
+}
+
+
+/* =====================================================
+   OPEN BROCHURE FLIPBOOK
+===================================================== */
+
+function openBrochureFlipbook() {
+
+    flipbookSpread = 0;
+
+    flipbookAnimating = false;
+
+
+    /*
+       Hide normal viewer
+    */
+
+    const normalViewer =
+        document.querySelector(".product-viewer");
+
+    if (normalViewer) {
+
+        normalViewer.style.display =
+            "none";
+
+    }
+
+
+    /*
+       Hide thumbnails
+    */
+
+    productThumbnails.style.display =
+        "none";
+
+
+    /*
+       Show flipbook
+    */
+
+    brochureViewer.classList.add(
+        "active"
+    );
+
+
+    brochureViewer.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    renderFlipbookSpread();
+
+    resetTurningPage();
+}
+
+
+/* =====================================================
+   CLOSE BROCHURE FLIPBOOK
+===================================================== */
+
+function closeBrochureFlipbook() {
+
+    if (!brochureViewer) {
+        return;
+    }
+
+
+    brochureViewer.classList.remove(
+        "active"
+    );
+
+
+    brochureViewer.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    const normalViewer =
+        document.querySelector(".product-viewer");
+
+    if (normalViewer) {
+
+        normalViewer.style.display =
+            "";
+
+    }
+
+
+    productThumbnails.style.display =
+        "";
+
+
+    resetTurningPage();
+}
+
+    
     /* =====================================================
        PRODUCT DATA
     ===================================================== */
