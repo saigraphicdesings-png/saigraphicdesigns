@@ -322,6 +322,7 @@
 
     <div class="flipbook-stage">
 
+        <!-- PREVIOUS -->
         <button
             type="button"
             class="flipbook-arrow flipbook-prev"
@@ -330,30 +331,38 @@
             ‹
         </button>
 
+
+        <!-- BOOK -->
         <div class="flipbook-book-wrap">
 
             <div class="flipbook-book" id="flipbookBook">
 
-                <!-- LEFT STATIC PAGE -->
+                <!-- LEFT PAGE -->
                 <div
                     class="flipbook-static-page flipbook-left"
                     id="flipbookLeft">
                 </div>
 
-                <!-- RIGHT STATIC PAGE -->
+
+                <!-- RIGHT PAGE -->
                 <div
                     class="flipbook-static-page flipbook-right"
                     id="flipbookRight">
                 </div>
+
 
                 <!-- TURNING PAGE -->
                 <div
                     class="flipbook-turning-page"
                     id="flipbookTurningPage">
 
-                    <div class="flipbook-face flipbook-front"></div>
+                    <div
+                        class="flipbook-face flipbook-front">
+                    </div>
 
-                    <div class="flipbook-face flipbook-back"></div>
+                    <div
+                        class="flipbook-face flipbook-back">
+                    </div>
 
                 </div>
 
@@ -361,6 +370,8 @@
 
         </div>
 
+
+        <!-- NEXT -->
         <button
             type="button"
             class="flipbook-arrow flipbook-next"
@@ -370,6 +381,25 @@
         </button>
 
     </div>
+
+
+    <!-- CONTROLS -->
+    <div class="flipbook-controls">
+
+        <span id="flipbookCounter">
+            1–2 / 10
+        </span>
+
+        <button
+            type="button"
+            id="flipbookFullscreen"
+            aria-label="Fullscreen">
+            ⛶
+        </button>
+
+    </div>
+
+</div>
 
 
     <!-- FLIPBOOK CONTROLS -->
