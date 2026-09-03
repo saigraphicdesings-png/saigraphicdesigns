@@ -561,7 +561,52 @@ document.addEventListener("DOMContentLoaded", function () {
     const viewerNext =
         document.getElementById("viewerNext");
 
+/* =====================================================
+   BROCHURE FLIPBOOK ELEMENTS
+===================================================== */
 
+const brochureViewer =
+    document.getElementById("brochureViewer");
+
+const flipbookBook =
+    document.getElementById("flipbookBook");
+
+const flipbookLeft =
+    document.getElementById("flipbookLeft");
+
+const flipbookRight =
+    document.getElementById("flipbookRight");
+
+const flipbookTurningPage =
+    document.getElementById("flipbookTurningPage");
+
+const flipbookFront =
+    flipbookTurningPage
+        ? flipbookTurningPage.querySelector(".flipbook-front")
+        : null;
+
+const flipbookBack =
+    flipbookTurningPage
+        ? flipbookTurningPage.querySelector(".flipbook-back")
+        : null;
+
+const flipbookPrev =
+    document.getElementById("flipbookPrev");
+
+const flipbookNext =
+    document.getElementById("flipbookNext");
+
+const flipbookCounter =
+    document.getElementById("flipbookCounter");
+
+const flipbookFullscreen =
+    document.getElementById("flipbookFullscreen");
+
+
+let flipbookSpread = 0;
+
+let flipbookAnimating = false;
+    
     const cartToggle =
         document.getElementById("cartToggle");
 
