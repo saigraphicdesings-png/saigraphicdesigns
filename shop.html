@@ -322,7 +322,7 @@
 
     <div class="flipbook-stage">
 
-        <!-- PREVIOUS -->
+        <!-- PREVIOUS BUTTON -->
         <button
             type="button"
             class="flipbook-arrow flipbook-prev"
@@ -337,14 +337,14 @@
 
             <div class="flipbook-book" id="flipbookBook">
 
-                <!-- LEFT PAGE -->
+                <!-- LEFT STATIC PAGE -->
                 <div
                     class="flipbook-static-page flipbook-left"
                     id="flipbookLeft">
                 </div>
 
 
-                <!-- RIGHT PAGE -->
+                <!-- RIGHT STATIC PAGE -->
                 <div
                     class="flipbook-static-page flipbook-right"
                     id="flipbookRight">
@@ -356,10 +356,12 @@
                     class="flipbook-turning-page"
                     id="flipbookTurningPage">
 
+                    <!-- FRONT -->
                     <div
                         class="flipbook-face flipbook-front">
                     </div>
 
+                    <!-- BACK -->
                     <div
                         class="flipbook-face flipbook-back">
                     </div>
@@ -371,7 +373,7 @@
         </div>
 
 
-        <!-- NEXT -->
+        <!-- NEXT BUTTON -->
         <button
             type="button"
             class="flipbook-arrow flipbook-next"
@@ -383,33 +385,17 @@
     </div>
 
 
-    <!-- CONTROLS -->
-    <div class="flipbook-controls">
+    <!-- =====================================
+         FLIPBOOK CONTROLS
+    ====================================== -->
 
-        <span id="flipbookCounter">
-            1–2 / 10
-        </span>
+    <div class="flipbook-controls">
 
         <button
             type="button"
             id="flipbookFullscreen"
+            class="flipbook-control-btn"
             aria-label="Fullscreen">
-            ⛶
-        </button>
-
-    </div>
-
-</div>
-
-
-    <!-- FLIPBOOK CONTROLS -->
-
-    <div class="flipbook-controls">
-
-        <button
-            type="button"
-            id="flipbookFullscreen"
-            class="flipbook-control-btn">
             ⛶ Fullscreen
         </button>
 
@@ -421,6 +407,10 @@
 
     </div>
 
+
+    <!-- =====================================
+         HINT
+    ====================================== -->
 
     <p class="flipbook-hint">
         Click the arrows or use ← → keys to turn pages
