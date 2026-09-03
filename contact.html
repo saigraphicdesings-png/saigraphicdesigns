@@ -13,19 +13,12 @@
     <link rel="icon" type="image/png" href="Images/favicon.png">
     <link rel="apple-touch-icon" href="Images/favicon.png">
 
-    <meta name="description"
-        content="Looking for the best graphic designer in Madurai? Sai Graphic Designs offers professional logo design, visiting cards, brochures, social media designs, packaging, branding and printing services.">
-
-    <meta name="keywords"
-        content="Sai Graphic Designs, Best Graphic designer in Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services">
-
-    <meta name="author" content="Sai Graphic Designs">
-
-    <meta name="robots" content="index, follow">
-
-    <link rel="canonical" href="index.html">
-
-    <link rel="stylesheet" href="style.css">
+    <!-- =========================================
+         PAGE-SPECIFIC META (duplicate description/keywords/
+         canonical tags from the shared template were removed —
+         only ONE of each should exist per page, or search
+         engines may index the wrong one)
+    ========================================== -->
 
     <meta name="description"
         content="Contact Sai Graphic Designs for logo design, branding, visiting cards, social media designs, brochures, packaging, printing and professional graphic design services.">
@@ -35,7 +28,109 @@
 
     <meta name="author" content="Sai Graphic Designs">
 
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="contact.html">
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- =========================================
+         STRUCTURED DATA — LocalBusiness
+         Ties NAP (name, address, phone) + hours to
+         schema so Google/Maps/AI answer engines can
+         parse it reliably, not just read it as text.
+    ========================================== -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Sai Graphic Designs",
+      "image": "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/Images/favicon.png",
+      "url": "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/",
+      "telephone": "+91-63811-28781",
+      "email": "saigraphicdesings@gmail.com",
+      "priceRange": "₹150 - ₹10000",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "110, Meenakshi Nagar 2nd Street, HMS Colony, Ponmeni",
+        "addressLocality": "Madurai",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "625016",
+        "addressCountry": "IN"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "20:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61593257977954",
+        "https://www.instagram.com/saigraphicdesigns/"
+      ]
+    }
+    </script>
+
+    <!-- =========================================
+         STRUCTURED DATA — FAQPage (JSON-LD)
+         The FAQ section below already carries valid
+         schema.org Microdata (itemscope/itemprop) —
+         that's kept as-is since it's working. This
+         JSON-LD block duplicates the same 5 Q&As in
+         Google's preferred format, which is easier to
+         validate and less fragile to future CSS/JS
+         changes than the inline microdata.
+    ========================================== -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who provides graphic design services in Madurai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sai Graphic Designs provides professional graphic design and printing services in Madurai, including logo design, visiting cards, brochures, social media creatives, packaging design, branding and printing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I get a logo designed in Madurai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact Sai Graphic Designs in Madurai for professional logo design, logo recreation and complete brand identity design."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What graphic design services does Sai Graphic Designs offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sai Graphic Designs offers logo design, logo recreation, visiting card design, brochure and flyer design, social media design, packaging and label design, branding and printing services."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Sai Graphic Designs provide printing services?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Sai Graphic Designs provides printing-related design and printing services for business cards, brochures, flyers, packaging materials and other promotional materials."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Sai Graphic Designs serve businesses outside Madurai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Sai Graphic Designs can work with businesses and organizations in Madurai and across Tamil Nadu."
+          }
+        }
+      ]
+    }
+    </script>
 
     <style>
         /* =========================================
@@ -491,7 +586,7 @@
                 Sai <strong>Graphic Designs</strong>
             </span>
         </a>
-        
+
         <button
             type="button"
             class="mobile-menu-btn"
@@ -517,11 +612,7 @@
             <a href="customizer.html" class="nav-link">
                 Services
             </a>
-            
-             <a href="shop.html" class="nav-link">
-                Shop
-            </a>
-            
+
             <a href="contact.html" class="nav-link active">
                 Contact
             </a>
@@ -657,7 +748,7 @@
                             <strong>Location</strong>
 
                             <span>
-                                Madurai, Tamil Nadu, India
+                                110, Meenakshi Nagar 2nd Street, Ponmeni, Madurai, Tamil Nadu 625016
                             </span>
                         </div>
 
@@ -1146,7 +1237,7 @@
                     <p>
                         We provide professional graphic design, branding
                         and printing solutions for businesses and
-                        individuals.
+                        individuals across Madurai.
                     </p>
 
                     <div class="location-address">
@@ -1175,10 +1266,13 @@
 
 
                 <!-- GOOGLE MAP -->
+                <!-- Pinned to the exact street address rather than a
+                     name-only search, so it doesn't depend on the
+                     Business Profile matching first. -->
 
                 <div class="map-container">
     <iframe
-        src="https://www.google.com/maps?q=Sai+Graphic+Designs,+Madurai&output=embed"
+        src="https://www.google.com/maps?q=110,+Meenakshi+Nagar+2nd+Street,+HMS+Colony,+Ponmeni,+Madurai,+Tamil+Nadu+625016&output=embed"
         width="100%"
         height="450"
         style="border:0; border-radius:20px;"
@@ -1198,6 +1292,8 @@
    <!-- =========================================
      FAQ SECTION — SEO & GEO Optimized
      Sai Graphic Design's | Madurai
+     (Microdata kept as originally implemented; the
+     matching JSON-LD block lives in <head>.)
 ========================================= -->
 <section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
     <div class="section-header">
@@ -1349,23 +1445,25 @@
 
             </p>
 
+            <!-- Social links point at the real, verified profiles
+                 only. The old X/LinkedIn "#" placeholders were
+                 removed — add them back once real accounts exist. -->
 
             <div class="footer-socials">
 
-                <a href="#" class="social-icon" aria-label="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=61593257977954"
+                   class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
                     Fb
                 </a>
 
-                <a href="#" class="social-icon" aria-label="X">
-                    X
-                </a>
-
-                <a href="#" class="social-icon" aria-label="LinkedIn">
-                    Li
-                </a>
-
-                <a href="#" class="social-icon" aria-label="Instagram">
+                <a href="https://www.instagram.com/saigraphicdesigns/"
+                   class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                     Ig
+                </a>
+
+                <a href="https://www.youtube.com/@SaiGraphicDesigns"
+                   class="social-icon" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                    Yt
                 </a>
 
             </div>
@@ -1645,494 +1743,15 @@
 
         });
     </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       CART STORAGE
-    ===================================================== */
+    <!-- =========================================
+         CART SCRIPT
+         (The original file had this exact block
+         duplicated twice — removed the duplicate,
+         since two identical event listeners were
+         firing on every cart click.)
+    ========================================= -->
 
-    const CART_KEY = "saiGraphicCart";
-
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const cartToggle =
-        document.getElementById("cartToggle");
-
-    const cartClose =
-        document.getElementById("cartClose");
-
-    const cartOverlay =
-        document.getElementById("cartOverlay");
-
-    const cartDrawer =
-        document.getElementById("cartDrawer");
-
-    const cartBadge =
-        document.getElementById("cartBadge");
-
-    const cartItemsList =
-        document.getElementById("cartItemsList");
-
-    const cartTotalVal =
-        document.getElementById("cartTotalVal");
-
-    const cartCheckout =
-        document.getElementById("cartCheckout");
-
-
-    /* =====================================================
-       CHECK CART ELEMENTS
-    ===================================================== */
-
-    if (
-        !cartToggle ||
-        !cartDrawer ||
-        !cartOverlay ||
-        !cartItemsList ||
-        !cartBadge
-    ) {
-        return;
-    }
-
-
-    /* =====================================================
-       LOAD CART
-    ===================================================== */
-
-    let cart =
-        JSON.parse(
-            localStorage.getItem(CART_KEY)
-        ) || [];
-
-
-    /* =====================================================
-       FORMAT PRICE
-    ===================================================== */
-
-    function formatPrice(price) {
-
-        return "₹" +
-            Number(price).toLocaleString("en-IN");
-
-    }
-
-
-    /* =====================================================
-       SAVE CART
-    ===================================================== */
-
-    function saveCart() {
-
-        localStorage.setItem(
-            CART_KEY,
-            JSON.stringify(cart)
-        );
-
-    }
-
-
-    /* =====================================================
-       UPDATE CART
-    ===================================================== */
-
-    function updateCart() {
-
-        cart =
-            JSON.parse(
-                localStorage.getItem(CART_KEY)
-            ) || [];
-
-
-        cartItemsList.innerHTML = "";
-
-
-        /* EMPTY CART */
-
-        if (cart.length === 0) {
-
-            cartItemsList.innerHTML = `
-                <div class="empty-cart">
-
-                    <p>
-                        <strong>
-                            No services selected yet.
-                        </strong>
-                    </p>
-
-                    <p>
-                        Go to Services and click
-                        "Add to Order".
-                    </p>
-
-                </div>
-            `;
-
-            cartBadge.textContent = "0";
-
-            cartTotalVal.textContent = "₹0";
-
-            if (cartCheckout) {
-                cartCheckout.disabled = true;
-            }
-
-            return;
-        }
-
-
-        /* =================================================
-           TOTAL
-        ================================================= */
-
-        let total = 0;
-
-
-        /* =================================================
-           CART ITEMS
-        ================================================= */
-
-        cart.forEach(function (item, index) {
-
-            const price =
-                Number(item.price) || 0;
-
-            total += price;
-
-
-            const itemElement =
-                document.createElement("div");
-
-            itemElement.className =
-                "cart-item";
-
-
-            itemElement.innerHTML = `
-
-                <div class="cart-item-info">
-
-                    <div class="cart-item-name">
-                        ${escapeHTML(item.name)}
-                    </div>
-
-                    <div class="cart-item-price">
-                        ${formatPrice(price)}
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="cart-remove"
-                    data-index="${index}"
-                    aria-label="Remove service">
-
-                    ×
-
-                </button>
-
-            `;
-
-
-            cartItemsList.appendChild(
-                itemElement
-            );
-
-        });
-
-
-        /* =================================================
-           BADGE
-        ================================================= */
-
-        cartBadge.textContent =
-            cart.length;
-
-
-        /* =================================================
-           TOTAL
-        ================================================= */
-
-        cartTotalVal.textContent =
-            formatPrice(total);
-
-
-        /* =================================================
-           CHECKOUT
-        ================================================= */
-
-        if (cartCheckout) {
-
-            cartCheckout.disabled = false;
-
-        }
-
-
-        /* =================================================
-           REMOVE SERVICES
-        ================================================= */
-
-        document
-            .querySelectorAll(".cart-remove")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const index =
-                            Number(
-                                this.dataset.index
-                            );
-
-
-                        cart.splice(
-                            index,
-                            1
-                        );
-
-
-                        saveCart();
-
-                        updateCart();
-
-                    }
-                );
-
-            });
-
-    }
-
-
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
-
-    function escapeHTML(value) {
-
-        return String(value)
-
-            .replaceAll("&", "&amp;")
-
-            .replaceAll("<", "&lt;")
-
-            .replaceAll(">", "&gt;")
-
-            .replaceAll('"', "&quot;")
-
-            .replaceAll("'", "&#039;");
-
-    }
-
-
-    /* =====================================================
-       OPEN CART
-    ===================================================== */
-
-    function openCart() {
-
-        updateCart();
-
-        cartDrawer.classList.add("active");
-
-        cartOverlay.classList.add("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        cartOverlay.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.style.overflow =
-            "hidden";
-
-    }
-
-
-    /* =====================================================
-       CLOSE CART
-    ===================================================== */
-
-    function closeCart() {
-
-        cartDrawer.classList.remove("active");
-
-        cartOverlay.classList.remove("active");
-
-        cartDrawer.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        cartOverlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.style.overflow =
-            "";
-
-    }
-
-
-    /* =====================================================
-       CART BUTTON
-    ===================================================== */
-
-    cartToggle.addEventListener(
-        "click",
-        function () {
-
-            openCart();
-
-        }
-    );
-
-
-    /* =====================================================
-       CLOSE BUTTON
-    ===================================================== */
-
-    if (cartClose) {
-
-        cartClose.addEventListener(
-            "click",
-            closeCart
-        );
-
-    }
-
-
-    /* =====================================================
-       OVERLAY
-    ===================================================== */
-
-    cartOverlay.addEventListener(
-        "click",
-        closeCart
-    );
-
-
-    /* =====================================================
-       ESC KEY
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                closeCart();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       WHATSAPP CHECKOUT
-    ===================================================== */
-
-    if (cartCheckout) {
-
-        cartCheckout.addEventListener(
-            "click",
-            function () {
-
-                if (cart.length === 0) {
-                    return;
-                }
-
-
-                const total =
-                    cart.reduce(
-                        function (sum, item) {
-
-                            return sum +
-                                Number(item.price);
-
-                        },
-                        0
-                    );
-
-
-                const serviceList =
-                    cart.map(
-                        function (item, index) {
-
-                            return (
-                                (index + 1) +
-                                ". " +
-                                item.name +
-                                " - " +
-                                formatPrice(
-                                    item.price
-                                )
-                            );
-
-                        }
-                    ).join("\n");
-
-
-                const message = `
-Hello Sai Graphic Designs 👋
-
-I would like to order the following services:
-
-━━━━━━━━━━━━━━━━━━
-SELECTED SERVICES
-━━━━━━━━━━━━━━━━━━
-
-${serviceList}
-
-━━━━━━━━━━━━━━━━━━
-ORDER SUMMARY
-━━━━━━━━━━━━━━━━━━
-
-Number of Services: ${cart.length}
-
-Estimated Total: ${formatPrice(total)}
-
-Please contact me to discuss the project details and payment.
-
-Thank you!
-Sai Graphic Designs Website
-`;
-
-
-                const whatsappURL =
-                    "https://wa.me/916381128781?text=" +
-                    encodeURIComponent(message);
-
-
-                window.open(
-                    whatsappURL,
-                    "_blank"
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       INITIAL CART LOAD
-    ===================================================== */
-
-    updateCart();
-
-});
-</script>
     <script>
 document.addEventListener("DOMContentLoaded", function () {
 
