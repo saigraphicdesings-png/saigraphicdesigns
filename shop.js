@@ -402,13 +402,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("productModalOverlay");
 
 
-    const mainProductImage =
-        document.getElementById("mainProductImage");
+   const mainProductImage =
+    document.getElementById("mainProductImage");
 
     const productThumbnails =
-        document.getElementById("productThumbnails");
+    document.getElementById("productThumbnails");
 
-
+    const productViewer =
+    document.querySelector(".product-viewer");
+    
     const modalProductName =
         document.getElementById("modalProductName");
 
@@ -847,9 +849,9 @@ function openProductModal(product) {
         console.log("Brochure pages:", product.pages);
 
         // Hide normal product viewer
-        if (productViewer) {
-            productViewer.style.display = "none";
-        }
+       if (productViewer) {
+    productViewer.style.display = "";
+    }
 
         // Hide thumbnails
         if (productThumbnails) {
