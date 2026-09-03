@@ -1,40 +1,106 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 /* =========================================
-   ROOT VARIABLES
+   ROOT VARIABLES — SAI GRAPHIC DESIGNS
+   BLACK & GOLD BRAND THEME
 ========================================= */
 
 :root {
-    --primary: #10b981;
-    --primary-hover: #059669;
-    --primary-light: #ecfdf5;
 
-    --dark: #111827;
-    --dark-muted: #4b5563;
+    /* =========================================
+       BRAND COLORS
+    ========================================= */
 
-    --light: #f9fafb;
-    --white: #ffffff;
-    --border: #e5e7eb;
+    --primary: #FDC302;
+    --primary-hover: #FFD21A;
+    --primary-light: #FFF4BF;
 
-    --accent-orange: #f97316;
+    --primary-dark: #D99F00;
+
+
+    /* =========================================
+       DARK / BLACK COLORS
+    ========================================= */
+
+    --dark: #050505;
+    --dark-muted: #A3A3A3;
+
+    --dark-secondary: #0B0B0B;
+    --dark-card: #141414;
+    --dark-card-hover: #1C1C1C;
+
+
+    /* =========================================
+       LIGHT COLORS
+    ========================================= */
+
+    --light: #F7F7F7;
+    --white: #FFFFFF;
+
+    --border: #292929;
+    --border-light: #E5E5E5;
+
+
+    /* =========================================
+       GOLD ACCENT
+    ========================================= */
+
+    --accent-gold: #FDC302;
+    --accent-gold-dark: #D99F00;
+
+    /* Keep this variable if your existing CSS
+       uses --accent-orange */
+    --accent-orange: #FDC302;
+
+
+    /* =========================================
+       TEXT COLORS
+    ========================================= */
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #D4D4D4;
+    --text-muted: #A3A3A3;
+
+
+    /* =========================================
+       FONT
+    ========================================= */
 
     --font-sans: 'Plus Jakarta Sans', sans-serif;
 
+
+    /* =========================================
+       SHADOWS
+    ========================================= */
+
     --shadow-sm:
-        0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        0 1px 2px 0 rgba(0, 0, 0, 0.20);
 
     --shadow-md:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        0 4px 10px rgba(0, 0, 0, 0.30);
 
     --shadow-lg:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        0 10px 30px rgba(0, 0, 0, 0.45);
+
+
+    /* =========================================
+       GOLD GLOW
+    ========================================= */
+
+    --gold-glow:
+        0 0 25px rgba(253, 195, 2, 0.20);
+
+    --gold-glow-strong:
+        0 0 35px rgba(253, 195, 2, 0.35);
+
+
+    /* =========================================
+       TRANSITION
+    ========================================= */
 
     --transition:
         all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 
 /* =========================================
    RESET
