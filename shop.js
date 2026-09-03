@@ -801,81 +801,102 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =====================================================
        OPEN PRODUCT MODAL
     ===================================================== */
+function openProductModal(product) {
 
-    function openProductModal(product) {
+    if (!product) {
+        return;
+    }
 
-        if (!product) {
-            return;
+    currentProduct = product;
+    currentImageIndex = 0;
+
+    // Product name
+    if (modalProductName) {
+        modalProductName.textContent = product.name;
+    }
+
+    // Description
+    if (modalProductDescription) {
+        modalProductDescription.textContent =
+            product.description || "";
+    }
+
+    // Price
+    if (modalProductPrice) {
+        modalProductPrice.textContent =
+            formatPrice(product.price);
+    }
+
+    // Category
+    if (modalProductCategory) {
+        modalProductCategory.textContent =
+            product.category;
+    }
+
+    // ==========================================
+    // BROCHURE
+    // ==========================================
+
+    if (
+        product.type === "brochure" &&
+        Array.isArray(product.pages) &&
+        product.pages.length > 0
+    ) {
+
+        console.log("Opening brochure:", product.name);
+        console.log("Brochure pages:", product.pages);
+
+        // Hide normal product viewer
+        if (productViewer) {
+            productViewer.style.display = "none";
         }
 
-
-        currentProduct = product;
-        currentImageIndex = 0;
-
-
-        if (modalProductName) {
-
-            modalProductName.textContent =
-                product.name;
-
+        // Hide thumbnails
+        if (productThumbnails) {
+            productThumbnails.style.display = "none";
         }
 
-
-        if (modalProductDescription) {
-
-            modalProductDescription.textContent =
-                product.description;
-
-        }
-
-
-        if (modalProductPrice) {
-
-            modalProductPrice.textContent =
-                formatPrice(product.price);
-
-        }
-
-
-        if (modalProductCategory) {
-
-            modalProductCategory.textContent =
-                product.category;
-
-        }
-
-
-        if (product.type === "brochure") {
-
-            openBrochureFlipbook();
-
-        } else {
-
-            closeBrochureFlipbook();
-
-            renderProductImages();
-
-        }
-
-
-        if (productModal) {
-
-            productModal.classList.add("active");
-
-            productModal.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-        }
-
-
-        document.body.style.overflow =
-            "hidden";
+        // Open flipbook
+        openBrochureFlipbook();
 
     }
 
+    // ==========================================
+    // NORMAL PRODUCT
+    // ==========================================
 
+    else {
+
+        closeBrochureFlipbook();
+
+        if (productViewer) {
+            productViewer.style.display = "";
+        }
+
+        if (productThumbnails) {
+            productThumbnails.style.display = "";
+        }
+
+        renderProductImages();
+    }
+
+    // ==========================================
+    // SHOW MODAL
+    // ==========================================
+
+    if (productModal) {
+
+        productModal.classList.add("active");
+
+        productModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+    }
+
+    // Prevent background scrolling
+    document.body.style.overflow = "hidden";
+}
     /* =====================================================
        RENDER PRODUCT IMAGES
     ===================================================== */
@@ -1209,101 +1230,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderFlipbookSpread() {
 
-        const pages =
-            getBrochurePages();
+    if (!currentProduct) {
+        return;
+    }
 
+    const pages = currentProduct.pages;
 
-        if (
-            !pages.length ||
-            !flipbookLeft ||
-            !flipbookRight
-        ) {
-            return;
+    if (!pages || pages.length === 0) {
+        return;
+    }
+
+    const leftIndex = flipbookSpread * 2;
+    const rightIndex = leftIndex + 1;
+
+    const leftPage = pages[leftIndex];
+    const rightPage = pages[rightIndex];
+
+    // LEFT PAGE
+    if (flipbookLeft) {
+
+        if (leftPage) {
+
+            flipbookLeft.innerHTML = `
+                <img
+                    src="${leftPage}"
+                    alt="Brochure Page ${leftIndex + 1}"
+                    draggable="false"
+                >
+            `;
+
+        } else {
+
+            flipbookLeft.innerHTML = "";
+
         }
+    }
 
+    // RIGHT PAGE
+    if (flipbookRight) {
 
-        if (
-            flipbookSpread < 0
-        ) {
+        if (rightPage) {
 
-            flipbookSpread = 0;
+            flipbookRight.innerHTML = `
+                <img
+                    src="${rightPage}"
+                    alt="Brochure Page ${rightIndex + 1}"
+                    draggable="false"
+                >
+            `;
 
-        }
+        } else {
 
-
-        if (
-            flipbookSpread >= pages.length
-        ) {
-
-            flipbookSpread =
-                Math.max(
-                    0,
-                    pages.length - 2
-                );
+            flipbookRight.innerHTML = "";
 
         }
+    }
 
+    // PAGE COUNTER
+    if (flipbookCounter) {
 
-        const leftPage =
-            pages[flipbookSpread] || null;
-
-        const rightPage =
-            pages[flipbookSpread + 1] || null;
-
-
-        setFlipbookPage(
-            flipbookLeft,
-            leftPage
-        );
-
-
-        setFlipbookPage(
-            flipbookRight,
-            rightPage
-        );
-
-
-        /* Counter */
-
-        const firstPage =
-            flipbookSpread + 1;
-
-        const secondPage =
-            Math.min(
-                flipbookSpread + 2,
-                pages.length
-            );
-
-
-        if (flipbookCounter) {
+        if (rightPage) {
 
             flipbookCounter.textContent =
-                `${firstPage}–${secondPage} / ${pages.length}`;
+                `${leftIndex + 1}–${rightIndex + 1} / ${pages.length}`;
+
+        } else {
+
+            flipbookCounter.textContent =
+                `${leftIndex + 1} / ${pages.length}`;
 
         }
+    }
 
+    // PREVIOUS BUTTON
+    if (flipbookPrev) {
 
-        /* Previous */
-
-        if (flipbookPrev) {
-
-            flipbookPrev.disabled =
-                flipbookSpread <= 0;
-
-        }
-
-
-        /* Next */
-
-        if (flipbookNext) {
-
-            flipbookNext.disabled =
-                flipbookSpread + 2 >= pages.length;
-
-        }
+        flipbookPrev.disabled =
+            flipbookSpread <= 0;
 
     }
 
+    // NEXT BUTTON
+    if (flipbookNext) {
+
+        flipbookNext.disabled =
+            rightIndex >= pages.length - 1;
+
+    }
+}
 
     /* =====================================================
        RESET TURNING PAGE
@@ -1526,57 +1540,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function openBrochureFlipbook() {
 
-        if (!brochureViewer) {
-            return;
-        }
-
-
-        flipbookSpread = 0;
-        flipbookAnimating = false;
-
-
-        /* Hide normal image viewer */
-
-        const normalViewer =
-            document.querySelector(".product-viewer");
-
-
-        if (normalViewer) {
-
-            normalViewer.style.display =
-                "none";
-
-        }
-
-
-        /* Hide thumbnails */
-
-        if (productThumbnails) {
-
-            productThumbnails.style.display =
-                "none";
-
-        }
-
-
-        /* Show flipbook */
-
-        brochureViewer.classList.add(
-            "active"
+    if (!brochureViewer) {
+        console.error(
+            "ERROR: #brochureViewer was not found in shop.html"
         );
-
-
-        brochureViewer.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
-        renderFlipbookSpread();
-
-        resetTurningPage();
-
+        return;
     }
+
+    if (!currentProduct) {
+        console.error(
+            "ERROR: currentProduct is empty"
+        );
+        return;
+    }
+
+    if (
+        !currentProduct.pages ||
+        !Array.isArray(currentProduct.pages) ||
+        currentProduct.pages.length === 0
+    ) {
+        console.error(
+            "ERROR: No brochure pages found",
+            currentProduct
+        );
+        return;
+    }
+
+    console.log(
+        "Opening Flipbook:",
+        currentProduct.pages
+    );
+
+    // Show flipbook
+    brochureViewer.style.display = "flex";
+    brochureViewer.classList.add("active");
+
+    // Reset spread
+    flipbookSpread = 0;
+    flipbookAnimating = false;
+
+    // Render first two pages
+    renderFlipbookSpread();
+
+    // Hide animation layer initially
+    if (flipbookTurningPage) {
+        flipbookTurningPage.style.display = "none";
+        flipbookTurningPage.classList.remove("turning");
+    }
+}
 
 
     /* =====================================================
