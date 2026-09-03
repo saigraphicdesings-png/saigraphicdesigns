@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
           /* =================================================
            BROCHURE TEMPLETE
         ================================================= */
-{
+     {
     id: "brochure-01",
     name: "Premium Corporate Brochure 01",
     price: 500,
