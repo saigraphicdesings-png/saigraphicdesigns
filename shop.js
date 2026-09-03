@@ -1492,26 +1492,28 @@ let flipbookAnimating = false;
        CLOSE PRODUCT MODAL
     ===================================================== */
 
-    function closeProductModal() {
+  function closeProductModal() {
+
+    closeBrochureFlipbook();
 
 
-        productModal.classList.remove(
-            "active"
-        );
+    productModal.classList.remove(
+        "active"
+    );
 
 
-        productModal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+    productModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
 
 
-        currentProduct = null;
+    currentProduct = null;
 
 
-        document.body.style.overflow = "";
+    document.body.style.overflow = "";
 
-    }
+}
 
 
 
