@@ -2206,27 +2206,44 @@ if (flipbookFullscreen) {
             ) {
 
 
-                if (
-                    event.key === "ArrowRight"
-                ) {
+if (
+    event.key === "ArrowRight"
+) {
 
-                    nextImage();
+    if (
+        currentProduct &&
+        currentProduct.type === "brochure"
+    ) {
 
-                }
+        nextBrochurePage();
+
+    } else {
+
+        nextImage();
+
+    }
+
+}
 
 
-                if (
-                    event.key === "ArrowLeft"
-                ) {
+if (
+    event.key === "ArrowLeft"
+) {
 
-                    previousImage();
+    if (
+        currentProduct &&
+        currentProduct.type === "brochure"
+    ) {
 
-                }
+        previousBrochurePage();
 
-            }
+    } else {
 
-        }
-    );
+        previousImage();
+
+    }
+
+}
 
 
 
