@@ -1907,76 +1907,73 @@ footer {
 
 /* =========================================================
    3D BROCHURE FLIPBOOK
-========================================================= */
+===================================================== */
 
 .brochure-viewer {
-    display: none !important;
     width: 100%;
-    padding: 15px 0 5px;
-    position: relative;
+    padding: 25px 20px 5px;
     box-sizing: border-box;
 }
 
-.brochure-viewer.active {
-    display: block !important;
-}
 
-
-/* =========================================================
+/* =====================================================
    FLIPBOOK STAGE
-========================================================= */
+===================================================== */
 
 .flipbook-stage {
     width: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+
+    gap: 22px;
 }
 
 
-/* =========================================================
+/* =====================================================
    BOOK WRAPPER
-========================================================= */
+===================================================== */
 
 .flipbook-book-wrap {
-    width: min(76vw, 820px);
+
+    width: min(720px, 72vw);
+
     perspective: 2200px;
+
+    flex-shrink: 1;
 }
 
 
-/* =========================================================
+/* =====================================================
    BOOK
-========================================================= */
+===================================================== */
 
 .flipbook-book {
+
     position: relative;
 
     width: 100%;
 
     aspect-ratio: 420 / 297;
 
-    min-height: 250px;
-
-    display: flex;
-
     background: #e5e7eb;
 
     border-radius: 5px;
 
+    overflow: hidden;
+
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.25),
-        0 5px 15px rgba(0, 0, 0, 0.15);
+        0 25px 60px rgba(0,0,0,.25),
+        0 8px 20px rgba(0,0,0,.15);
 
     transform-style: preserve-3d;
-
-    overflow: hidden;
 }
 
 
-/* =========================================================
-   STATIC PAGES
-========================================================= */
+/* =====================================================
+   STATIC PAGE
+===================================================== */
 
 .flipbook-static-page {
 
@@ -1989,31 +1986,33 @@ footer {
 
     overflow: hidden;
 
-    background: #ffffff;
+    background: #fff;
 
     backface-visibility: hidden;
 }
 
 
 .flipbook-left {
+
     left: 0;
 
     box-shadow:
-        inset -10px 0 20px rgba(0, 0, 0, 0.08);
+        inset -12px 0 25px rgba(0,0,0,.10);
 }
 
 
 .flipbook-right {
+
     right: 0;
 
     box-shadow:
-        inset 10px 0 20px rgba(0, 0, 0, 0.08);
+        inset 12px 0 25px rgba(0,0,0,.10);
 }
 
 
-/* =========================================================
-   PAGE IMAGE
-========================================================= */
+/* =====================================================
+   PAGE IMAGES
+===================================================== */
 
 .flipbook-static-page img,
 .flipbook-face img {
@@ -2031,11 +2030,12 @@ footer {
 }
 
 
-/* =========================================================
+/* =====================================================
    TURNING PAGE
-========================================================= */
+===================================================== */
 
 .flipbook-turning-page {
+
     position: absolute;
 
     top: 0;
@@ -2050,13 +2050,12 @@ footer {
 
     transform-origin: left center;
 
-    transform: rotateY(0deg);
-
     visibility: hidden;
 
     box-shadow:
-        -5px 0 15px rgba(0, 0, 0, 0.12);
+        -8px 0 18px rgba(0,0,0,.15);
 }
+
 
 .flipbook-face {
 
@@ -2067,7 +2066,7 @@ footer {
     width: 100%;
     height: 100%;
 
-    background: #ffffff;
+    background: #fff;
 
     overflow: hidden;
 
@@ -2076,16 +2075,20 @@ footer {
 
 
 .flipbook-front {
+
     transform: rotateY(0deg);
 }
 
 
 .flipbook-back {
+
     transform: rotateY(180deg);
 }
 
 
-/* NEXT */
+/* =====================================================
+   NEXT PAGE ANIMATION
+===================================================== */
 
 .flipbook-turning-page.turn-next {
 
@@ -2096,11 +2099,11 @@ footer {
     transform: rotateY(0deg);
 
     transition:
-        transform 0.65s cubic-bezier(
-            0.25,
-            0.46,
-            0.45,
-            0.94
+        transform .75s cubic-bezier(
+            .25,
+            .46,
+            .45,
+            .94
         );
 }
 
@@ -2111,26 +2114,29 @@ footer {
 }
 
 
-/* PREVIOUS */
+/* =====================================================
+   PREVIOUS PAGE ANIMATION
+===================================================== */
 
 .flipbook-turning-page.turn-prev {
+
     visibility: visible;
 
     left: 0;
-    right: auto;
 
     transform-origin: right center;
 
     transform: rotateY(0deg);
 
     transition:
-        transform 0.65s cubic-bezier(
-            0.25,
-            0.46,
-            0.45,
-            0.94
+        transform .75s cubic-bezier(
+            .25,
+            .46,
+            .45,
+            .94
         );
 }
+
 
 .flipbook-turning-page.turn-prev.is-flipping {
 
@@ -2138,53 +2144,56 @@ footer {
 }
 
 
-/* =========================================================
+/* =====================================================
    ARROWS
-========================================================= */
+===================================================== */
 
 .flipbook-arrow {
 
     width: 48px;
     height: 48px;
 
-    flex: 0 0 48px;
+    min-width: 48px;
 
-    border: none;
+    border: 0;
 
     border-radius: 50%;
 
     background: #111827;
 
-    color: #ffffff;
+    color: #fff;
 
     font-size: 34px;
 
     line-height: 1;
 
-    cursor: pointer;
-
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    transition:
-        transform 0.2s ease,
-        opacity 0.2s ease,
-        background 0.2s ease;
+    cursor: pointer;
 
-    z-index: 50;
+    z-index: 100;
+
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        opacity .2s ease;
 }
 
 
 .flipbook-arrow:hover {
+
+    background: #10b981;
+
     transform: scale(1.08);
 }
 
 
 .flipbook-arrow:disabled {
-    opacity: 0.35;
+
+    opacity: .35;
 
     cursor: not-allowed;
 
@@ -2192,9 +2201,9 @@ footer {
 }
 
 
-/* =========================================================
+/* =====================================================
    CONTROLS
-========================================================= */
+===================================================== */
 
 .flipbook-controls {
 
@@ -2202,11 +2211,11 @@ footer {
 
     display: flex;
 
-    justify-content: center;
-
     align-items: center;
 
-    gap: 20px;
+    justify-content: center;
+
+    gap: 15px;
 }
 
 
@@ -2214,23 +2223,23 @@ footer {
 
     border: 1px solid #e5e7eb;
 
-    background: #ffffff;
+    background: #fff;
 
     color: #111827;
 
-    padding: 9px 15px;
+    padding: 8px 14px;
 
     border-radius: 8px;
 
+    font-size: 12px;
+
+    font-weight: 700;
+
     cursor: pointer;
 
-    font-size: 13px;
-
-    font-weight: 600;
-
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        background .2s ease,
+        transform .2s ease;
 }
 
 
@@ -2244,128 +2253,125 @@ footer {
 
 .flipbook-counter {
 
-    font-size: 14px;
+    min-width: 60px;
 
-    font-weight: 600;
+    text-align: center;
 
     color: #374151;
 
-    min-width: 70px;
+    font-size: 13px;
 
-    text-align: center;
+    font-weight: 700;
 }
 
+
+/* =====================================================
+   HINT
+===================================================== */
 
 .flipbook-hint {
 
-    margin: 10px 0 0;
+    margin: 8px 0 0;
 
     text-align: center;
 
-    font-size: 12px;
-
     color: #6b7280;
+
+    font-size: 11px;
 }
 
 
-/* =========================================================
-   FULLSCREEN
-========================================================= */
+/* =====================================================
+   MODAL FIX
+===================================================== */
 
-.brochure-viewer:fullscreen {
+.product-modal-box {
 
-    background: #111827;
+    width: min(1000px, 100%);
 
-    padding: 30px;
+    max-height: 94vh;
 
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
+    overflow-y: auto;
 }
 
 
-.brochure-viewer:fullscreen .flipbook-book-wrap {
-
-    width: min(90vw, 1200px);
-}
-
-
-.brochure-viewer:fullscreen .flipbook-hint {
-
-    color: #d1d5db;
-}
-
-
-/* =========================================================
+/* =====================================================
    MOBILE
-========================================================= */
+===================================================== */
 
 @media (max-width: 700px) {
 
+    .brochure-viewer {
+
+        padding:
+            20px 5px 5px;
+    }
+
+
     .flipbook-stage {
 
-        gap: 5px;
+        gap: 6px;
     }
 
 
     .flipbook-book-wrap {
 
-        width: 88vw;
+        width: 82vw;
     }
 
 
     .flipbook-arrow {
 
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
 
-        flex: 0 0 38px;
+        min-width: 36px;
 
-        font-size: 28px;
+        font-size: 26px;
     }
 
 
     .flipbook-controls {
 
-        gap: 10px;
-
-        flex-wrap: wrap;
+        gap: 8px;
     }
 
 
-    .flipbook-hint {
+    .flipbook-control-btn {
+
+        padding: 7px 10px;
 
         font-size: 11px;
     }
 }
 
 
-@media (max-width: 500px) {
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
 
-    .flipbook-stage {
-
-        gap: 3px;
-    }
-
+@media (max-width: 450px) {
 
     .flipbook-book-wrap {
 
-        width: 86vw;
+        width: 80vw;
     }
 
 
     .flipbook-arrow {
 
-        width: 34px;
-        height: 34px;
+        width: 32px;
+        height: 32px;
 
-        flex-basis: 34px;
+        min-width: 32px;
 
-        font-size: 25px;
+        font-size: 23px;
+    }
+
+
+    .flipbook-hint {
+
+        font-size: 10px;
     }
 }
 
