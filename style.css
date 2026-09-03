@@ -166,22 +166,19 @@ header,
 }
 
 .logo-icon {
-    width: 32px;
-    height: 32px;
-
-    flex-shrink: 0;
-
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
 
-    background-color: var(--primary);
-    color: var(--white);
-
-    border-radius: 6px;
-
-    font-size: 1rem;
-    font-weight: 800;
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 
