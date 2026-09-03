@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 /* =========================================
    ROOT VARIABLES — SAI GRAPHIC DESIGNS
@@ -371,7 +371,7 @@ header,
     white-space: nowrap;
 
     box-shadow:
-        0 4px 10px rgba(16, 185, 129, 0.2);
+        0 4px 10px rgba(253, 195, 2, 0.20);
 
     transition: var(--transition);
 }
@@ -382,7 +382,7 @@ header,
     transform: translateY(-2px);
 
     box-shadow:
-        0 6px 16px rgba(16, 185, 129, 0.25);
+        0 6px 16px rgba(253, 195, 2, 0.25);
 }
 
 
@@ -396,7 +396,7 @@ header,
     background:
         radial-gradient(
             circle at 80% 20%,
-            rgba(16, 185, 129, 0.08),
+            rgba(253, 195, 2, 0.08),
             transparent 45%
         );
 
@@ -3237,9 +3237,9 @@ footer {
 ========================================= */
 
 :root {
-    --primary: #10b981;
-    --primary-hover: #059669;
-    --primary-light: #ecfdf5;
+    --primary: #FDC302;
+    --primary-hover: #D99F00;
+    --primary-light: #FFF4BF;
 
     --dark: #111827;
     --dark-muted: #4b5563;
@@ -3248,7 +3248,7 @@ footer {
     --white: #ffffff;
     --border: #e5e7eb;
 
-    --accent-orange: #f97316;
+    --accent-orange: #FDC302;
 
     --font-sans: 'Plus Jakarta Sans', sans-serif;
 
@@ -3595,7 +3595,7 @@ header,
     white-space: nowrap;
 
     box-shadow:
-        0 4px 10px rgba(16, 185, 129, 0.2);
+        0 4px 10px rgba(253, 195, 2, 0.20);
 
     transition: var(--transition);
 }
@@ -3606,7 +3606,7 @@ header,
     transform: translateY(-2px);
 
     box-shadow:
-        0 6px 16px rgba(16, 185, 129, 0.25);
+        0 6px 16px rgba(253, 195, 2, 0.25);
 }
 
 
@@ -3620,7 +3620,7 @@ header,
     background:
         radial-gradient(
             circle at 80% 20%,
-            rgba(16, 185, 129, 0.08),
+            rgba(253, 195, 2, 0.08),
             transparent 45%
         );
 
@@ -6411,3 +6411,634 @@ footer {
         width: 42px;
         height: 42px;
     }
+
+/* =========================================================
+   SAI GRAPHIC DESIGNS — FINAL BLACK & GOLD BRAND OVERRIDES
+   Added without changing HTML / JavaScript
+========================================================= */
+
+body {
+    background: #050505;
+    color: #A3A3A3;
+}
+
+/* Main headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.hero-title,
+.section-title,
+.feature-title,
+.product-name,
+.blog-title,
+.countdown-title,
+.testimonials-left h3,
+.contact-info h3,
+.accordion-header {
+    color: #FFFFFF;
+}
+
+/* Header */
+header,
+.site-header {
+    background: rgba(5, 5, 5, 0.96);
+    border-bottom-color: #292929;
+}
+
+.logo,
+.logo-name {
+    color: #FFFFFF;
+}
+
+.logo-icon {
+    background: #FDC302;
+    color: #050505;
+}
+
+.nav-link {
+    color: #D4D4D4;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #FDC302;
+}
+
+.nav-link.active::after {
+    background: #FDC302;
+}
+
+/* Header buttons */
+.btn-header {
+    background: #FDC302;
+    color: #050505 !important;
+    box-shadow: 0 4px 14px rgba(253, 195, 2, 0.20);
+}
+
+.btn-header:hover {
+    background: #FFD21A;
+    color: #050505 !important;
+    box-shadow: 0 6px 20px rgba(253, 195, 2, 0.30);
+}
+
+/* Cart button */
+.cart-icon-btn {
+    background: #141414;
+    border-color: #292929;
+    color: #FFFFFF;
+}
+
+.cart-icon-btn:hover {
+    border-color: #FDC302;
+    color: #FDC302;
+    box-shadow: 0 0 18px rgba(253, 195, 2, 0.15);
+}
+
+.cart-badge {
+    background: #FDC302;
+    color: #050505;
+    border-color: #050505;
+}
+
+/* Hero */
+.hero {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(253, 195, 2, 0.12),
+            transparent 45%
+        ),
+        #050505;
+}
+
+.hero-title {
+    color: #FFFFFF;
+}
+
+.hero-desc {
+    color: #BDBDBD;
+}
+
+.hero-meta-item {
+    color: #FFFFFF;
+}
+
+.hero-meta-icon,
+.hero-badge {
+    color: #FDC302;
+}
+
+.hero-stat-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.hero-stat-num {
+    color: #FFFFFF;
+}
+
+.hero-stat-lbl {
+    color: #A3A3A3;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #FDC302;
+    color: #050505;
+}
+
+.btn-primary:hover {
+    background: #FFD21A;
+    color: #050505;
+    box-shadow: 0 0 25px rgba(253, 195, 2, 0.25);
+}
+
+.btn-dark {
+    background: #FFFFFF;
+    color: #050505;
+}
+
+.btn-dark:hover {
+    background: #FDC302;
+    color: #050505;
+}
+
+/* General sections */
+.section,
+.about-company,
+.works-section,
+.about-cta,
+.contact-container {
+    background: #050505;
+}
+
+.section-tag,
+.work-number,
+.blog-date,
+.product-price,
+.popular-price {
+    color: #FDC302;
+}
+
+.section-title {
+    color: #FFFFFF;
+}
+
+/* Gold accent text */
+.gold-text,
+.highlight,
+.highlight-text {
+    color: #FDC302;
+}
+
+/* Meta bar */
+.meta-row {
+    background: #111111;
+    border-color: #292929;
+}
+
+.meta-item {
+    color: #FDC302;
+}
+
+/* Features */
+.features-grid {
+    background: transparent;
+}
+
+.feature-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.feature-card:hover {
+    border-color: rgba(253, 195, 2, 0.45);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.40);
+}
+
+.feature-title {
+    color: #FFFFFF;
+}
+
+.feature-desc {
+    color: #A3A3A3;
+}
+
+/* Custom product */
+.custom-product,
+.custom-visual-card {
+    background: #0B0B0B;
+}
+
+.custom-visual-card {
+    border-color: #292929;
+}
+
+.custom-bullet-item {
+    color: #FFFFFF;
+}
+
+.custom-bullet-icon {
+    color: #FDC302;
+}
+
+/* Collections */
+.collection-img-wrap {
+    border: 1px solid #292929;
+}
+
+/* Countdown */
+.countdown-banner {
+    background: #050505;
+}
+
+.countdown-container {
+    background: #141414;
+    border-color: #FDC302;
+}
+
+.clock-item {
+    background: #0B0B0B;
+    border-color: #292929;
+}
+
+.clock-num {
+    color: #FFFFFF;
+}
+
+.clock-lbl {
+    color: #A3A3A3;
+}
+
+/* Products */
+.product-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.product-card:hover {
+    border-color: rgba(253, 195, 2, 0.40);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+}
+
+.product-img-wrap {
+    background: #0B0B0B;
+}
+
+.product-name {
+    color: #FFFFFF;
+}
+
+/* Ticker */
+.ticker-wrap {
+    background: #000000;
+    border-top-color: #FDC302;
+    border-bottom-color: #FDC302;
+}
+
+.ticker-item {
+    color: #FFFFFF;
+}
+
+.ticker-star {
+    color: #FDC302;
+}
+
+/* Popular */
+.popular-right {
+    background: #141414;
+    border-color: #292929;
+}
+
+.popular-mockup-wrap {
+    background: #0B0B0B;
+    border-color: #292929;
+}
+
+/* Testimonials */
+.testimonials {
+    background: #0B0B0B;
+}
+
+.testimonial-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.testimonial-text {
+    color: #BDBDBD;
+}
+
+.testimonial-name {
+    color: #FFFFFF;
+}
+
+.testimonials-rating-badge {
+    color: #FFFFFF;
+}
+
+/* Logo wall */
+.logo-wall {
+    background: #050505;
+    border-color: #292929;
+}
+
+/* Blog */
+.blog-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.blog-title {
+    color: #FFFFFF;
+}
+
+/* Footer */
+footer {
+    background: #000000;
+    border-top-color: #292929;
+    color: #A3A3A3;
+}
+
+.footer-col-title {
+    color: #FFFFFF;
+}
+
+.social-icon {
+    background: #141414;
+    border-color: #292929;
+    color: #D4D4D4;
+}
+
+.social-icon:hover {
+    background: #FDC302;
+    border-color: #FDC302;
+    color: #050505;
+}
+
+.footer-link a:hover {
+    color: #FDC302;
+}
+
+/* About page */
+.about-page {
+    background: #050505;
+}
+
+.about-hero {
+    background: #0B0B0B;
+}
+
+.about-hero p,
+.about-company-content p,
+.mission-card p,
+.vision-card p,
+.about-cta p {
+    color: #A3A3A3;
+}
+
+/* Mission / Vision */
+.mission-vision {
+    background: #0B0B0B;
+}
+
+.mission-card,
+.vision-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.mv-icon {
+    background: #FDC302;
+    color: #050505;
+}
+
+/* Works */
+.work-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.work-card h3 {
+    color: #FFFFFF;
+}
+
+.work-card p {
+    color: #A3A3A3;
+}
+
+/* Achievements */
+.achievements-section {
+    background: #0B0B0B;
+}
+
+.achievement-card {
+    background: #141414;
+    border-color: #292929;
+}
+
+.achievement-number {
+    color: #FDC302;
+}
+
+.achievement-title {
+    color: #FFFFFF;
+}
+
+.achievement-description {
+    color: #A3A3A3;
+}
+
+/* Contact */
+.contact-info {
+    background: #141414;
+    border-color: #292929;
+}
+
+.contact-info-item h4 {
+    color: #FFFFFF;
+}
+
+.contact-info-icon {
+    background: rgba(253, 195, 2, 0.12);
+    color: #FDC302;
+}
+
+.contact-form {
+    background: #141414;
+    border-color: #292929;
+}
+
+.form-group label {
+    color: #FFFFFF;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    background: #0B0B0B;
+    color: #FFFFFF;
+    border-color: #292929;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #737373;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #FDC302;
+    box-shadow: 0 0 0 3px rgba(253, 195, 2, 0.12);
+}
+
+.contact-submit {
+    background: #FDC302;
+    color: #050505;
+}
+
+.contact-submit:hover {
+    background: #FFD21A;
+    color: #050505;
+}
+
+/* Accordion */
+.accordion-item {
+    background: #141414;
+    border-color: #292929;
+}
+
+.accordion-header {
+    color: #FFFFFF;
+}
+
+.accordion-content {
+    color: #A3A3A3;
+}
+
+/* Services */
+.service-image-wrap,
+.logo-before-after {
+    background: #0B0B0B;
+}
+
+.service-image-badge {
+    background: #FDC302;
+    color: #050505;
+}
+
+.after-label {
+    background: #FFF4BF;
+    color: #8A6500;
+}
+
+.logo-ba-divider {
+    background: #FDC302;
+    color: #050505;
+}
+
+/* Cart drawer */
+.cart-overlay {
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.cart-drawer,
+.cart-header,
+.cart-footer {
+    background: #0B0B0B;
+}
+
+.cart-header {
+    border-bottom-color: #292929;
+}
+
+.cart-header h3,
+.cart-item-name,
+.cart-total {
+    color: #FFFFFF;
+}
+
+.cart-items {
+    color: #A3A3A3;
+}
+
+.cart-item {
+    border-bottom-color: #292929;
+}
+
+.cart-item-price,
+.cart-total span:last-child {
+    color: #FDC302;
+}
+
+.cart-close {
+    background: #141414;
+    color: #FFFFFF;
+}
+
+.cart-close:hover {
+    background: rgba(253, 195, 2, 0.12);
+    color: #FDC302;
+}
+
+.cart-footer {
+    border-top-color: #292929;
+}
+
+.cart-checkout {
+    background: #FDC302;
+    color: #050505;
+}
+
+.cart-checkout:hover:not(:disabled) {
+    background: #FFD21A;
+}
+
+.empty-cart {
+    color: #A3A3A3;
+}
+
+.empty-cart-icon {
+    background: rgba(253, 195, 2, 0.12);
+    color: #FDC302;
+}
+
+.empty-cart strong {
+    color: #FFFFFF;
+}
+
+/* Toast */
+.toast {
+    background: #FDC302;
+    color: #050505;
+}
+
+/* Mobile navigation */
+@media (max-width: 900px) {
+    .main-nav {
+        background: #0B0B0B !important;
+        border-color: #292929 !important;
+    }
+
+    .main-nav .nav-link {
+        color: #FFFFFF;
+    }
+
+    .main-nav .nav-link:hover,
+    .main-nav .nav-link.active {
+        color: #FDC302;
+        background: rgba(253, 195, 2, 0.08);
+    }
+}
+
+@media (max-width: 650px) {
+    .mobile-menu-btn {
+        background: #141414;
+        color: #FDC302;
+        border-color: #292929;
+    }
+}
