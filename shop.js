@@ -1275,46 +1275,53 @@ let flipbookAnimating = false;
        OPEN PRODUCT MODAL
     ===================================================== */
 
-    function openProductModal(product) {
+  function openProductModal(product) {
+
+    currentProduct = product;
+
+    currentImageIndex = 0;
 
 
-        currentProduct = product;
-
-        currentImageIndex = 0;
-
-
-        modalProductName.textContent =
-            product.name;
+    modalProductName.textContent =
+        product.name;
 
 
-        modalProductDescription.textContent =
-            product.description;
+    modalProductDescription.textContent =
+        product.description;
 
 
-        modalProductPrice.textContent =
-            formatPrice(product.price);
+    modalProductPrice.textContent =
+        formatPrice(product.price);
 
 
-        modalProductCategory.textContent =
-            product.category;
+    modalProductCategory.textContent =
+        product.category;
 
+
+    if (product.type === "brochure") {
+
+        openBrochureFlipbook();
+
+    } else {
+
+        closeBrochureFlipbook();
 
         renderProductImages();
 
-
-        productModal.classList.add("active");
-
-        productModal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-
-        document.body.style.overflow =
-            "hidden";
-
     }
 
+
+    productModal.classList.add("active");
+
+    productModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
 
 
     /* =====================================================
