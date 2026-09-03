@@ -314,7 +314,89 @@
 
 </main>
 
+<!-- =========================================
+     3D BROCHURE FLIPBOOK
+========================================= -->
 
+<div class="brochure-viewer" id="brochureViewer">
+
+    <div class="flipbook-stage">
+
+        <button
+            type="button"
+            class="flipbook-arrow flipbook-prev"
+            id="flipbookPrev"
+            aria-label="Previous page">
+            ‹
+        </button>
+
+        <div class="flipbook-book-wrap">
+
+            <div class="flipbook-book" id="flipbookBook">
+
+                <!-- LEFT STATIC PAGE -->
+                <div
+                    class="flipbook-static-page flipbook-left"
+                    id="flipbookLeft">
+                </div>
+
+                <!-- RIGHT STATIC PAGE -->
+                <div
+                    class="flipbook-static-page flipbook-right"
+                    id="flipbookRight">
+                </div>
+
+                <!-- TURNING PAGE -->
+                <div
+                    class="flipbook-turning-page"
+                    id="flipbookTurningPage">
+
+                    <div class="flipbook-face flipbook-front"></div>
+
+                    <div class="flipbook-face flipbook-back"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="flipbook-arrow flipbook-next"
+            id="flipbookNext"
+            aria-label="Next page">
+            ›
+        </button>
+
+    </div>
+
+
+    <!-- FLIPBOOK CONTROLS -->
+
+    <div class="flipbook-controls">
+
+        <button
+            type="button"
+            id="flipbookFullscreen"
+            class="flipbook-control-btn">
+            ⛶ Fullscreen
+        </button>
+
+        <span
+            id="flipbookCounter"
+            class="flipbook-counter">
+            1–2 / 8
+        </span>
+
+    </div>
+
+
+    <p class="flipbook-hint">
+        Click the arrows or use ← → keys to turn pages
+    </p>
+
+</div>
 
 <!-- =====================================================
      PRODUCT PREVIEW MODAL
@@ -345,8 +427,6 @@
             ×
 
         </button>
-
-
 
         <!-- IMAGE AREA -->
 
