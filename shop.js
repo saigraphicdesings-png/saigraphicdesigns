@@ -247,6 +247,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
             ]
         },
+        
+     {
+            id: "brochure-01",
+
+            name: "Premium Corporate Brochure 01",
+
+            price: 200,
+
+            category: "Printing Designs",
+         
+            type: "brochure",
+         
+            description:
+                "Premium editable corporate brochure template in CDR format.",
+
+             pages: [
+                "Images/Shop/brochure-01/cover.jpg",
+                "Images/Shop/brochure-01/page-2.jpg",
+                "Images/Shop/brochure-01/page-3.jpg",
+                "Images/Shop/brochure-01/page-4.jpg",
+                "Images/Shop/brochure-01/page-5.jpg",
+                "Images/Shop/brochure-01/page-6.jpg",
+                "Images/Shop/brochure-01/back.jpg"
+                ]
+            }
+
         /* =================================================
            DIGITAL & SOCIAL MEDIA
         ================================================= */
