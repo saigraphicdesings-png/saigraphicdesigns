@@ -2055,6 +2055,62 @@ Thank you!`;
         previousImage
     );
 
+    /* =====================================================
+   FLIPBOOK EVENTS
+===================================================== */
+
+if (flipbookNext) {
+
+    flipbookNext.addEventListener(
+        "click",
+        nextBrochurePage
+    );
+
+}
+
+
+if (flipbookPrev) {
+
+    flipbookPrev.addEventListener(
+        "click",
+        previousBrochurePage
+    );
+
+}
+
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+if (flipbookFullscreen) {
+
+    flipbookFullscreen.addEventListener(
+        "click",
+        function () {
+
+            if (
+                !document.fullscreenElement
+            ) {
+
+                if (
+                    brochureViewer.requestFullscreen
+                ) {
+
+                    brochureViewer.requestFullscreen();
+
+                }
+
+            } else {
+
+                document.exitFullscreen();
+
+            }
+
+        }
+    );
+
+}
 
     modalAddCart.addEventListener(
         "click",
