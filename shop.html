@@ -254,136 +254,68 @@
                  FILTER CARDS
             ================================================== -->
 
-            <div class="shop-filters" id="shopFilters">
-
-    <!-- ALL -->
-    <button type="button" class="shop-filter active" data-filter="all">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="3" width="6" height="6" rx="1"></rect>
-                <rect x="15" y="3" width="6" height="6" rx="1"></rect>
-                <rect x="3" y="15" width="6" height="6" rx="1"></rect>
-                <rect x="15" y="15" width="6" height="6" rx="1"></rect>
-            </svg>
-        </span>
-        <span class="filter-label">All</span>
-    </button>
+            <div class="shop-filters"
+                 id="shopFilters">
 
 
-    <!-- PAID -->
-    <button type="button" class="shop-filter" data-filter="paid">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 8h14"></path>
-                <path d="M7 5h10l2 3H5l2-3Z"></path>
-                <path d="M6 8v11h12V8"></path>
-                <path d="M9 12h6"></path>
-            </svg>
-        </span>
-        <span class="filter-label">Paid</span>
-    </button>
+                <!-- =================================================
+                     ALL
+                ================================================== -->
+
+                <button
+                    type="button"
+                    class="shop-filter active"
+                    data-filter="all"
+                    aria-label="Show all products">
+
+                    <span class="filter-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             aria-hidden="true">
+
+                            <rect
+                                x="3"
+                                y="3"
+                                width="7"
+                                height="7"
+                                rx="1">
+                            </rect>
+
+                            <rect
+                                x="14"
+                                y="3"
+                                width="7"
+                                height="7"
+                                rx="1">
+                            </rect>
+
+                            <rect
+                                x="3"
+                                y="14"
+                                width="7"
+                                height="7"
+                                rx="1">
+                            </rect>
+
+                            <rect
+                                x="14"
+                                y="14"
+                                width="7"
+                                height="7"
+                                rx="1">
+                            </rect>
+
+                        </svg>
+
+                    </span>
 
 
-    <!-- FREE -->
-    <button type="button" class="shop-filter" data-filter="free">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 8h12v12H6z"></path>
-                <path d="M4 8h16"></path>
-                <path d="M12 8v12"></path>
-                <path d="M12 8H8.5A2.5 2.5 0 1 1 12 5.5V8Z"></path>
-                <path d="M12 8h3.5A2.5 2.5 0 1 0 12 5.5V8Z"></path>
-            </svg>
-        </span>
-        <span class="filter-label">Free</span>
-    </button>
+                    <span class="filter-label">
+                        All
+                    </span>
 
+                </button>
 
-    <!-- CDR -->
-    <button type="button" class="shop-filter" data-filter="cdr">
-        <span class="filter-icon format-icon">CDR</span>
-        <span class="filter-label">CDR</span>
-    </button>
-
-
-    <!-- PSD -->
-    <button type="button" class="shop-filter" data-filter="psd">
-        <span class="filter-icon format-icon">PSD</span>
-        <span class="filter-label">PSD</span>
-    </button>
-
-
-    <!-- PNG -->
-    <button type="button" class="shop-filter" data-filter="png">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 3h9l4 4v14H6z"></path>
-                <path d="M15 3v5h5"></path>
-                <path d="M9 17l2.5-3 2 2 1.5-2 2 3"></path>
-            </svg>
-        </span>
-        <span class="filter-label">PNG</span>
-    </button>
-
-
-    <!-- SVG -->
-    <button type="button" class="shop-filter" data-filter="svg">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="7" cy="7" r="2"></circle>
-                <circle cx="17" cy="7" r="2"></circle>
-                <circle cx="7" cy="17" r="2"></circle>
-                <circle cx="17" cy="17" r="2"></circle>
-                <path d="M9 7h6"></path>
-                <path d="M7 9v6"></path>
-                <path d="M17 9v6"></path>
-                <path d="M9 17h6"></path>
-            </svg>
-        </span>
-        <span class="filter-label">SVG</span>
-    </button>
-
-
-    <!-- BUSINESS CARD -->
-    <button type="button" class="shop-filter" data-filter="business-card">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                <circle cx="8" cy="10" r="2"></circle>
-                <path d="M12 10h6"></path>
-                <path d="M12 14h4"></path>
-            </svg>
-        </span>
-        <span class="filter-label">Business Card</span>
-    </button>
-
-
-    <!-- LETTER HEAD -->
-    <button type="button" class="shop-filter" data-filter="letter-head">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 3h10l4 4v14H5z"></path>
-                <path d="M15 3v5h4"></path>
-                <path d="M8 12h8"></path>
-                <path d="M8 16h6"></path>
-            </svg>
-        </span>
-        <span class="filter-label">Letter Head</span>
-    </button>
-
-
-    <!-- ENVELOPE -->
-    <button type="button" class="shop-filter" data-filter="envelope">
-        <span class="filter-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                <path d="m4 7 8 6 8-6"></path>
-            </svg>
-        </span>
-        <span class="filter-label">Envelope</span>
-    </button>
-
-</div>
 
 
                 <!-- =================================================
