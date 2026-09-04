@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const WHATSAPP_NUMBER = "916381128781";
 
+
     /* =====================================================
        PRODUCT DATA
     ===================================================== */
@@ -539,59 +540,135 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
-    }const isFree =
-    Number(product.price) === 0;
+    }
 
-card.innerHTML = `
 
-    <div class="product-preview">
+    /* =====================================================
+       RENDER PRODUCTS
+    ===================================================== */
 
-        ${isFree ? `
-            <span class="free-ribbon">
-                FREE
-            </span>
-        ` : ""}
+    function renderProducts() {
 
-        <img
-            src="${escapeHTML(product.images[0])}"
-            alt="${escapeHTML(product.name)}"
-            loading="lazy">
+        const categoryContainers = {
 
-    </div>
+            "Printing Designs":
+                printingProducts,
 
-    <div class="product-info">
+            "Digital & Social Media Designs":
+                digitalProducts,
 
-        <span class="product-category">
-            ${escapeHTML(product.category)}
-        </span>
+            "Packaging Designs":
+                packagingProducts
 
-        <h3>
-            ${escapeHTML(product.name)}
-        </h3>
+        };
 
-        <p>
-            ${escapeHTML(product.description)}
-        </p>
 
-        <div class="product-bottom">
+        Object.keys(categoryContainers)
+            .forEach(function (category) {
 
-            <strong class="${isFree ? "free-price" : ""}">
-                ${formatPrice(product.price)}
-            </strong>
+                const container =
+                    categoryContainers[category];
 
-            <button
-                type="button"
-                class="add-product-btn">
+                if (container) {
 
-                Add to Cart
+                    container.innerHTML = "";
 
-            </button>
+                }
 
-        </div>
+            });
 
-    </div>
 
-`;
+        products.forEach(function (product) {
+
+            const container =
+                categoryContainers[
+                    product.category
+                ];
+
+
+            if (!container) {
+
+                console.warn(
+                    "Container not found for:",
+                    product.category
+                );
+
+                return;
+
+            }
+
+
+            const card =
+                document.createElement("article");
+
+
+            card.className =
+                "shop-product";
+
+
+            card.dataset.id =
+                product.id;
+
+
+            const isFree =
+                Number(product.price) === 0;
+
+
+            card.innerHTML = `
+
+                <div class="product-preview">
+
+                    ${isFree ? `
+                        <span class="free-ribbon">
+                            FREE
+                        </span>
+                    ` : ""}
+
+                    <img
+                        src="${escapeHTML(product.images[0])}"
+                        alt="${escapeHTML(product.name)}"
+                        loading="lazy">
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <span class="product-category">
+                        ${escapeHTML(product.category)}
+                    </span>
+
+
+                    <h3>
+                        ${escapeHTML(product.name)}
+                    </h3>
+
+
+                    <p>
+                        ${escapeHTML(product.description)}
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <strong class="${isFree ? "free-price" : ""}">
+                            ${formatPrice(product.price)}
+                        </strong>
+
+
+                        <button
+                            type="button"
+                            class="add-product-btn">
+
+                            Add to Cart
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
 
 
             container.appendChild(card);
