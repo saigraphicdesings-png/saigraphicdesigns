@@ -1,4 +1,9 @@
 {
+  "name": "saigraphicdesigns",
+  "compatibility_date": "2026-09-04",
+  "assets": {
+    "directory": "."
+  },
   "observability": {
     "logs": {
       "enabled": true,
