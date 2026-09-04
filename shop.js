@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         {
             id: "Letter-Head",
-            name: "4 Business Card Bundle 04",
+            name: "Lette Head Templete",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -180,11 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
             images: [
-                "Images/Shop/Letter-head-01/.jpg",
-                "Images/Shop/business-card-Bundel-04/2.jpg",
-                "Images/Shop/business-card-Bundel-04/3.jpg",
-                "Images/Shop/business-card-Bundel-04/4.jpg",
-                "Images/Shop/business-card-Bundel-04/5.jpg"
+                "Images/Shop/Letter-head-01/1.jpg",
             ]
         },
 
