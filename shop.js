@@ -188,6 +188,199 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
+        /* =================================================
+           DIGITAL & SOCIAL MEDIA DESIGNS
+        ================================================= */
+
+        {
+            id: "social-media-01",
+            name: "Premium Social Media Design 01",
+            price: 99,
+            category: "Digital & Social Media Designs",
+            type: "social-media",
+            formats: ["psd", "png"],
+            description:
+                "Premium editable social media poster template for digital marketing.",
+            images: [
+                "Images/Shop/social-media-01/1.jpg",
+                "Images/Shop/social-media-01/2.jpg",
+                "Images/Shop/social-media-01/3.jpg",
+                "Images/Shop/social-media-01/4.jpg",
+                "Images/Shop/social-media-01/5.jpg"
+            ]
+        },
+
+        {
+            id: "social-media-02",
+            name: "Premium Social Media Design 02",
+            price: 99,
+            category: "Digital & Social Media Designs",
+            type: "social-media",
+            formats: ["psd", "png"],
+            description:
+                "Creative social media design template for businesses and promotions.",
+            images: [
+                "Images/Shop/social-media-02/1.jpg",
+                "Images/Shop/social-media-02/2.jpg",
+                "Images/Shop/social-media-02/3.jpg",
+                "Images/Shop/social-media-02/4.jpg",
+                "Images/Shop/social-media-02/5.jpg"
+            ]
+        },
+
+        {
+            id: "social-media-03",
+            name: "Premium Social Media Design 03",
+            price: 99,
+            category: "Digital & Social Media Designs",
+            type: "social-media",
+            formats: ["psd", "png"],
+            description:
+                "Professional editable social media marketing design.",
+            images: [
+                "Images/Shop/social-media-03/1.jpg",
+                "Images/Shop/social-media-03/2.jpg",
+                "Images/Shop/social-media-03/3.jpg",
+                "Images/Shop/social-media-03/4.jpg",
+                "Images/Shop/social-media-03/5.jpg"
+            ]
+        },
+
+        {
+            id: "social-media-04",
+            name: "Premium Social Media Design 04",
+            price: 99,
+            category: "Digital & Social Media Designs",
+            type: "social-media",
+            formats: ["psd", "png"],
+            description:
+                "Modern premium social media poster template.",
+            images: [
+                "Images/Shop/social-media-04/1.jpg",
+                "Images/Shop/social-media-04/2.jpg",
+                "Images/Shop/social-media-04/3.jpg",
+                "Images/Shop/social-media-04/4.jpg",
+                "Images/Shop/social-media-04/5.jpg"
+            ]
+        },
+
+        {
+            id: "social-media-05",
+            name: "Premium Social Media Design 05",
+            price: 99,
+            category: "Digital & Social Media Designs",
+            type: "social-media",
+            formats: ["psd", "png"],
+            description:
+                "Premium editable digital marketing design template.",
+            images: [
+                "Images/Shop/social-media-05/1.jpg",
+                "Images/Shop/social-media-05/2.jpg",
+                "Images/Shop/social-media-05/3.jpg",
+                "Images/Shop/social-media-05/4.jpg",
+                "Images/Shop/social-media-05/5.jpg"
+            ]
+        },
+
+
+        /* =================================================
+           PACKAGING DESIGNS
+        ================================================= */
+
+        {
+            id: "packaging-01",
+            name: "Premium Packaging Design 01",
+            price: 250,
+            category: "Packaging Designs",
+            type: "packaging",
+            formats: ["cdr", "png"],
+            description:
+                "Professional editable packaging template for product branding.",
+            images: [
+                "Images/Shop/packaging-01/1.jpg",
+                "Images/Shop/packaging-01/2.jpg",
+                "Images/Shop/packaging-01/3.jpg",
+                "Images/Shop/packaging-01/4.jpg",
+                "Images/Shop/packaging-01/5.jpg"
+            ]
+        },
+
+        {
+            id: "packaging-02",
+            name: "Premium Packaging Design 02",
+            price: 250,
+            category: "Packaging Designs",
+            type: "packaging",
+            formats: ["cdr", "png"],
+            description:
+                "Creative editable packaging design suitable for commercial products.",
+            images: [
+                "Images/Shop/packaging-02/1.jpg",
+                "Images/Shop/packaging-02/2.jpg",
+                "Images/Shop/packaging-02/3.jpg",
+                "Images/Shop/packaging-02/4.jpg",
+                "Images/Shop/packaging-02/5.jpg"
+            ]
+        },
+
+        {
+            id: "packaging-03",
+            name: "Premium Packaging Design 03",
+            price: 300,
+            category: "Packaging Designs",
+            type: "packaging",
+            formats: ["cdr", "png"],
+            description:
+                "Premium product packaging template with professional presentation.",
+            images: [
+                "Images/Shop/packaging-03/1.jpg",
+                "Images/Shop/packaging-03/2.jpg",
+                "Images/Shop/packaging-03/3.jpg",
+                "Images/Shop/packaging-03/4.jpg",
+                "Images/Shop/packaging-03/5.jpg"
+            ]
+        },
+
+        {
+            id: "packaging-04",
+            name: "Premium Packaging Design 04",
+            price: 300,
+            category: "Packaging Designs",
+            type: "packaging",
+            formats: ["cdr", "png"],
+            description:
+                "Editable premium packaging template for modern brands.",
+            images: [
+                "Images/Shop/packaging-04/1.jpg",
+                "Images/Shop/packaging-04/2.jpg",
+                "Images/Shop/packaging-04/3.jpg",
+                "Images/Shop/packaging-04/4.jpg",
+                "Images/Shop/packaging-04/5.jpg"
+            ]
+        },
+
+        {
+            id: "packaging-05",
+            name: "Premium Packaging Design 05",
+            price: 500,
+            category: "Packaging Designs",
+            type: "packaging",
+            formats: ["cdr", "png"],
+            description:
+                "High-quality editable packaging design for premium products.",
+            images: [
+                "Images/Shop/packaging-05/1.jpg",
+                "Images/Shop/packaging-05/2.jpg",
+                "Images/Shop/packaging-05/3.jpg",
+                "Images/Shop/packaging-05/4.jpg",
+                "Images/Shop/packaging-05/5.jpg"
+            ]
+        }
+
+    ];
+
+
     /* =====================================================
        ELEMENTS
     ===================================================== */
