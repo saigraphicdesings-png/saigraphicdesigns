@@ -24,13 +24,17 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Premium Business Card 01",
             price: 99,
             category: "Printing Designs",
-                type: "business-card",
-                formats: [
-                    "cdr",
-                    "png"
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
             ],
+
             description:
                 "Premium business card template suitable for travel agency businesses. Editable CDR file.",
+
             images: [
                 "Images/Shop/business-card-01/3.jpg",
                 "Images/Shop/business-card-01/1.jpg",
@@ -38,13 +42,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-02",
             name: "Premium Business Card 02",
             price: 99,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Modern premium business card template suitable for makeup studio businesses. Editable CDR file.",
+
             images: [
                 "Images/Shop/business-card-02/1.jpg",
                 "Images/Shop/business-card-02/2.jpg",
@@ -52,13 +66,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-03",
             name: "Premium Business Card 03",
             price: 99,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Creative professional business card template suitable for hotel businesses. Editable CDR file.",
+
             images: [
                 "Images/Shop/business-card-03/1.jpg",
                 "Images/Shop/business-card-03/2.jpg",
@@ -66,13 +90,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-04",
             name: "Premium Business Card 04",
             price: 99,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Elegant editable business card template suitable for international travel businesses. Editable CDR file.",
+
             images: [
                 "Images/Shop/business-card-04/1.jpg",
                 "Images/Shop/business-card-04/2.jpg",
@@ -80,13 +114,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-05",
             name: "Premium Business Card 05",
             price: 99,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Premium creative business card template suitable for hospital and clinic businesses. Editable CDR file.",
+
             images: [
                 "Images/Shop/business-card-05/1.jpg",
                 "Images/Shop/business-card-05/2.jpg",
@@ -94,13 +138,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-Bundle-01",
             name: "4 Business Card Bundle 01",
             price: 199,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
+
             images: [
                 "Images/Shop/business-card-Bundel-01/1.jpg",
                 "Images/Shop/business-card-Bundel-01/2.jpg",
@@ -110,13 +164,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-Bundle-02",
             name: "4 Business Card Bundle 02",
             price: 199,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
+
             images: [
                 "Images/Shop/business-card-Bundel-02/1.jpg",
                 "Images/Shop/business-card-Bundel-02/2.jpg",
@@ -126,13 +190,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-Bundle-03",
             name: "4 Business Card Bundle 03",
             price: 0,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Free collection of 4 premium business card templates. Editable CDR files.",
+
             images: [
                 "Images/Shop/business-card-Bundel-03/1.jpg",
                 "Images/Shop/business-card-Bundel-03/2.jpg",
@@ -142,13 +216,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-Bundle-04",
             name: "4 Business Card Bundle 04",
             price: 199,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
+
             images: [
                 "Images/Shop/business-card-Bundel-04/1.jpg",
                 "Images/Shop/business-card-Bundel-04/2.jpg",
@@ -158,13 +242,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "business-card-Bundle-05",
             name: "4 Business Card Bundle 05",
             price: 199,
             category: "Printing Designs",
+
+            type: "business-card",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
+
             images: [
                 "Images/Shop/business-card-Bundel-05/1.jpg",
                 "Images/Shop/business-card-Bundel-05/2.jpg",
@@ -184,8 +278,17 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Premium Social Media Design 01",
             price: 99,
             category: "Digital & Social Media Designs",
+
+            type: "social-media",
+
+            formats: [
+                "psd",
+                "png"
+            ],
+
             description:
                 "Premium editable social media poster template for digital marketing.",
+
             images: [
                 "Images/Shop/social-media-01/1.jpg",
                 "Images/Shop/social-media-01/2.jpg",
@@ -195,13 +298,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "social-media-02",
             name: "Premium Social Media Design 02",
             price: 99,
             category: "Digital & Social Media Designs",
+
+            type: "social-media",
+
+            formats: [
+                "psd",
+                "png"
+            ],
+
             description:
                 "Creative social media design template for businesses and promotions.",
+
             images: [
                 "Images/Shop/social-media-02/1.jpg",
                 "Images/Shop/social-media-02/2.jpg",
@@ -211,13 +324,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "social-media-03",
             name: "Premium Social Media Design 03",
             price: 99,
             category: "Digital & Social Media Designs",
+
+            type: "social-media",
+
+            formats: [
+                "psd",
+                "png"
+            ],
+
             description:
                 "Professional editable social media marketing design.",
+
             images: [
                 "Images/Shop/social-media-03/1.jpg",
                 "Images/Shop/social-media-03/2.jpg",
@@ -227,13 +350,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "social-media-04",
             name: "Premium Social Media Design 04",
             price: 99,
             category: "Digital & Social Media Designs",
+
+            type: "social-media",
+
+            formats: [
+                "psd",
+                "png"
+            ],
+
             description:
                 "Modern premium social media poster template.",
+
             images: [
                 "Images/Shop/social-media-04/1.jpg",
                 "Images/Shop/social-media-04/2.jpg",
@@ -243,13 +376,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "social-media-05",
             name: "Premium Social Media Design 05",
             price: 99,
             category: "Digital & Social Media Designs",
+
+            type: "social-media",
+
+            formats: [
+                "psd",
+                "png"
+            ],
+
             description:
                 "Premium editable digital marketing design template.",
+
             images: [
                 "Images/Shop/social-media-05/1.jpg",
                 "Images/Shop/social-media-05/2.jpg",
@@ -269,8 +412,17 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Premium Packaging Design 01",
             price: 250,
             category: "Packaging Designs",
+
+            type: "packaging",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Professional editable packaging template for product branding.",
+
             images: [
                 "Images/Shop/packaging-01/1.jpg",
                 "Images/Shop/packaging-01/2.jpg",
@@ -280,13 +432,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "packaging-02",
             name: "Premium Packaging Design 02",
             price: 250,
             category: "Packaging Designs",
+
+            type: "packaging",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Creative editable packaging design suitable for commercial products.",
+
             images: [
                 "Images/Shop/packaging-02/1.jpg",
                 "Images/Shop/packaging-02/2.jpg",
@@ -296,13 +458,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "packaging-03",
             name: "Premium Packaging Design 03",
             price: 300,
             category: "Packaging Designs",
+
+            type: "packaging",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Premium product packaging template with professional presentation.",
+
             images: [
                 "Images/Shop/packaging-03/1.jpg",
                 "Images/Shop/packaging-03/2.jpg",
@@ -312,13 +484,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "packaging-04",
             name: "Premium Packaging Design 04",
             price: 300,
             category: "Packaging Designs",
+
+            type: "packaging",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "Editable premium packaging template for modern brands.",
+
             images: [
                 "Images/Shop/packaging-04/1.jpg",
                 "Images/Shop/packaging-04/2.jpg",
@@ -328,13 +510,23 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+
         {
             id: "packaging-05",
             name: "Premium Packaging Design 05",
             price: 500,
             category: "Packaging Designs",
+
+            type: "packaging",
+
+            formats: [
+                "cdr",
+                "png"
+            ],
+
             description:
                 "High-quality editable packaging design for premium products.",
+
             images: [
                 "Images/Shop/packaging-05/1.jpg",
                 "Images/Shop/packaging-05/2.jpg",
@@ -419,6 +611,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const cartCheckout =
         document.getElementById("cartCheckout");
+
+
+    /* =====================================================
+       FILTER ELEMENTS
+    ===================================================== */
+
+    const shopFilters =
+        document.getElementById("shopFilters");
+
+    const filterButtons =
+        shopFilters
+            ? shopFilters.querySelectorAll(".shop-filter")
+            : [];
+
+    let activeFilter = "all";
 
 
     /* =====================================================
@@ -507,6 +714,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
+       NORMALIZE VALUE
+    ===================================================== */
+
+    function normalizeValue(value) {
+
+        return String(value ?? "")
+            .trim()
+            .toLowerCase()
+            .replace(/[_\s]+/g, "-");
+
+    }
+
+
+    /* =====================================================
        SAVE CART
     ===================================================== */
 
@@ -549,6 +770,153 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
+       FILTER PRODUCT
+    ===================================================== */
+
+    function productMatchesFilter(product, filter) {
+
+        if (!product) {
+
+            return false;
+
+        }
+
+
+        if (!filter || filter === "all") {
+
+            return true;
+
+        }
+
+
+        /* ---------------------------------------------
+           PAID
+        --------------------------------------------- */
+
+        if (filter === "paid") {
+
+            return Number(product.price) > 0;
+
+        }
+
+
+        /* ---------------------------------------------
+           FREE
+        --------------------------------------------- */
+
+        if (filter === "free") {
+
+            return Number(product.price) === 0;
+
+        }
+
+
+        /* ---------------------------------------------
+           FILE FORMAT
+        --------------------------------------------- */
+
+        const formats =
+            Array.isArray(product.formats)
+                ? product.formats.map(normalizeValue)
+                : [];
+
+
+        if (
+            ["cdr", "psd", "png", "svg"].includes(filter)
+        ) {
+
+            return formats.includes(filter);
+
+        }
+
+
+        /* ---------------------------------------------
+           DESIGN TYPE
+        --------------------------------------------- */
+
+        const type =
+            normalizeValue(product.type);
+
+
+        return type === filter;
+
+    }
+
+
+    /* =====================================================
+       GET FILTERED PRODUCTS
+    ===================================================== */
+
+    function getFilteredProducts() {
+
+        return products.filter(
+            function (product) {
+
+                return productMatchesFilter(
+                    product,
+                    activeFilter
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FILTER BUTTONS
+    ===================================================== */
+
+    function setupFilters() {
+
+        if (!filterButtons.length) {
+
+            return;
+
+        }
+
+
+        filterButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        activeFilter =
+                            normalizeValue(
+                                this.dataset.filter
+                            );
+
+
+                        filterButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        renderProducts();
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
        RENDER PRODUCTS
     ===================================================== */
 
@@ -568,6 +936,10 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
 
+        /* ---------------------------------------------
+           CLEAR ALL CONTAINERS
+        --------------------------------------------- */
+
         Object.keys(categoryContainers)
             .forEach(function (category) {
 
@@ -583,190 +955,311 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
 
-        products.forEach(function (product) {
-
-            const container =
-                categoryContainers[
-                    product.category
-                ];
+        const filteredProducts =
+            getFilteredProducts();
 
 
-            if (!container) {
+        /* ---------------------------------------------
+           EMPTY FILTER RESULT
+        --------------------------------------------- */
 
-                console.warn(
-                    "Container not found for:",
-                    product.category
-                );
+        if (filteredProducts.length === 0) {
 
-                return;
+            Object.keys(categoryContainers)
+                .forEach(function (category) {
 
-            }
+                    const container =
+                        categoryContainers[category];
 
+                    if (!container) {
 
-            const card =
-                document.createElement("article");
+                        return;
 
-
-            card.className =
-                "shop-product";
-
-
-            card.dataset.id =
-                product.id;
+                    }
 
 
-            const isFree =
-                Number(product.price) === 0;
+                    const empty =
+                        document.createElement("div");
 
 
-            card.innerHTML = `
-
-                <div class="product-preview">
-
-                    ${isFree ? `
-                        <span class="free-ribbon">
-                            FREE
-                        </span>
-                    ` : ""}
-
-                    <img
-                        src="${escapeHTML(product.images[0])}"
-                        alt="${escapeHTML(product.name)}"
-                        loading="lazy">
-
-                </div>
+                    empty.className =
+                        "shop-filter-empty";
 
 
-                <div class="product-info">
+                    empty.innerHTML = `
 
-                    <span class="product-category">
-                        ${escapeHTML(product.category)}
-                    </span>
+                        <div class="filter-empty-icon">
+                            🔍
+                        </div>
 
+                        <h3>
+                            No designs found
+                        </h3>
 
-                    <h3>
-                        ${escapeHTML(product.name)}
-                    </h3>
+                        <p>
+                            No products match the selected filter.
+                        </p>
 
-
-                    <p>
-                        ${escapeHTML(product.description)}
-                    </p>
-
-
-                    <div class="product-bottom">
-
-                        <strong class="${isFree ? "free-price" : ""}">
-                            ${formatPrice(product.price)}
-                        </strong>
+                    `;
 
 
-                        <button
-                            type="button"
-                            class="add-product-btn">
+                    container.appendChild(
+                        empty
+                    );
 
-                            Add to Cart
+                });
 
-                        </button>
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+           RENDER FILTERED PRODUCTS
+        --------------------------------------------- */
+
+        filteredProducts.forEach(
+            function (product) {
+
+                const container =
+                    categoryContainers[
+                        product.category
+                    ];
+
+
+                if (!container) {
+
+                    console.warn(
+                        "Container not found for:",
+                        product.category
+                    );
+
+                    return;
+
+                }
+
+
+                const card =
+                    document.createElement("article");
+
+
+                card.className =
+                    "shop-product";
+
+
+                card.dataset.id =
+                    product.id;
+
+
+                const isFree =
+                    Number(product.price) === 0;
+
+
+                const formats =
+                    Array.isArray(product.formats)
+                        ? product.formats
+                        : [];
+
+
+                card.innerHTML = `
+
+                    <div class="product-preview">
+
+                        ${isFree ? `
+                            <span class="free-ribbon">
+                                FREE
+                            </span>
+                        ` : ""}
+
+                        <img
+                            src="${escapeHTML(
+                                product.images &&
+                                product.images[0]
+                                    ? product.images[0]
+                                    : ""
+                            )}"
+                            alt="${escapeHTML(product.name)}"
+                            loading="lazy">
 
                     </div>
 
-                </div>
 
-            `;
+                    <div class="product-info">
 
-
-            container.appendChild(card);
-
-
-            /* =================================================
-               IMAGE ERROR HANDLING
-            ================================================= */
-
-            const productImage =
-                card.querySelector(".product-preview img");
+                        <span class="product-category">
+                            ${escapeHTML(product.category)}
+                        </span>
 
 
-            if (productImage) {
+                        <h3>
+                            ${escapeHTML(product.name)}
+                        </h3>
 
-                productImage.addEventListener(
-                    "error",
+
+                        <p>
+                            ${escapeHTML(product.description)}
+                        </p>
+
+
+                        ${
+                            formats.length
+                                ? `
+                                    <div class="product-formats">
+                                        ${formats.map(
+                                            function (format) {
+                                                return `
+                                                    <span>
+                                                        ${escapeHTML(
+                                                            format.toUpperCase()
+                                                        )}
+                                                    </span>
+                                                `;
+                                            }
+                                        ).join("")}
+                                    </div>
+                                `
+                                : ""
+                        }
+
+
+                        <div class="product-bottom">
+
+                            <strong
+                                class="${
+                                    isFree
+                                        ? "free-price"
+                                        : ""
+                                }">
+
+                                ${formatPrice(product.price)}
+
+                            </strong>
+
+
+                            <button
+                                type="button"
+                                class="add-product-btn">
+
+                                Add to Cart
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+
+                /* -----------------------------------------
+                   IMAGE ERROR
+                ----------------------------------------- */
+
+                const productImage =
+                    card.querySelector(
+                        ".product-preview img"
+                    );
+
+
+                if (productImage) {
+
+                    productImage.addEventListener(
+                        "error",
+                        function () {
+
+                            this.style.display =
+                                "none";
+
+
+                            const preview =
+                                this.parentElement;
+
+
+                            if (
+                                !preview.querySelector(
+                                    ".image-error"
+                                )
+                            ) {
+
+                                const errorMessage =
+                                    document.createElement(
+                                        "div"
+                                    );
+
+
+                                errorMessage.className =
+                                    "image-error";
+
+
+                                errorMessage.textContent =
+                                    "Preview unavailable";
+
+
+                                preview.appendChild(
+                                    errorMessage
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   OPEN PRODUCT
+                ----------------------------------------- */
+
+                card.addEventListener(
+                    "click",
                     function () {
 
-                        this.style.display = "none";
+                        openProductModal(
+                            product
+                        );
 
-                        const preview =
-                            this.parentElement;
+                    }
+                );
 
-                        if (
-                            !preview.querySelector(
-                                ".image-error"
-                            )
-                        ) {
 
-                            const errorMessage =
-                                document.createElement("div");
+                /* -----------------------------------------
+                   ADD TO CART
+                ----------------------------------------- */
 
-                            errorMessage.className =
-                                "image-error";
+                const addButton =
+                    card.querySelector(
+                        ".add-product-btn"
+                    );
 
-                            errorMessage.textContent =
-                                "Preview unavailable";
 
-                            preview.appendChild(
-                                errorMessage
+                if (addButton) {
+
+                    addButton.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.preventDefault();
+
+                            event.stopPropagation();
+
+                            addProductToCart(
+                                product
                             );
 
                         }
-
-                    }
-                );
-
-            }
-
-
-            /* =================================================
-               OPEN PRODUCT
-            ================================================= */
-
-            card.addEventListener(
-                "click",
-                function () {
-
-                    openProductModal(product);
+                    );
 
                 }
-            );
-
-
-            /* =================================================
-               ADD TO CART
-            ================================================= */
-
-            const addButton =
-                card.querySelector(
-                    ".add-product-btn"
-                );
-
-
-            if (addButton) {
-
-                addButton.addEventListener(
-                    "click",
-                    function (event) {
-
-                        event.preventDefault();
-
-                        event.stopPropagation();
-
-                        addProductToCart(product);
-
-                    }
-                );
 
             }
-
-        });
+        );
 
     }
 
@@ -789,6 +1282,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         currentProduct =
             product;
+
 
         currentImageIndex =
             0;
@@ -814,6 +1308,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             modalProductPrice.textContent =
                 formatPrice(product.price);
+
 
             modalProductPrice.classList.toggle(
                 "free-price",
@@ -868,7 +1363,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const images =
-            Array.isArray(currentProduct.images)
+            Array.isArray(
+                currentProduct.images
+            )
                 ? currentProduct.images
                 : [];
 
@@ -879,12 +1376,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 "src"
             );
 
+
             if (productThumbnails) {
 
                 productThumbnails.innerHTML =
                     "";
 
             }
+
 
             return;
 
@@ -936,7 +1435,9 @@ document.addEventListener("DOMContentLoaded", function () {
             function (image, index) {
 
                 const thumbnail =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
 
 
                 thumbnail.type =
@@ -1070,7 +1571,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         currentImageIndex =
-            (currentImageIndex - 1 + imageCount) %
+            (
+                currentImageIndex -
+                1 +
+                imageCount
+            ) %
             imageCount;
 
 
@@ -1106,13 +1611,16 @@ document.addEventListener("DOMContentLoaded", function () {
         currentProduct =
             null;
 
+
         currentImageIndex =
             0;
 
 
         if (
             !cartDrawer ||
-            !cartDrawer.classList.contains("active")
+            !cartDrawer.classList.contains(
+                "active"
+            )
         ) {
 
             document.body.style.overflow =
@@ -1137,11 +1645,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const existing =
-            cart.find(function (item) {
+            cart.find(
+                function (item) {
 
-                return item.id === product.id;
+                    return item.id === product.id;
 
-            });
+                }
+            );
 
 
         if (existing) {
@@ -1150,6 +1660,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 product.name +
                 " is already in your cart."
             );
+
 
             updateCart();
 
@@ -1162,13 +1673,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cart.push({
 
-            id: product.id,
+            id:
+                product.id,
 
-            name: product.name,
+            name:
+                product.name,
 
-            price: Number(product.price) || 0,
+            price:
+                Number(product.price) || 0,
 
-            category: product.category,
+            category:
+                product.category,
 
             image:
                 Array.isArray(product.images) &&
@@ -1196,11 +1711,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showCartMessage(message) {
 
-        /*
-         * Uses a simple alert so this works
-         * without requiring additional HTML.
-         */
-
         alert(message);
 
     }
@@ -1213,11 +1723,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function removeFromCart(id) {
 
         cart =
-            cart.filter(function (item) {
+            cart.filter(
+                function (item) {
 
-                return item.id !== id;
+                    return item.id !== id;
 
-            });
+                }
+            );
 
 
         saveCart();
@@ -1237,7 +1749,10 @@ document.addEventListener("DOMContentLoaded", function () {
             function (total, item) {
 
                 return total +
-                    (Number(item.price) || 0);
+                    (
+                        Number(item.price) ||
+                        0
+                    );
 
             },
             0
@@ -1255,27 +1770,28 @@ document.addEventListener("DOMContentLoaded", function () {
         const groups = {};
 
 
-        cart.forEach(function (item) {
+        cart.forEach(
+            function (item) {
 
-            const category =
-                item.category ||
-                "Design Templates";
+                const category =
+                    item.category ||
+                    "Design Templates";
 
 
-            if (
-                !groups[category]
-            ) {
+                if (!groups[category]) {
 
-                groups[category] = [];
+                    groups[category] =
+                        [];
+
+                }
+
+
+                groups[category].push(
+                    item
+                );
 
             }
-
-
-            groups[category].push(
-                item
-            );
-
-        });
+        );
 
 
         return groups;
@@ -1300,9 +1816,9 @@ document.addEventListener("DOMContentLoaded", function () {
             "";
 
 
-        /* =================================================
+        /* ---------------------------------------------
            EMPTY CART
-        ================================================= */
+        --------------------------------------------- */
 
         if (cart.length === 0) {
 
@@ -1358,99 +1874,131 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* =================================================
+        /* ---------------------------------------------
            GROUP PRODUCTS
-        ================================================= */
+        --------------------------------------------- */
 
         const groups =
             groupCartItems();
 
 
         Object.keys(groups)
-            .forEach(function (category) {
+            .forEach(
+                function (category) {
 
-                const title =
-                    document.createElement("div");
-
-
-                title.className =
-                    "cart-category-title";
-
-
-                title.textContent =
-                    category;
-
-
-                cartItemsList.appendChild(
-                    title
-                );
-
-
-                groups[category]
-                    .forEach(function (item) {
-
-                        const itemElement =
-                            document.createElement("div");
-
-
-                        itemElement.className =
-                            "cart-item";
-
-
-                        const isFree =
-                            Number(item.price) === 0;
-
-
-                        itemElement.innerHTML = `
-
-                            <div class="cart-item-image">
-
-                                <img
-                                    src="${escapeHTML(item.image || "")}"
-                                    alt="${escapeHTML(item.name)}">
-
-                            </div>
-
-
-                            <div class="cart-item-info">
-
-                                <div class="cart-item-name">
-                                    ${escapeHTML(item.name)}
-                                </div>
-
-
-                                <div class="cart-item-price ${isFree ? "free-price" : ""}">
-                                    ${formatPrice(item.price)}
-                                </div>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="cart-remove"
-                                data-id="${escapeHTML(item.id)}"
-                                aria-label="Remove ${escapeHTML(item.name)}">
-
-                                ×
-
-                            </button>
-
-                        `;
-
-
-                        cartItemsList.appendChild(
-                            itemElement
+                    const title =
+                        document.createElement(
+                            "div"
                         );
 
-                    });
 
-            });
+                    title.className =
+                        "cart-category-title";
 
 
-        /* =================================================
+                    title.textContent =
+                        category;
+
+
+                    cartItemsList.appendChild(
+                        title
+                    );
+
+
+                    groups[category]
+                        .forEach(
+                            function (item) {
+
+                                const itemElement =
+                                    document.createElement(
+                                        "div"
+                                    );
+
+
+                                itemElement.className =
+                                    "cart-item";
+
+
+                                const isFree =
+                                    Number(
+                                        item.price
+                                    ) === 0;
+
+
+                                itemElement.innerHTML = `
+
+                                    <div class="cart-item-image">
+
+                                        <img
+                                            src="${escapeHTML(
+                                                item.image || ""
+                                            )}"
+                                            alt="${escapeHTML(
+                                                item.name
+                                            )}">
+
+                                    </div>
+
+
+                                    <div class="cart-item-info">
+
+                                        <div class="cart-item-name">
+                                            ${escapeHTML(
+                                                item.name
+                                            )}
+                                        </div>
+
+
+                                        <div
+                                            class="
+                                                cart-item-price
+                                                ${
+                                                    isFree
+                                                        ? "free-price"
+                                                        : ""
+                                                }
+                                            ">
+
+                                            ${formatPrice(
+                                                item.price
+                                            )}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <button
+                                        type="button"
+                                        class="cart-remove"
+                                        data-id="${escapeHTML(
+                                            item.id
+                                        )}"
+                                        aria-label="Remove ${escapeHTML(
+                                            item.name
+                                        )}">
+
+                                        ×
+
+                                    </button>
+
+                                `;
+
+
+                                cartItemsList.appendChild(
+                                    itemElement
+                                );
+
+                            }
+                        );
+
+                }
+            );
+
+
+        /* ---------------------------------------------
            TOTAL
-        ================================================= */
+        --------------------------------------------- */
 
         if (cartBadge) {
 
@@ -1462,11 +2010,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (cartTotalVal) {
 
+            const total =
+                getCartTotal();
+
+
             cartTotalVal.textContent =
-                getCartTotal() === 0
+                total === 0
                     ? "FREE"
                     : formatPrice(
-                        getCartTotal()
+                        total
                     );
 
         }
@@ -1480,32 +2032,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* =================================================
+        /* ---------------------------------------------
            REMOVE BUTTONS
-        ================================================= */
+        --------------------------------------------- */
 
         cartItemsList
             .querySelectorAll(
                 ".cart-remove"
             )
-            .forEach(function (button) {
+            .forEach(
+                function (button) {
 
-                button.addEventListener(
-                    "click",
-                    function (event) {
+                    button.addEventListener(
+                        "click",
+                        function (event) {
 
-                        event.preventDefault();
+                            event.preventDefault();
 
-                        event.stopPropagation();
+                            event.stopPropagation();
 
-                        removeFromCart(
-                            this.dataset.id
-                        );
+                            removeFromCart(
+                                this.dataset.id
+                            );
 
-                    }
-                );
+                        }
+                    );
 
-            });
+                }
+            );
 
     }
 
@@ -1573,7 +2127,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (
             !productModal ||
-            !productModal.classList.contains("active")
+            !productModal.classList.contains(
+                "active"
+            )
         ) {
 
             document.body.style.overflow =
@@ -1617,9 +2173,10 @@ I would like to order the following design templates:
 
 
         Object.keys(groups)
-            .forEach(function (category) {
+            .forEach(
+                function (category) {
 
-                message +=
+                    message +=
 `
 ------------------------------
 ${category.toUpperCase()}
@@ -1628,20 +2185,23 @@ ${category.toUpperCase()}
 `;
 
 
-                groups[category]
-                    .forEach(function (item) {
+                    groups[category]
+                        .forEach(
+                            function (item) {
 
-                        message +=
+                                message +=
 `${itemNumber}. ${item.name}
 Price: ${formatPrice(item.price)}
 
 `;
 
-                        itemNumber++;
+                                itemNumber++;
 
-                    });
+                            }
+                        );
 
-            });
+                }
+            );
 
 
         const total =
@@ -1804,7 +2364,9 @@ Thank you!`;
         "keydown",
         function (event) {
 
-            /* ESC */
+            /* -----------------------------------------
+               ESC
+            ----------------------------------------- */
 
             if (
                 event.key === "Escape"
@@ -1812,7 +2374,9 @@ Thank you!`;
 
                 if (
                     productModal &&
-                    productModal.classList.contains("active")
+                    productModal.classList.contains(
+                        "active"
+                    )
                 ) {
 
                     closeProductModal();
@@ -1822,7 +2386,9 @@ Thank you!`;
 
                 if (
                     cartDrawer &&
-                    cartDrawer.classList.contains("active")
+                    cartDrawer.classList.contains(
+                        "active"
+                    )
                 ) {
 
                     closeCart();
@@ -1832,11 +2398,15 @@ Thank you!`;
             }
 
 
-            /* PRODUCT VIEWER */
+            /* -----------------------------------------
+               PRODUCT VIEWER
+            ----------------------------------------- */
 
             if (
                 productModal &&
-                productModal.classList.contains("active")
+                productModal.classList.contains(
+                    "active"
+                )
             ) {
 
                 if (
@@ -1954,6 +2524,8 @@ Thank you!`;
        INITIALIZE
     ===================================================== */
 
+    setupFilters();
+
     renderProducts();
 
     updateCart();
@@ -1967,9 +2539,16 @@ Thank you!`;
         "Sai Graphic Designs Shop loaded successfully."
     );
 
+
     console.log(
         "Products:",
         products.length
+    );
+
+
+    console.log(
+        "Active Filter:",
+        activeFilter
     );
 
 });
