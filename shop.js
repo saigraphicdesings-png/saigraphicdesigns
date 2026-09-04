@@ -871,9 +871,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="product-preview">
 
                    ${isFree ? `
-    <span class="free-ribbon" aria-label="Free Download">
+    <span class="free-ribbon" aria-label="Free">
         <span class="free-ribbon-main">FREE</span>
-        <span class="free-ribbon-sub">DOWNLOAD</span>
     </span>
 ` : ""}
 
