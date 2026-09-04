@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Premium Business Card 01",
             price: 99,
             category: "Printing Designs",
+                type: "business-card",
+                formats: [
+                    "cdr",
+                    "png"
+            ],
             description:
                 "Premium business card template suitable for travel agency businesses. Editable CDR file.",
             images: [
