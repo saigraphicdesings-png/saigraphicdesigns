@@ -184,7 +184,60 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
+        {
+            id: "Letter-Head",
+            name: "Lette Head Templete",
+            price: 0,
+            category: "Printing Designs",
+            type: "letter-head",
+            formats: ["cdr"],
+            description:
+                "Professional collection of 4 premium business card templates. Editable CDR files.",
+            images: [
+                "Images/Shop/Letter-head-02/1.jpg",
+            ]
+        },
+        {
+            id: "Letter-Head",
+            name: "Lette Head Templete",
+            price: 0,
+            category: "Printing Designs",
+            type: "letter-head",
+            formats: ["cdr"],
+            description:
+                "Professional collection of 4 premium business card templates. Editable CDR files.",
+            images: [
+                "Images/Shop/Letter-head-03/1.jpg",
+            ]
+        },
+        {
+            id: "Letter-Head",
+            name: "Lette Head Templete",
+            price: 0,
+            category: "Printing Designs",
+            type: "letter-head",
+            formats: ["cdr"],
+            description:
+                "Professional collection of 4 premium business card templates. Editable CDR files.",
+            images: [
+                "Images/Shop/Letter-head-04/1.jpg",
+            ]
+        },
 
+        {
+            id: "Letter-Head",
+            name: "Lette Head Templete",
+            price: 0,
+            category: "Printing Designs",
+            type: "letter-head",
+            formats: ["cdr"],
+            description:
+                "Professional collection of 4 premium business card templates. Editable CDR files.",
+            images: [
+                "Images/Shop/Letter-head-05/1.jpg",
+            ]
+        },
+        
         /* =================================================
            DIGITAL & SOCIAL MEDIA DESIGNS
         ================================================= */
