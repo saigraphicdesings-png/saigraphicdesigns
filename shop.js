@@ -85,12 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "business-card-05",
             name: "Premium Business Card 05",
-            price: 99,
+            price: 0,
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
             description:
-                "Premium creative business card template suitable for hospital and clinic businesses. Editable CDR file.",
+                "Free collection of Premium creative business card template suitable for hospital and clinic businesses. Editable CDR file.",
             images: [
                 "Images/Shop/business-card-05/1.jpg",
                 "Images/Shop/business-card-05/2.jpg",
@@ -101,12 +101,12 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "business-card-Bundle-01",
             name: "4 Business Card Bundle 01",
-            price: 199,
+            price: 0,
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
             description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
+                "Free collection of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-01/1.jpg",
                 "Images/Shop/business-card-Bundel-01/2.jpg",
@@ -119,12 +119,12 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "business-card-Bundle-02",
             name: "4 Business Card Bundle 02",
-            price: 199,
+            price: 0,
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
             description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
+                "Free collection of 4 premium business card templates. Editable CDR files.",
             images: [
                 "Images/Shop/business-card-Bundel-02/1.jpg",
                 "Images/Shop/business-card-Bundel-02/2.jpg",
