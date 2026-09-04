@@ -20,6 +20,85 @@
 
 }
 
+/* =====================================================
+   PREMIUM FREE DOWNLOAD TAG
+===================================================== */
+
+.free-ribbon {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    height: 28px;
+
+    padding: 0 10px;
+
+    background: rgba(248, 250, 252, 0.96);
+
+    color: #475569;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-family: Arial, sans-serif;
+
+    text-align: center;
+
+    line-height: 1;
+
+    box-sizing: border-box;
+
+}
+
+
+/* FREE */
+
+.free-ribbon-free {
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    letter-spacing: .2px;
+
+}
+
+
+/* DOWNLOAD */
+
+.free-ribbon-download {
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    letter-spacing: .2px;
+
+}
+
+
+/* Hover */
+
+.shop-product:hover .free-ribbon {
+
+    background: rgba(241, 245, 249, 0.98);
+
+    color: #334155;
+
+}
 
 /* =====================================================
    HERO
