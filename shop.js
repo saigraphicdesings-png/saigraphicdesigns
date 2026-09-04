@@ -8,52 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const WHATSAPP_NUMBER = "916381128781";
 
-/* =========================================
-   PREMIUM FREE BADGE
-========================================= */
-
-.product-preview {
-    position: relative;
-    overflow: hidden;
-}
-
-.free-ribbon {
-    position: absolute;
-
-    top: 18px;
-    right: -38px;
-
-    z-index: 10;
-
-    width: 135px;
-
-    padding: 7px 0;
-
-    text-align: center;
-
-    background: linear-gradient(
-        135deg,
-        #b8860b,
-        #d4af37,
-        #f4d66d,
-        #b8860b
-    );
-
-    color: #111827;
-
-    font-size: 10px;
-    font-weight: 900;
-
-    letter-spacing: 1.8px;
-
-    transform: rotate(45deg);
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.20);
-
-    pointer-events: none;
-}
-    
     /* =====================================================
        PRODUCT DATA
     ===================================================== */
