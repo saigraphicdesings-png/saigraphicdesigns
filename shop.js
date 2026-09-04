@@ -1954,10 +1954,13 @@ Estimated Total: ${
         : formatPrice(total)
 }
 
-Please contact me regarding payment,
-file delivery and other details.
+Please contact me regarding:
+• Payment details
+• File delivery
+• Download/access details
+• Any other requirements
 
-Thank you!`;
+Thank you! 😊`;
 
 
         const whatsappURL =
