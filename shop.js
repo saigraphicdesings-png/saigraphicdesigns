@@ -8,7 +8,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const WHATSAPP_NUMBER = "916381128781";
 
+/* =========================================
+   PREMIUM FREE BADGE
+========================================= */
 
+.product-preview {
+    position: relative;
+    overflow: hidden;
+}
+
+.free-ribbon {
+    position: absolute;
+
+    top: 18px;
+    right: -38px;
+
+    z-index: 10;
+
+    width: 135px;
+
+    padding: 7px 0;
+
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #b8860b,
+        #d4af37,
+        #f4d66d,
+        #b8860b
+    );
+
+    color: #111827;
+
+    font-size: 10px;
+    font-weight: 900;
+
+    letter-spacing: 1.8px;
+
+    transform: rotate(45deg);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.20);
+
+    pointer-events: none;
+}
+    
     /* =====================================================
        PRODUCT DATA
     ===================================================== */
@@ -540,135 +585,59 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
-    }
+    }const isFree =
+    Number(product.price) === 0;
 
+card.innerHTML = `
 
-    /* =====================================================
-       RENDER PRODUCTS
-    ===================================================== */
+    <div class="product-preview">
 
-    function renderProducts() {
+        ${isFree ? `
+            <span class="free-ribbon">
+                FREE
+            </span>
+        ` : ""}
 
-        const categoryContainers = {
+        <img
+            src="${escapeHTML(product.images[0])}"
+            alt="${escapeHTML(product.name)}"
+            loading="lazy">
 
-            "Printing Designs":
-                printingProducts,
+    </div>
 
-            "Digital & Social Media Designs":
-                digitalProducts,
+    <div class="product-info">
 
-            "Packaging Designs":
-                packagingProducts
+        <span class="product-category">
+            ${escapeHTML(product.category)}
+        </span>
 
-        };
+        <h3>
+            ${escapeHTML(product.name)}
+        </h3>
 
+        <p>
+            ${escapeHTML(product.description)}
+        </p>
 
-        Object.keys(categoryContainers)
-            .forEach(function (category) {
+        <div class="product-bottom">
 
-                const container =
-                    categoryContainers[category];
+            <strong class="${isFree ? "free-price" : ""}">
+                ${formatPrice(product.price)}
+            </strong>
 
-                if (container) {
+            <button
+                type="button"
+                class="add-product-btn">
 
-                    container.innerHTML = "";
+                Add to Cart
 
-                }
+            </button>
 
-            });
+        </div>
 
+    </div>
 
-        products.forEach(function (product) {
-
-            const container =
-                categoryContainers[
-                    product.category
-                ];
-
-
-            if (!container) {
-
-                console.warn(
-                    "Container not found for:",
-                    product.category
-                );
-
-                return;
-
-            }
-
-
-            const card =
-                document.createElement("article");
-
-
-            card.className =
-                "shop-product";
-
-
-            card.dataset.id =
-                product.id;
-
-
-            const isFree =
-                Number(product.price) === 0;
-
-
-            card.innerHTML = `
-
-                <div class="product-preview">
-
-                    ${isFree ? `
-                        <span class="free-ribbon">
-                            FREE
-                        </span>
-                    ` : ""}
-
-                    <img
-                        src="${escapeHTML(product.images[0])}"
-                        alt="${escapeHTML(product.name)}"
-                        loading="lazy">
-
-                </div>
-
-
-                <div class="product-info">
-
-                    <span class="product-category">
-                        ${escapeHTML(product.category)}
-                    </span>
-
-
-                    <h3>
-                        ${escapeHTML(product.name)}
-                    </h3>
-
-
-                    <p>
-                        ${escapeHTML(product.description)}
-                    </p>
-
-
-                    <div class="product-bottom">
-
-                        <strong class="${isFree ? "free-price" : ""}">
-                            ${formatPrice(product.price)}
-                        </strong>
-
-
-                        <button
-                            type="button"
-                            class="add-product-btn">
-
-                            Add to Cart
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
+`;
 
 
             container.appendChild(card);
