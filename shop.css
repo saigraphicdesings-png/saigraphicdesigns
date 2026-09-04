@@ -256,8 +256,6 @@
 
 .shop-product {
 
-    position: relative;
-
     background: white;
 
     border: 1px solid var(--shop-border);
@@ -287,11 +285,6 @@
 
 }
 
-
-
-/* =====================================================
-   PRODUCT PREVIEW
-===================================================== */
 
 .product-preview {
 
@@ -331,18 +324,11 @@
 }
 
 
-
-/* =====================================================
-   PRODUCT HOVER VIEW
-===================================================== */
-
 .product-preview::after {
 
     content: "VIEW";
 
     position: absolute;
-
-    z-index: 2;
 
     inset: 0;
 
@@ -379,171 +365,12 @@
 
 
 /* =====================================================
-   PREMIUM FREE RIBBON
-===================================================== */
-
-.free-ribbon {
-
-    position: absolute;
-
-    top: 14px;
-
-    left: 14px;
-
-    z-index: 5;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-width: 76px;
-
-    height: 30px;
-
-    padding: 0 15px;
-
-    background: linear-gradient(
-        135deg,
-        #059669,
-        #10b981
-    );
-
-    color: #ffffff;
-
-    border-radius: 7px 7px 7px 2px;
-
-    font-size: 11px;
-
-    font-weight: 900;
-
-    letter-spacing: 1.2px;
-
-    text-transform: uppercase;
-
-    box-shadow:
-        0 7px 18px rgba(5,150,105,.30);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease;
-
-}
-
-
-/* Small folded corner */
-
-.free-ribbon::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    bottom: -7px;
-
-    width: 8px;
-
-    height: 8px;
-
-    background: #047857;
-
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 100%
-    );
-
-}
-
-
-/* FREE icon / sparkle */
-
-.free-ribbon::before {
-
-    content: "✦";
-
-    margin-right: 6px;
-
-    font-size: 11px;
-
-    line-height: 1;
-
-}
-
-
-.shop-product:hover
-.free-ribbon {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(5,150,105,.40);
-
-}
-
-
-
-/* =====================================================
-   FREE PRICE
-===================================================== */
-
-.product-bottom strong.free-price {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 6px 11px;
-
-    border-radius: 7px;
-
-    background: #ecfdf5;
-
-    color: #047857;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
-    letter-spacing: .8px;
-
-    text-transform: uppercase;
-
-}
-
-
-
-/* =====================================================
    PRODUCT INFO
 ===================================================== */
 
 .product-info {
 
     padding: 18px;
-
-}
-
-
-.product-category {
-
-    display: block;
-
-    margin-bottom: 6px;
-
-    color: var(--shop-primary-dark);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
 
 }
 
@@ -676,7 +503,6 @@
 }
 
 
-
 /* =====================================================
    MODAL BOX
 ===================================================== */
@@ -764,6 +590,7 @@
 
 /* =====================================================
    PRODUCT VIEWER
+   MAIN IMAGE = 1:1 RATIO
 ===================================================== */
 
 .product-viewer {
@@ -779,7 +606,6 @@
     padding: 25px 30px 0;
 
 }
-
 
 
 /* =====================================================
@@ -808,6 +634,10 @@
 
 }
 
+
+/* =====================================================
+   MAIN PRODUCT IMAGE
+===================================================== */
 
 .main-product-image img {
 
@@ -1074,38 +904,6 @@
 
 
 /* =====================================================
-   MODAL FREE PRICE
-===================================================== */
-
-.modal-product-bottom strong.free-price {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 7px 13px;
-
-    border-radius: 8px;
-
-    background: #ecfdf5;
-
-    color: #047857;
-
-    font-size: 16px;
-
-    font-weight: 900;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
-
-}
-
-
-
-/* =====================================================
    CART OVERLAY
 ===================================================== */
 
@@ -1117,7 +915,7 @@
 
     z-index: 10000;
 
-    background: rgba(2,6,23,.55);
+    background: rgba(17, 24, 39, .48);
 
     opacity: 0;
 
@@ -1165,7 +963,7 @@
     background: white;
 
     box-shadow:
-        -15px 0 50px rgba(0,0,0,.15);
+        -15px 0 50px rgba(0,0,0,.16);
 
     transform: translateX(100%);
 
@@ -1233,19 +1031,19 @@
 
 .cart-close {
 
-    width: 40px;
+    width: 38px;
 
-    height: 40px;
+    height: 38px;
 
     border: 0;
 
     border-radius: 50%;
 
-    background: #f1f5f9;
+    background: var(--light);
 
     color: var(--shop-dark);
 
-    font-size: 27px;
+    font-size: 1.7rem;
 
     cursor: pointer;
 
@@ -1393,22 +1191,6 @@
 
 
 /* =====================================================
-   CART FREE PRICE
-===================================================== */
-
-.cart-item-price.free-price {
-
-    color: #047857;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-}
-
-
-
-/* =====================================================
    EMPTY CART
 ===================================================== */
 
@@ -1437,7 +1219,7 @@
 
     border-radius: 50%;
 
-    background: #f1f5f9;
+    background: var(--primary-light);
 
     color: var(--shop-muted);
 
@@ -1951,38 +1733,6 @@ footer {
     }
 
 
-    /* ---------------------------------------------
-       FREE RIBBON MOBILE
-    --------------------------------------------- */
-
-    .free-ribbon {
-
-        top: 10px;
-
-        left: 10px;
-
-        min-width: 68px;
-
-        height: 27px;
-
-        padding: 0 10px;
-
-        font-size: 9px;
-
-        letter-spacing: .9px;
-
-    }
-
-
-    .free-ribbon::before {
-
-        margin-right: 4px;
-
-        font-size: 9px;
-
-    }
-
-
 
     /* ---------------------------------------------
        MOBILE MODAL
@@ -2028,6 +1778,10 @@ footer {
     }
 
 
+    /* IMPORTANT:
+       MAIN IMAGE REMAINS 1:1
+    */
+
     .main-product-image {
 
         width: 100%;
@@ -2059,7 +1813,6 @@ footer {
     }
 
 
-
     /* ---------------------------------------------
        THUMBNAILS
     --------------------------------------------- */
@@ -2082,7 +1835,6 @@ footer {
         height: 65px;
 
     }
-
 
 
     /* ---------------------------------------------
@@ -2130,15 +1882,6 @@ footer {
     }
 
 
-    .modal-product-bottom strong.free-price {
-
-        align-self: flex-start;
-
-        font-size: 14px;
-
-    }
-
-
     .modal-add-cart {
 
         width: 100%;
@@ -2146,7 +1889,6 @@ footer {
         padding: 14px;
 
     }
-
 
 
     /* ---------------------------------------------
@@ -2201,15 +1943,6 @@ footer {
         height: 34px;
 
         font-size: 23px;
-
-    }
-
-
-    .free-ribbon {
-
-        top: 10px;
-
-        left: 10px;
 
     }
 
