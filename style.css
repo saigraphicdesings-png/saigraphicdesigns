@@ -5,16 +5,22 @@
 ========================================= */
 
 :root {
-    --primary: #10b981;
-    --primary-hover: #059669;
-    --primary-light: #ecfdf5;
+ --primary: #D4AF37;
+    --primary-hover: #B8860B;
+    --primary-light: #FBF4D5;
 
-    --dark: #111827;
-    --dark-muted: #4b5563;
+    --dark: #080808;
+    --dark-muted: #A1A1AA;
 
-    --light: #f9fafb;
-    --white: #ffffff;
-    --border: #e5e7eb;
+    --light: #F5F3EE;
+    --white: #FFFFFF;
+    --border: #2A2A2A;
+
+    --gold-gradient: linear-gradient(
+        135deg,
+        #F7E7A1 0%,
+        #D4AF37 45%,
+        #9C7418 100%
 
     --accent-orange: #f97316;
 
