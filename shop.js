@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "business-card-05",
             name: "Premium Business Card 05",
-            price: 0,
+            price: 99,
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             id: "business-card-Bundle-04",
             name: "4 Business Card Bundle 04",
-            price: 199,
+            price: 0,
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
@@ -170,23 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
 
-        {
-            id: "business-card-Bundle-05",
-            name: "4 Business Card Bundle 05",
-            price: 199,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/business-card-Bundel-05/1.jpg",
-                "Images/Shop/business-card-Bundel-05/2.jpg",
-                "Images/Shop/business-card-Bundel-05/3.jpg",
-                "Images/Shop/business-card-Bundel-05/4.jpg",
-                "Images/Shop/business-card-Bundel-05/5.jpg"
-            ]
-        },
 
 
         /* =================================================
