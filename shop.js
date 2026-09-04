@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             name: "4 Business Card Bundle 03",
 
-            price: 199,
+            price: 0,
 
             category: "Printing Designs",
 
@@ -592,14 +592,14 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =====================================================
        PRICE
     ===================================================== */
+function formatPrice(price) {
 
-    function formatPrice(price) {
-
-        return "₹" +
-            Number(price).toLocaleString("en-IN");
-
+    if (Number(price) === 0) {
+        return "FREE";
     }
 
+    return "₹" +
+        Number(price).toLocaleString("en-IN");
 
 
     /* =====================================================
