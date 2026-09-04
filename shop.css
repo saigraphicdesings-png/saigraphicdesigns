@@ -2044,7 +2044,16 @@ footer {
 
 }
 
+/* SHOP FILTER BUTTONS */
+.shop-filter {
+    padding: 7px 13px;
+    font-size: 14px;
+    min-height: 36px;
+}
 
+.shop-filter .filter-label {
+    font-size: 14px;
+}
 
 /* =====================================================
    RESPONSIVE — 420px
