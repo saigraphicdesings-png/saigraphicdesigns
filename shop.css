@@ -269,9 +269,9 @@
 
     border-radius: 50px;
 
-    background: white;
-
-    color: var(--shop-text);
+    background: var(--primary);
+            
+    color: #fff;
 
     font-size: 13px;
 
