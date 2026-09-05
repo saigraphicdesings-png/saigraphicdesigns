@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
        SETTINGS
     ===================================================== */
 
-    const CART_KEY = "printmax_cart";
+    const CART_KEY = "saiGraphicCart";
     const WHATSAPP_NUMBER = "916381128781";
 
 
