@@ -312,10 +312,6 @@
 
             <!-- =================================================
                  FILTER CARDS
-                 (fixed: was duplicated with a clashing id and
-                 never closed — that broke getElementById lookups
-                 and nested the whole products section inside the
-                 hero)
             ================================================== -->
 
             <div class="shop-filters"
@@ -390,145 +386,19 @@
 
 <!-- =====================================================
      SHOP PRODUCTS
+     (single grid — no category sections; filter bar
+     above controls what's shown)
 ===================================================== -->
 
 <main class="shop-section">
 
     <div class="shop-container">
 
-        <section class="shop-category">
-
-
-            <div class="shop-category-header">
-
-
-                <div>
-
-                    <span class="category-small-title">
-                        Ready for Print
-                    </span>
-
-
-                    <h2>
-                        Printing Designs
-                    </h2>
-
-                </div>
-
-
-                <p>
-
-                    Premium business cards,
-                    letterheads, envelopes,
-                    brochures and flyer templates.
-
-                </p>
-
-
-            </div>
-
-
-            <div
-                class="shop-grid"
-                id="printingProducts">
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             DIGITAL & SOCIAL MEDIA
-        ================================================== -->
-
-        <section class="shop-category">
-
-
-            <div class="shop-category-header">
-
-
-                <div>
-
-                    <span class="category-small-title">
-                        Digital Templates
-                    </span>
-
-
-                    <h2>
-                        Digital &amp; Social Media Designs
-                    </h2>
-
-                </div>
-
-
-                <p>
-
-                    Ready-to-use premium designs
-                    for social media marketing.
-
-                </p>
-
-
-            </div>
-
-
-            <div
-                class="shop-grid"
-                id="digitalProducts">
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             PACKAGING
-        ================================================== -->
-
-        <section class="shop-category">
-
-
-            <div class="shop-category-header">
-
-
-                <div>
-
-                    <span class="category-small-title">
-                        Product Packaging
-                    </span>
-
-
-                    <h2>
-                        Packaging Designs
-                    </h2>
-
-                </div>
-
-
-                <p>
-
-                    Professional editable templates
-                    for product packaging.
-
-                </p>
-
-
-            </div>
-
-
-            <div
-                class="shop-grid"
-                id="packagingProducts">
-
-            </div>
-
-
-        </section>
-
+        <div
+            class="shop-grid"
+            id="allProducts">
+
+        </div>
 
     </div>
 
