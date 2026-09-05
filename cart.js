@@ -140,84 +140,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (addButton) {
 
-           addButton.addEventListener("click", function (event) {
+            addButton.addEventListener("click", function (event) {
 
-    event.stopPropagation();
+                event.stopPropagation();
 
-    selectService(option);
+                selectService(option);
 
-    let cart = JSON.parse(
-        localStorage.getItem(CART_KEY)
-    ) || [];
+                let cart = JSON.parse(
+                    localStorage.getItem(CART_KEY)
+                ) || [];
 
-    const itemIndex = cart.findIndex(function (item) {
-        return item.id === selectedServiceData.id;
-    });
+                const itemIndex = cart.findIndex(function (item) {
+                    return item.id === selectedServiceData.id;
+                });
 
-    if (itemIndex !== -1) {
+                if (itemIndex !== -1) {
 
-        alert(
-            selectedServiceData.name +
-            " is already in your cart."
-        );
-
-        return;
-    }
-
-    const newItem = {
-        id: selectedServiceData.id,
-        name: selectedServiceData.name,
-        price: selectedServiceData.price,
-        category: "Services",
-        type: "Service",
-        icon: selectedServiceData.icon
-    };
-
-    cart.push(newItem);
-
-    localStorage.setItem(
-        CART_KEY,
-        JSON.stringify(cart)
-    );
-
-    if (typeof updateCart === "function") {
-        updateCart();
-    }
-
-    if (typeof openCart === "function") {
-        openCart();
-    }
-
-});
-
-
-                    localStorage.setItem(
-                        CART_KEY,
-                        JSON.stringify(cart)
+                    alert(
+                        selectedServiceData.name +
+                        " is already in your cart."
                     );
 
-
-                    if (
-                        typeof updateCart ===
-                        "function"
-                    ) {
-
-                        updateCart();
-
-                    }
-
-
-                    if (
-                        typeof openCart ===
-                        "function"
-                    ) {
-
-                        openCart();
-
-                    }
-
+                    return;
                 }
-            );
+
+                const newItem = {
+                    id: selectedServiceData.id,
+                    name: selectedServiceData.name,
+                    price: selectedServiceData.price,
+                    category: "Services",
+                    type: "Service",
+                    icon: selectedServiceData.icon
+                };
+
+                cart.push(newItem);
+
+                localStorage.setItem(
+                    CART_KEY,
+                    JSON.stringify(cart)
+                );
+
+                if (typeof updateCart === "function") {
+                    updateCart();
+                }
+
+                if (typeof openCart === "function") {
+                    openCart();
+                }
+
+            });
 
         }
 
