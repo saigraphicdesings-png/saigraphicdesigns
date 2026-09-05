@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sai Graphic Designs | Best Graphic Designer in Madurai </title>
+    <title>Sai Graphic Designs | Best Graphic Designer in Madurai</title>
 
     <!-- =========================================
          WEBSITE FAVICON
@@ -14,33 +14,109 @@
     <link rel="icon" type="image/png" href="Images/favicon.png">
     <link rel="apple-touch-icon" href="Images/favicon.png">
 
+    <!-- =========================================
+         PRIMARY SEO META (deduplicated)
+    ========================================== -->
     <meta name="description"
         content="Looking for the best graphic designer in Madurai? Sai Graphic Designs offers professional logo design, visiting cards, brochures, social media designs, packaging, branding and printing services.">
-
     <meta name="keywords"
         content="Sai Graphic Designs, Best Graphic designer in Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services">
-
     <meta name="author" content="Sai Graphic Designs">
-
     <meta name="robots" content="index, follow">
-
-    <link rel="canonical" href="index.html">
-
+    <link rel="canonical" href="https://saigraphicdesigns.com/index.html">
     <link rel="stylesheet" href="style.css">
 
-    <meta name="description"
-        content="Looking for the best graphic designer in Madurai? Sai Graphic Designs offers professional logo design, visiting cards, brochures, social media designs, packaging, branding and printing services.">
+    <!-- =========================================
+         OPEN GRAPH / SOCIAL SHARING (helps GEO —
+         AI tools & social platforms read these)
+    ========================================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sai Graphic Designs | Best Graphic Designer in Madurai">
+    <meta property="og:description"
+        content="Professional logo design, branding, visiting cards, brochures, packaging & printing services in Madurai.">
+    <meta property="og:url" content="https://saigraphicdesigns.com/index.html">
+    <meta property="og:image" content="https://saigraphicdesigns.com/Images/logo.png">
+    <meta property="og:locale" content="en_IN">
 
-    <meta name="keywords"
-        content="Sai Graphic Designs, Best Graphic designer in Madurai, logo design, logo recreation, visiting card design, brochure design, social media design, packaging design, printing services">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sai Graphic Designs | Best Graphic Designer in Madurai">
+    <meta name="twitter:description"
+        content="Professional logo design, branding, visiting cards, brochures, packaging & printing services in Madurai.">
 
-    <meta name="author" content="Sai Graphic Designs">
+    <!-- =========================================
+         LOCALBUSINESS SCHEMA (GEO + AEO)
+    ========================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Sai Graphic Designs",
+      "image": "https://saigraphicdesigns.com/Images/logo.png",
+      "description": "Sai Graphic Designs is a professional creative studio in Madurai offering logo design, branding, social media creatives, visiting cards, brochures, packaging, label design, video editing and printing services.",
+      "url": "https://saigraphicdesigns.com/",
+      "telephone": "+91-6381128781",
+      "email": "saigraphicdesings@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "110, Meenakshi Nagar 2nd Street, HMS Colony, Ponmeni",
+        "addressLocality": "Madurai",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "625016",
+        "addressCountry": "IN"
+      },
+      "priceRange": "₹₹",
+      "areaServed": "Madurai",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61593257977954"
+      ]
+    }
+    </script>
 
-    <meta name="robots" content="index, follow">
-
-    <link rel="canonical" href="index.html">
-
-    <link rel="stylesheet" href="style.css">
+    <!-- =========================================
+         FAQPAGE SCHEMA (AEO)
+         NOTE: this must match the visible FAQ
+         section added near the bottom of the page
+    ========================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who is the best graphic designer in Madurai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sai Graphic Designs is a Madurai-based creative studio offering logo design, branding, visiting cards, brochures, packaging, social media design, video editing and printing services."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What services does Sai Graphic Designs offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Logo design and recreation, branding and brand identity, social media designs, visiting cards, brochures, packaging and label design, video editing, and printing services."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Sai Graphic Designs offer printing services in Madurai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Sai Graphic Designs provides printing services alongside design work, so customers can go from concept to printed material with one studio in Madurai."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Sai Graphic Designs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can reach Sai Graphic Designs by phone or WhatsApp at +91 63811 28781, by email at saigraphicdesings@gmail.com, or by visiting the studio at 110, Meenakshi Nagar 2nd Street, HMS Colony, Ponmeni, Madurai."
+          }
+        }
+      ]
+    }
+    </script>
 
     <style>
         /* =========================================
@@ -114,7 +190,7 @@
            CART
         ========================================= */
 
-                .cart-overlay {
+        .cart-overlay {
             position: fixed;
             inset: 0;
             background: rgba(17, 24, 39, .48);
@@ -125,37 +201,37 @@
             transition: .3s ease;
         }
 
-       .cart-overlay.active {
+        .cart-overlay.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
         }
 
-cart-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
 
-    width: min(430px, 92vw);
-    height: 100vh;
+            width: min(430px, 92vw);
+            height: 100vh;
 
-    background: var(--white);
+            background: var(--white);
 
-    z-index: 9999;
+            z-index: 9999;
 
-    display: flex;
-    flex-direction: column;
+            display: flex;
+            flex-direction: column;
 
-    box-shadow:
-        -15px 0 45px rgba(0, 0, 0, .16);
+            box-shadow:
+                -15px 0 45px rgba(0, 0, 0, .16);
 
-    transform: translateX(100%);
-    visibility: hidden;
+            transform: translateX(100%);
+            visibility: hidden;
 
-    transition:
-        transform .3s ease,
-        visibility .3s ease;
-}
+            transition:
+                transform .3s ease,
+                visibility .3s ease;
+        }
 
 
         .cart-drawer.active {
@@ -164,170 +240,170 @@ cart-drawer {
         }
 
         .cart-header {
-    min-height: 70px;
+            min-height: 70px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-    padding: 1rem 1.25rem;
+            padding: 1rem 1.25rem;
 
-    border-bottom: 1px solid var(--border);
-    background: var(--white);
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
 
-    box-sizing: border-box;
-}
+            box-sizing: border-box;
+        }
 
-.cart-header h3 {
-    margin: 0;
-    color: var(--dark);
-    font-size: 1.15rem;
-    font-weight: 800;
-}
+        .cart-header h3 {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
 
 
-.cart-close {
-    width: 38px;
-    height: 38px;
+        .cart-close {
+            width: 38px;
+            height: 38px;
 
-    border: 0;
-    border-radius: 10px;
+            border: 0;
+            border-radius: 10px;
 
-    background: var(--light);
-    color: var(--dark);
+            background: var(--light);
+            color: var(--dark);
 
-    font-size: 1.7rem;
-    line-height: 1;
+            font-size: 1.7rem;
+            line-height: 1;
 
-    cursor: pointer;
+            cursor: pointer;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    transition: .2s ease;
-}
+            transition: .2s ease;
+        }
         .cart-items {
-    flex: 1;
-    overflow-y: auto;
+            flex: 1;
+            overflow-y: auto;
 
-    padding: 1rem 1.25rem;
+            padding: 1rem 1.25rem;
 
-    scrollbar-width: thin;
-}
+            scrollbar-width: thin;
+        }
 
         .empty-cart-icon {
-    width: 70px;
-    height: 70px;
+            width: 70px;
+            height: 70px;
 
-    border-radius: 50%;
+            border-radius: 50%;
 
-    background: var(--primary-light);
+            background: var(--primary-light);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    font-size: 2rem;
+            font-size: 2rem;
 
-    margin-bottom: 1rem;
-}
-
-
-       .empty-cart p {
-    margin: .25rem 0;
-    line-height: 1.6;
-}
-.empty-cart strong {
-    color: var(--dark);
-}
+            margin-bottom: 1rem;
+        }
 
 
-.cart-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    padding: 1rem 0;
-
-    border-bottom: 1px solid var(--border);
-}
-
-.cart-item:last-child {
-    border-bottom: 0;
-}
-
-.cart-item-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.cart-item-name {
-    color: var(--dark);
-    font-weight: 800;
-    font-size: .95rem;
-
-    line-height: 1.4;
-
-    margin-bottom: .3rem;
-}
-.cart-remove {
-    flex: 0 0 auto;
-
-    width: 34px;
-    height: 34px;
-
-    border: 0;
-    border-radius: 50%;
-
-    background: #f3f4f6;
-    color: #374151;
-
-    font-size: 1.25rem;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: .2s ease;
-}
-
-.cart-remove:hover {
-    background: #fee2e2;
-    color: #dc2626;
-}
-  .cart-footer {
-    padding: 1.2rem 1.25rem;
-
-    border-top: 1px solid var(--border);
-
-    background: var(--white);
-
-    box-shadow:
-        0 -5px 20px rgba(0, 0, 0, .04);
-}
+        .empty-cart p {
+            margin: .25rem 0;
+            line-height: 1.6;
+        }
+        .empty-cart strong {
+            color: var(--dark);
+        }
 
 
-.cart-total {
-        display: flex;
-    align-items: center;
-    justify-content: space-between;
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
 
-    margin-bottom: 1rem;
+            padding: 1rem 0;
 
-    color: var(--dark);
+            border-bottom: 1px solid var(--border);
+        }
 
-    font-size: 1rem;
-    font-weight: 800;
-}
+        .cart-item:last-child {
+            border-bottom: 0;
+        }
 
-.cart-total span:last-child {
-    color: var(--primary);
-    font-size: 1.25rem;
-}
-.cart-checkout {
+        .cart-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-name {
+            color: var(--dark);
+            font-weight: 800;
+            font-size: .95rem;
+
+            line-height: 1.4;
+
+            margin-bottom: .3rem;
+        }
+        .cart-remove {
+            flex: 0 0 auto;
+
+            width: 34px;
+            height: 34px;
+
+            border: 0;
+            border-radius: 50%;
+
+            background: #f3f4f6;
+            color: #374151;
+
+            font-size: 1.25rem;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: .2s ease;
+        }
+
+        .cart-remove:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .cart-footer {
+            padding: 1.2rem 1.25rem;
+
+            border-top: 1px solid var(--border);
+
+            background: var(--white);
+
+            box-shadow:
+                0 -5px 20px rgba(0, 0, 0, .04);
+        }
+
+
+        .cart-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 1rem;
+
+            color: var(--dark);
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .cart-total span:last-child {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        .cart-checkout {
             width: 100%;
             border: 0;
             border-radius: 10px;
@@ -341,6 +417,26 @@ cart-drawer {
         .cart-checkout:disabled {
             opacity: .45;
             cursor: not-allowed;
+        }
+
+        /* =========================================
+           FAQ (AEO)
+        ========================================= */
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.4rem 0;
+        }
+
+        .faq-question {
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .faq-answer {
+            margin: 0;
+            line-height: 1.6;
         }
 
         /* =========================================
@@ -504,7 +600,7 @@ cart-drawer {
             <div>
 
                 <span class="hero-badge">
-                    Professional Graphic Design & Printing Services
+                    Professional Graphic Design & Printing Services in Madurai
                 </span>
 
 
@@ -521,9 +617,9 @@ cart-drawer {
 
                 <p class="hero-desc">
 
-                    Branding, logos, social media designs, 
-                    packaging and premium printing solutions 
-                    for businesses and individuals.
+                    Branding, logos, social media designs,
+                    packaging and premium printing solutions
+                    for businesses and individuals in Madurai.
 
                 </p>
 
@@ -560,7 +656,7 @@ cart-drawer {
 
                 <img
                     src="Images/logo.png"
-                    alt="Graphic designer working on a creative branding project"
+                    alt="Sai Graphic Designs - graphic designer in Madurai working on a creative branding project"
                     class="hero-img"
                     loading="eager">
 
@@ -765,7 +861,7 @@ cart-drawer {
 
                     <img
                         src="Images/Designing.png"
-                        alt="Creative graphic design workspace"
+                        alt="Creative graphic design workspace in Madurai"
                         class="custom-visual-img"
                         loading="lazy">
 
@@ -780,7 +876,7 @@ cart-drawer {
 
                     <img
                         src="Images/Printing.png"
-                        alt="Professional printing service"
+                        alt="Professional printing service in Madurai"
                         class="custom-visual-img"
                         loading="lazy">
 
@@ -1145,6 +1241,66 @@ cart-drawer {
 
 
     <!-- =========================================
+         FAQ (AEO) — must match the FAQPage
+         schema in <head>. Update both together.
+    ========================================= -->
+
+    <section class="section" id="faq">
+
+        <div class="section-header">
+
+            <span class="section-tag">
+                FAQ
+            </span>
+
+            <h2 class="section-title">
+                Frequently Asked Questions
+            </h2>
+
+        </div>
+
+        <div style="max-width:800px;margin:0 auto;">
+
+            <div class="faq-item">
+                <h3 class="faq-question">Who is the best graphic designer in Madurai?</h3>
+                <p class="faq-answer">
+                    Sai Graphic Designs is a Madurai-based creative studio offering logo design, branding,
+                    visiting cards, brochures, packaging, social media design, video editing and printing services.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">What services does Sai Graphic Designs offer?</h3>
+                <p class="faq-answer">
+                    Logo design and recreation, branding and brand identity, social media designs, visiting
+                    cards, brochures, packaging and label design, video editing, and printing services.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">Does Sai Graphic Designs offer printing services in Madurai?</h3>
+                <p class="faq-answer">
+                    Yes, Sai Graphic Designs provides printing services alongside design work, so customers
+                    can go from concept to printed material with one studio in Madurai.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">How can I contact Sai Graphic Designs?</h3>
+                <p class="faq-answer">
+                    You can reach Sai Graphic Designs by phone or WhatsApp at +91 63811 28781, by email at
+                    saigraphicdesings@gmail.com, or by visiting the studio at 110, Meenakshi Nagar 2nd Street,
+                    HMS Colony, Ponmeni, Madurai.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
          CART OVERLAY
     ========================================= -->
 
@@ -1461,9 +1617,13 @@ cart-drawer {
 
     <!-- =========================================
          CART JAVASCRIPT
+         (storage-sync listener merged in below;
+         the old stray duplicate script that
+         referenced CART_KEY/updateCart outside
+         this closure has been removed)
     ========================================= -->
 
-   <script>
+    <script>
 document.addEventListener("DOMContentLoaded", function () {
 
     const CART_KEY = "saiGraphicCart";
@@ -1664,11 +1824,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cartItemsList.innerHTML = "";
 
-
-        /* =========================================
-           IMPORTANT FIX
-           total MUST be declared
-        ========================================= */
 
         let total = 0;
 
@@ -2020,43 +2175,34 @@ Thank you!`;
 
 
     /* =========================================
+       LISTEN FOR STORAGE CHANGES
+       (moved into this closure so CART_KEY
+       and updateCart are actually in scope)
+    ========================================= */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (
+                event.key === CART_KEY
+            ) {
+
+                updateCart();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
        INITIALIZE
     ========================================= */
 
     updateCart();
 
 });
-</script>
-  <script>
-
-            /* =========================================
-               LISTEN FOR STORAGE CHANGES
-            ========================================= */
-
-            window.addEventListener(
-                "storage",
-                function (event) {
-
-                    if (
-                        event.key === CART_KEY
-                    ) {
-
-                        updateCart();
-
-                    }
-
-                }
-            );
-
-
-            /* =========================================
-               INITIALIZE
-            ========================================= */
-
-            updateCart();
-
-        });
-
     </script>
 
 
@@ -2075,16 +2221,6 @@ Thank you!`;
                     document.getElementById(
                         "mobileMenuBtn"
                     );
-
-
-                /*
-                IMPORTANT FIX:
-
-                HTML navigation now has:
-
-                id="mainNav"
-
-                */
 
                 const mainNav =
                     document.getElementById(
