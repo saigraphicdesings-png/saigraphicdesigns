@@ -12,9 +12,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>
-        Shop | Premium Graphic Design Templates | Sai Graphic Designs
-    </title>
+    <title>Shop | Premium Graphic Design Templates | Sai Graphic Designs</title>
 
     <meta name="description"
           content="Shop premium editable CDR, PSD, PNG and SVG design templates from Sai Graphic Designs. Explore business cards, letterheads, envelopes, social media and packaging designs.">
@@ -29,7 +27,83 @@
           content="index, follow">
 
     <link rel="canonical"
-          href="shop.html">
+          href="https://saigraphicdesigns.com/shop.html">
+
+
+    <!-- =====================================================
+         OPEN GRAPH / SOCIAL SHARING (helps GEO)
+    ====================================================== -->
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Shop | Premium Graphic Design Templates | Sai Graphic Designs">
+    <meta property="og:description"
+          content="Shop premium editable CDR, PSD, PNG and SVG design templates from Sai Graphic Designs in Madurai.">
+    <meta property="og:url" content="https://saigraphicdesigns.com/shop.html">
+    <meta property="og:image" content="https://saigraphicdesigns.com/Images/logo.png">
+    <meta property="og:locale" content="en_IN">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shop | Premium Graphic Design Templates | Sai Graphic Designs">
+    <meta name="twitter:description"
+          content="Shop premium editable CDR, PSD, PNG and SVG design templates from Sai Graphic Designs in Madurai.">
+
+
+    <!-- =====================================================
+         BREADCRUMB SCHEMA (AEO)
+    ====================================================== -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://saigraphicdesigns.com/index.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Shop",
+          "item": "https://saigraphicdesigns.com/shop.html"
+        }
+      ]
+    }
+    </script>
+
+
+    <!-- =====================================================
+         LOCALBUSINESS SCHEMA (GEO + AEO)
+         Kept consistent with index.html
+    ====================================================== -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Sai Graphic Designs",
+      "image": "https://saigraphicdesigns.com/Images/logo.png",
+      "description": "Sai Graphic Designs is a professional creative studio in Madurai offering logo design, branding, social media creatives, visiting cards, brochures, packaging, label design, video editing and printing services.",
+      "url": "https://saigraphicdesigns.com/",
+      "telephone": "+91-6381128781",
+      "email": "saigraphicdesings@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "110, Meenakshi Nagar 2nd Street, HMS Colony, Ponmeni",
+        "addressLocality": "Madurai",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "625016",
+        "addressCountry": "IN"
+      },
+      "priceRange": "₹₹",
+      "areaServed": "Madurai",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61593257977954"
+      ]
+    }
+    </script>
 
 
     <!-- =====================================================
@@ -238,67 +312,80 @@
 
             <!-- =================================================
                  FILTER CARDS
+                 (fixed: was duplicated with a clashing id and
+                 never closed — that broke getElementById lookups
+                 and nested the whole products section inside the
+                 hero)
             ================================================== -->
 
             <div class="shop-filters"
                  id="shopFilters">
 
-<div class="shop-filters" id="shopFilters">
-
-    <!-- ALL -->
-    <button type="button" class="shop-filter active" data-filter="all">
-        <span class="filter-icon">
-        </span>
-        <span class="filter-label">All</span>
-    </button>
+                <!-- ALL -->
+                <button type="button" class="shop-filter active" data-filter="all">
+                    <span class="filter-icon">
+                    </span>
+                    <span class="filter-label">All</span>
+                </button>
 
 
-    <!-- PAID -->
-    <button type="button" class="shop-filter" data-filter="paid">
-        <span class="filter-icon">
-        </span>
-        <span class="filter-label">Paid</span>
-    </button>
+                <!-- PAID -->
+                <button type="button" class="shop-filter" data-filter="paid">
+                    <span class="filter-icon">
+                    </span>
+                    <span class="filter-label">Paid</span>
+                </button>
 
 
-    <!-- FREE -->
-    <button type="button" class="shop-filter" data-filter="free">
-        <span class="filter-icon">
-        </span>
-        <span class="filter-label">Free</span>
-    </button>
+                <!-- FREE -->
+                <button type="button" class="shop-filter" data-filter="free">
+                    <span class="filter-icon">
+                    </span>
+                    <span class="filter-label">Free</span>
+                </button>
 
 
-    <!-- CDR -->
-    <button type="button" class="shop-filter" data-filter="cdr">
-        <span class="filter-icon format-icon">
-        </span>
-        <span class="filter-label">CDR</span>
-    </button>
+                <!-- CDR -->
+                <button type="button" class="shop-filter" data-filter="cdr">
+                    <span class="filter-icon format-icon">
+                    </span>
+                    <span class="filter-label">CDR</span>
+                </button>
 
 
-    <!-- PSD -->
-    <button type="button" class="shop-filter" data-filter="psd">
-        <span class="filter-icon format-icon">
-        </span>
-        <span class="filter-label">PSD</span>
-    </button>
+                <!-- PSD -->
+                <button type="button" class="shop-filter" data-filter="psd">
+                    <span class="filter-icon format-icon">
+                    </span>
+                    <span class="filter-label">PSD</span>
+                </button>
 
 
-    <!-- PNG -->
-    <button type="button" class="shop-filter" data-filter="png">
-        <span class="filter-icon">
-        </span>
-        <span class="filter-label">PNG</span>
-    </button>
+                <!-- PNG -->
+                <button type="button" class="shop-filter" data-filter="png">
+                    <span class="filter-icon">
+                    </span>
+                    <span class="filter-label">PNG</span>
+                </button>
 
 
-    <!-- SVG -->
-    <button type="button" class="shop-filter" data-filter="svg">
-        <span class="filter-icon">
-        </span>
-        <span class="filter-label">SVG</span>
-    </button>
+                <!-- SVG -->
+                <button type="button" class="shop-filter" data-filter="svg">
+                    <span class="filter-icon">
+                    </span>
+                    <span class="filter-label">SVG</span>
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
 
 
 <!-- =====================================================
@@ -739,7 +826,7 @@
 
         <p class="cart-note">
 
-           Confirm you Order through WhatsApp.
+           Confirm your order through WhatsApp.
 
         </p>
 
@@ -802,7 +889,7 @@
 
 
                 <a
-                    href="#"
+                    href="https://www.facebook.com/profile.php?id=61593257977954"
                     class="social-icon"
                     aria-label="Facebook">
 
