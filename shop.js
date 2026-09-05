@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Images/Shop/Letter-head-05/1.jpg",
             ]
         },
-        
+
         /* =================================================
            DIGITAL & SOCIAL MEDIA DESIGNS
         ================================================= */
@@ -434,14 +434,8 @@ document.addEventListener("DOMContentLoaded", function () {
        ELEMENTS
     ===================================================== */
 
-    const printingProducts =
-        document.getElementById("printingProducts");
-
-    const digitalProducts =
-        document.getElementById("digitalProducts");
-
-    const packagingProducts =
-        document.getElementById("packagingProducts");
+    const allProducts =
+        document.getElementById("allProducts");
 
     const productModal =
         document.getElementById("productModal");
@@ -792,34 +786,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =====================================================
        RENDER PRODUCTS
+       (single flat grid — no category grouping; the
+       filter bar above controls what's shown, and each
+       card still displays its category as a small label)
     ===================================================== */
 
     function renderProducts() {
 
-        const categoryContainers = {
-
-            "Printing Designs":
-                printingProducts,
-
-            "Digital & Social Media Designs":
-                digitalProducts,
-
-            "Packaging Designs":
-                packagingProducts
-
-        };
+        if (!allProducts) {
+            return;
+        }
 
 
         /* CLEAR */
 
-        Object.values(categoryContainers)
-            .forEach(container => {
-
-                if (container) {
-                    container.innerHTML = "";
-                }
-
-            });
+        allProducts.innerHTML = "";
 
 
         const filteredProducts =
@@ -832,41 +813,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (filteredProducts.length === 0) {
 
-            Object.values(categoryContainers)
-                .forEach(container => {
+            const empty =
+                document.createElement("div");
 
-                    if (!container) {
-                        return;
-                    }
-
-
-                    const empty =
-                        document.createElement("div");
-
-                    empty.className =
-                        "shop-filter-empty";
+            empty.className =
+                "shop-filter-empty";
 
 
-                    empty.innerHTML = `
+            empty.innerHTML = `
 
-                        <div class="filter-empty-icon">
-                            🔍
-                        </div>
+                <div class="filter-empty-icon">
+                    🔍
+                </div>
 
-                        <h3>
-                            No designs found
-                        </h3>
+                <h3>
+                    No designs found
+                </h3>
 
-                        <p>
-                            No products match the selected filter.
-                        </p>
+                <p>
+                    No products match the selected filter.
+                </p>
 
-                    `;
+            `;
 
 
-                    container.appendChild(empty);
-
-                });
+            allProducts.appendChild(empty);
 
 
             return;
@@ -879,17 +850,6 @@ document.addEventListener("DOMContentLoaded", function () {
         ================================================= */
 
         filteredProducts.forEach(product => {
-
-            const container =
-                categoryContainers[
-                    product.category
-                ];
-
-
-            if (!container) {
-                return;
-            }
-
 
             const card =
                 document.createElement("article");
@@ -1018,7 +978,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
 
-            container.appendChild(card);
+            allProducts.appendChild(card);
 
 
             /* =================================================
