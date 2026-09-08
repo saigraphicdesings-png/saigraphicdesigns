@@ -108,11 +108,11 @@ document.addEventListener("DOMContentLoaded", function () {
             description:
                 "Free collection of 4 premium business card templates. Editable CDR files.",
             images: [
-                "Images/Shop/business-card-Bundel-01/1.jpg",
-                "Images/Shop/business-card-Bundel-01/2.jpg",
-                "Images/Shop/business-card-Bundel-01/3.jpg",
-                "Images/Shop/business-card-Bundel-01/4.jpg",
-                "Images/Shop/business-card-Bundel-01/5.jpg"
+                "Images/Shop/business-card-Bundle-01/1.jpg",
+                "Images/Shop/business-card-Bundle-01/2.jpg",
+                "Images/Shop/business-card-Bundle-01/3.jpg",
+                "Images/Shop/business-card-Bundle-01/4.jpg",
+                "Images/Shop/business-card-Bundle-01/5.jpg"
             ]
         },
 
@@ -126,11 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
             description:
                 "Free collection of 4 premium business card templates. Editable CDR files.",
             images: [
-                "Images/Shop/business-card-Bundel-02/1.jpg",
-                "Images/Shop/business-card-Bundel-02/2.jpg",
-                "Images/Shop/business-card-Bundel-02/3.jpg",
-                "Images/Shop/business-card-Bundel-02/4.jpg",
-                "Images/Shop/business-card-Bundel-02/5.jpg"
+                "Images/Shop/business-card-Bundle-02/1.jpg",
+                "Images/Shop/business-card-Bundle-02/2.jpg",
+                "Images/Shop/business-card-Bundle-02/3.jpg",
+                "Images/Shop/business-card-Bundle-02/4.jpg",
+                "Images/Shop/business-card-Bundle-02/5.jpg"
             ]
         },
 
@@ -144,11 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
             description:
                 "Free collection of 4 premium business card templates. Editable CDR files.",
             images: [
-                "Images/Shop/business-card-Bundel-03/1.jpg",
-                "Images/Shop/business-card-Bundel-03/2.jpg",
-                "Images/Shop/business-card-Bundel-03/3.jpg",
-                "Images/Shop/business-card-Bundel-03/4.jpg",
-                "Images/Shop/business-card-Bundel-03/5.jpg"
+                "Images/Shop/business-card-Bundle-03/1.jpg",
+                "Images/Shop/business-card-Bundle-03/2.jpg",
+                "Images/Shop/business-card-Bundle-03/3.jpg",
+                "Images/Shop/business-card-Bundle-03/4.jpg",
+                "Images/Shop/business-card-Bundle-03/5.jpg"
             ]
         },
 
@@ -162,17 +162,17 @@ document.addEventListener("DOMContentLoaded", function () {
             description:
                 "Professional collection of 4 premium business card templates. Editable CDR files.",
             images: [
-                "Images/Shop/business-card-Bundel-04/1.jpg",
-                "Images/Shop/business-card-Bundel-04/2.jpg",
-                "Images/Shop/business-card-Bundel-04/3.jpg",
-                "Images/Shop/business-card-Bundel-04/4.jpg",
-                "Images/Shop/business-card-Bundel-04/5.jpg"
+                "Images/Shop/business-card-Bundle-04/1.jpg",
+                "Images/Shop/business-card-Bundle-04/2.jpg",
+                "Images/Shop/business-card-Bundle-04/3.jpg",
+                "Images/Shop/business-card-Bundle-04/4.jpg",
+                "Images/Shop/business-card-Bundle-04/5.jpg"
             ]
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-01",
+            name: "Letterhead Template 01",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -185,8 +185,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-02",
+            name: "Letterhead Template 02",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -198,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-03",
+            name: "Letterhead Template 03",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -211,8 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-04",
+            name: "Letterhead Template 04",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -225,8 +225,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-05",
+            name: "Letterhead Template 05",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
