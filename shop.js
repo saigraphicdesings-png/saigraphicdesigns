@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
             id: "business-card-Bundle-02",
             name: "4 Business Card Bundle 02",
             price: 0,
+            downloadUrl: "https://drive.google.com/file/d/1OR4JnPjFzQgT0BNh1MFFVV21HdG8ybNT/view?usp=sharing",
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
