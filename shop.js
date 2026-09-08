@@ -1736,7 +1736,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     src="${escapeHTML(
                                         item.image ||
                                         (/logo/i.test(item.name || "")
-                                            ? "Images/logo.png"
+                                            ? "Images/favicon.png"
                                             : "Images/placeholder.svg")
                                     )}"
                                     alt="${escapeHTML(
