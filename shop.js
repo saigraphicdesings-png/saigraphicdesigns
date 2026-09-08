@@ -1659,7 +1659,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 <img
                                     src="${escapeHTML(
-                                        item.image || "Images/placeholder.svg"
+                                        item.image ||
+                                        (/logo/i.test(item.name || "")
+                                            ? "Images/logo-before.png"
+                                            : "Images/placeholder.svg")
                                     )}"
                                     alt="${escapeHTML(
                                         item.name
