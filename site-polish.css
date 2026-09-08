@@ -476,3 +476,29 @@ footer a:hover {
         transition-duration: .01ms !important;
     }
 }
+
+/* Footer brand visibility on dark background */
+.site-footer .logo,
+footer .logo,
+.site-footer .brand-logo,
+footer .brand-logo {
+    color: #ffffff !important;
+}
+
+.site-footer .logo span,
+footer .logo span,
+.site-footer .brand-logo span,
+footer .brand-logo span {
+    color: #34d399 !important;
+}
+
+.site-footer .logo-icon,
+footer .logo-icon {
+    border-color: rgba(255, 255, 255, .22) !important;
+    background: rgba(255, 255, 255, .08) !important;
+    color: #ffffff !important;
+}
+
+.footer-contact {
+    font-style: normal;
+}
