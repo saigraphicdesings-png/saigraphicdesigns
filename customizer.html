@@ -1906,6 +1906,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateCart() {
 
+        /* Always read the latest shared Shop + Services cart. */
+        try {
+
+            const savedCart =
+                JSON.parse(
+                    localStorage.getItem(CART_KEY)
+                );
+
+            cart =
+                Array.isArray(savedCart)
+                    ? savedCart
+                    : [];
+
+        } catch (error) {
+
+            console.error(
+                "Unable to refresh cart:",
+                error
+            );
+
+            cart = [];
+
+        }
+
         cartItemsList.innerHTML = "";
 
 
@@ -2243,6 +2267,32 @@ Thank you!`;
 
 
     updateCart();
+
+
+    /*
+     * Refresh cart when returning from Shop, including pages
+     * restored from the browser back/forward cache.
+     */
+    window.addEventListener(
+        "pageshow",
+        updateCart
+    );
+
+    window.addEventListener(
+        "focus",
+        updateCart
+    );
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (event.key === CART_KEY) {
+                updateCart();
+            }
+
+        }
+    );
 
 });
 
