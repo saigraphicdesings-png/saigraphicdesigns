@@ -1659,11 +1659,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 <img
                                     src="${escapeHTML(
-                                        item.image || ""
+                                        item.image || "Images/placeholder.svg"
                                     )}"
                                     alt="${escapeHTML(
                                         item.name
-                                    )}">
+                                    )}"
+                                    onerror="this.onerror=null;this.src='Images/placeholder.svg';">
 
                             </div>
 
