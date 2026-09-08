@@ -1414,16 +1414,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (existing) {
 
-            showCartMessage(
-                product.name +
-                " is already in your cart."
-            );
+            existing.qty =
+                (Number(existing.qty) || 1) + 1;
 
+            saveCart();
             updateCart();
             openCart();
 
             return;
-
         }
 
 
@@ -1445,7 +1443,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 Array.isArray(product.images) &&
                 product.images.length
                     ? product.images[0]
-                    : ""
+                    : "",
+
+            qty: 1
 
         });
 
@@ -1521,8 +1521,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 return total +
                     (
-                        Number(item.price) ||
-                        0
+                        (Number(item.price) || 0) *
+                        (Number(item.qty) || 1)
                     );
 
             },
@@ -1719,9 +1719,25 @@ document.addEventListener("DOMContentLoaded", function () {
                                     ">
 
                                     ${formatPrice(
-                                        item.price
+                                        (Number(item.price) || 0) *
+                                        (Number(item.qty) || 1)
                                     )}
 
+                                </div>
+
+                                <div class="cart-quantity"
+                                     aria-label="Quantity controls">
+                                    <button type="button"
+                                            class="cart-qty-btn"
+                                            data-action="decrease"
+                                            data-cart-index="${cartIndex}"
+                                            aria-label="Decrease quantity">−</button>
+                                    <span class="cart-qty-value">${Number(item.qty) || 1}</span>
+                                    <button type="button"
+                                            class="cart-qty-btn"
+                                            data-action="increase"
+                                            data-cart-index="${cartIndex}"
+                                            aria-label="Increase quantity">+</button>
                                 </div>
 
                             </div>
@@ -1759,7 +1775,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartBadge) {
 
             cartBadge.textContent =
-                cart.length;
+                cart.reduce(
+                    (count, item) =>
+                        count + (Number(item.qty) || 1),
+                    0
+                );
 
         }
 
@@ -1788,6 +1808,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 false;
 
         }
+
+
+        /* QUANTITY BUTTONS */
+
+        cartItemsList
+            .querySelectorAll(".cart-qty-btn")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        const index =
+                            Number(this.dataset.cartIndex);
+
+                        if (
+                            !Number.isInteger(index) ||
+                            !cart[index]
+                        ) {
+                            return;
+                        }
+
+                        const currentQty =
+                            Number(cart[index].qty) || 1;
+
+                        cart[index].qty =
+                            this.dataset.action === "increase"
+                                ? currentQty + 1
+                                : Math.max(1, currentQty - 1);
+
+                        saveCart();
+                        updateCart();
+
+                    }
+                );
+
+            });
 
 
         /* REMOVE BUTTONS */
