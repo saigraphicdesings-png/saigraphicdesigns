@@ -1,7 +1,7 @@
 /* Unified cart layout used across every page */
 :root {
-    --cart-accent: #ff3b30;
-    --cart-accent-dark: #d92d24;
+    --cart-accent: #10b981;
+    --cart-accent-dark: #059669;
     --cart-ink: #171717;
     --cart-muted: #6b7280;
     --cart-border: #e8e8e8;
@@ -157,9 +157,9 @@
     min-width: 38px !important;
     place-items: center !important;
     padding: 0 !important;
-    border: 1px solid #ffd4d1 !important;
+    border: 1px solid #a7f3d0 !important;
     border-radius: 10px !important;
-    background: #fff5f4 !important;
+    background: #ecfdf5 !important;
     color: var(--cart-accent) !important;
     cursor: pointer !important;
 }
@@ -186,7 +186,7 @@
     margin: 0 auto 18px !important;
     place-items: center !important;
     border-radius: 50% !important;
-    background: #fff1ef !important;
+    background: #ecfdf5 !important;
     color: var(--cart-accent) !important;
     font-size: 2rem !important;
 }
@@ -247,7 +247,7 @@
     font-size: .98rem !important;
     font-weight: 800 !important;
     cursor: pointer !important;
-    box-shadow: 0 8px 20px rgba(255, 59, 48, .22) !important;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, .22) !important;
     transition: background .2s ease, transform .2s ease !important;
 }
 
@@ -302,4 +302,28 @@ body.cart-open {
     .cart-checkout {
         transition: none !important;
     }
+}
+
+/* Consistent cart thumbnails */
+.cart-item-image {
+    display: grid !important;
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    flex: 0 0 58px !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    border: 1px solid var(--cart-border) !important;
+    border-radius: 12px !important;
+    background: var(--cart-soft) !important;
+    color: var(--cart-accent) !important;
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+}
+
+.cart-item-image img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
 }
