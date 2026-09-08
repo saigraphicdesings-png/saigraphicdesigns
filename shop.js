@@ -537,8 +537,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const key =
                         String(
-                            item.id ||
                             item.name ||
+                            item.id ||
                             ""
                         ).trim().toLowerCase();
 
@@ -552,8 +552,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             mergedItems.get(key);
 
                         existing.qty =
-                            (Number(existing.qty) || 1) +
-                            (Number(item.qty) || 1);
+                            Math.max(
+                                Number(existing.qty) || 1,
+                                Number(item.qty) || 1
+                            );
 
                     } else {
 
