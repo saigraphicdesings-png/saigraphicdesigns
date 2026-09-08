@@ -530,7 +530,55 @@ document.addEventListener("DOMContentLoaded", function () {
                 JSON.parse(savedCart);
 
             if (Array.isArray(parsedCart)) {
-                cart = parsedCart;
+
+                const mergedItems = new Map();
+
+                parsedCart.forEach(item => {
+
+                    const key =
+                        String(
+                            item.id ||
+                            item.name ||
+                            ""
+                        ).trim().toLowerCase();
+
+                    if (!key) {
+                        return;
+                    }
+
+                    if (mergedItems.has(key)) {
+
+                        const existing =
+                            mergedItems.get(key);
+
+                        existing.qty =
+                            (Number(existing.qty) || 1) +
+                            (Number(item.qty) || 1);
+
+                    } else {
+
+                        mergedItems.set(
+                            key,
+                            {
+                                ...item,
+                                qty: Number(item.qty) || 1
+                            }
+                        );
+
+                    }
+
+                });
+
+                cart =
+                    Array.from(
+                        mergedItems.values()
+                    );
+
+                localStorage.setItem(
+                    CART_KEY,
+                    JSON.stringify(cart)
+                );
+
             }
 
         }
