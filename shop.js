@@ -1474,13 +1474,34 @@ document.addEventListener("DOMContentLoaded", function () {
        REMOVE FROM CART
     ===================================================== */
 
-    function removeFromCart(id) {
+    function removeFromCart(id, cartIndex) {
 
-        cart =
-            cart.filter(
-                item =>
-                    item.id !== id
-            );
+        const index =
+            Number(cartIndex);
+
+        /*
+         * Service items created on other pages may not have an id.
+         * Remove by their actual cart position first, with id as a
+         * compatibility fallback for normal Shop products.
+         */
+        if (
+            Number.isInteger(index) &&
+            index >= 0 &&
+            index < cart.length
+        ) {
+
+            cart.splice(index, 1);
+
+        } else {
+
+            cart =
+                cart.filter(
+                    item =>
+                        String(item.id || "") !==
+                        String(id || "")
+                );
+
+        }
 
 
         saveCart();
@@ -1639,6 +1660,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     .forEach(item => {
 
 
+                        const cartIndex =
+                            cart.indexOf(item);
+
+
                         const itemElement =
                             document.createElement(
                                 "div"
@@ -1706,8 +1731,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 type="button"
                                 class="cart-remove"
                                 data-id="${escapeHTML(
-                                    item.id
+                                    item.id || ""
                                 )}"
+                                data-cart-index="${cartIndex}"
                                 aria-label="Remove ${escapeHTML(
                                     item.name
                                 )}">
@@ -1780,7 +1806,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.stopPropagation();
 
                         removeFromCart(
-                            this.dataset.id
+                            this.dataset.id,
+                            this.dataset.cartIndex
                         );
 
                     }
