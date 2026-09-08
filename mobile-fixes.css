@@ -403,3 +403,115 @@ svg {
     transition-duration: .01ms !important;
   }
 }
+
+
+/* Mobile product image preview — full image, no clipping or squeeze */
+@media (max-width: 650px) {
+  .product-modal {
+    align-items: center !important;
+    padding: 8px !important;
+  }
+
+  .product-modal-box {
+    width: 100% !important;
+    height: auto !important;
+    max-height: calc(100dvh - 16px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    border-radius: 18px !important;
+  }
+
+  .product-viewer {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    padding: 58px 12px 0 !important;
+  }
+
+  .main-product-image {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+    background: #f7f7f8 !important;
+  }
+
+  .main-product-image img,
+  #mainProductImage {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 8px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    border-radius: 14px !important;
+  }
+
+  .viewer-arrow {
+    position: absolute !important;
+    top: 10px !important;
+    z-index: 4 !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border: 1px solid var(--shop-border, #e5e7eb) !important;
+    background: #fff !important;
+    box-shadow: 0 5px 15px rgba(17, 24, 39, .1) !important;
+    transform: none !important;
+  }
+
+  .viewer-prev {
+    left: 12px !important;
+  }
+
+  .viewer-next {
+    right: 12px !important;
+  }
+
+  .product-thumbnails {
+    width: 100% !important;
+    padding: 12px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+  }
+
+  .product-thumbnail {
+    flex: 0 0 66px !important;
+    width: 66px !important;
+    height: 66px !important;
+    scroll-snap-align: start;
+  }
+
+  .product-thumbnail img {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 3px !important;
+    object-fit: contain !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .product-viewer {
+    padding: 56px 10px 0 !important;
+  }
+
+  .main-product-image {
+    width: 100% !important;
+  }
+
+  .viewer-prev {
+    left: 10px !important;
+  }
+
+  .viewer-next {
+    right: 10px !important;
+  }
+}
