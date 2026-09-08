@@ -24,7 +24,7 @@ for (const file of candidates) {
   const source = await readFile(file, "utf8");
   const refs = [...source.matchAll(/(?:src|href)\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]);
   for (const ref of refs) {
-    if (ignoredSchemes.test(ref) || ref.startsWith("//")) continue;
+    if (ignoredSchemes.test(ref) || ref.startsWith("//") || ref.includes("${") || /[\r\n]/.test(ref)) continue;
     const clean = decodeURIComponent(ref.split(/[?#]/)[0]);
     if (!clean) continue;
     try { await stat(join(root, clean)); } catch { missing.add(`${file.replace(root + "/", "")}: ${clean}`); }
