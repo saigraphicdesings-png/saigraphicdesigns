@@ -1015,7 +1015,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             type="button"
                             class="add-product-btn">
 
-                            Add to Cart
+                            ${isFree ? "Get Free" : "Add to Cart"}
 
                         </button>
 
@@ -1092,9 +1092,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.preventDefault();
                         event.stopPropagation();
 
-                        addProductToCart(
-                            product
-                        );
+                        if (Number(product.price) === 0) {
+                            requestFreeProductWhatsApp(product);
+                        } else {
+                            addProductToCart(product);
+                        }
 
                     }
                 );
@@ -1165,6 +1167,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         renderProductImages();
+
+
+        if (modalAddCart) {
+            modalAddCart.textContent =
+                Number(product.price) === 0
+                    ? "Get Free on WhatsApp"
+                    : "Add to Cart";
+        }
 
 
         productModal.classList.add(
@@ -1440,6 +1450,44 @@ document.addEventListener("DOMContentLoaded", function () {
                 "";
 
         }
+
+    }
+
+
+    /* =====================================================
+       REQUEST FREE PRODUCT ON WHATSAPP
+    ===================================================== */
+
+    function requestFreeProductWhatsApp(product) {
+
+        if (!product) {
+            return;
+        }
+
+        const message =
+`Hello Sai Graphic Designs 👋
+
+I would like to get this free design template:
+
+Template: ${product.name}
+Category: ${product.category || "Design Template"}
+Price: FREE
+
+Please send me the Google Drive download link.
+
+Thank you!`;
+
+        const whatsappURL =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(message);
+
+        window.open(
+            whatsappURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
 
     }
 
@@ -2154,9 +2202,12 @@ Thank you! 😊`;
                 }
 
 
-                addProductToCart(
-                    currentProduct
-                );
+                if (Number(currentProduct.price) === 0) {
+                    requestFreeProductWhatsApp(currentProduct);
+                    closeProductModal();
+                } else {
+                    addProductToCart(currentProduct);
+                }
 
             }
         );
