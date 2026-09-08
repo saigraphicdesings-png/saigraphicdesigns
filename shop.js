@@ -1735,15 +1735,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <img
                                     src="${escapeHTML(
                                         item.image ||
-                                        (/logo/i.test(item.name || "")
-                                            ? "Images/favicon.png"
-                                            : /brand/i.test(item.name || "")
-                                                ? "Images/Designing.png"
-                                                : /social/i.test(item.name || "")
-                                                    ? "Images/Social Media.png"
-                                                    : /print|card|brochure|flyer/i.test(item.name || "")
-                                                        ? "Images/Printing.png"
-                                                        : "Images/logo.png")
+                                        "Images/favicon.png"
                                     )}"
                                     alt="${escapeHTML(
                                         item.name
