@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             id: "business-card-Bundle-01",
             name: "4 Business Card Bundle 01",
             price: 0,
+            downloadUrl: "https://drive.google.com/file/d/1OR4JnPjFzQgT0BNh1MFFVV21HdG8ybNT/view?usp=sharing",
             category: "Printing Designs",
             type: "business-card",
             formats: ["cdr"],
@@ -1093,7 +1094,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.stopPropagation();
 
                         if (Number(product.price) === 0) {
-                            requestFreeProductWhatsApp(product);
+                            requestFreeProductWhatsApp(product, addButton);
                         } else {
                             addProductToCart(product);
                         }
@@ -1170,6 +1171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (modalAddCart) {
+            modalAddCart.dataset.downloadReady = "";
             modalAddCart.textContent =
                 Number(product.price) === 0
                     ? "Get Free on WhatsApp"
@@ -1458,9 +1460,22 @@ document.addEventListener("DOMContentLoaded", function () {
        REQUEST FREE PRODUCT ON WHATSAPP
     ===================================================== */
 
-    function requestFreeProductWhatsApp(product) {
+    function requestFreeProductWhatsApp(product, actionButton) {
 
         if (!product) {
+            return;
+        }
+
+        if (
+            product.downloadUrl &&
+            actionButton &&
+            actionButton.dataset.downloadReady === "true"
+        ) {
+            window.open(
+                product.downloadUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
             return;
         }
 
@@ -1488,6 +1503,15 @@ Thank you!`;
             "_blank",
             "noopener,noreferrer"
         );
+
+        if (product.downloadUrl && actionButton) {
+            actionButton.dataset.downloadReady = "true";
+            actionButton.textContent = "Download File";
+            actionButton.setAttribute(
+                "aria-label",
+                "Download " + product.name
+            );
+        }
 
     }
 
@@ -2203,8 +2227,7 @@ Thank you! 😊`;
 
 
                 if (Number(currentProduct.price) === 0) {
-                    requestFreeProductWhatsApp(currentProduct);
-                    closeProductModal();
+                    requestFreeProductWhatsApp(currentProduct, modalAddCart);
                 } else {
                     addProductToCart(currentProduct);
                 }
