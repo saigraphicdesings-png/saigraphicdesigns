@@ -1872,15 +1872,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (existing) {
 
-            alert(
-                selectedServiceData.name +
-                " is already in your cart."
-            );
+            existing.qty =
+                (Number(existing.qty) || 1) + 1;
 
+            saveCart();
+            updateCart();
             openCart();
 
             return;
-
         }
 
 
@@ -1890,7 +1889,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             price: Number(
                 selectedServiceData.price
-            )
+            ),
+
+            qty: 1
 
         });
 
@@ -1967,7 +1968,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cart.forEach(function (item, index) {
 
-            total += Number(item.price);
+            const qty =
+                Number(item.qty) || 1;
+
+            total +=
+                Number(item.price) * qty;
 
 
             const itemElement =
@@ -1987,7 +1992,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
 
                     <div class="cart-item-price">
-                        ${formatPrice(item.price)}
+                        ${formatPrice(
+                            Number(item.price) * qty
+                        )}
+                    </div>
+
+                    <div class="cart-quantity"
+                         aria-label="Quantity controls">
+                        <button type="button"
+                                class="cart-qty-btn"
+                                data-action="decrease"
+                                data-index="${index}"
+                                aria-label="Decrease quantity">−</button>
+                        <span class="cart-qty-value">${qty}</span>
+                        <button type="button"
+                                class="cart-qty-btn"
+                                data-action="increase"
+                                data-index="${index}"
+                                aria-label="Increase quantity">+</button>
                     </div>
 
                 </div>
@@ -2011,7 +2033,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         cartBadge.textContent =
-            cart.length;
+            cart.reduce(
+                function (count, item) {
+                    return count +
+                        (Number(item.qty) || 1);
+                },
+                0
+            );
 
 
         cartTotalVal.textContent =
@@ -2020,6 +2048,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cartCheckout.disabled =
             false;
+
+
+        document
+            .querySelectorAll(".cart-qty-btn")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const index =
+                            Number(this.dataset.index);
+
+                        if (!cart[index]) {
+                            return;
+                        }
+
+                        const currentQty =
+                            Number(cart[index].qty) || 1;
+
+                        cart[index].qty =
+                            this.dataset.action === "increase"
+                                ? currentQty + 1
+                                : Math.max(1, currentQty - 1);
+
+                        saveCart();
+                        updateCart();
+
+                    }
+                );
+
+            });
 
 
         document
