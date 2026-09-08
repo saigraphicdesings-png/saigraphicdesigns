@@ -1488,7 +1488,10 @@ Template: ${product.name}
 Category: ${product.category || "Design Template"}
 Price: FREE
 
-Please send me the Google Drive download link.
+✅ Free download unlocked successfully.
+
+Download link:
+${product.downloadUrl || "Please send me the Google Drive download link."}
 
 Thank you!`;
 
