@@ -4,7 +4,7 @@ Official website source for **Sai Graphic Designs**, a graphic design, branding 
 
 ## Website
 
-- Production: https://saigraphicdesigns.com/
+- Production: https://saigraphicdesigns.in/
 - GitHub Pages source branch: `main`
 
 ## Main pages
@@ -34,7 +34,7 @@ Then open `http://localhost:8000`.
 - Give every shop product a unique ID.
 - Upload every image referenced by `shop.js`.
 - Compress large images before committing.
-- Keep canonical URLs and structured-data URLs on `https://saigraphicdesigns.com/`.
+- Keep canonical URLs and structured-data URLs on `https://saigraphicdesigns.in/`.
 - Update `sitemap.xml` whenever a public page is added or removed.
 
 ## Contact
