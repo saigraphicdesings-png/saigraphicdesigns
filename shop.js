@@ -171,8 +171,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-01",
+            name: "Letterhead Template 01",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -185,8 +185,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-02",
+            name: "Letterhead Template 02",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -198,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-03",
+            name: "Letterhead Template 03",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -211,8 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-04",
+            name: "Letterhead Template 04",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -225,8 +225,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         {
-            id: "Letter-Head",
-            name: "Lette Head Templete",
+            id: "letterhead-05",
+            name: "Letterhead Template 05",
             price: 0,
             category: "Printing Designs",
             type: "letter-head",
@@ -997,39 +997,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error",
                     function () {
 
-                        this.style.display =
-                            "none";
-
-
-                        const preview =
-                            this.parentElement;
-
-
-                        if (
-                            !preview.querySelector(
-                                ".image-error"
-                            )
-                        ) {
-
-                            const errorMessage =
-                                document.createElement(
-                                    "div"
-                                );
-
-
-                            errorMessage.className =
-                                "image-error";
-
-
-                            errorMessage.textContent =
-                                "Preview unavailable";
-
-
-                            preview.appendChild(
-                                errorMessage
-                            );
-
-                        }
+                        this.onerror = null;
+                        this.src = "Images/placeholder.svg";
+                        this.alt = product.name + " preview coming soon";
 
                     }
                 );

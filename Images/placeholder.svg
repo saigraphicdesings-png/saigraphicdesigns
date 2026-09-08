@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Sai Graphic Designs preview</title>
+  <desc id="desc">Product preview coming soon</desc>
+  <rect width="1200" height="900" fill="#f5f7fb"/>
+  <rect x="80" y="80" width="1040" height="740" rx="36" fill="#fff" stroke="#dce2ea" stroke-width="4"/>
+  <circle cx="600" cy="360" r="100" fill="#eaf0f7"/>
+  <text x="600" y="385" text-anchor="middle" font-family="Arial,sans-serif" font-size="72" font-weight="700" fill="#26364a">SG</text>
+  <text x="600" y="560" text-anchor="middle" font-family="Arial,sans-serif" font-size="44" font-weight="700" fill="#26364a">Preview coming soon</text>
+  <text x="600" y="630" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" fill="#607086">Sai Graphic Designs</text>
+</svg>

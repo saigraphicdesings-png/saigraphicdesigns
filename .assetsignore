@@ -1,0 +1,8 @@
+**/.git
+**/.github
+**/node_modules
+scripts
+src
+README.md
+LICENSE.txt
+wrangler.jsonc
