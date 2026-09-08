@@ -1595,7 +1595,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const category =
                 item.category ||
-                "Design Templates";
+                "Services";
 
 
             if (!groups[category]) {
@@ -1736,8 +1736,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     src="${escapeHTML(
                                         item.image ||
                                         (/logo/i.test(item.name || "")
-                                            ? "Images/favicon.png"
-                                            : "Images/placeholder.svg")
+                                            ? "Images/logo-before.png"
+                                            : /brand/i.test(item.name || "")
+                                                ? "Images/Designing.png"
+                                                : /social/i.test(item.name || "")
+                                                    ? "Images/Social Media.png"
+                                                    : /print|card|brochure|flyer/i.test(item.name || "")
+                                                        ? "Images/Printing.png"
+                                                        : "Images/logo.png")
                                     )}"
                                     alt="${escapeHTML(
                                         item.name
