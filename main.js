@@ -1208,7 +1208,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initCountdown();
 
-    initCart();
+    /*
+     * Cart UI is owned by each page's saiGraphicCart handler.
+     * The legacy printmax_cart handler caused the correct cart
+     * badge to show while replacing the drawer with an empty cart.
+     */
+    // initCart();
 
     initCustomizer();
 
