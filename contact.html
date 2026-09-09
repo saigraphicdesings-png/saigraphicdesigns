@@ -375,71 +375,24 @@
         }
 
         /* =========================================
-           FAQ
+           FAQ — same layout as Home page
         ========================================= */
 
-        .faq-section {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-
-        .faq-container {
-            max-width: 850px;
-            margin: auto;
-        }
-
         .faq-item {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.4rem 0;
         }
 
         .faq-question {
-            width: 100%;
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            font-weight: 700;
-            background: transparent;
-            border: 0;
+            font-weight: 800;
+            margin: 0 0 0.5rem;
             color: var(--dark);
-            font-family: inherit;
-            font-size: 1rem;
-            text-align: left;
-        }
-
-        .faq-question:focus-visible {
-            outline: 3px solid var(--primary-light);
-            outline-offset: -3px;
-        }
-
-        .faq-icon {
-            font-size: 1.3rem;
-            transition: 0.3s ease;
-            flex-shrink: 0;
         }
 
         .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 1.5rem;
+            margin: 0;
+            line-height: 1.6;
             color: var(--dark-muted);
-            line-height: 1.7;
-            transition: 0.3s ease;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
         }
 
         /* =========================================
@@ -1302,86 +1255,52 @@
      (Microdata kept as originally implemented; the
      matching JSON-LD block lives in <head>.)
 ========================================= -->
-<section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+<section class="section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
+
     <div class="section-header">
         <span class="section-tag">FAQ</span>
         <h2 class="section-title">Frequently Asked Questions</h2>
     </div>
-    <div class="faq-container">
 
-        <!-- FAQ 1 -->
+    <div style="max-width:800px;margin:0 auto;">
+
         <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <button type="button" class="faq-question" aria-expanded="false">
-                <h3 itemprop="name" style="margin:0;font:inherit;">Who provides graphic design services in Madurai?</h3>
-                <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                <p itemprop="text">
-                    Sai Graphic Designs provides professional graphic design and printing services in
-                    Madurai, including logo design, visiting cards, brochures, social media creatives,
-                    packaging design, branding and printing.
-                </p>
-            </div>
+            <h3 class="faq-question" itemprop="name">Who provides graphic design services in Madurai?</h3>
+            <p class="faq-answer" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">Sai Graphic Designs provides professional graphic design and printing services in Madurai, including logo design, visiting cards, brochures, social media creatives, packaging design, branding and printing.</span>
+            </p>
         </div>
 
-        <!-- FAQ 2 -->
         <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <button type="button" class="faq-question" aria-expanded="false">
-                <h3 itemprop="name" style="margin:0;font:inherit;">Where can I get a logo designed in Madurai?</h3>
-                <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                <p itemprop="text">
-                    You can contact Sai Graphic Designs in Madurai for professional logo design, logo
-                    recreation and complete brand identity design.
-                </p>
-            </div>
+            <h3 class="faq-question" itemprop="name">Where can I get a logo designed in Madurai?</h3>
+            <p class="faq-answer" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">You can contact Sai Graphic Designs in Madurai for professional logo design, logo recreation and complete brand identity design.</span>
+            </p>
         </div>
 
-        <!-- FAQ 3 -->
         <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <button type="button" class="faq-question" aria-expanded="false">
-                <h3 itemprop="name" style="margin:0;font:inherit;">What graphic design services does Sai Graphic Designs offer?</h3>
-                <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                <p itemprop="text">
-                    Sai Graphic Designs offers logo design, logo recreation, visiting card design, brochure
-                   and flyer design, social media design, packaging and label design, branding and printing services.
-                </p>
-            </div>
+            <h3 class="faq-question" itemprop="name">What graphic design services does Sai Graphic Designs offer?</h3>
+            <p class="faq-answer" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">Sai Graphic Designs offers logo design, logo recreation, visiting card design, brochure and flyer design, social media design, packaging and label design, branding and printing services.</span>
+            </p>
         </div>
 
-        <!-- FAQ 4 -->
         <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <button type="button" class="faq-question" aria-expanded="false">
-                <h3 itemprop="name" style="margin:0;font:inherit;">Does Sai Graphic Designs provide printing services?</h3>
-                <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                <p itemprop="text">
-                    Yes. Sai Graphic Designs provides printing-related design and printing services for
-                    business cards, brochures, flyers, packaging materials and other promotional
-                    materials.
-                </p>
-            </div>
+            <h3 class="faq-question" itemprop="name">Does Sai Graphic Designs provide printing services?</h3>
+            <p class="faq-answer" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">Yes. Sai Graphic Designs provides printing-related design and printing services for business cards, brochures, flyers, packaging materials and other promotional materials.</span>
+            </p>
         </div>
 
-        <!-- FAQ 5 — new, high-intent for GEO -->
         <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-            <button type="button" class="faq-question" aria-expanded="false">
-                <h3 itemprop="name" style="margin:0;font:inherit;">Does Sai Graphic Designs serve businesses outside Madurai?</h3>
-                <span class="faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                <p itemprop="text">
-                    Yes. Sai Graphic Designs can work with businesses and organizations in Madurai and
-                    across Tamil Nadu.
-                </p>
-            </div>
+            <h3 class="faq-question" itemprop="name">Does Sai Graphic Designs serve businesses outside Madurai?</h3>
+            <p class="faq-answer" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+                <span itemprop="text">Yes. Sai Graphic Designs can work with businesses and organizations in Madurai and across Tamil Nadu.</span>
+            </p>
         </div>
 
     </div>
+
 </section>
 
 
