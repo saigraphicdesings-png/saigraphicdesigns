@@ -1483,16 +1483,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const message =
 `Hello Sai Graphic Designs 👋
 
-I would like to get this free design template:
+✅ FREE DOWNLOAD:
+${product.downloadUrl || "Please send me the Google Drive download link."}
 
 Template: ${product.name}
 Category: ${product.category || "Design Template"}
-Price: FREE
-
-✅ Free download unlocked successfully.
-
-Download link:
-${product.downloadUrl || "Please send me the Google Drive download link."}
 
 Thank you!`;
 
