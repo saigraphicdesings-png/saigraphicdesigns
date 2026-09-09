@@ -420,23 +420,70 @@
         }
 
         /* =========================================
-           FAQ (AEO)
+           FAQ ACCORDION
         ========================================= */
 
+        .faq-container {
+            max-width: 850px;
+            margin: auto;
+        }
+
         .faq-item {
-            border-bottom: 1px solid var(--border);
-            padding: 1.4rem 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: var(--white);
         }
 
         .faq-question {
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            background: transparent;
+            border: 0;
             color: var(--dark);
+            font-family: inherit;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .faq-question:focus-visible {
+            outline: 3px solid var(--primary-light);
+            outline-offset: -3px;
+        }
+
+        .faq-icon {
+            font-size: 1.3rem;
+            transition: 0.3s ease;
+            flex-shrink: 0;
         }
 
         .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.5rem;
+            color: var(--dark-muted);
+            line-height: 1.7;
+            transition: 0.3s ease;
+        }
+
+        .faq-answer p {
             margin: 0;
-            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
         }
 
         /* =========================================
@@ -1248,53 +1295,53 @@
          schema in <head>. Update both together.
     ========================================= -->
 
-    <section class="section" id="faq">
+    <section class="section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
 
         <div class="section-header">
-
-            <span class="section-tag">
-                FAQ
-            </span>
-
-            <h2 class="section-title">
-                Frequently Asked Questions
-            </h2>
-
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
         </div>
 
-        <div style="max-width:800px;margin:0 auto;">
+        <div class="faq-container">
 
-            <div class="faq-item">
-                <h3 class="faq-question">Who is the best graphic designer in Madurai?</h3>
-                <p class="faq-answer">
-                    Sai Graphic Designs is a Madurai-based creative studio offering logo design, branding,
-                    visiting cards, brochures, packaging, social media design, video editing and printing services.
-                </p>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                <button type="button" class="faq-question" aria-expanded="false">
+                    <h3 itemprop="name" style="margin:0;font:inherit;">Who is the best graphic designer in Madurai?</h3>
+                    <span class="faq-icon" aria-hidden="true">+</span>
+                </button>
+                <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <p itemprop="text">Sai Graphic Designs is a Madurai-based creative studio offering logo design, branding, visiting cards, brochures, packaging, social media design, video editing and printing services.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">What services does Sai Graphic Designs offer?</h3>
-                <p class="faq-answer">
-                    Logo design and recreation, branding and brand identity, social media designs, visiting
-                    cards, brochures, packaging and label design, video editing, and printing services.
-                </p>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                <button type="button" class="faq-question" aria-expanded="false">
+                    <h3 itemprop="name" style="margin:0;font:inherit;">What services does Sai Graphic Designs offer?</h3>
+                    <span class="faq-icon" aria-hidden="true">+</span>
+                </button>
+                <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <p itemprop="text">Logo design and recreation, branding and brand identity, social media designs, visiting cards, brochures, packaging and label design, video editing, and printing services.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">Does Sai Graphic Designs offer printing services in Madurai?</h3>
-                <p class="faq-answer">
-                    Yes, Sai Graphic Designs provides printing services alongside design work, so customers
-                    can go from concept to printed material with one studio in Madurai.
-                </p>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                <button type="button" class="faq-question" aria-expanded="false">
+                    <h3 itemprop="name" style="margin:0;font:inherit;">Does Sai Graphic Designs offer printing services in Madurai?</h3>
+                    <span class="faq-icon" aria-hidden="true">+</span>
+                </button>
+                <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <p itemprop="text">Yes, Sai Graphic Designs provides printing services alongside design work, so customers can go from concept to printed material with one studio in Madurai.</p>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3 class="faq-question">How can I contact Sai Graphic Designs?</h3>
-                <p class="faq-answer">
-                    You can reach Sai Graphic Designs by phone or WhatsApp at +91 63811 28781, by email at
-                    saigraphicdesings@gmail.com, or by visiting the studio at 110, Meenakshi Nagar 2nd Street,
-                    HMS Colony, Ponmeni, Madurai.
-                </p>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                <button type="button" class="faq-question" aria-expanded="false">
+                    <h3 itemprop="name" style="margin:0;font:inherit;">How can I contact Sai Graphic Designs?</h3>
+                    <span class="faq-icon" aria-hidden="true">+</span>
+                </button>
+                <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <p itemprop="text">You can reach Sai Graphic Designs by phone or WhatsApp at +91 63811 28781, by email at saigraphicdesings@gmail.com, or by visiting the studio at 110, Meenakshi Nagar 2nd Street, HMS Colony, Ponmeni, Madurai.</p>
+                </div>
             </div>
 
         </div>
@@ -2273,6 +2320,33 @@ Thank you!`;
 
 
     <script src="mobile-fixes.js" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const faqQuestions = document.querySelectorAll("#faq .faq-question");
+
+            faqQuestions.forEach(function (question) {
+                question.addEventListener("click", function () {
+                    const item = question.closest(".faq-item");
+                    const isActive = item.classList.contains("active");
+
+                    document.querySelectorAll("#faq .faq-item").forEach(function (otherItem) {
+                        otherItem.classList.remove("active");
+                        const otherQuestion = otherItem.querySelector(".faq-question");
+                        if (otherQuestion) {
+                            otherQuestion.setAttribute("aria-expanded", "false");
+                        }
+                    });
+
+                    if (!isActive) {
+                        item.classList.add("active");
+                        question.setAttribute("aria-expanded", "true");
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
