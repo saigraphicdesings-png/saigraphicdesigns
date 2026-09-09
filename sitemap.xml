@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/</loc><priority>1.0</priority></url>
-  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/about.html</loc><priority>0.8</priority></url>
-  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/customizer.html</loc><priority>0.9</priority></url>
-  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/shop.html</loc><priority>0.9</priority></url>
-  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/contact.html</loc><priority>0.8</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/</loc><lastmod>2026-09-09</lastmod><priority>1.0</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/about.html</loc><lastmod>2026-09-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/customizer.html</loc><lastmod>2026-09-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/shop.html</loc><lastmod>2026-09-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/contact.html</loc><lastmod>2026-09-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/graphic-designer-madurai.html</loc><lastmod>2026-09-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/graphic-design-company-tamil-nadu.html</loc><lastmod>2026-09-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/graphic-design-services-india.html</loc><lastmod>2026-09-09</lastmod><priority>0.9</priority></url>
 </urlset>
