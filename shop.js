@@ -2465,4 +2465,243 @@ Thank you! 😊`;
         activeFilter
     );
 
+
+    /* =====================================================
+       INTERACTIVE 3D PRODUCT PREVIEW
+       Enhances the existing product modal image viewer
+    ===================================================== */
+
+    if (mainProductImage) {
+
+        const previewFrame =
+            mainProductImage.closest(
+                ".main-product-image"
+            );
+
+        if (previewFrame) {
+
+            let previewDragging = false;
+            let previewStartX = 0;
+            let previewStartY = 0;
+            let previewRotateX = 0;
+            let previewRotateY = 0;
+
+            previewFrame.classList.add(
+                "interactive-3d-preview"
+            );
+
+            previewFrame.setAttribute(
+                "aria-label",
+                "Interactive 3D product preview. Move or drag to rotate."
+            );
+
+            function applyProduct3D() {
+
+                mainProductImage.style.transform =
+                    "rotateX(" +
+                    previewRotateX +
+                    "deg) rotateY(" +
+                    previewRotateY +
+                    "deg)";
+
+            }
+
+            function resetProduct3D() {
+
+                previewRotateX = 0;
+                previewRotateY = 0;
+
+                previewFrame.classList.remove(
+                    "is-dragging"
+                );
+
+                applyProduct3D();
+
+            }
+
+            previewFrame.addEventListener(
+                "pointerdown",
+                function (event) {
+
+                    previewDragging = true;
+                    previewStartX = event.clientX;
+                    previewStartY = event.clientY;
+
+                    previewFrame.classList.add(
+                        "is-dragging"
+                    );
+
+                    if (
+                        previewFrame.setPointerCapture
+                    ) {
+
+                        previewFrame.setPointerCapture(
+                            event.pointerId
+                        );
+
+                    }
+
+                }
+            );
+
+            previewFrame.addEventListener(
+                "pointermove",
+                function (event) {
+
+                    const rect =
+                        previewFrame.getBoundingClientRect();
+
+                    if (previewDragging) {
+
+                        previewRotateY +=
+                            (
+                                event.clientX -
+                                previewStartX
+                            ) * 0.32;
+
+                        previewRotateX -=
+                            (
+                                event.clientY -
+                                previewStartY
+                            ) * 0.24;
+
+                        previewRotateX =
+                            Math.max(
+                                -50,
+                                Math.min(
+                                    50,
+                                    previewRotateX
+                                )
+                            );
+
+                        previewStartX =
+                            event.clientX;
+
+                        previewStartY =
+                            event.clientY;
+
+                    } else {
+
+                        previewRotateY =
+                            (
+                                (
+                                    event.clientX -
+                                    rect.left
+                                ) /
+                                rect.width -
+                                0.5
+                            ) * 22;
+
+                        previewRotateX =
+                            -(
+                                (
+                                    event.clientY -
+                                    rect.top
+                                ) /
+                                rect.height -
+                                0.5
+                            ) * 16;
+
+                    }
+
+                    applyProduct3D();
+
+                }
+            );
+
+            function stopProduct3DDrag(
+                event
+            ) {
+
+                previewDragging = false;
+
+                previewFrame.classList.remove(
+                    "is-dragging"
+                );
+
+                if (
+                    event &&
+                    previewFrame.hasPointerCapture &&
+                    previewFrame.hasPointerCapture(
+                        event.pointerId
+                    )
+                ) {
+
+                    previewFrame.releasePointerCapture(
+                        event.pointerId
+                    );
+
+                }
+
+            }
+
+            previewFrame.addEventListener(
+                "pointerup",
+                stopProduct3DDrag
+            );
+
+            previewFrame.addEventListener(
+                "pointercancel",
+                stopProduct3DDrag
+            );
+
+            previewFrame.addEventListener(
+                "pointerleave",
+                function () {
+
+                    if (!previewDragging) {
+
+                        resetProduct3D();
+
+                    }
+
+                }
+            );
+
+            previewFrame.addEventListener(
+                "dblclick",
+                resetProduct3D
+            );
+
+            mainProductImage.addEventListener(
+                "load",
+                resetProduct3D
+            );
+
+            const modalObserver =
+                new MutationObserver(
+                    function () {
+
+                        if (
+                            productModal &&
+                            productModal.classList.contains(
+                                "active"
+                            )
+                        ) {
+
+                            resetProduct3D();
+
+                        }
+
+                    }
+                );
+
+            if (productModal) {
+
+                modalObserver.observe(
+                    productModal,
+                    {
+                        attributes: true,
+                        attributeFilter: [
+                            "class"
+                        ]
+                    }
+                );
+
+            }
+
+        }
+
+    }
+
 });
