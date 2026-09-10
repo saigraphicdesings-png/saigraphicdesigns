@@ -2492,12 +2492,87 @@ Thank you! 😊`;
 
             previewFrame.setAttribute(
                 "aria-label",
-                "Interactive 3D product preview. Move or drag to rotate."
+                "Interactive double-sided 3D product preview. Move or drag to rotate."
             );
+
+            /*
+             * Build one 3D card with a front and back face.
+             * The currently selected product image is the front;
+             * the following image in the product gallery is the back.
+             */
+            const previewCard =
+                document.createElement("div");
+
+            previewCard.className =
+                "product-preview-3d-card";
+
+            previewFrame.insertBefore(
+                previewCard,
+                mainProductImage
+            );
+
+            previewCard.appendChild(
+                mainProductImage
+            );
+
+            mainProductImage.classList.add(
+                "product-preview-front"
+            );
+
+            const backProductImage =
+                document.createElement("img");
+
+            backProductImage.className =
+                "product-preview-back";
+
+            backProductImage.alt =
+                "Back side preview";
+
+            backProductImage.draggable =
+                false;
+
+            previewCard.appendChild(
+                backProductImage
+            );
+
+            function syncBackProductImage() {
+
+                if (
+                    !currentProduct ||
+                    !Array.isArray(
+                        currentProduct.images
+                    ) ||
+                    !currentProduct.images.length
+                ) {
+                    backProductImage.removeAttribute(
+                        "src"
+                    );
+                    return;
+                }
+
+                const images =
+                    currentProduct.images;
+
+                const backIndex =
+                    images.length > 1
+                        ? (
+                            currentImageIndex + 1
+                          ) % images.length
+                        : currentImageIndex;
+
+                backProductImage.src =
+                    images[backIndex];
+
+                backProductImage.alt =
+                    currentProduct.name +
+                    " back side preview " +
+                    (backIndex + 1);
+
+            }
 
             function applyProduct3D() {
 
-                mainProductImage.style.transform =
+                previewCard.style.transform =
                     "rotateX(" +
                     previewRotateX +
                     "deg) rotateY(" +
@@ -2665,7 +2740,12 @@ Thank you! 😊`;
 
             mainProductImage.addEventListener(
                 "load",
-                resetProduct3D
+                function () {
+
+                    syncBackProductImage();
+                    resetProduct3D();
+
+                }
             );
 
             const modalObserver =
