@@ -27,10 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
             formats: ["cdr"],
             description:
                 "Premium business card template suitable for travel agency businesses. Editable CDR file.",
+            previewFront: "Images/Shop/business-card-01/1.jpg",
+            previewBack: "Images/Shop/business-card-01/2.jpg",
             images: [
-                "Images/Shop/business-card-01/3.jpg",
                 "Images/Shop/business-card-01/1.jpg",
-                "Images/Shop/business-card-01/2.jpg"
+                "Images/Shop/business-card-01/2.jpg",
+                "Images/Shop/business-card-01/3.jpg"
             ]
         },
 
@@ -2553,20 +2555,40 @@ Thank you! 😊`;
                 const images =
                     currentProduct.images;
 
-                const backIndex =
-                    images.length > 1
-                        ? (
-                            currentImageIndex + 1
-                          ) % images.length
-                        : currentImageIndex;
+                /*
+                 * Products can define an exact front/back pair.
+                 * This prevents thumbnail order from changing
+                 * which artwork appears on the reverse side.
+                 */
+                const frontImage =
+                    currentProduct.previewFront ||
+                    images[0];
+
+                const backImage =
+                    currentProduct.previewBack ||
+                    (
+                        images.length > 1
+                            ? images[1]
+                            : frontImage
+                    );
+
+                if (
+                    currentProduct.previewFront &&
+                    mainProductImage.src &&
+                    !mainProductImage.src.endsWith(
+                        currentProduct.previewFront
+                    )
+                ) {
+                    mainProductImage.src =
+                        frontImage;
+                }
 
                 backProductImage.src =
-                    images[backIndex];
+                    backImage;
 
                 backProductImage.alt =
                     currentProduct.name +
-                    " back side preview " +
-                    (backIndex + 1);
+                    " back side preview";
 
             }
 
