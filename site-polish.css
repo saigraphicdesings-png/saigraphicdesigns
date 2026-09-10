@@ -566,7 +566,7 @@ footer .logo-icon {
     position: absolute;
     inset: -8px;
     border: 1px dashed var(--sai-button-line);
-    border-radius: calc(inherit + 4px);
+    border-radius: 16px;
     background-image: repeating-linear-gradient(
         45deg,
         var(--sai-button-grid) 0 1px,
@@ -602,16 +602,13 @@ footer .logo-icon {
 )::after {
     content: "";
     position: absolute;
-    top: -11px;
-    left: -11px;
-    width: 7px;
-    height: 7px;
-    border-radius: 2px;
-    background: var(--sai-button-dot);
-    box-shadow:
-        calc(100% + 15px) 0 0 var(--sai-button-dot),
-        0 calc(100% + 15px) 0 var(--sai-button-dot),
-        calc(100% + 15px) calc(100% + 15px) 0 var(--sai-button-dot);
+    inset: -11px;
+    border-radius: 16px;
+    background:
+        linear-gradient(var(--sai-button-dot), var(--sai-button-dot)) top left / 7px 7px no-repeat,
+        linear-gradient(var(--sai-button-dot), var(--sai-button-dot)) top right / 7px 7px no-repeat,
+        linear-gradient(var(--sai-button-dot), var(--sai-button-dot)) bottom left / 7px 7px no-repeat,
+        linear-gradient(var(--sai-button-dot), var(--sai-button-dot)) bottom right / 7px 7px no-repeat;
     opacity: 0;
     transform: scale(.3) rotate(45deg);
     pointer-events: none;
