@@ -27,12 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
             formats: ["cdr"],
             description:
                 "Premium business card template suitable for travel agency businesses. Editable CDR file.",
-            previewFront: "Images/Shop/business-card-01/1.jpg",
-            previewBack: "Images/Shop/business-card-01/2.jpg",
             images: [
+                "Images/Shop/business-card-01/3.jpg",
                 "Images/Shop/business-card-01/1.jpg",
-                "Images/Shop/business-card-01/2.jpg",
-                "Images/Shop/business-card-01/3.jpg"
+                "Images/Shop/business-card-01/2.jpg"
             ]
         },
 
@@ -2494,107 +2492,12 @@ Thank you! 😊`;
 
             previewFrame.setAttribute(
                 "aria-label",
-                "Interactive double-sided 3D product preview. Move or drag to rotate."
+                "Interactive 3D product preview. Move or drag to rotate."
             );
-
-            /*
-             * Build one 3D card with a front and back face.
-             * The currently selected product image is the front;
-             * the following image in the product gallery is the back.
-             */
-            const previewCard =
-                document.createElement("div");
-
-            previewCard.className =
-                "product-preview-3d-card";
-
-            previewFrame.insertBefore(
-                previewCard,
-                mainProductImage
-            );
-
-            previewCard.appendChild(
-                mainProductImage
-            );
-
-            mainProductImage.classList.add(
-                "product-preview-front"
-            );
-
-            const backProductImage =
-                document.createElement("img");
-
-            backProductImage.className =
-                "product-preview-back";
-
-            backProductImage.alt =
-                "Back side preview";
-
-            backProductImage.draggable =
-                false;
-
-            previewCard.appendChild(
-                backProductImage
-            );
-
-            function syncBackProductImage() {
-
-                if (
-                    !currentProduct ||
-                    !Array.isArray(
-                        currentProduct.images
-                    ) ||
-                    !currentProduct.images.length
-                ) {
-                    backProductImage.removeAttribute(
-                        "src"
-                    );
-                    return;
-                }
-
-                const images =
-                    currentProduct.images;
-
-                /*
-                 * Products can define an exact front/back pair.
-                 * This prevents thumbnail order from changing
-                 * which artwork appears on the reverse side.
-                 */
-                const frontImage =
-                    currentProduct.previewFront ||
-                    images[0];
-
-                const backImage =
-                    currentProduct.previewBack ||
-                    (
-                        images.length > 1
-                            ? images[1]
-                            : frontImage
-                    );
-
-                if (
-                    currentProduct.previewFront &&
-                    mainProductImage.src &&
-                    !mainProductImage.src.endsWith(
-                        currentProduct.previewFront
-                    )
-                ) {
-                    mainProductImage.src =
-                        frontImage;
-                }
-
-                backProductImage.src =
-                    backImage;
-
-                backProductImage.alt =
-                    currentProduct.name +
-                    " back side preview";
-
-            }
 
             function applyProduct3D() {
 
-                previewCard.style.transform =
+                mainProductImage.style.transform =
                     "rotateX(" +
                     previewRotateX +
                     "deg) rotateY(" +
@@ -2762,12 +2665,7 @@ Thank you! 😊`;
 
             mainProductImage.addEventListener(
                 "load",
-                function () {
-
-                    syncBackProductImage();
-                    resetProduct3D();
-
-                }
+                resetProduct3D
             );
 
             const modalObserver =
