@@ -102,7 +102,14 @@ async function handleAPI(request, env, url) {
   }
 
   if (url.pathname === "/api/products" && request.method === "GET") {
-    return json({ products: await listProducts(env, false) });
+    const visibleProducts = await listProducts(env, false);
+    const hiddenResult = await env.DB.prepare(
+      "SELECT id FROM products WHERE active = 0"
+    ).all();
+    return json({
+      products: visibleProducts,
+      hiddenIds: (hiddenResult.results || []).map((row) => row.id)
+    });
   }
 
   if (!url.pathname.startsWith("/api/admin/")) {
