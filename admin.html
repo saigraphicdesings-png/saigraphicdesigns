@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Shop Admin | Sai Graphic Designs</title>
+  <link rel="icon" href="Images/favicon.png">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="admin-header">
+    <a class="brand" href="index.html"><span>SG</span> Sai Graphic Designs</a>
+    <a class="shop-link" href="shop.html" target="_blank" rel="noopener">View Shop ↗</a>
+  </header>
+
+  <main class="admin-shell">
+    <section class="login-card" id="loginCard">
+      <div class="admin-mark">🔐</div>
+      <p class="eyebrow">SECURE ACCESS</p>
+      <h1>Shop Admin Panel</h1>
+      <p>Enter the admin token configured in Cloudflare to manage products.</p>
+      <form id="loginForm">
+        <label for="adminToken">Admin token</label>
+        <input id="adminToken" type="password" autocomplete="current-password" required>
+        <button type="submit">Open Admin Panel →</button>
+      </form>
+      <p class="error" id="loginError" role="alert"></p>
+    </section>
+
+    <section class="dashboard" id="dashboard" hidden>
+      <div class="dashboard-top">
+        <div><p class="eyebrow">PRODUCT MANAGEMENT</p><h1>Shop Products</h1></div>
+        <div class="top-actions">
+          <button class="secondary" id="refreshBtn" type="button">Refresh</button>
+          <button class="secondary danger" id="logoutBtn" type="button">Log out</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <article><strong id="totalCount">0</strong><span>Total products</span></article>
+        <article><strong id="activeCount">0</strong><span>Visible products</span></article>
+        <article><strong id="freeCount">0</strong><span>Free products</span></article>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel">
+          <div class="panel-title"><h2 id="formTitle">Add Product</h2><button class="text-btn" id="resetBtn" type="button">Clear</button></div>
+          <form id="productForm">
+            <input id="originalId" type="hidden">
+            <div class="form-grid">
+              <label>Product ID<input id="productId" required placeholder="business-card-06" pattern="[A-Za-z0-9_-]+"></label>
+              <label>Product name<input id="productName" required placeholder="Premium Business Card 06"></label>
+              <label>Price (₹)<input id="productPrice" required type="number" min="0" step="0.01" value="0"></label>
+              <label>Sort order<input id="sortOrder" type="number" step="1" value="0"></label>
+              <label>Category<input id="productCategory" required placeholder="Printing Designs"></label>
+              <label>Type<input id="productType" required placeholder="business-card"></label>
+              <label class="full">Formats (comma separated)<input id="productFormats" placeholder="cdr, png"></label>
+              <label class="full">Preview images (one path or URL per line)<textarea id="productImages" required rows="4" placeholder="Images/Shop/product/1.jpg"></textarea></label>
+              <label class="full">Description<textarea id="productDescription" rows="4"></textarea></label>
+              <label class="full">Free download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."></label>
+              <label class="check"><input id="productActive" type="checkbox" checked> Show this product in Shop</label>
+            </div>
+            <button class="primary" type="submit" id="saveBtn">Save Product</button>
+            <p class="form-message" id="formMessage" role="status"></p>
+          </form>
+        </section>
+
+        <section class="panel products-panel">
+          <div class="panel-title">
+            <h2>Products</h2>
+            <input id="productSearch" type="search" placeholder="Search products…">
+          </div>
+          <div class="product-list" id="productList"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="admin.js" defer></script>
+</body>
+</html>
