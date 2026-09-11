@@ -120,6 +120,71 @@ async function handleAPI(request, env, url) {
     return json({ error: "Unauthorized." }, 401);
   }
 
+
+  if (url.pathname === "/api/admin/products/import" && request.method === "POST") {
+    let input;
+    try {
+      input = await request.json();
+    } catch {
+      return json({ error: "Invalid JSON." }, 400);
+    }
+
+    const inputs = Array.isArray(input.products) ? input.products : [];
+    if (!inputs.length) {
+      return json({ error: "No products supplied for import." }, 400);
+    }
+
+    let imported;
+    try {
+      imported = inputs.map(validateProduct);
+    } catch (error) {
+      return json({ error: error.message }, 400);
+    }
+
+    const statements = imported.map((product) => env.DB.prepare(`
+      INSERT INTO products (
+        id, name, price, category, type, formats, description,
+        images, download_url, active, sort_order, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET
+        name = excluded.name,
+        price = excluded.price,
+        category = excluded.category,
+        type = excluded.type,
+        formats = excluded.formats,
+        description = excluded.description,
+        images = excluded.images,
+        download_url = excluded.download_url,
+        active = excluded.active,
+        sort_order = excluded.sort_order,
+        updated_at = CURRENT_TIMESTAMP
+    `).bind(
+      product.id,
+      product.name,
+      product.price,
+      product.category,
+      product.type,
+      product.formats,
+      product.description,
+      product.images,
+      product.downloadUrl,
+      product.active,
+      product.sortOrder
+    ));
+
+    await env.DB.batch(statements);
+    return json({ success: true, count: imported.length });
+  }
+
+  if (url.pathname.startsWith("/api/admin/products/") && request.method === "DELETE") {
+    const id = decodeURIComponent(url.pathname.slice("/api/admin/products/".length)).trim();
+    if (!/^[A-Za-z0-9_-]+$/.test(id)) {
+      return json({ error: "Invalid product ID." }, 400);
+    }
+    const result = await env.DB.prepare("DELETE FROM products WHERE id = ?").bind(id).run();
+    return json({ success: true, deleted: Number(result.meta?.changes || 0) });
+  }
+
   if (url.pathname === "/api/admin/products" && request.method === "GET") {
     return json({ products: await listProducts(env, true) });
   }
