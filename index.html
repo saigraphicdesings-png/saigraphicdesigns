@@ -624,6 +624,125 @@
             }
         }
 
+        /* =========================================
+           3D SERVICE AREA MAP ICONS
+        ========================================= */
+
+        .map-icon-3d {
+            position: relative;
+            width: 92px;
+            height: 92px;
+            margin-bottom: 1.35rem;
+            display: grid;
+            place-items: center;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 28% 20%, rgba(255,255,255,.95), rgba(255,255,255,.15) 38%, transparent 40%),
+                linear-gradient(145deg, #e8fff8 0%, #c9f7e9 48%, #a7ead6 100%);
+            border: 1px solid rgba(16, 185, 129, 0.24);
+            box-shadow:
+                0 16px 28px rgba(5, 150, 105, 0.18),
+                inset 0 1px 0 rgba(255,255,255,.9);
+            transform: perspective(500px) rotateX(8deg) rotateY(-8deg);
+            transform-style: preserve-3d;
+            transition: transform .35s ease, box-shadow .35s ease;
+            overflow: visible;
+        }
+
+        .feature-card:hover .map-icon-3d {
+            transform: perspective(500px) rotateX(2deg) rotateY(4deg) translateY(-6px);
+            box-shadow:
+                0 22px 36px rgba(5, 150, 105, 0.24),
+                inset 0 1px 0 rgba(255,255,255,.95);
+        }
+
+        .map-icon-3d svg {
+            width: 76px;
+            height: 76px;
+            overflow: visible;
+            filter: drop-shadow(0 9px 7px rgba(6, 95, 70, .25));
+            animation: mapIconFloat 4s ease-in-out infinite;
+        }
+
+        .map-icon-3d .map-depth {
+            fill: #047857;
+            opacity: .52;
+            transform: translateY(5px);
+        }
+
+        .map-icon-3d .map-face {
+            fill: url(#mapGreenGradient);
+            stroke: rgba(255,255,255,.92);
+            stroke-width: 1.5;
+            stroke-linejoin: round;
+        }
+
+        .map-icon-3d .map-highlight {
+            fill: none;
+            stroke: rgba(255,255,255,.68);
+            stroke-width: 1.4;
+            stroke-linecap: round;
+        }
+
+        .map-icon-3d .map-pin {
+            fill: #ff4d4f;
+            stroke: #ffffff;
+            stroke-width: 2;
+            transform-origin: center;
+            animation: mapPinPulse 1.8s ease-in-out infinite;
+        }
+
+        .map-icon-3d .map-pin-dot {
+            fill: #ffffff;
+        }
+
+        .map-icon-3d .map-road {
+            fill: none;
+            stroke: #059669;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 5 5;
+        }
+
+        .map-icon-label {
+            position: absolute;
+            right: -8px;
+            bottom: -7px;
+            min-width: 34px;
+            height: 25px;
+            padding: 0 7px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: #0f172a;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            font-size: .67rem;
+            font-weight: 900;
+            letter-spacing: .04em;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, .22);
+            transform: translateZ(18px);
+        }
+
+        @keyframes mapIconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        @keyframes mapPinPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .map-icon-3d svg,
+            .map-icon-3d .map-pin {
+                animation: none;
+            }
+        }
+
+
+
 
 
 
@@ -1442,25 +1561,90 @@
         </div>
         <div class="features-grid">
             <article class="feature-card">
-                <div class="service-icon">⌖</div>
+                <div class="map-icon-3d" aria-label="3D map of Madurai">
+                    <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="mapGreenGradient" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#34d399"></stop>
+                                <stop offset=".55" stop-color="#10b981"></stop>
+                                <stop offset="1" stop-color="#059669"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path class="map-depth" d="M12 23 L39 12 L63 18 L88 10 L91 73 L67 86 L42 80 L14 90 Z"></path>
+                        <path class="map-face" d="M12 18 L39 8 L63 14 L88 6 L91 68 L67 81 L42 75 L14 85 Z"></path>
+                        <path class="map-road" d="M18 70 C34 58 36 38 53 34 C67 31 72 20 84 15"></path>
+                        <path class="map-highlight" d="M39 10 L42 74 M64 16 L67 79"></path>
+                        <path class="map-pin" d="M57 24 C48 24 42 31 42 40 C42 52 57 65 57 65 C57 65 72 52 72 40 C72 31 66 24 57 24 Z"></path>
+                        <circle class="map-pin-dot" cx="57" cy="40" r="4"></circle>
+                    </svg>
+                    <span class="map-icon-label">MDU</span>
+                </div>
                 <h3 class="feature-title">Madurai</h3>
                 <p class="feature-desc">Local graphic design and printing support from our Main Office in Ponmeni, Madurai.</p>
                 <a href="graphic-designer-madurai.html" class="btn-primary">Graphic Designer in Madurai →</a>
             </article>
             <article class="feature-card">
-                <div class="service-icon">TN</div>
+                <div class="map-icon-3d" aria-label="3D map of Tamil Nadu">
+                    <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="mapGreenGradient" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#34d399"></stop>
+                                <stop offset=".55" stop-color="#10b981"></stop>
+                                <stop offset="1" stop-color="#059669"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path class="map-depth" d="M28 10 L47 8 L58 16 L70 15 L79 28 L77 43 L86 54 L78 66 L76 82 L63 94 L51 83 L43 70 L31 62 L24 48 L14 39 L22 27 Z"></path>
+                        <path class="map-face" d="M28 5 L47 3 L58 11 L70 10 L79 23 L77 38 L86 49 L78 61 L76 77 L63 89 L51 78 L43 65 L31 57 L24 43 L14 34 L22 22 Z"></path>
+                        <path class="map-highlight" d="M69 15 C72 31 69 49 75 73 M24 28 L58 58"></path>
+                        <path class="map-pin" d="M57 42 C51 42 47 47 47 53 C47 61 57 70 57 70 C57 70 67 61 67 53 C67 47 63 42 57 42 Z"></path>
+                        <circle class="map-pin-dot" cx="57" cy="53" r="3"></circle>
+                    </svg>
+                    <span class="map-icon-label">TN</span>
+                </div>
                 <h3 class="feature-title">Tamil Nadu</h3>
                 <p class="feature-desc">Tamil and English branding, marketing and print-ready design services across Tamil Nadu.</p>
                 <a href="graphic-design-company-tamil-nadu.html" class="btn-primary">Design Services in Tamil Nadu →</a>
             </article>
             <article class="feature-card">
-                <div class="service-icon">IN</div>
+                <div class="map-icon-3d" aria-label="3D map of India">
+                    <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="mapGreenGradient" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#34d399"></stop>
+                                <stop offset=".55" stop-color="#10b981"></stop>
+                                <stop offset="1" stop-color="#059669"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path class="map-depth" d="M32 9 L45 13 L54 8 L64 16 L75 17 L82 28 L73 36 L78 47 L67 54 L63 67 L56 78 L52 94 L44 81 L38 70 L28 63 L21 52 L11 44 L18 34 L16 23 L27 20 Z"></path>
+                        <path class="map-face" d="M32 4 L45 8 L54 3 L64 11 L75 12 L82 23 L73 31 L78 42 L67 49 L63 62 L56 73 L52 89 L44 76 L38 65 L28 58 L21 47 L11 39 L18 29 L16 18 L27 15 Z"></path>
+                        <path class="map-highlight" d="M30 15 C43 28 48 40 52 84 M20 37 C36 41 56 41 72 31"></path>
+                        <path class="map-pin" d="M40 34 C34 34 30 39 30 45 C30 53 40 62 40 62 C40 62 50 53 50 45 C50 39 46 34 40 34 Z"></path>
+                        <circle class="map-pin-dot" cx="40" cy="45" r="3"></circle>
+                    </svg>
+                    <span class="map-icon-label">IN</span>
+                </div>
                 <h3 class="feature-title">India</h3>
                 <p class="feature-desc">Online logo, branding, packaging and digital creative services for businesses across India.</p>
                 <a href="graphic-design-services-india.html" class="btn-primary">Design Services in India →</a>
             </article>
             <article class="feature-card">
-                <div class="service-icon">KL</div>
+                <div class="map-icon-3d" aria-label="3D map of Kerala">
+                    <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="mapGreenGradient" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#34d399"></stop>
+                                <stop offset=".55" stop-color="#10b981"></stop>
+                                <stop offset="1" stop-color="#059669"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path class="map-depth" d="M48 7 C59 17 56 28 63 38 C68 46 62 55 68 65 C72 73 65 84 55 96 L42 91 C49 79 48 68 42 59 C36 49 42 40 36 31 C31 23 36 13 48 7 Z"></path>
+                        <path class="map-face" d="M48 2 C59 12 56 23 63 33 C68 41 62 50 68 60 C72 68 65 79 55 91 L42 86 C49 74 48 63 42 54 C36 44 42 35 36 26 C31 18 36 8 48 2 Z"></path>
+                        <path class="map-highlight" d="M48 9 C45 29 55 42 50 58 C47 69 53 77 51 85"></path>
+                        <path class="map-pin" d="M51 38 C45 38 41 43 41 49 C41 57 51 66 51 66 C51 66 61 57 61 49 C61 43 57 38 51 38 Z"></path>
+                        <circle class="map-pin-dot" cx="51" cy="49" r="3"></circle>
+                    </svg>
+                    <span class="map-icon-label">KL</span>
+                </div>
                 <h3 class="feature-title">Kerala</h3>
                 <p class="feature-desc">Online branding and marketing design support for businesses across Kerala.</p>
                 <a href="graphic-design-services-kerala.html" class="btn-primary">Design Services in Kerala →</a>
