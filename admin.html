@@ -53,9 +53,28 @@
               <label>Product name<input id="productName" required placeholder="Premium Business Card 06"></label>
               <label>Price (₹)<input id="productPrice" required type="number" min="0" step="0.01" value="0"></label>
               <label>Sort order<input id="sortOrder" type="number" step="1" value="0"></label>
-              <label>Category<input id="productCategory" required placeholder="Printing Designs"></label>
+              <label>Category
+                <select id="productCategory" required>
+                  <option value="" selected disabled>Select category</option>
+                  <option value="Printing Designs">Printing Designs</option>
+                  <option value="Digital &amp; Social Media Designs">Digital &amp; Social Media Designs</option>
+                  <option value="Packaging Designs">Packaging Designs</option>
+                </select>
+              </label>
               <label>Type<input id="productType" required placeholder="business-card"></label>
-              <label class="full">Formats (comma separated)<input id="productFormats" placeholder="cdr, png"></label>
+              <label class="full">Formats
+                <select id="productFormats" multiple required aria-describedby="formatsHelp">
+                  <option value="cdr">CDR</option>
+                  <option value="psd">PSD</option>
+                  <option value="ai">AI</option>
+                  <option value="eps">EPS</option>
+                  <option value="pdf">PDF</option>
+                  <option value="png">PNG</option>
+                  <option value="jpg">JPG</option>
+                  <option value="svg">SVG</option>
+                </select>
+                <small id="formatsHelp">Select one or more formats. On computer use Ctrl; on mobile tap each option.</small>
+              </label>
               <label class="full">Preview images (one path or URL per line)<textarea id="productImages" required rows="4" placeholder="Images/Shop/product/1.jpg"></textarea></label>
               <label class="full">Description<textarea id="productDescription" rows="4"></textarea></label>
               <label class="full">Free download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."></label>
