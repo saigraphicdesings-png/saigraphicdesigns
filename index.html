@@ -487,6 +487,76 @@
         }
 
         /* =========================================
+           HERO STAT CARD ANIMATION
+        ========================================= */
+
+        .hero-stat-card.stat-animation-ready {
+            opacity: 0;
+            transform: translateY(26px) scale(0.94);
+            transition:
+                opacity 0.7s ease,
+                transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .hero-stat-card.stat-animation-ready.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .hero-stat-card.is-floating {
+            animation: heroStatFloat 4s ease-in-out infinite;
+        }
+
+        .hero-stat-card.is-floating:hover {
+            animation-play-state: paused;
+            transform: translateY(-8px) scale(1.035);
+        }
+
+        .hero-stat-num.is-counting {
+            animation: heroStatNumberPulse 0.55s ease;
+        }
+
+        @keyframes heroStatFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes heroStatNumberPulse {
+            0% {
+                transform: scale(0.88);
+                opacity: 0.45;
+            }
+            65% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-stat-card.stat-animation-ready,
+            .hero-stat-card.stat-animation-ready.is-visible {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .hero-stat-card.is-floating,
+            .hero-stat-num.is-counting {
+                animation: none;
+            }
+        }
+
+
+
+        /* =========================================
            MOBILE
         ========================================= */
 
@@ -712,7 +782,7 @@
 
                 <div class="hero-stat-card">
 
-                    <span class="hero-stat-num">
+                    <span class="hero-stat-num" data-target="100" aria-label="More than 100">
                         100+
                     </span>
 
@@ -2392,6 +2462,93 @@ Thank you!`;
             });
         });
     </script>
+
+
+    <!-- HERO STAT CARD ANIMATION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const statCard = document.querySelector(".hero-stat-card");
+            const statNumber = statCard
+                ? statCard.querySelector(".hero-stat-num")
+                : null;
+
+            if (!statCard || !statNumber) {
+                return;
+            }
+
+            const target = Number(statNumber.dataset.target) || 100;
+            const reducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+            let hasAnimated = false;
+
+            statCard.classList.add("stat-animation-ready");
+
+            function startStatAnimation() {
+                if (hasAnimated) {
+                    return;
+                }
+
+                hasAnimated = true;
+                statCard.classList.add("is-visible");
+
+                if (reducedMotion) {
+                    statNumber.textContent = target + "+";
+                    return;
+                }
+
+                statNumber.textContent = "0+";
+                statNumber.classList.add("is-counting");
+
+                const duration = 1400;
+                const startTime = performance.now();
+
+                function updateNumber(currentTime) {
+                    const progress = Math.min(
+                        (currentTime - startTime) / duration,
+                        1
+                    );
+                    const easedProgress = 1 - Math.pow(1 - progress, 3);
+                    const currentValue = Math.round(target * easedProgress);
+
+                    statNumber.textContent = currentValue + "+";
+
+                    if (progress < 1) {
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        statNumber.textContent = target + "+";
+                        window.setTimeout(function () {
+                            statNumber.classList.remove("is-counting");
+                            statCard.classList.add("is-floating");
+                        }, 250);
+                    }
+                }
+
+                requestAnimationFrame(updateNumber);
+            }
+
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                startStatAnimation();
+                                observer.disconnect();
+                            }
+                        });
+                    },
+                    {
+                        threshold: 0.35
+                    }
+                );
+
+                observer.observe(statCard);
+            } else {
+                startStatAnimation();
+            }
+        });
+    </script>
+
 
 </body>
 
