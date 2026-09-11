@@ -554,6 +554,78 @@
             }
         }
 
+        /* =========================================
+           HOMEPAGE SCROLL REVEAL ANIMATIONS
+        ========================================= */
+
+        .page-reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            filter: blur(3px);
+            transition:
+                opacity 0.75s ease,
+                transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.75s ease;
+            transition-delay: var(--reveal-delay, 0ms);
+            will-change: opacity, transform;
+        }
+
+        .page-reveal.reveal-left {
+            transform: translateX(-32px);
+        }
+
+        .page-reveal.reveal-right {
+            transform: translateX(32px);
+        }
+
+        .page-reveal.reveal-scale {
+            transform: scale(0.94);
+        }
+
+        .page-reveal.is-revealed {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
+        }
+
+        .page-reveal.reveal-image {
+            overflow: hidden;
+        }
+
+        .page-reveal.reveal-image.is-revealed img,
+        img.page-reveal.is-revealed {
+            animation: homepageImageSettle 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        @keyframes homepageImageSettle {
+            0% {
+                transform: scale(1.06);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page-reveal,
+            .page-reveal.reveal-left,
+            .page-reveal.reveal-right,
+            .page-reveal.reveal-scale,
+            .page-reveal.is-revealed {
+                opacity: 1;
+                transform: none;
+                filter: none;
+                transition: none;
+            }
+
+            .page-reveal.reveal-image.is-revealed img,
+            img.page-reveal.is-revealed {
+                animation: none;
+            }
+        }
+
+
+
 
 
         /* =========================================
@@ -2546,6 +2618,105 @@ Thank you!`;
             } else {
                 startStatAnimation();
             }
+        });
+    </script>
+
+
+
+    <!-- HOMEPAGE SCROLL REVEAL ANIMATIONS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+
+            const groups = [
+                {
+                    selector: ".site-header .logo, .site-header .nav-link, .site-header .nav-actions > *",
+                    type: "reveal-scale"
+                },
+                {
+                    selector: ".hero-badge, .hero-title, .hero-desc, .hero-actions > *",
+                    type: "reveal-left"
+                },
+                {
+                    selector: ".hero-img-wrap > img, .hero-img-wrap .hero-stat-card",
+                    type: "reveal-right"
+                },
+                {
+                    selector: "main section .section-tag, main section .section-title, main section .section-desc, body > section:not(.hero) .section-tag, body > section:not(.hero) .section-title, body > section:not(.hero) .section-desc",
+                    type: ""
+                },
+                {
+                    selector: ".benefit-card, .service-card, .portfolio-card, .process-card, .testimonial-card, .faq-item, .location-card, .area-card",
+                    type: "reveal-scale"
+                },
+                {
+                    selector: "main section img, body > section:not(.hero) img",
+                    type: "reveal-image"
+                },
+                {
+                    selector: ".cta-box > *, .footer-grid > *, .footer-bottom > *",
+                    type: ""
+                }
+            ];
+
+            const animatedElements = [];
+            const seen = new Set();
+
+            groups.forEach(function (group) {
+                document.querySelectorAll(group.selector).forEach(
+                    function (element, index) {
+                        if (
+                            seen.has(element) ||
+                            element.closest(".cart-drawer") ||
+                            element.classList.contains("hero-stat-card")
+                        ) {
+                            return;
+                        }
+
+                        seen.add(element);
+                        element.classList.add("page-reveal");
+
+                        if (group.type) {
+                            element.classList.add(group.type);
+                        }
+
+                        element.style.setProperty(
+                            "--reveal-delay",
+                            Math.min(index % 5, 4) * 90 + "ms"
+                        );
+
+                        animatedElements.push(element);
+                    }
+                );
+            });
+
+            if (reducedMotion || !("IntersectionObserver" in window)) {
+                animatedElements.forEach(function (element) {
+                    element.classList.add("is-revealed");
+                });
+                return;
+            }
+
+            const observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("is-revealed");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: "0px 0px -7% 0px"
+                }
+            );
+
+            animatedElements.forEach(function (element) {
+                observer.observe(element);
+            });
         });
     </script>
 
