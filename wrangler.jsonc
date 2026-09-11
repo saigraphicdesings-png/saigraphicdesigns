@@ -6,5 +6,12 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sai-shop-products",
+      "database_id": "b9f7a39b-cf52-4a74-b31c-ded8c012d5f9"
+    }
+  ]
 }
