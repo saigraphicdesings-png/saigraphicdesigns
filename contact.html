@@ -375,6 +375,209 @@
         }
 
         /* =========================================
+           BIKE DIRECTIONS ANIMATION
+        ========================================= */
+
+        .directions-btn.is-routing {
+            pointer-events: none;
+            opacity: 0.82;
+        }
+
+        .map-container {
+            position: relative;
+        }
+
+        .directions-animation {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            background: rgba(248, 250, 252, 0.12);
+            transition: opacity 0.25s ease;
+        }
+
+        .directions-animation.is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .directions-route {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .directions-route-path {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 12 13;
+            opacity: 0;
+            filter: drop-shadow(0 2px 3px rgba(15, 23, 42, 0.24));
+        }
+
+        .directions-animation.is-active .directions-route-path {
+            opacity: 0.9;
+            animation: drawDirectionsRoute 2.7s linear forwards;
+        }
+
+        .directions-bike {
+            position: absolute;
+            left: 7%;
+            top: 82%;
+            z-index: 5;
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid var(--primary);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.28);
+            font-size: 27px;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .directions-animation.is-active .directions-bike {
+            opacity: 1;
+            animation: rideBikeToStudio 2.7s cubic-bezier(0.35, 0.05, 0.2, 1) forwards;
+        }
+
+        .directions-destination {
+            position: absolute;
+            left: 62%;
+            top: 46%;
+            z-index: 4;
+            width: 25px;
+            height: 25px;
+            border-radius: 50% 50% 50% 0;
+            background: #ef4444;
+            border: 3px solid #ffffff;
+            box-shadow: 0 5px 14px rgba(15, 23, 42, 0.3);
+            opacity: 0;
+            transform: translate(-50%, -100%) rotate(-45deg) scale(0.6);
+        }
+
+        .directions-destination::after {
+            content: "";
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            left: 6px;
+            top: 6px;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+
+        .directions-animation.is-active .directions-destination {
+            animation: destinationPinPop 0.45s ease 2.35s forwards;
+        }
+
+        .directions-status {
+            position: absolute;
+            left: 50%;
+            bottom: 16px;
+            z-index: 6;
+            margin: 0;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 800;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.24);
+            opacity: 0;
+            transform: translate(-50%, 12px);
+            white-space: nowrap;
+        }
+
+        .directions-animation.is-active .directions-status {
+            animation: directionsStatusIn 0.45s ease 2.3s forwards;
+        }
+
+        @keyframes drawDirectionsRoute {
+            0% {
+                stroke-dashoffset: 380;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes rideBikeToStudio {
+            0% {
+                left: 7%;
+                top: 84%;
+                transform: translate(-50%, -50%) rotate(-8deg) scale(0.86);
+            }
+            22% {
+                left: 23%;
+                top: 77%;
+                transform: translate(-50%, -50%) rotate(-15deg) scale(1);
+            }
+            46% {
+                left: 36%;
+                top: 70%;
+                transform: translate(-50%, -50%) rotate(8deg) scale(1);
+            }
+            70% {
+                left: 49%;
+                top: 63%;
+                transform: translate(-50%, -50%) rotate(-10deg) scale(1);
+            }
+            100% {
+                left: 62%;
+                top: 46%;
+                transform: translate(-50%, -50%) rotate(-4deg) scale(1);
+            }
+        }
+
+        @keyframes destinationPinPop {
+            to {
+                opacity: 1;
+                transform: translate(-50%, -100%) rotate(-45deg) scale(1);
+            }
+        }
+
+        @keyframes directionsStatusIn {
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .directions-bike {
+                width: 42px;
+                height: 42px;
+                font-size: 23px;
+            }
+
+            .directions-status {
+                bottom: 10px;
+                max-width: calc(100% - 20px);
+                font-size: 0.78rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .directions-animation.is-active .directions-route-path,
+            .directions-animation.is-active .directions-bike,
+            .directions-animation.is-active .directions-destination,
+            .directions-animation.is-active .directions-status {
+                animation-duration: 0.01ms;
+                animation-delay: 0ms;
+            }
+        }
+
+
+
+        /* =========================================
            FAQ
         ========================================= */
 
@@ -1265,8 +1468,8 @@
                         rel="noopener noreferrer"
                         class="btn-primary"
                         style="margin-top:1.5rem;display:inline-block;"
-                    >
-                        Open in Google Maps →
+                     id="showDirectionsBtn">
+                        Show Directions 🏍️
                     </a>
 
                 </div>
@@ -1287,6 +1490,18 @@
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
     </iframe>
+
+    <div class="directions-animation" id="directionsAnimation" aria-hidden="true">
+        <svg class="directions-route" viewBox="0 0 700 420" preserveAspectRatio="none" aria-hidden="true">
+            <path class="directions-route-path"
+                d="M49 353 C135 337 173 309 252 294 C333 279 384 286 435 193">
+            </path>
+        </svg>
+        <div class="directions-bike" aria-hidden="true">🏍️</div>
+        <div class="directions-destination" aria-hidden="true"></div>
+        <p class="directions-status" role="status">You have reached Sai Graphic Designs!</p>
+    </div>
+
 </div>
 
             </div>
@@ -2179,6 +2394,59 @@ Sai Graphic Designs Website
 </script>
     <script src="mobile-fixes.js" defer></script>
     <script src="global-animations.js" defer></script>
+
+
+    <!-- BIKE DIRECTIONS ANIMATION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const button = document.getElementById("showDirectionsBtn");
+            const animation = document.getElementById("directionsAnimation");
+
+            if (!button || !animation) {
+                return;
+            }
+
+            const destinationURL = button.href;
+            let isRouting = false;
+
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                if (isRouting) {
+                    return;
+                }
+
+                isRouting = true;
+                button.classList.add("is-routing");
+                button.setAttribute("aria-disabled", "true");
+                button.textContent = "Bike is on the way…";
+                animation.classList.remove("is-active");
+
+                void animation.offsetWidth;
+
+                animation.classList.add("is-active");
+
+                const reducedMotion = window.matchMedia(
+                    "(prefers-reduced-motion: reduce)"
+                ).matches;
+
+                window.setTimeout(
+                    function () {
+                        button.textContent = "Arrived! Opening Directions…";
+                    },
+                    reducedMotion ? 50 : 2450
+                );
+
+                window.setTimeout(
+                    function () {
+                        window.location.href = destinationURL;
+                    },
+                    reducedMotion ? 350 : 3300
+                );
+            });
+        });
+    </script>
+
 
 </body>
 
