@@ -2419,29 +2419,43 @@ Sai Graphic Designs Website
                 isRouting = true;
                 button.classList.add("is-routing");
                 button.setAttribute("aria-disabled", "true");
-                button.textContent = "Bike is on the way…";
+                button.textContent = "Preparing bike route…";
                 animation.classList.remove("is-active");
 
-                void animation.offsetWidth;
-
-                animation.classList.add("is-active");
-
+                const mapContainer = animation.closest(".map-container");
                 const reducedMotion = window.matchMedia(
                     "(prefers-reduced-motion: reduce)"
                 ).matches;
+                const scrollDelay = reducedMotion ? 0 : 550;
+
+                if (mapContainer) {
+                    mapContainer.scrollIntoView({
+                        behavior: reducedMotion ? "auto" : "smooth",
+                        block: "center"
+                    });
+                }
+
+                window.setTimeout(
+                    function () {
+                        void animation.offsetWidth;
+                        animation.classList.add("is-active");
+                        button.textContent = "Bike is on the way…";
+                    },
+                    scrollDelay
+                );
 
                 window.setTimeout(
                     function () {
                         button.textContent = "Arrived! Opening Directions…";
                     },
-                    reducedMotion ? 50 : 2450
+                    scrollDelay + (reducedMotion ? 80 : 2700)
                 );
 
                 window.setTimeout(
                     function () {
-                        window.location.href = destinationURL;
+                        window.location.assign(destinationURL);
                     },
-                    reducedMotion ? 350 : 3300
+                    scrollDelay + (reducedMotion ? 500 : 3800)
                 );
             });
         });
