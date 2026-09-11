@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
        PRODUCT DATA
     ===================================================== */
 
-    const products = [
+    let products = [
 
         /* =================================================
            PRINTING DESIGNS
@@ -2440,11 +2440,62 @@ Thank you! 😊`;
        INITIALIZE
     ===================================================== */
 
+    const fallbackProducts = products.slice();
+
+    async function loadManagedProducts() {
+        try {
+            const response = await fetch("/api/products", {
+                headers: { "Accept": "application/json" }
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            const managedProducts = Array.isArray(data.products)
+                ? data.products
+                : [];
+            const hiddenIds = new Set(
+                Array.isArray(data.hiddenIds)
+                    ? data.hiddenIds
+                    : []
+            );
+            const managedIds = new Set(
+                managedProducts.map(function (product) {
+                    return product.id;
+                })
+            );
+
+            products = fallbackProducts
+                .filter(function (product) {
+                    return !managedIds.has(product.id) &&
+                        !hiddenIds.has(product.id);
+                })
+                .concat(managedProducts)
+                .sort(function (first, second) {
+                    return (Number(first.sort_order) || 0) -
+                        (Number(second.sort_order) || 0);
+                });
+
+            setupFilters();
+            renderProducts();
+
+        } catch (error) {
+            console.warn(
+                "Using built-in products because the admin database is unavailable.",
+                error
+            );
+        }
+    }
+
     setupFilters();
 
     renderProducts();
 
     updateCart();
+
+    loadManagedProducts();
 
 
     /* =====================================================
