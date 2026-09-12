@@ -13,5 +13,8 @@
       "database_name": "sai-shop-products",
       "database_id": "b9f7a39b-cf52-4a74-b31c-ded8c012d5f9"
     }
-  ]
+  ],
+  "vars": {
+    "GMAIL_SENDER": "saigraphicdesings@gmail.com"
+  }
 }
