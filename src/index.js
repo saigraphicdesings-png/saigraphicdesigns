@@ -44,8 +44,7 @@ function normalize(row) {
     downloadUrl: row.download_url || "",
     active: Boolean(row.active),
     sort_order: Number(row.sort_order) || 0,
-    clicks: Number(row.clicks) || 0,
-    createdAt: row.created_at || ""
+    clicks: Number(row.clicks) || 0
   };
 }
 
