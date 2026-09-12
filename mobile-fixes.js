@@ -71,9 +71,38 @@
     });
   }
 
+  function initProductClickTracking() {
+    var path = window.location.pathname.toLowerCase();
+    if (path !== "/shop" && path !== "/shop.html" && !path.endsWith("/shop") && !path.endsWith("/shop.html")) {
+      return;
+    }
+
+    document.addEventListener("click", function (event) {
+      if (!event.target || !event.target.closest) return;
+      if (event.target.closest(".add-product-btn")) return;
+
+      var card = event.target.closest(".shop-product");
+      if (!card) return;
+
+      var id = card.dataset ? card.dataset.id : "";
+      if (!id) return;
+
+      fetch("/api/product-click", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id: id }),
+        keepalive: true
+      }).catch(function () {});
+    }, true);
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileNavigation);
+    document.addEventListener("DOMContentLoaded", function () {
+      initMobileNavigation();
+      initProductClickTracking();
+    });
   } else {
     initMobileNavigation();
+    initProductClickTracking();
   }
 })();
