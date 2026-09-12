@@ -70,7 +70,12 @@
       ".product-star-empty{color:#b9bec7}" +
       ".product-popularity-rating{color:#252525;font-weight:800}" +
       ".product-popularity-hype{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800;letter-spacing:.2px}" +
-      ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(17,24,39,.06);color:#4b5563;font-size:10px;font-weight:800}";
+      ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(17,24,39,.06);color:#4b5563;font-size:10px;font-weight:800}" +
+      ".product-preview::before{content:'SAI GRAPHIC DESIGNS';position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) rotate(-28deg);width:145%;text-align:center;color:rgba(255,255,255,.72);text-shadow:0 1px 5px rgba(0,0,0,.35);font-size:clamp(14px,1.35vw,20px);font-weight:900;letter-spacing:2px;white-space:nowrap;pointer-events:none;user-select:none}" +
+      ".product-preview::after{z-index:6}" +
+      ".main-product-image{position:relative}" +
+      ".main-product-image::after{content:'SAI GRAPHIC DESIGNS';position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) rotate(-28deg);width:145%;text-align:center;color:rgba(255,255,255,.70);text-shadow:0 2px 8px rgba(0,0,0,.42);font-size:clamp(22px,4vw,44px);font-weight:900;letter-spacing:4px;white-space:nowrap;pointer-events:none;user-select:none}" +
+      "@media(max-width:650px){.product-preview::before{font-size:12px;letter-spacing:1.2px}.main-product-image::after{font-size:22px;letter-spacing:2px}}";
     document.head.appendChild(style);
   }
 
