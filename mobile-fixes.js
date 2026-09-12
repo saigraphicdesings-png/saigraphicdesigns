@@ -65,16 +65,19 @@
     style.id = "shopPopularityStyles";
     style.textContent =
       ".product-popularity{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:8px 0 2px;font-size:12px;font-weight:700;line-height:1.2}" +
-      ".product-popularity-stars{color:#f5a623;letter-spacing:1px;font-size:15px;white-space:nowrap}" +
+      ".product-popularity-stars{display:inline-flex;align-items:center;gap:1px;font-size:15px;white-space:nowrap}" +
+      ".product-star-filled{color:#f5a623}" +
+      ".product-star-empty{color:#b9bec7}" +
       ".product-popularity-rating{color:#252525;font-weight:800}" +
-      ".product-popularity-clicks{color:#6b7280;font-weight:600}" +
-      ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800}";
+      ".product-popularity-hype{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.35px}" +
+      ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(17,24,39,.06);color:#4b5563;font-size:10px;font-weight:800}";
     document.head.appendChild(style);
   }
 
-  function starText(rating) {
+  function starMarkup(rating) {
     var rounded = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
-    return "★".repeat(rounded) + "☆".repeat(5 - rounded);
+    return '<span class="product-star-filled">' + "★".repeat(rounded) + '</span>' +
+           '<span class="product-star-empty">' + "★".repeat(5 - rounded) + '</span>';
   }
 
   function decorateCard(card) {
@@ -89,16 +92,18 @@
 
     var box = document.createElement("div");
     box.className = "product-popularity";
-    box.setAttribute("aria-label", data.clicks > 0 ? "Popularity " + data.rating.toFixed(1) + " out of 5, " + data.clicks + " clicks" : "No clicks yet");
+    box.setAttribute("aria-label", data.clicks > 0 ? "Hype popularity " + data.rating.toFixed(1) + " out of 5, rank " + data.rank : "No hype yet");
 
     if (data.clicks > 0) {
       box.innerHTML =
-        '<span class="product-popularity-stars" aria-hidden="true">' + starText(data.rating) + '</span>' +
+        '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(data.rating) + '</span>' +
         '<span class="product-popularity-rating">' + data.rating.toFixed(1) + '</span>' +
-        '<span class="product-popularity-clicks">' + data.clicks.toLocaleString("en-IN") + ' clicks</span>' +
-        (data.rank ? '<span class="product-popularity-rank">#' + data.rank + ' Popular</span>' : '');
+        '<span class="product-popularity-hype">Hype</span>' +
+        (data.rank ? '<span class="product-popularity-rank">#' + data.rank + '</span>' : '');
     } else {
-      box.innerHTML = '<span class="product-popularity-stars" aria-hidden="true">☆☆☆☆☆</span><span class="product-popularity-clicks">0 clicks</span>';
+      box.innerHTML =
+        '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(0) + '</span>' +
+        '<span class="product-popularity-hype">Hype</span>';
     }
 
     var bottom = info.querySelector(".product-bottom");
