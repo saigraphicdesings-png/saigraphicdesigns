@@ -72,24 +72,3 @@ Below the product list, select a product to view its saved download URL and use 
 If the product has no link, edit it and fill in **Download URL** first. The Copy Link button is disabled until a link is available. If clipboard access is blocked, select the displayed link and copy it manually.
 
 This feature requires no Gmail connection, OAuth credentials or email service. Paid product links remain available only through the authenticated admin API; free download links remain available in the shop.
-
-## Gemini conversational assistant
-
-The floating Sai Assistant uses Gemini when the Worker has `GEMINI_API_KEY`.
-
-1. Create an API key in Google AI Studio: https://aistudio.google.com/apikey
-2. In Cloudflare, open **Workers & Pages → saigraphicdesigns → Settings → Variables and Secrets → Add**.
-3. Choose **Secret**, name it **GEMINI_API_KEY**, and paste the key as its value. Save/deploy the Worker.
-4. Refresh `/admin.html`, log in, open **Ask Sai**, and ask a question. The label changes to **Powered by Gemini** after the first successful reply.
-
-Never paste the API key into chat, client JavaScript, or the repository. By default the Worker selects a stable Flash text model returned by Google's models endpoint. Optional plain-text variable `GEMINI_MODEL` pins a specific model; remove an unavailable override to restore automatic selection. Choose a text model supporting structured output in your Google account.
-
-The Worker sends message text, the last eight conversation entries, local task text, aggregate product statistics and up to 100 product summaries to Google. Admin credentials, download URLs and image URLs are excluded. Conversation history stays in page memory and clears on reload/logout; tasks remain in browser storage.
-
-Supported actions: add a local task, complete a numbered task, search products, open analytics. Reports use current product totals and all-time recorded product clicks. Gemini may answer general questions, but has no live web search. It cannot edit/delete products, send messages or schedule reminders. Model actions are validated before execution; no model-generated code or URLs are executed.
-
-Without a key the basic command assistant remains available. Voice recognition and playback still use browser speech services; connecting Gemini does not replace those services. Requests are limited to 20 per minute across the admin assistant and Google quotas also apply. Check your Google AI Studio quota/billing settings; this integration does not guarantee free usage.
-
-Validation: `node scripts/test-gemini.mjs`. Tests mock Google; a successful real reply must still be verified after adding the secret.
-
-API reference: https://ai.google.dev/gemini-api/docs/generate-content/structured-output

@@ -1,5 +1,3 @@
-import { handleAssistant } from "./assistant.js";
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -172,13 +170,6 @@ async function handleAPI(request, env, url) {
 
   if (!url.pathname.startsWith("/api/admin/")) return json({ error: "Not found." }, 404);
   if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
-
-  if (url.pathname === "/api/admin/assistant") {
-    return handleAssistant(request, env, async () => {
-      await ensureClickAnalytics(env);
-      return listProducts(env, true);
-    });
-  }
 
   if (url.pathname === "/api/admin/analytics/clicks" && request.method === "GET") {
     await ensureClickAnalytics(env);
