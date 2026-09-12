@@ -92,6 +92,12 @@ function validateProduct(input) {
   };
 }
 
+// Keep deletion history independently of product rows so imports cannot restore them.
+const deletionHistorySchema = `CREATE TABLE IF NOT EXISTS deleted_products (
+  id TEXT PRIMARY KEY,
+  deleted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+
 async function handleAPI(request, env, url) {
   if (!env.DB) {
     return json({
@@ -121,6 +127,11 @@ async function handleAPI(request, env, url) {
   }
 
 
+  // Upgrade existing databases automatically after authenticating the admin.
+  if (request.method === "POST" || request.method === "DELETE") {
+    await env.DB.prepare(deletionHistorySchema).run();
+  }
+
   if (url.pathname === "/api/admin/products/import" && request.method === "POST") {
     let input;
     try {
@@ -142,6 +153,79 @@ async function handleAPI(request, env, url) {
     }
 
     const statements = imported.map((product) => env.DB.prepare(`
+      INSERT INTO products (
+        id, name, price, category, type, formats, description,
+        images, download_url, active, sort_order, updated_at
+      ) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
+      ON CONFLICT(id) DO NOTHING
+    `).bind(
+      product.id,
+      product.name,
+      product.price,
+      product.category,
+      product.type,
+      product.formats,
+      product.description,
+      product.images,
+      product.downloadUrl,
+      product.active,
+      product.sortOrder,
+      product.id
+    ));
+
+    const results = await env.DB.batch(statements);
+    const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
+    return json({ success: true, count, skipped: imported.length - count });
+  }
+
+  if (url.pathname.startsWith("/api/admin/products/") && request.method === "DELETE") {
+    const id = decodeURIComponent(url.pathname.slice("/api/admin/products/".length)).trim();
+    if (!/^[A-Za-z0-9_-]+$/.test(id)) {
+      return json({ error: "Invalid product ID." }, 400);
+    }
+    const results = await env.DB.batch([
+      env.DB.prepare("INSERT OR IGNORE INTO deleted_products (id) VALUES (?)").bind(id),
+      env.DB.prepare("DELETE FROM products WHERE id = ?").bind(id)
+    ]);
+    return json({ success: true, deleted: Number(results[1].meta?.changes || 0) });
+  }
+
+  if (url.pathname === "/api/admin/products" && request.method === "GET") {
+    return json({ products: await listProducts(env, true) });
+  }
+
+  if (url.pathname === "/api/admin/products" && request.method === "POST") {
+    let input;
+    try {
+      input = await request.json();
+    } catch {
+      return json({ error: "Invalid JSON." }, 400);
+    }
+
+    let product;
+    try {
+      product = validateProduct(input);
+    } catch (error) {
+      return json({ error: error.message }, 400);
+    }
+
+    // Older cached admin pages imported through this save endpoint.
+    const deleted = await env.DB.prepare("SELECT id FROM deleted_products WHERE id = ?")
+      .bind(product.id).all();
+    if (deleted.results?.length) {
+      return json({ error: "This product ID was deleted. Use a new ID to create a new product." }, 409);
+    }
+
+    const statements = [];
+    if (product.originalId && product.originalId !== product.id) {
+      statements.push(
+        env.DB.prepare("INSERT OR IGNORE INTO deleted_products (id) VALUES (?)").bind(product.originalId),
+        env.DB.prepare("DELETE FROM products WHERE id = ?").bind(product.originalId)
+      );
+    }
+
+    statements.push(env.DB.prepare(`
       INSERT INTO products (
         id, name, price, category, type, formats, description,
         images, download_url, active, sort_order, updated_at
@@ -171,75 +255,7 @@ async function handleAPI(request, env, url) {
       product.active,
       product.sortOrder
     ));
-
     await env.DB.batch(statements);
-    return json({ success: true, count: imported.length });
-  }
-
-  if (url.pathname.startsWith("/api/admin/products/") && request.method === "DELETE") {
-    const id = decodeURIComponent(url.pathname.slice("/api/admin/products/".length)).trim();
-    if (!/^[A-Za-z0-9_-]+$/.test(id)) {
-      return json({ error: "Invalid product ID." }, 400);
-    }
-    const result = await env.DB.prepare("DELETE FROM products WHERE id = ?").bind(id).run();
-    return json({ success: true, deleted: Number(result.meta?.changes || 0) });
-  }
-
-  if (url.pathname === "/api/admin/products" && request.method === "GET") {
-    return json({ products: await listProducts(env, true) });
-  }
-
-  if (url.pathname === "/api/admin/products" && request.method === "POST") {
-    let input;
-    try {
-      input = await request.json();
-    } catch {
-      return json({ error: "Invalid JSON." }, 400);
-    }
-
-    let product;
-    try {
-      product = validateProduct(input);
-    } catch (error) {
-      return json({ error: error.message }, 400);
-    }
-
-    if (product.originalId && product.originalId !== product.id) {
-      await env.DB.prepare("DELETE FROM products WHERE id = ?")
-        .bind(product.originalId)
-        .run();
-    }
-
-    await env.DB.prepare(`
-      INSERT INTO products (
-        id, name, price, category, type, formats, description,
-        images, download_url, active, sort_order, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-      ON CONFLICT(id) DO UPDATE SET
-        name = excluded.name,
-        price = excluded.price,
-        category = excluded.category,
-        type = excluded.type,
-        formats = excluded.formats,
-        description = excluded.description,
-        images = excluded.images,
-        download_url = excluded.download_url,
-        active = excluded.active,
-        sort_order = excluded.sort_order,
-        updated_at = CURRENT_TIMESTAMP
-    `).bind(
-      product.id,
-      product.name,
-      product.price,
-      product.category,
-      product.type,
-      product.formats,
-      product.description,
-      product.images,
-      product.downloadUrl,
-      product.active,
-      product.sortOrder
-    ).run();
 
     return json({ success: true, product: normalize({
       ...product,

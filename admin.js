@@ -445,6 +445,28 @@ function reset(){form.reset();$("originalId").value="";$("productPrice").value="
 function payload(){return{id:$("productId").value.trim(),originalId:$("originalId").value.trim(),name:$("productName").value.trim(),price:Number($("productPrice").value)||0,sort_order:Number($("sortOrder").value)||0,category:$("productCategory").value.trim(),type:$("productType").value.trim(),formats:Array.from($("productFormats").selectedOptions).map(option=>option.value),images:$("productImages").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),description:$("productDescription").value.trim(),downloadUrl:$("downloadUrl").value.trim(),active:$("productActive").checked}}
 async function save(p){return api("/api/admin/products",{method:"POST",body:JSON.stringify(p)})}
 form.addEventListener("submit",async e=>{e.preventDefault();message.textContent="Saving…";try{await save(payload());message.style.color="#047857";message.textContent="Product saved successfully.";reset();await loadProducts()}catch(err){message.style.color="#dc2626";message.textContent=err.message}})
-$("importBtn").addEventListener("click",async()=>{const button=$("importBtn");button.disabled=true;button.textContent="Importing…";message.textContent="Importing existing products…";try{for(const product of builtInProducts){await save({...product,originalId:product.id,active:true,sort_order:0})}message.style.color="#047857";message.textContent=builtInProducts.length+" existing products added successfully. Use Delete on the empty test product.";reset();await loadProducts()}catch(err){message.style.color="#dc2626";message.textContent=err.message}finally{button.disabled=false;button.textContent="Import Existing Products"}});$("resetBtn").addEventListener("click",reset);$("refreshBtn").addEventListener("click",loadProducts);$("logoutBtn").addEventListener("click",logout);$("productSearch").addEventListener("input",render);
+$("importBtn").addEventListener("click", async () => {
+  const button = $("importBtn");
+  button.disabled = true;
+  button.textContent = "Importing…";
+  message.textContent = "Importing new products…";
+  try {
+    const result = await api("/api/admin/products/import", {
+      method: "POST",
+      body: JSON.stringify({ products: builtInProducts })
+    });
+    await loadProducts();
+    message.style.color = "#047857";
+    message.textContent = result.count + " products imported. " + result.skipped +
+      " existing or deleted products skipped.";
+  } catch (err) {
+    message.style.color = "#dc2626";
+    message.textContent = err.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = "Import Existing Products";
+  }
+});
+$("resetBtn").addEventListener("click",reset);$("refreshBtn").addEventListener("click",loadProducts);$("logoutBtn").addEventListener("click",logout);$("productSearch").addEventListener("input",render);
 if(token)showDashboard();
 })();

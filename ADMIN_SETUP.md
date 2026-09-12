@@ -59,5 +59,7 @@ Enter the same `ADMIN_TOKEN` value to access the product manager.
 - An empty database produces an empty Shop; old built-in products are never added back.
 - If the database is unavailable, the Shop displays a retry message instead of outdated products.
 - The Shop refreshes its catalog when you return to the tab or restore the page from browser history.
-- Import Existing Products explicitly restores the original products, so do not repeat the import after deleting items unless you want to restore them.
+- Import Existing Products adds only new IDs. It skips existing products (preserving edits and hidden status) and IDs recorded in deletion history.
+- The Worker creates deletion history automatically for existing databases. Deletions made before this update were not recorded; delete any previously restored unwanted products once more after deployment.
+- Deleted IDs cannot be reused by the save endpoint, including by older cached admin pages. Create a new product with a new ID if needed.
 - Hidden product details and download links are never returned by the public API.

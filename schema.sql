@@ -16,3 +16,9 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE INDEX IF NOT EXISTS idx_products_active_sort
 ON products(active, sort_order, name);
+
+-- Retain IDs after deletion to prevent re-importing removed products.
+CREATE TABLE IF NOT EXISTS deleted_products (
+  id TEXT PRIMARY KEY,
+  deleted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
