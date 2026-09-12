@@ -76,7 +76,7 @@ The new section below the product list sends the selected product's saved HTTPS 
    - `GOOGLE_CLIENT_ID`: your OAuth client ID.
    - `GOOGLE_CLIENT_SECRET`: your OAuth client secret.
    - `GOOGLE_REFRESH_TOKEN`: the refresh token for the sender account.
-   - `GMAIL_SENDER`: the exact authorized sender address, for example the company address currently listed on the website, `saigraphicdesings@gmail.com`, if that is the account you authorize.
+   The confirmed sender, `saigraphicdesings@gmail.com`, is already set as `GMAIL_SENDER` in `wrangler.jsonc`. Authorize this same account; no separate sender secret is needed.
 5. Deploy the Worker and refresh the admin panel. The email section displays the configured sender. No email is sent by configuration or by opening the panel.
 6. Save an HTTPS download URL on the product. Select the product, enter the customer's email, inspect the preview, and click **Send Product Email**. Paid download links are not returned in the public shop API.
 
