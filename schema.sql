@@ -22,3 +22,13 @@ CREATE TABLE IF NOT EXISTS deleted_products (
   id TEXT PRIMARY KEY,
   deleted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Persistent per-product click totals from the public Shop page.
+CREATE TABLE IF NOT EXISTS product_clicks (
+  product_id TEXT PRIMARY KEY,
+  clicks INTEGER NOT NULL DEFAULT 0 CHECK (clicks >= 0),
+  last_clicked_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_clicks_count
+ON product_clicks(clicks DESC);
