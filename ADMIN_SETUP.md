@@ -65,21 +65,10 @@ Enter the same `ADMIN_TOKEN` value to access the product manager.
 - Hidden product details and download links are never returned by the public API.
 
 
-## Send Product by Email — Gmail connection
+## Product Drive Link
 
-The new section below the product list sends the selected product's saved HTTPS download link to one customer email address. Sending requires the existing admin login. It does not email a customer automatically when they select a product in the public shop.
+Below the product list, select a product to view its saved download URL and use **Copy Link** to copy it. Visible and hidden products are available to the admin. Deleted products are removed from the selector on refresh.
 
-1. In your Google Cloud project, enable the **Gmail API** and configure the OAuth consent screen for your own sender account.
-2. Create an **OAuth web application client**. To obtain credentials through [Google OAuth Playground](https://developers.google.com/oauthplayground/), register `https://developers.google.com/oauthplayground` as an authorized redirect URI and enter your own client ID and client secret in the Playground's settings.
-3. Authorize the sender Gmail account with only the `https://www.googleapis.com/auth/gmail.send` scope, then exchange the authorization code for tokens. Obtain offline access and retain the refresh token securely. The sender must be the authorized Gmail account or its configured send-as alias. See [Google's OAuth web-server guide](https://developers.google.com/identity/protocols/oauth2/web-server#offline) for production consent settings and refresh-token lifetime restrictions; testing-mode tokens may expire.
-4. In Cloudflare, open the `saigraphicdesigns` Worker → Settings → Variables and Secrets. Add these values **as secrets**, never in GitHub or frontend code:
-   - `GOOGLE_CLIENT_ID`: your OAuth client ID.
-   - `GOOGLE_CLIENT_SECRET`: your OAuth client secret.
-   - `GOOGLE_REFRESH_TOKEN`: the refresh token for the sender account.
-   The confirmed sender, `saigraphicdesings@gmail.com`, is already set as `GMAIL_SENDER` in `wrangler.jsonc`. Authorize this same account; no separate sender secret is needed.
-5. Deploy the Worker and refresh the admin panel. The email section displays the configured sender. No email is sent by configuration or by opening the panel.
-6. Save an HTTPS download URL on the product. Select the product, enter the customer's email, inspect the preview, and click **Send Product Email**. Paid download links are not returned in the public shop API.
+If the product has no link, edit it and fill in **Download URL** first. The Copy Link button is disabled until a link is available. If clipboard access is blocked, select the displayed link and copy it manually.
 
-The Worker submits UTF-8 MIME messages using [Gmail's messages.send API](https://developers.google.com/workspace/gmail/api/guides/sending). A success message means Gmail accepted the message, not that delivery to the inbox is confirmed. If a connection drops while submitting, check the sender's Gmail Sent folder before sending again; the Worker never automatically retries an uncertain send.
-
-The Gmail connection in ChatGPT, if installed, is separate from these deployed Worker credentials. Never paste account passwords, client secrets or refresh tokens in chat.
+This feature requires no Gmail connection, OAuth credentials or email service. Paid product links remain available only through the authenticated admin API; free download links remain available in the shop.

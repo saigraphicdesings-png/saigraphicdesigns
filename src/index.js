@@ -1,5 +1,3 @@
-import { emailSettings, sendProductEmail } from "./email.js";
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -60,7 +58,7 @@ async function listProducts(env, includeHidden) {
   const result = await env.DB.prepare(query).all();
   return (result.results || []).map((row) => {
     const product = normalize(row);
-    // Paid download links are for admin email delivery, never the public catalog.
+    // Paid download links are for admin sharing, never the public catalog.
     if (!includeHidden && product.price > 0) product.downloadUrl = "";
     return product;
   });
@@ -133,13 +131,6 @@ async function handleAPI(request, env, url) {
     return json({ error: "Unauthorized." }, 401);
   }
 
-
-  if (url.pathname === "/api/admin/email-settings" && request.method === "GET") {
-    return json(emailSettings(env));
-  }
-  if (url.pathname === "/api/admin/send-product-email" && request.method === "POST") {
-    return sendProductEmail(request, env, json);
-  }
 
   // Upgrade existing databases automatically after authenticating the admin.
   if (request.method === "POST" || request.method === "DELETE") {
