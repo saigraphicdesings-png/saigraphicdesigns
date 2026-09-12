@@ -28,7 +28,7 @@
   </style>
   <section class="sai-window" id="voiceWindow" role="dialog" aria-label="Sai Assistant" hidden data-state="idle">
     <div class="sai-head"><h2>Sai Assistant</h2><button id="voiceClose" type="button" aria-label="Close assistant">×</button></div>
-    <p class="sai-sub">Your shop, a conversation away</p>
+    <p class="sai-sub">Your shop, a conversation away · <span id="voiceProvider">Checking Gemini on your next message</span></p>
     <div class="sai-orb" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <p id="voiceStatus" role="status">Tap the mic to talk</p>
     <p id="voiceTranscript" class="sai-transcript"></p><p id="voiceOutput" class="voice-output" aria-live="polite">Hi! What can I help you with?</p>
@@ -38,14 +38,15 @@
     <details class="sai-settings"><summary>Language, voice & tasks</summary>
       <label>Language <select id="voiceLanguage"><option value="en-IN">English</option><option value="ta-IN">தமிழ்</option></select></label>
       <label><input type="checkbox" id="voiceSpeak" checked> Speak replies</label>
-      <p>Supports shop reports, product search and tasks. After replying, the mic listens for your next message while this conversation is open. Tap Stop to end.</p>
-      <p>Tasks stay in this browser. No scheduled reminders. Voice may be processed by your browser’s speech service.</p><ol id="voiceTasks" class="voice-tasks"></ol>
+      <p>Gemini understands natural questions and follow-ups. It can read shop reports, search products, add tasks and complete tasks. After replying, the mic listens for your next message while this conversation is open. Tap Stop to end.</p>
+      <p>Tasks stay in this browser. No scheduled reminders. Voice may be processed by your browser’s speech service. When connected, messages, recent conversation, task text and a shop summary are sent to Google Gemini. Conversation history clears when you log out or reload.</p><ol id="voiceTasks" class="voice-tasks"></ol>
     </details>
   </section><button type="button" class="sai-launch" id="voiceLaunch" aria-expanded="false" aria-controls="voiceWindow"><span aria-hidden="true">🎤</span> Ask Sai</button>`;
   dashboard.append(panel);
   const $ = id => document.getElementById(id);
   const taskKey = 'saiAdminVoiceTasksV1';
   let tasks = [], recognition, listening = false, epoch = 0, busy = false;
+  let history=[], geminiMode=null;
   let conversation=false, pending='', restartTimer, speechTimer, speechId=0, speech=null, speaking=false;
   try { const saved = JSON.parse(localStorage.getItem(taskKey) || '[]'); if (Array.isArray(saved)) tasks = saved.filter(t => t && typeof t.text === 'string' && typeof t.done === 'boolean').slice(0,200); } catch {}
   const available = () => !dashboard.hidden && Boolean(sessionStorage.getItem('saiShopAdminToken'));
@@ -107,16 +108,51 @@
     if (!response.ok) throw new Error('Report could not be loaded. Please try again.');
     return response.json();
   }
+  async function askGemini(message, signal, turn) {
+    const response=await fetch('/api/admin/assistant',{method:'POST',signal,
+      headers:{'Content-Type':'application/json',Authorization:'Bearer '+sessionStorage.getItem('saiShopAdminToken')},
+      body:JSON.stringify({message,language:$('voiceLanguage').value,history,tasks})});
+    const data=await response.json().catch(()=>({}));
+    if(turn!==epoch || !available())return true;
+    if(response.status===401){$('logoutBtn').click();return true;}
+    if(data.code==='GEMINI_NOT_CONFIGURED'){
+      geminiMode=false;$('voiceProvider').textContent='Basic mode · Gemini key needed';return false;
+    }
+    if(!response.ok)throw new Error(data.error || 'Gemini is unavailable. Try again.');
+    if(data.provider!=='gemini' || typeof data.reply!=='string' || !['none','add_task','complete_task','search_products','open_analytics'].includes(data.action))throw new Error('Invalid assistant response. Nothing changed.');
+    geminiMode=true;$('voiceProvider').textContent='Powered by Gemini';
+    let answer=data.reply;
+    if(data.action==='add_task'){
+      if(typeof data.text!=='string' || !data.text.trim() || data.text.length>500)throw new Error('Task text is invalid.');
+      if(tasks.length>=200)throw new Error('Task list is full (200 tasks).');
+      if(!persist([...tasks,{text:data.text,done:false}]))return true;
+      answer=$('voiceLanguage').value==='ta-IN'?'பணி சேர்க்கப்பட்டது: '+data.text:'Task added: '+data.text;
+    } else if(data.action==='complete_task'){
+      const index=data.taskNumber-1;
+      if(!Number.isInteger(data.taskNumber) || !tasks[index])throw new Error('Task not found.');
+      if(!persist(tasks.map((t,i)=>i===index?{...t,done:true}:t)))return true;
+      answer=$('voiceLanguage').value==='ta-IN'?'பணி முடிக்கப்பட்டது: '+tasks[index].text:'Completed: '+tasks[index].text;
+    } else if(data.action==='search_products'){
+      if(typeof data.text!=='string' || !data.text.trim())throw new Error('Please specify a product to search.');
+      $('productSearch').value=data.text;$('productSearch').dispatchEvent(new Event('input',{bubbles:true}));
+      answer='Showing products matching '+data.text+'.';
+    } else if(data.action==='open_analytics'){
+      location.href='admin-analytics.html';return true;
+    }
+    history=[...history,{role:'user',text:message},{role:'model',text:answer}].slice(-8);
+    reply(answer);return true;
+  }
   async function run(raw) {
     if (!available() || busy) return;
     let command=normalize(raw), lower=command.toLowerCase(); const tamil=$('voiceLanguage').value==='ta-IN';
     if (!command) return;
     $('voiceTranscript').textContent=raw;
     const turn=epoch; busy=true; state('thinking','Thinking…');
-    const controller=new AbortController(), timeout=setTimeout(()=>controller.abort(),15000);
+    const controller=new AbortController(), timeout=setTimeout(()=>controller.abort(),30000);
     try {
       let match;
       if (/^(stop|cancel|never mind|நிறுத்து)$/iu.test(lower)) { pending=''; stop(); return; }
+      if(await askGemini(raw,controller.signal,turn))return;
       if(pending==='task') { command='add task '+command; lower=command.toLowerCase(); pending=''; }
       else if(pending==='search') { command='search products '+command; lower=command.toLowerCase(); pending=''; }
       else if(pending==='complete') { command='complete task '+command; lower=command.toLowerCase(); pending=''; }
@@ -160,7 +196,7 @@
         $('productList').scrollIntoView({behavior:'smooth',block:'center'}); reply('Showing products matching '+match[1]+'.');
       } else if (/^(open analytics|show analytics)$/u.test(lower)) { location.href='admin-analytics.html';
       } else {
-        reply(tamil?'கட்டளைகள்: அறிக்கை படி; கிளிக் அறிக்கை; பணி சேர் வாடிக்கையாளரை அழைக்கவும்; பணிகள்; பணி முடி 1; தேடு business card.':'Commands: Read report; Click report; Add task call customer; List tasks; Complete task 1; Search products business card; Open analytics. Use a task number to complete it.');
+        reply(geminiMode===false?'Gemini is not connected yet. Add GEMINI_API_KEY as a Cloudflare secret and deploy to enable natural conversations. For now, try Read report, Add task, or List tasks.':tamil?'கட்டளைகள்: அறிக்கை படி; கிளிக் அறிக்கை; பணி சேர் வாடிக்கையாளரை அழைக்கவும்; பணிகள்; பணி முடி 1; தேடு business card.':'Commands: Read report; Click report; Add task call customer; List tasks; Complete task 1; Search products business card; Open analytics. Use a task number to complete it.');
       }
     } catch(error) { if(turn===epoch) reply(error.name==='AbortError'?'Report timed out. Please try again.':error.message); }
     finally { clearTimeout(timeout); busy=false; if(turn===epoch && available() && !speaking && $('voiceWindow').dataset.state==='thinking') state('idle','Tap the mic to talk'); }
@@ -206,7 +242,7 @@
   function send(text) {const followup=pending;stop();pending=followup;run(text);$('voiceInput').value='';}
   $('voiceForm').onsubmit=event=>{event.preventDefault();if(!busy)send($('voiceInput').value);};
   panel.querySelectorAll('[data-command]').forEach(button=>button.onclick=()=>{if(!busy)send(button.dataset.command);});
-  new MutationObserver(()=>{if(dashboard.hidden){stop();$('voiceWindow').hidden=true;$('voiceLaunch').setAttribute('aria-expanded','false');$('voiceInput').value='';$('voiceTranscript').textContent='';$('voiceOutput').textContent='Hi! What can I help you with?';}}).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
+  new MutationObserver(()=>{if(dashboard.hidden){stop();history=[];geminiMode=null;$('voiceProvider').textContent='Checking Gemini on your next message';$('voiceWindow').hidden=true;$('voiceLaunch').setAttribute('aria-expanded','false');$('voiceInput').value='';$('voiceTranscript').textContent='';$('voiceOutput').textContent='Hi! What can I help you with?';}}).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
   window.addEventListener('pagehide',stop);
   renderTasks();
