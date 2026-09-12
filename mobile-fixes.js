@@ -1,4 +1,4 @@
-/* Unified mobile navigation and shop popularity UI. */
+/* Unified mobile navigation, carts and shop popularity UI. */
 (function () {
   "use strict";
 
@@ -62,6 +62,137 @@
       ".about-company-image img{display:block!important;width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center center!important}" +
       "}";
     document.head.appendChild(style);
+  }
+
+  function addUnifiedCartStyles() {
+    if (document.getElementById("unifiedCartRuntimeStyles")) return;
+    var style = document.createElement("style");
+    style.id = "unifiedCartRuntimeStyles";
+    style.textContent =
+      ".cart-item-image.cart-item-fallback{background:linear-gradient(145deg,#ecfdf5,#f7f9fa)!important;color:#059669!important;font-size:15px!important;font-weight:900!important;letter-spacing:-.03em!important}" +
+      ".cart-header>div:first-child{min-width:0}" +
+      ".cart-header .cart-header-small{display:block!important}";
+    document.head.appendChild(style);
+  }
+
+  function getStoredCart() {
+    try {
+      var cart = JSON.parse(localStorage.getItem("saiGraphicCart") || "[]");
+      return Array.isArray(cart) ? cart : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function normalizeCartHeader() {
+    var header = document.querySelector(".cart-drawer .cart-header");
+    if (!header) return;
+
+    var close = header.querySelector(".cart-close");
+    var left = header.querySelector(".sai-unified-cart-heading");
+    if (!left) {
+      left = document.createElement("div");
+      left.className = "sai-unified-cart-heading";
+      var oldHeading = header.querySelector("h3");
+      if (oldHeading && oldHeading.parentElement === header) oldHeading.remove();
+      header.insertBefore(left, close || header.firstChild);
+    }
+
+    left.innerHTML = '<span class="cart-header-small">SAI GRAPHIC DESIGNS</span><h3>Your Cart</h3>';
+  }
+
+  function normalizeEmptyCart() {
+    var empty = document.querySelector(".cart-drawer .empty-cart");
+    if (!empty || empty.dataset.saiUnified === "true") return;
+    empty.dataset.saiUnified = "true";
+    empty.innerHTML =
+      '<div class="empty-cart-icon" aria-hidden="true">🛒</div>' +
+      '<h3>Your cart is empty.</h3>' +
+      '<p>Add your favourite design templates or services to your cart.</p>';
+  }
+
+  function getItemImage(item) {
+    if (!item || typeof item !== "object") return "";
+    var image = item.image || item.imageUrl || item.image_url || item.thumbnail || item.thumbnailUrl || item.preview || "";
+    if (Array.isArray(image)) image = image[0] || "";
+    return typeof image === "string" ? image : "";
+  }
+
+  function normalizeCartItems() {
+    var cart = getStoredCart();
+    document.querySelectorAll(".cart-drawer .cart-item").forEach(function (row, position) {
+      if (row.querySelector(".cart-item-image")) return;
+
+      var remove = row.querySelector(".cart-remove[data-index]");
+      var index = remove ? Number(remove.dataset.index) : position;
+      if (!Number.isFinite(index) || index < 0) index = position;
+      var item = cart[index] || {};
+      var imageUrl = getItemImage(item);
+
+      var thumb = document.createElement("div");
+      thumb.className = "cart-item-image";
+      thumb.setAttribute("aria-hidden", "true");
+
+      if (imageUrl) {
+        var img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = "";
+        img.loading = "lazy";
+        img.onerror = function () {
+          thumb.classList.add("cart-item-fallback");
+          thumb.textContent = "SG";
+        };
+        thumb.appendChild(img);
+      } else {
+        thumb.classList.add("cart-item-fallback");
+        thumb.textContent = "SG";
+      }
+
+      row.insertBefore(thumb, row.firstChild);
+    });
+  }
+
+  function normalizeCartFooter() {
+    var footer = document.querySelector(".cart-drawer .cart-footer");
+    if (!footer) return;
+
+    var checkout = footer.querySelector(".cart-checkout");
+    if (checkout) checkout.textContent = "Send Order on WhatsApp";
+
+    var note = footer.querySelector(".cart-note");
+    if (!note) {
+      note = document.createElement("p");
+      note.className = "cart-note";
+      note.textContent = "Confirm your order through WhatsApp.";
+      footer.appendChild(note);
+    } else {
+      note.textContent = "Confirm your order through WhatsApp.";
+    }
+  }
+
+  function normalizeUnifiedCart() {
+    if (!document.querySelector(".cart-drawer")) return;
+    addUnifiedCartStyles();
+    normalizeCartHeader();
+    normalizeEmptyCart();
+    normalizeCartItems();
+    normalizeCartFooter();
+  }
+
+  function initUnifiedCart() {
+    normalizeUnifiedCart();
+    var drawer = document.querySelector(".cart-drawer");
+    if (!drawer || !window.MutationObserver) return;
+
+    var scheduled = false;
+    new MutationObserver(function () {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        scheduled = false;
+        normalizeUnifiedCart();
+      });
+    }).observe(drawer, { childList: true, subtree: true });
   }
 
   function isShopPage() {
@@ -211,15 +342,16 @@
     }, true);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      addAboutMobileFixStyles();
-      initMobileNavigation();
-      initProductPopularity();
-    });
-  } else {
+  function initializeAll() {
     addAboutMobileFixStyles();
     initMobileNavigation();
+    initUnifiedCart();
     initProductPopularity();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeAll);
+  } else {
+    initializeAll();
   }
 })();
