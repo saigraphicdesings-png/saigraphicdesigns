@@ -43,7 +43,8 @@ function normalize(row) {
     images: parseList(row.images),
     downloadUrl: row.download_url || "",
     active: Boolean(row.active),
-    sort_order: Number(row.sort_order) || 0
+    sort_order: Number(row.sort_order) || 0,
+    clicks: Number(row.clicks) || 0
   };
 }
 
@@ -66,23 +67,45 @@ async function listProducts(env, includeHidden) {
   if (!env.DB) return [];
   let query;
   if (includeHidden) {
-    query = "SELECT * FROM products ORDER BY sort_order, created_at, name";
+    query = `
+      SELECT p.*, COALESCE(pc.clicks, 0) AS clicks
+      FROM products p
+      LEFT JOIN product_clicks pc ON pc.product_id = p.id
+      ORDER BY p.sort_order, p.created_at, p.name
+    `;
   } else {
     await ensureClickAnalytics(env);
     query = `
-      SELECT p.*
+      SELECT p.*, COALESCE(pc.clicks, 0) AS clicks
       FROM products p
       LEFT JOIN product_clicks pc ON pc.product_id = p.id
       WHERE p.active = 1
       ORDER BY COALESCE(pc.clicks, 0) DESC, p.sort_order ASC, p.created_at ASC, p.name ASC
     `;
   }
+
   const result = await env.DB.prepare(query).all();
-  return (result.results || []).map((row) => {
+  const products = (result.results || []).map((row) => {
     const product = normalize(row);
     if (!includeHidden && product.price > 0) product.downloadUrl = "";
     return product;
   });
+
+  if (!includeHidden) {
+    let clickedRank = 0;
+    products.forEach((product) => {
+      if (product.clicks > 0) {
+        clickedRank += 1;
+        product.popularityRank = clickedRank;
+        product.popularityRating = Math.max(4, Number((5 - Math.min(clickedRank - 1, 5) * 0.2).toFixed(1)));
+      } else {
+        product.popularityRank = 0;
+        product.popularityRating = 0;
+      }
+    });
+  }
+
+  return products;
 }
 
 function validateProduct(input) {
