@@ -52,6 +52,18 @@
     });
   }
 
+  function addAboutMobileFixStyles() {
+    if (document.getElementById("aboutMobileImageFix")) return;
+    var style = document.createElement("style");
+    style.id = "aboutMobileImageFix";
+    style.textContent =
+      "@media(max-width:900px){" +
+      ".about-company-image{height:auto!important;min-height:0!important;overflow:hidden!important}" +
+      ".about-company-image img{display:block!important;width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center center!important}" +
+      "}";
+    document.head.appendChild(style);
+  }
+
   function isShopPage() {
     var path = window.location.pathname.toLowerCase();
     return path === "/shop" || path === "/shop.html" || path.endsWith("/shop") || path.endsWith("/shop.html");
@@ -201,10 +213,12 @@
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
+      addAboutMobileFixStyles();
       initMobileNavigation();
       initProductPopularity();
     });
   } else {
+    addAboutMobileFixStyles();
     initMobileNavigation();
     initProductPopularity();
   }
