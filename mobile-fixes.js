@@ -74,9 +74,31 @@
       ".product-preview::before{content:'SAI GRAPHIC DESIGNS';position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) rotate(-28deg);width:145%;text-align:center;color:rgba(255,255,255,.72);text-shadow:0 1px 5px rgba(0,0,0,.35);font-size:clamp(14px,1.35vw,20px);font-weight:900;letter-spacing:2px;white-space:nowrap;pointer-events:none;user-select:none}" +
       ".product-preview::after{z-index:6}" +
       ".main-product-image{position:relative}" +
-      ".main-product-image::after{content:'SAI GRAPHIC DESIGNS';position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) rotate(-28deg);width:145%;text-align:center;color:rgba(255,255,255,.70);text-shadow:0 2px 8px rgba(0,0,0,.42);font-size:clamp(22px,4vw,44px);font-weight:900;letter-spacing:4px;white-space:nowrap;pointer-events:none;user-select:none}" +
-      "@media(max-width:650px){.product-preview::before{font-size:12px;letter-spacing:1.2px}.main-product-image::after{font-size:22px;letter-spacing:2px}}";
+      ".shop-preview-watermark{position:absolute!important;left:50%!important;top:50%!important;z-index:99999!important;transform:translate(-50%,-50%) rotate(-28deg)!important;width:145%!important;text-align:center!important;color:rgba(255,255,255,.78)!important;text-shadow:0 2px 8px rgba(0,0,0,.58),0 0 2px rgba(0,0,0,.7)!important;font-size:clamp(24px,4vw,46px)!important;font-weight:900!important;letter-spacing:4px!important;white-space:nowrap!important;pointer-events:none!important;user-select:none!important;display:block!important;opacity:1!important;visibility:visible!important}" +
+      "@media(max-width:650px){.product-preview::before{font-size:12px;letter-spacing:1.2px}.shop-preview-watermark{font-size:22px!important;letter-spacing:2px!important}}";
     document.head.appendChild(style);
+  }
+
+  function ensurePreviewWatermark() {
+    var holder = document.querySelector(".main-product-image");
+    if (!holder) return;
+    var watermark = holder.querySelector(".shop-preview-watermark");
+    if (!watermark) {
+      watermark = document.createElement("div");
+      watermark.className = "shop-preview-watermark";
+      watermark.setAttribute("aria-hidden", "true");
+      watermark.textContent = "SAI GRAPHIC DESIGNS";
+      holder.appendChild(watermark);
+    }
+  }
+
+  function watchPreviewWatermark() {
+    var holder = document.querySelector(".main-product-image");
+    if (!holder || !window.MutationObserver) return;
+    ensurePreviewWatermark();
+    new MutationObserver(function () {
+      ensurePreviewWatermark();
+    }).observe(holder, { childList: true });
   }
 
   function starMarkup(rating) {
@@ -136,6 +158,8 @@
   function initProductPopularity() {
     if (!isShopPage()) return;
     addPopularityStyles();
+    ensurePreviewWatermark();
+    watchPreviewWatermark();
     loadPopularity();
 
     var productsRoot = document.getElementById("allProducts");
