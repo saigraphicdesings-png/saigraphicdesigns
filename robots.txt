@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /admin-analytics.html
 
 Sitemap: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/sitemap.xml
