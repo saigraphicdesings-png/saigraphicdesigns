@@ -422,10 +422,10 @@ const $=id=>document.getElementById(id);
 const loginCard=$("loginCard"),dashboard=$("dashboard"),loginForm=$("loginForm"),loginError=$("loginError"),form=$("productForm"),list=$("productList"),message=$("formMessage");
 function authHeaders(json){const h={Authorization:"Bearer "+token};if(json)h["Content-Type"]="application/json";return h}
 async function api(path,options={}){const response=await fetch(path,{...options,headers:{...authHeaders(Boolean(options.body)),...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(response.status===401){logout();throw new Error("Invalid or expired admin token.");}if(!response.ok)throw new Error(data.error||"Request failed.");return data}
-function showDashboard(){loginCard.hidden=true;dashboard.hidden=false;loadProducts()}
+function showDashboard(){loginCard.hidden=true;dashboard.hidden=false;loadProducts();loadEmailSettings()}
 function logout(){token="";sessionStorage.removeItem(tokenKey);dashboard.hidden=true;loginCard.hidden=false;$("adminToken").value="";loginError.textContent=""}
 loginForm.addEventListener("submit",async e=>{e.preventDefault();token=$("adminToken").value.trim();loginError.textContent="";try{await api("/api/admin/products");sessionStorage.setItem(tokenKey,token);showDashboard()}catch(err){loginError.textContent=err.message}})
-async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];render()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
+async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];render();updateEmailProducts()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
 function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function money(v){return Number(v)===0?"FREE":"₹"+Number(v).toLocaleString("en-IN")}
 function render(){const q=$("productSearch").value.trim().toLowerCase();const shown=products.filter(p=>(p.name+" "+p.category+" "+p.id).toLowerCase().includes(q));$("totalCount").textContent=products.length;$("activeCount").textContent=products.filter(p=>p.active).length;$("freeCount").textContent=products.filter(p=>Number(p.price)===0).length;if(!shown.length){list.innerHTML='<p class="empty">No products found.</p>';return}list.innerHTML=shown.map(p=>'<article class="product-row"><img src="'+escapeHTML((p.images||[])[0]||"Images/favicon.png")+'" alt=""><div><h3>'+escapeHTML(p.name)+'</h3><p>'+escapeHTML(p.category)+' · '+money(p.price)+'</p><span class="badge '+(p.active?"":"hidden")+'">'+(p.active?"Visible":"Hidden")+'</span></div><div class="row-actions"><button class="edit-btn" data-edit="'+escapeHTML(p.id)+'">Edit</button><button class="hide-btn" data-toggle="'+escapeHTML(p.id)+'">'+(p.active?"Hide":"Show")+'</button><button class="delete-btn" data-delete="'+escapeHTML(p.id)+'">Delete</button></div></article>').join("")}
@@ -468,5 +468,92 @@ $("importBtn").addEventListener("click", async () => {
   }
 });
 $("resetBtn").addEventListener("click",reset);$("refreshBtn").addEventListener("click",loadProducts);$("logoutBtn").addEventListener("click",logout);$("productSearch").addEventListener("input",render);
+
+let emailConfigured = false;
+let emailSending = false;
+async function loadEmailSettings() {
+  emailConfigured = false;
+  try {
+    const settings = await api("/api/admin/email-settings");
+    emailConfigured = settings.configured === true;
+    $("emailConnection").textContent = emailConfigured
+      ? "Sending from: " + settings.sender
+      : "Gmail is not connected yet. Connect your sender account to enable sending.";
+  } catch (error) {
+    $("emailConnection").textContent = "Unable to check the sender connection. Refresh to try again.";
+  }
+  updateEmailPreview();
+}
+function updateEmailProducts() {
+  const select = $("emailProduct");
+  const selected = select.value;
+  select.replaceChildren(new Option("Select a product", ""));
+  products.filter(product => product.active).forEach(product => {
+    select.add(new Option(product.name, product.id));
+  });
+  select.value = selected;
+  updateEmailPreview();
+}
+function selectedEmailProduct() {
+  return products.find(product => product.id === $("emailProduct").value && product.active);
+}
+function emailDownloadLink(product) {
+  try {
+    const url = new URL(product?.downloadUrl);
+    return url.protocol === "https:" && !url.username && !url.password ? url.href : "";
+  } catch { return ""; }
+}
+function updateEmailPreview() {
+  const product = selectedEmailProduct();
+  const link = emailDownloadLink(product);
+  $("emailPreview").hidden = !link;
+  $("emailPreviewName").textContent = product?.name || "";
+  $("emailPreviewLink").textContent = link;
+  if (link) $("emailPreviewLink").href = link;
+  else $("emailPreviewLink").removeAttribute("href");
+  $("emailProductHint").textContent = !product ? "Select a product to preview the email."
+    : !link ? "Add an HTTPS download URL in this product’s details before sending."
+    : "The customer will receive the download link shown above.";
+  $("sendProductEmailBtn").disabled = emailSending || !emailConfigured || !link;
+}
+$("emailProduct").addEventListener("change", () => {
+  $("emailMessage").textContent = "";
+  updateEmailPreview();
+});
+$("refreshBtn").addEventListener("click", loadEmailSettings);
+$("emailProductForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (emailSending || !emailConfigured || !emailDownloadLink(selectedEmailProduct())) return;
+  if (!$("emailProductForm").reportValidity()) return;
+  const productId = $("emailProduct").value;
+  const recipient = $("customerEmail").value.trim();
+  const status = $("emailMessage");
+  emailSending = true;
+  $("emailProduct").disabled = true;
+  $("customerEmail").disabled = true;
+  $("sendProductEmailBtn").textContent = "Sending…";
+  status.style.color = "#047857";
+  status.textContent = "Sending your product email…";
+  updateEmailPreview();
+  try {
+    const result = await api("/api/admin/send-product-email", {
+      method: "POST", body: JSON.stringify({ productId, recipient })
+    });
+    if (!result.success) throw new Error("Gmail did not confirm the email submission.");
+    status.textContent = "Email submitted to Gmail for " + recipient + ".";
+    $("customerEmail").value = "";
+  } catch (error) {
+    status.style.color = "#dc2626";
+    status.textContent = error instanceof TypeError
+      ? "Connection interrupted. Check Gmail Sent before trying again."
+      : error.message;
+  } finally {
+    emailSending = false;
+    $("emailProduct").disabled = false;
+    $("customerEmail").disabled = false;
+    $("sendProductEmailBtn").textContent = "Send Product Email →";
+    updateEmailPreview();
+  }
+});
 if(token)showDashboard();
 })();

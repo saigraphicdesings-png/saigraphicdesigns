@@ -78,7 +78,7 @@
               </label>
               <label class="full">Preview images (one path or URL per line)<textarea id="productImages" required rows="4" placeholder="Images/Shop/product/1.jpg"></textarea></label>
               <label class="full">Description<textarea id="productDescription" rows="4"></textarea></label>
-              <label class="full">Free download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."></label>
+              <label class="full">Download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."><small>Used in customer emails. Free products also use this link in the shop.</small></label>
               <label class="check"><input id="productActive" type="checkbox" checked> Show this product in Shop</label>
             </div>
             <button class="primary" type="submit" id="saveBtn">Save Product</button>
@@ -86,6 +86,7 @@
           </form>
         </section>
 
+        <div class="products-column">
         <section class="panel products-panel">
           <div class="panel-title">
             <h2>Products</h2>
@@ -93,6 +94,33 @@
           </div>
           <div class="product-list" id="productList"></div>
         </section>
+        <section class="panel email-panel" aria-labelledby="emailPanelTitle">
+          <div class="email-panel-heading">
+            <span class="email-panel-icon" aria-hidden="true">✉</span>
+            <div><p class="eyebrow">CUSTOMER DELIVERY</p><h2 id="emailPanelTitle">Send Product by Email</h2></div>
+          </div>
+          <p class="email-intro">Choose a product and send its download link to your customer.</p>
+          <p class="email-connection" id="emailConnection" role="status">Checking sender connection…</p>
+          <form id="emailProductForm">
+            <label for="emailProduct">Select product</label>
+            <select id="emailProduct" required><option value="">Select a product</option></select>
+            <label for="customerEmail">Customer email address</label>
+            <input id="customerEmail" type="email" maxlength="254" required autocomplete="email" placeholder="customer@example.com">
+            <div class="email-preview" id="emailPreview" hidden>
+              <p class="email-preview-label">EMAIL PREVIEW</p>
+              <p><strong>Subject:</strong> Your design from Sai Graphic Designs</p>
+              <p>Hello,</p><p>Thank you for choosing Sai Graphic Designs.</p>
+              <p>Your product: <strong id="emailPreviewName"></strong></p>
+              <p>Download your design:<br><a id="emailPreviewLink" target="_blank" rel="noopener noreferrer"></a></p>
+              <p>If you need any help, reply to this email.</p>
+              <p>Thank you,<br>Sai Graphic Designs</p>
+            </div>
+            <p class="email-product-hint" id="emailProductHint">Select a product to preview the email.</p>
+            <button class="primary" id="sendProductEmailBtn" type="submit" disabled>Send Product Email →</button>
+            <p class="form-message" id="emailMessage" role="status"></p>
+          </form>
+        </section>
+        </div>
       </div>
     </section>
   </main>
