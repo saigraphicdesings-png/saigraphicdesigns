@@ -1,0 +1,7 @@
+/* SAI Graphic Designs — Home 10/10 acceptance hardening */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #E6B86C;outline-offset:3px}
+html,body{max-width:100%;overflow-x:clip}
+button,a{min-height:44px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media (max-width:767px){.hero-actions>*{width:100%}.hero-actions a,.hero-actions button{justify-content:center}}
