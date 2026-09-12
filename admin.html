@@ -96,6 +96,20 @@
       </div>
     </section>
   </main>
+  <dialog class="delete-dialog" id="deleteDialog" aria-labelledby="deleteDialogTitle" aria-describedby="deleteDialogDescription">
+    <form method="dialog" class="delete-dialog-content">
+      <div class="delete-dialog-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/></svg>
+      </div>
+      <p class="eyebrow">PRODUCT MANAGEMENT</p>
+      <h2 id="deleteDialogTitle">Delete product?</h2>
+      <p id="deleteDialogDescription">Permanently delete <strong id="deleteDialogName"></strong>? This will also remove it from your shop.</p>
+      <div class="delete-dialog-actions">
+        <button class="glass-cancel" value="cancel" autofocus>Cancel</button>
+        <button class="glass-delete" value="delete">OK, delete</button>
+      </div>
+    </form>
+  </dialog>
   <script src="admin.js" defer></script>
 </body>
 </html>
