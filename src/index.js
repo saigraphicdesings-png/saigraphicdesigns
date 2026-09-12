@@ -103,6 +103,16 @@ const deletionHistorySchema = `CREATE TABLE IF NOT EXISTS deleted_products (
   deleted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`;
 
+const productClickSchema = `CREATE TABLE IF NOT EXISTS product_clicks (
+  product_id TEXT PRIMARY KEY,
+  clicks INTEGER NOT NULL DEFAULT 0 CHECK (clicks >= 0),
+  last_clicked_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+
+async function ensureClickAnalytics(env) {
+  await env.DB.prepare(productClickSchema).run();
+}
+
 async function handleAPI(request, env, url) {
   if (!env.DB) {
     return json({
@@ -123,6 +133,36 @@ async function handleAPI(request, env, url) {
     });
   }
 
+  if (url.pathname === "/api/product-click" && request.method === "POST") {
+    let input;
+    try {
+      input = await request.json();
+    } catch {
+      return json({ error: "Invalid JSON." }, 400);
+    }
+
+    const id = String(input.id || "").trim();
+    if (!/^[A-Za-z0-9_-]+$/.test(id)) {
+      return json({ error: "Invalid product ID." }, 400);
+    }
+
+    await ensureClickAnalytics(env);
+    const result = await env.DB.prepare(`
+      INSERT INTO product_clicks (product_id, clicks, last_clicked_at)
+      SELECT ?, 1, CURRENT_TIMESTAMP
+      WHERE EXISTS (SELECT 1 FROM products WHERE id = ? AND active = 1)
+      ON CONFLICT(product_id) DO UPDATE SET
+        clicks = product_clicks.clicks + 1,
+        last_clicked_at = CURRENT_TIMESTAMP
+    `).bind(id, id).run();
+
+    if (!Number(result.meta?.changes || 0)) {
+      return json({ error: "Product not found." }, 404);
+    }
+
+    return json({ success: true });
+  }
+
   if (!url.pathname.startsWith("/api/admin/")) {
     return json({ error: "Not found." }, 404);
   }
@@ -131,6 +171,31 @@ async function handleAPI(request, env, url) {
     return json({ error: "Unauthorized." }, 401);
   }
 
+  if (url.pathname === "/api/admin/analytics/clicks" && request.method === "GET") {
+    await ensureClickAnalytics(env);
+    const result = await env.DB.prepare(`
+      SELECT
+        p.id,
+        p.name,
+        p.category,
+        p.active,
+        COALESCE(pc.clicks, 0) AS clicks,
+        pc.last_clicked_at
+      FROM products p
+      LEFT JOIN product_clicks pc ON pc.product_id = p.id
+      ORDER BY clicks DESC, p.name ASC
+    `).all();
+    const products = (result.results || []).map((row) => ({
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      active: Boolean(row.active),
+      clicks: Number(row.clicks) || 0,
+      lastClickedAt: row.last_clicked_at || ""
+    }));
+    const totalClicks = products.reduce((sum, product) => sum + product.clicks, 0);
+    return json({ totalClicks, products });
+  }
 
   // Upgrade existing databases automatically after authenticating the admin.
   if (request.method === "POST" || request.method === "DELETE") {
@@ -272,6 +337,23 @@ async function handleAPI(request, env, url) {
   return json({ error: "Not found." }, 404);
 }
 
+const shopClickTrackingScript = `<script>
+(function(){
+  document.addEventListener("click",function(event){
+    var card=event.target.closest&&event.target.closest(".shop-product");
+    if(!card||event.target.closest(".add-product-btn"))return;
+    var id=card.dataset&&card.dataset.id;
+    if(!id)return;
+    fetch("/api/product-click",{
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({id:id}),
+      keepalive:true
+    }).catch(function(){});
+  },true);
+})();
+<\/script>`;
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -285,6 +367,23 @@ export default {
       }
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    if (
+      request.method === "GET" &&
+      (url.pathname === "/shop" || url.pathname === "/shop.html") &&
+      response.ok &&
+      (response.headers.get("content-type") || "").includes("text/html")
+    ) {
+      const html = await response.text();
+      const headers = new Headers(response.headers);
+      headers.delete("content-length");
+      return new Response(html.replace("</body>", shopClickTrackingScript + "</body>"), {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+      });
+    }
+
+    return response;
   }
 };
