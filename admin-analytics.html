@@ -1,75 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Analytics Report | Sai Graphic Designs</title>
-  <link rel="icon" href="Images/favicon.png">
-  <link rel="stylesheet" href="admin.css">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+  <title>Analytics Report | Sai Graphic Designs</title><link rel="icon" href="Images/favicon.png"><link rel="stylesheet" href="admin.css">
   <style>
-    .analytics-shell{width:min(1400px,calc(100% - 32px));margin:34px auto 70px}.analytics-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:24px}.analytics-hero h1{margin:.2rem 0 .3rem;font-size:clamp(2rem,4vw,3rem)}.analytics-actions{display:flex;gap:10px;flex-wrap:wrap}.analytics-actions a,.analytics-actions button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:12px;padding:11px 15px;font-weight:900}.analytics-actions a{background:#fff;border:1px solid var(--line);color:var(--dark)}.analytics-actions button{background:linear-gradient(135deg,#10b981,#059669);color:#fff}.analytics-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}.analytics-stats article,.analytics-panel{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 16px 40px rgba(15,23,42,.07);backdrop-filter:blur(18px)}.analytics-stats article{padding:18px}.analytics-stats strong{display:block;font-size:1.85rem;color:var(--deep)}.analytics-stats span{color:var(--muted);font-weight:700;font-size:.83rem}.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.analytics-panel{padding:22px}.analytics-panel h2{margin:0 0 16px}.bar-row{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 46px;gap:12px;align-items:center;margin:12px 0}.bar-label{font-weight:800;color:#334155}.bar-track{height:12px;border-radius:99px;background:#e5e7eb;overflow:hidden}.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#10b981,#047857)}.bar-count{text-align:right;font-weight:900;color:var(--deep)}.health-list{display:grid;gap:10px}.health-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}.health-item strong{font-size:.9rem}.ok{color:#047857}.bad{color:#dc2626}.table-wrap{overflow:auto}.report-table{width:100%;border-collapse:collapse;min-width:650px}.report-table th,.report-table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:.88rem}.report-table th{color:#475569;background:#f8fafc}.status-pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.72rem;font-weight:900}.status-pill.good{background:#d1fae5;color:#047857}.status-pill.warn{background:#fee2e2;color:#b91c1c}.analytics-note{margin-top:18px;padding:14px 16px;border:1px solid #bae6fd;border-radius:16px;background:#f0f9ff;color:#0c4a6e;font-weight:700}.loading-card{padding:35px;text-align:center}.auth-warning{display:none;margin:12vh auto;width:min(520px,100%);padding:32px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 20px 50px rgba(15,23,42,.09)}.auth-warning a{color:var(--deep);font-weight:900}.link-health{margin-top:18px}.wide{grid-column:1/-1}@media(max-width:1100px){.analytics-stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.analytics-hero{align-items:flex-start;flex-direction:column}.analytics-grid{grid-template-columns:1fr}.analytics-stats{grid-template-columns:repeat(2,1fr)}.bar-row{grid-template-columns:1fr}.bar-count{text-align:left}.wide{grid-column:auto}}
+    .analytics-shell{width:min(1400px,calc(100% - 32px));margin:34px auto 70px}.analytics-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:24px}.analytics-hero h1{margin:.2rem 0 .3rem;font-size:clamp(2rem,4vw,3rem)}.analytics-actions{display:flex;gap:10px;flex-wrap:wrap}.analytics-actions a,.analytics-actions button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:12px;padding:11px 15px;font-weight:900}.analytics-actions a{background:#fff;border:1px solid var(--line);color:var(--dark)}.analytics-actions button{background:linear-gradient(135deg,#10b981,#059669);color:#fff}.analytics-stats{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}.analytics-stats article,.analytics-panel{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 16px 40px rgba(15,23,42,.07);backdrop-filter:blur(18px)}.analytics-stats article{padding:18px}.analytics-stats strong{display:block;font-size:1.85rem;color:var(--deep)}.analytics-stats span{color:var(--muted);font-weight:700;font-size:.83rem}.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.analytics-panel{padding:22px}.analytics-panel h2{margin:0 0 16px}.bar-row{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 46px;gap:12px;align-items:center;margin:12px 0}.bar-label{font-weight:800;color:#334155}.bar-track{height:12px;border-radius:99px;background:#e5e7eb;overflow:hidden}.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#10b981,#047857)}.bar-count{text-align:right;font-weight:900;color:var(--deep)}.health-list{display:grid;gap:10px}.health-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}.health-item strong{font-size:.9rem}.ok{color:#047857}.bad{color:#dc2626}.table-wrap{overflow:auto}.report-table{width:100%;border-collapse:collapse;min-width:650px}.report-table th,.report-table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:.88rem}.report-table th{color:#475569;background:#f8fafc}.click-number{font-size:1.05rem;font-weight:950;color:var(--deep)}.status-pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.72rem;font-weight:900}.status-pill.good{background:#d1fae5;color:#047857}.status-pill.warn{background:#fee2e2;color:#b91c1c}.analytics-note{margin-top:18px;padding:14px 16px;border:1px solid #bae6fd;border-radius:16px;background:#f0f9ff;color:#0c4a6e;font-weight:700}.auth-warning{display:none;margin:12vh auto;width:min(520px,100%);padding:32px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 20px 50px rgba(15,23,42,.09)}.auth-warning a{color:var(--deep);font-weight:900}.wide{grid-column:1/-1}@media(max-width:1200px){.analytics-stats{grid-template-columns:repeat(4,1fr)}}@media(max-width:760px){.analytics-hero{align-items:flex-start;flex-direction:column}.analytics-grid{grid-template-columns:1fr}.analytics-stats{grid-template-columns:repeat(2,1fr)}.bar-row{grid-template-columns:1fr}.bar-count{text-align:left}.wide{grid-column:auto}}
   </style>
 </head>
 <body>
-  <header class="admin-header">
-    <a class="brand" href="admin.html"><span>SG</span> Sai Graphic Designs</a>
-    <a class="shop-link" href="shop.html" target="_blank" rel="noopener">View Shop ↗</a>
-  </header>
-
-  <main class="analytics-shell">
-    <section class="auth-warning" id="authWarning">
-      <p class="eyebrow">SECURE REPORT</p>
-      <h1>Admin login required</h1>
-      <p>Please open the Admin Panel and log in first.</p>
-      <a href="admin.html">← Go to Admin Panel</a>
-    </section>
-
-    <section id="analyticsDashboard" hidden>
-      <div class="analytics-hero">
-        <div>
-          <p class="eyebrow">SHOP ANALYTICS</p>
-          <h1>Analytics Report</h1>
-          <p style="margin:0;color:var(--muted);font-weight:700">Live product health and shop setup report.</p>
-        </div>
-        <div class="analytics-actions">
-          <a href="admin.html">← Products</a>
-          <button id="refreshAnalytics" type="button">Refresh Report</button>
-        </div>
-      </div>
-
-      <div class="analytics-stats">
-        <article><strong id="totalProducts">0</strong><span>Total Products</span></article>
-        <article><strong id="visibleProducts">0</strong><span>Visible</span></article>
-        <article><strong id="hiddenProducts">0</strong><span>Hidden</span></article>
-        <article><strong id="freeProducts">0</strong><span>Free</span></article>
-        <article><strong id="paidProducts">0</strong><span>Paid</span></article>
-        <article><strong id="linkedProducts">0</strong><span>Drive Linked</span></article>
-      </div>
-
-      <div class="analytics-grid">
-        <section class="analytics-panel">
-          <h2>Products by Category</h2>
-          <div id="categoryBars"></div>
-        </section>
-        <section class="analytics-panel">
-          <h2>Shop Health</h2>
-          <div class="health-list" id="healthList"></div>
-        </section>
-        <section class="analytics-panel wide">
-          <h2>Products Missing Drive Link</h2>
-          <div class="table-wrap">
-            <table class="report-table">
-              <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Visibility</th><th>Drive Link</th></tr></thead>
-              <tbody id="missingLinkRows"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <div class="analytics-note">This report currently uses your live Admin Product data. Website visitors, page views and traffic sources can be added as the next analytics module.</div>
-    </section>
-  </main>
-  <script src="admin-analytics.js" defer></script>
-</body>
-</html>
+<header class="admin-header"><a class="brand" href="admin.html"><span>SG</span> Sai Graphic Designs</a><a class="shop-link" href="shop.html" target="_blank" rel="noopener">View Shop ↗</a></header>
+<main class="analytics-shell">
+<section class="auth-warning" id="authWarning"><p class="eyebrow">SECURE REPORT</p><h1>Admin login required</h1><p>Please open the Admin Panel and log in first.</p><a href="admin.html">← Go to Admin Panel</a></section>
+<section id="analyticsDashboard" hidden>
+<div class="analytics-hero"><div><p class="eyebrow">SHOP ANALYTICS</p><h1>Analytics Report</h1><p style="margin:0;color:var(--muted);font-weight:700">Live product performance and shop setup report.</p></div><div class="analytics-actions"><a href="admin.html">← Products</a><button id="refreshAnalytics" type="button">Refresh Report</button></div></div>
+<div class="analytics-stats">
+<article><strong id="totalProducts">0</strong><span>Total Products</span></article><article><strong id="visibleProducts">0</strong><span>Visible</span></article><article><strong id="hiddenProducts">0</strong><span>Hidden</span></article><article><strong id="freeProducts">0</strong><span>Free</span></article><article><strong id="paidProducts">0</strong><span>Paid</span></article><article><strong id="linkedProducts">0</strong><span>Drive Linked</span></article><article><strong id="totalProductClicks">0</strong><span>Total Product Clicks</span></article>
+</div>
+<div class="analytics-grid">
+<section class="analytics-panel wide"><h2>Most Clicked Products</h2><div class="table-wrap"><table class="report-table"><thead><tr><th>Rank</th><th>Product</th><th>Category</th><th>Clicks</th><th>Last Click</th></tr></thead><tbody id="productClickRows"><tr><td colspan="5">Loading click data…</td></tr></tbody></table></div></section>
+<section class="analytics-panel"><h2>Products by Category</h2><div id="categoryBars"></div></section><section class="analytics-panel"><h2>Shop Health</h2><div class="health-list" id="healthList"></div></section>
+<section class="analytics-panel wide"><h2>Products Missing Drive Link</h2><div class="table-wrap"><table class="report-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Visibility</th><th>Drive Link</th></tr></thead><tbody id="missingLinkRows"></tbody></table></div></section>
+</div>
+<div class="analytics-note">Product clicks start counting after this update is deployed. A click is counted when a visitor opens a product card in your Shop.</div>
+</section></main><script src="admin-analytics.js" defer></script></body></html>
