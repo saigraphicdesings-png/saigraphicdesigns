@@ -92,12 +92,20 @@ async function listProducts(env, includeHidden) {
   });
 
   if (!includeHidden) {
-    let clickedRank = 0;
+    const maxClicks = products.reduce((max, product) => Math.max(max, product.clicks), 0);
+    let denseRank = 0;
+    let previousClicks = null;
+
     products.forEach((product) => {
       if (product.clicks > 0) {
-        clickedRank += 1;
-        product.popularityRank = clickedRank;
-        product.popularityRating = Math.max(4, Number((5 - Math.min(clickedRank - 1, 5) * 0.2).toFixed(1)));
+        if (previousClicks === null || product.clicks !== previousClicks) {
+          denseRank += 1;
+          previousClicks = product.clicks;
+        }
+        product.popularityRank = denseRank;
+        product.popularityRating = maxClicks > 0
+          ? Math.max(1, Math.min(5, Math.ceil((product.clicks / maxClicks) * 5)))
+          : 0;
       } else {
         product.popularityRank = 0;
         product.popularityRating = 0;
