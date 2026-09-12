@@ -15,6 +15,41 @@
         const style = document.createElement("style");
         style.id = STYLE_ID;
         style.textContent = `
+            :root {
+                --primary: #10B981;
+                --primary-hover: #059669;
+                --primary-light: #ECFDF5;
+                --dark: #111827;
+                --dark-muted: #5F6878;
+                --light: #F7F9FA;
+                --white: #FFFFFF;
+                --border: #E2E6EA;
+                --accent-orange: #F5A623;
+                --brand-green: #10B981;
+                --brand-green-dark: #059669;
+                --brand-green-deep: #047857;
+                --brand-green-soft: #ECFDF5;
+                --brand-yellow: #F5A623;
+                --brand-ink: #111827;
+                --brand-copy: #5F6878;
+                --brand-line: #E2E6EA;
+                --brand-surface: #FFFFFF;
+                --brand-canvas: #F7F9FA;
+            }
+
+            body {
+                background: #FFFFFF;
+                color: #5F6878;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                color: #111827;
+            }
+
+            .site-footer, footer {
+                background: #0F172A !important;
+            }
+
             .sai-reveal {
                 opacity: 0;
                 transform: translateY(26px);
