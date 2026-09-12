@@ -64,7 +64,6 @@ async function ensureClickAnalytics(env) {
 
 async function listProducts(env, includeHidden) {
   if (!env.DB) return [];
-
   let query;
   if (includeHidden) {
     query = "SELECT * FROM products ORDER BY sort_order, created_at, name";
@@ -78,7 +77,6 @@ async function listProducts(env, includeHidden) {
       ORDER BY COALESCE(pc.clicks, 0) DESC, p.sort_order ASC, p.created_at ASC, p.name ASC
     `;
   }
-
   const result = await env.DB.prepare(query).all();
   return (result.results || []).map((row) => {
     const product = normalize(row);
@@ -93,11 +91,9 @@ function validateProduct(input) {
   const category = String(input.category || "").trim();
   const type = String(input.type || "").trim();
   const images = parseList(input.images);
-
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
   if (!name || !category || !type) throw new Error("Name, category and type are required.");
   if (!images.length) throw new Error("Add at least one preview image.");
-
   return {
     id,
     originalId: String(input.originalId || id).trim(),
@@ -115,9 +111,7 @@ function validateProduct(input) {
 }
 
 async function handleAPI(request, env, url) {
-  if (!env.DB) {
-    return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
-  }
+  if (!env.DB) return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
 
   if (url.pathname === "/api/products" && request.method === "GET") {
     const visibleProducts = await listProducts(env, false);
@@ -130,7 +124,6 @@ async function handleAPI(request, env, url) {
     try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
     const id = String(input.id || "").trim();
     if (!/^[A-Za-z0-9_-]+$/.test(id)) return json({ error: "Invalid product ID." }, 400);
-
     await ensureClickAnalytics(env);
     const result = await env.DB.prepare(`
       INSERT INTO product_clicks (product_id, clicks, last_clicked_at)
@@ -140,7 +133,6 @@ async function handleAPI(request, env, url) {
         clicks = product_clicks.clicks + 1,
         last_clicked_at = CURRENT_TIMESTAMP
     `).bind(id, id).run();
-
     if (!Number(result.meta?.changes || 0)) return json({ error: "Product not found." }, 404);
     return json({ success: true });
   }
@@ -169,32 +161,21 @@ async function handleAPI(request, env, url) {
     return json({ totalClicks: products.reduce((sum, product) => sum + product.clicks, 0), products });
   }
 
-  if (request.method === "POST" || request.method === "DELETE") {
-    await env.DB.prepare(deletionHistorySchema).run();
-  }
+  if (request.method === "POST" || request.method === "DELETE") await env.DB.prepare(deletionHistorySchema).run();
 
   if (url.pathname === "/api/admin/products/import" && request.method === "POST") {
     let input;
     try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
     const inputs = Array.isArray(input.products) ? input.products : [];
     if (!inputs.length) return json({ error: "No products supplied for import." }, 400);
-
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
-
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (
-        id, name, price, category, type, formats, description,
-        images, download_url, active, sort_order, updated_at
-      ) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, sort_order, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(
-      product.id, product.name, product.price, product.category, product.type,
-      product.formats, product.description, product.images, product.downloadUrl,
-      product.active, product.sortOrder, product.id
-    ));
-
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.sortOrder, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
     return json({ success: true, count, skipped: imported.length - count });
@@ -210,20 +191,15 @@ async function handleAPI(request, env, url) {
     return json({ success: true, deleted: Number(results[1].meta?.changes || 0) });
   }
 
-  if (url.pathname === "/api/admin/products" && request.method === "GET") {
-    return json({ products: await listProducts(env, true) });
-  }
+  if (url.pathname === "/api/admin/products" && request.method === "GET") return json({ products: await listProducts(env, true) });
 
   if (url.pathname === "/api/admin/products" && request.method === "POST") {
     let input;
     try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
-
     let product;
     try { product = validateProduct(input); } catch (error) { return json({ error: error.message }, 400); }
-
     const deleted = await env.DB.prepare("SELECT id FROM deleted_products WHERE id = ?").bind(product.id).all();
     if (deleted.results?.length) return json({ error: "This product ID was deleted. Use a new ID to create a new product." }, 409);
-
     const statements = [];
     if (product.originalId && product.originalId !== product.id) {
       statements.push(
@@ -231,62 +207,25 @@ async function handleAPI(request, env, url) {
         env.DB.prepare("DELETE FROM products WHERE id = ?").bind(product.originalId)
       );
     }
-
     statements.push(env.DB.prepare(`
-      INSERT INTO products (
-        id, name, price, category, type, formats, description,
-        images, download_url, active, sort_order, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, sort_order, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
-        name = excluded.name,
-        price = excluded.price,
-        category = excluded.category,
-        type = excluded.type,
-        formats = excluded.formats,
-        description = excluded.description,
-        images = excluded.images,
-        download_url = excluded.download_url,
-        active = excluded.active,
-        sort_order = excluded.sort_order,
-        updated_at = CURRENT_TIMESTAMP
-    `).bind(
-      product.id, product.name, product.price, product.category, product.type,
-      product.formats, product.description, product.images, product.downloadUrl,
-      product.active, product.sortOrder
-    ));
+        name = excluded.name, price = excluded.price, category = excluded.category,
+        type = excluded.type, formats = excluded.formats, description = excluded.description,
+        images = excluded.images, download_url = excluded.download_url, active = excluded.active,
+        sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.sortOrder));
     await env.DB.batch(statements);
-
-    return json({ success: true, product: normalize({
-      ...product,
-      download_url: product.downloadUrl,
-      sort_order: product.sortOrder
-    }) });
+    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, sort_order: product.sortOrder }) });
   }
 
   return json({ error: "Not found." }, 404);
 }
 
-const shopClickTrackingScript = `<script>
-(function(){
-  document.addEventListener("click",function(event){
-    var card=event.target.closest&&event.target.closest(".shop-product");
-    if(!card||event.target.closest(".add-product-btn"))return;
-    var id=card.dataset&&card.dataset.id;
-    if(!id)return;
-    fetch("/api/product-click",{
-      method:"POST",
-      headers:{"content-type":"application/json"},
-      body:JSON.stringify({id:id}),
-      keepalive:true
-    }).catch(function(){});
-  },true);
-})();
-<\/script>`;
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-
     if (url.pathname.startsWith("/api/")) {
       try {
         return await handleAPI(request, env, url);
@@ -295,24 +234,6 @@ export default {
         return json({ error: "The product service is temporarily unavailable." }, 500);
       }
     }
-
-    const response = await env.ASSETS.fetch(request);
-    if (
-      request.method === "GET" &&
-      (url.pathname === "/shop" || url.pathname === "/shop.html") &&
-      response.ok &&
-      (response.headers.get("content-type") || "").includes("text/html")
-    ) {
-      const html = await response.text();
-      const headers = new Headers(response.headers);
-      headers.delete("content-length");
-      return new Response(html.replace("</body>", shopClickTrackingScript + "</body>"), {
-        status: response.status,
-        statusText: response.statusText,
-        headers
-      });
-    }
-
-    return response;
+    return env.ASSETS.fetch(request);
   }
 };
