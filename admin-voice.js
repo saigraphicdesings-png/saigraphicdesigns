@@ -4,36 +4,86 @@
   const dashboard = document.getElementById('dashboard');
   if (!dashboard) return;
   const panel = document.createElement('section');
-  panel.className = 'panel voice-panel';
+  panel.className = 'sai-voice';
   panel.innerHTML = `<style>
-    .voice-panel{margin:0 0 24px;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(209,250,229,.65));backdrop-filter:blur(18px)}
-    .voice-controls,.voice-command,.voice-examples{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
-    .voice-controls select{width:auto}.voice-command input{flex:1;min-width:160px}.voice-controls label{display:flex;align-items:center}.voice-controls input{width:auto}
-    .voice-examples button{font-size:13px;padding:8px 12px}.voice-output{white-space:pre-wrap;overflow-wrap:anywhere}.voice-tasks{padding-left:24px}.voice-tasks li{padding:7px 0;overflow-wrap:anywhere}.voice-tasks button{padding:5px 9px;margin-left:12px;font-size:12px}
-  </style><p class="eyebrow">SAI ASSISTANT</p><h2>Voice tasks & reports</h2>
-  <p>Tap the microphone and say a command, or type below.</p>
-  <div class="voice-controls"><label>Language <select id="voiceLanguage"><option value="en-IN">English</option><option value="ta-IN">தமிழ்</option></select></label><button type="button" id="voiceListen" class="secondary">🎤 Start listening</button><button type="button" id="voiceStop" class="secondary">Stop</button><label><input type="checkbox" id="voiceSpeak" checked> Speak replies</label></div>
-  <form class="voice-command" id="voiceForm"><input id="voiceInput" aria-label="Assistant command" maxlength="500" placeholder="Read report / Add task call customer" required><button type="submit" class="secondary">Run command</button></form>
-  <div class="voice-examples"><button type="button" data-command="read report">Read report</button><button type="button" data-command="click report">Click report</button><button type="button" data-command="list tasks">My tasks</button><button type="button" data-command="help">Commands</button></div>
-  <p id="voiceStatus" role="status">Ready.</p><p id="voiceOutput" class="voice-output" aria-live="polite"></p>
-  <h3>My tasks</h3><p><small>Saved only in this browser on this device. No scheduled reminders. Voice processing may use your browser’s speech service. Tamil speech depends on available device voices.</small></p><ol id="voiceTasks" class="voice-tasks"></ol>`;
-  dashboard.querySelector('.stats').after(panel);
+    .sai-voice{position:fixed;right:24px;bottom:24px;z-index:30;color:#172b26}
+    .sai-voice button:focus-visible,.sai-voice summary:focus-visible{outline:3px solid #059669;outline-offset:3px}
+    .sai-voice [hidden]{display:none!important}
+    .sai-launch{display:flex;align-items:center;gap:10px;background:#063d31;color:white;border:1px solid #65ddb4;box-shadow:0 8px 30px #065f4640;border-radius:40px;padding:15px 20px}
+    .sai-window{width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 110px);overflow:auto;margin-bottom:14px;padding:24px;background:linear-gradient(145deg,#fffffffa,#eafff5f5);backdrop-filter:blur(24px);border:1px solid #bce7d6;border-radius:28px;box-shadow:0 24px 80px #073b3340}
+    .sai-head{display:flex;align-items:center;justify-content:space-between}.sai-head h2{margin:0;font-size:18px}.sai-head button{padding:6px 11px;background:transparent;font-size:22px}
+    .sai-sub{font-size:12px;color:#60766b;margin:4px 0 20px}.sai-orb{display:flex;justify-content:center;align-items:center;gap:6px;width:88px;height:88px;margin:16px auto;border-radius:50%;background:radial-gradient(circle at 25% 20%,#91f7cf,#14b88b 55%,#056550);box-shadow:0 0 0 9px #10b9810d,0 12px 24px #04785724}
+    .sai-orb i{display:block;width:7px;height:17px;background:white;border-radius:8px}.sai-orb i:nth-child(2){height:32px}.sai-orb i:nth-child(3){height:24px}
+    .sai-window[data-state="listening"] .sai-orb i,.sai-window[data-state="speaking"] .sai-orb i{animation:sai-wave .7s ease-in-out infinite alternate}.sai-orb i:nth-child(2){animation-delay:.2s!important}.sai-orb i:nth-child(3){animation-delay:.4s!important}
+    .sai-window[data-state="thinking"] .sai-orb{animation:sai-glow 1s ease-in-out infinite alternate}
+    @keyframes sai-wave{to{transform:scaleY(.4)}}@keyframes sai-glow{to{opacity:.5}}@media(prefers-reduced-motion:reduce){.sai-window .sai-orb,.sai-window .sai-orb i{animation:none!important}}
+    .sai-voice #voiceStatus{text-align:center;font-size:13px;color:#42685a;min-height:20px}.sai-transcript{min-height:20px;font-size:14px;color:#527266;font-style:italic;overflow-wrap:anywhere}
+    .sai-voice .voice-output{white-space:pre-wrap;overflow-wrap:anywhere;font-size:17px;line-height:1.65;margin:10px 0 20px}
+    .sai-actions{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0}.sai-actions button{background:#e0f2e9;padding:10px 14px}.sai-actions #voiceListen{border-radius:50%;width:58px;height:58px;background:#047857;color:white;font-size:24px}
+    .sai-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.sai-suggestions button{font-size:12px;font-weight:600;border:1px solid #cfe7dc;background:#ffffffa0;padding:8px 10px;border-radius:20px}
+    .sai-type{display:flex;gap:7px}.sai-type input{min-width:0;font-size:14px}.sai-type button{background:#063d31;color:white;padding:8px 12px}
+    .sai-settings{margin-top:18px;border-top:1px solid #d9e9e1;padding-top:12px;font-size:12px}.sai-settings summary{cursor:pointer}.sai-settings label{display:flex;align-items:center;gap:8px;margin:10px 0}.sai-settings select{width:auto;padding:7px}.sai-settings input{width:auto}.sai-settings p{color:#52675d}
+    .voice-tasks{padding-left:20px;overflow-wrap:anywhere}.voice-tasks li{margin:10px 0}.voice-tasks button{padding:4px 7px;margin-left:6px;font-size:11px}
+    @media(max-width:520px){.sai-voice{right:16px;bottom:16px}.sai-window{padding:20px}.sai-launch{margin-left:auto}}
+  </style>
+  <section class="sai-window" id="voiceWindow" role="dialog" aria-label="Sai Assistant" hidden data-state="idle">
+    <div class="sai-head"><h2>Sai Assistant</h2><button id="voiceClose" type="button" aria-label="Close assistant">×</button></div>
+    <p class="sai-sub">Your shop, a conversation away</p>
+    <div class="sai-orb" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <p id="voiceStatus" role="status">Tap the mic to talk</p>
+    <p id="voiceTranscript" class="sai-transcript"></p><p id="voiceOutput" class="voice-output" aria-live="polite">Hi! What can I help you with?</p>
+    <div class="sai-actions"><button id="voiceReplay" type="button" aria-label="Read reply aloud">↻ Replay</button><button type="button" id="voiceListen" aria-label="Start voice conversation">🎤</button><button type="button" id="voiceStop">Stop</button></div>
+    <div class="sai-suggestions"><button type="button" data-command="How is my shop doing?">How is my shop doing?</button><button type="button" data-command="Add a task">Add a task</button><button type="button" data-command="What are my pending tasks?">My tasks</button></div>
+    <form class="sai-type" id="voiceForm"><input id="voiceInput" aria-label="Message Sai Assistant" maxlength="500" placeholder="Or type a message…" required><button type="submit" aria-label="Send message">↑</button></form>
+    <details class="sai-settings"><summary>Language, voice & tasks</summary>
+      <label>Language <select id="voiceLanguage"><option value="en-IN">English</option><option value="ta-IN">தமிழ்</option></select></label>
+      <label><input type="checkbox" id="voiceSpeak" checked> Speak replies</label>
+      <p>Supports shop reports, product search and tasks. After replying, the mic listens for your next message while this conversation is open. Tap Stop to end.</p>
+      <p>Tasks stay in this browser. No scheduled reminders. Voice may be processed by your browser’s speech service.</p><ol id="voiceTasks" class="voice-tasks"></ol>
+    </details>
+  </section><button type="button" class="sai-launch" id="voiceLaunch" aria-expanded="false" aria-controls="voiceWindow"><span aria-hidden="true">🎤</span> Ask Sai</button>`;
+  dashboard.append(panel);
   const $ = id => document.getElementById(id);
   const taskKey = 'saiAdminVoiceTasksV1';
   let tasks = [], recognition, listening = false, epoch = 0, busy = false;
+  let conversation=false, pending='', restartTimer, speechTimer, speechId=0, speech=null, speaking=false;
   try { const saved = JSON.parse(localStorage.getItem(taskKey) || '[]'); if (Array.isArray(saved)) tasks = saved.filter(t => t && typeof t.text === 'string' && typeof t.done === 'boolean').slice(0,200); } catch {}
   const available = () => !dashboard.hidden && Boolean(sessionStorage.getItem('saiShopAdminToken'));
+  function state(name, text) { $('voiceWindow').dataset.state=name; $('voiceStatus').textContent=text; }
+  function laterListen() {
+    clearTimeout(restartTimer);
+    if(conversation && available() && !$('voiceWindow').hidden) restartTimer=setTimeout(startListening,600);
+  }
+  function speak(text) {
+    const id=++speechId;
+    clearTimeout(speechTimer); window.speechSynthesis?.cancel(); speaking=false;
+    if(!$('voiceSpeak').checked) { state('idle','Tap the mic to talk'); laterListen(); return; }
+    if(!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+      conversation=false; state('idle','Speech playback is unavailable in this browser. You can type below.'); return;
+    }
+    speech=new SpeechSynthesisUtterance(text); speech.lang=$('voiceLanguage').value;
+    const voices=speechSynthesis.getVoices();
+    const voice=voices.find(v=>v.lang.toLowerCase()===speech.lang.toLowerCase()) || voices.find(v=>v.lang.slice(0,2)===speech.lang.slice(0,2));
+    if(voice) speech.voice=voice;
+    speaking=true; state('speaking','Speaking…');
+    speech.onend=()=>{if(id!==speechId)return;clearTimeout(speechTimer);speaking=false;state('idle','Tap the mic to talk');laterListen();};
+    speech.onerror=event=>{
+      if(id!==speechId || ['canceled','interrupted'].includes(event.error))return;
+      clearTimeout(speechTimer);speaking=false;conversation=false;
+      state('idle',event.error==='not-allowed'?'Tap Replay to enable spoken replies.':'Voice playback failed. Try Replay or choose another language.');
+    };
+    // Keep the utterance alive and detect engines that never start playback.
+    speech.onstart=()=>clearTimeout(speechTimer);
+    speechTimer=setTimeout(()=>{if(id!==speechId)return;conversation=false;speaking=false;++speechId;speechSynthesis.cancel();state('idle','No audio started. Tap Replay to retry.');},8000);
+    speechSynthesis.resume(); speechSynthesis.speak(speech);
+  }
   function reply(text) {
-    if (!available()) return;
-    $('voiceOutput').textContent = text;
-    window.speechSynthesis?.cancel();
-    if (!$('voiceSpeak').checked || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = $('voiceLanguage').value;
-    const voice = speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith(utterance.lang.slice(0,2)));
-    if (voice) utterance.voice = voice;
-    utterance.onerror = () => { if (available()) $('voiceStatus').textContent = 'Audio unavailable. Read the reply above.'; };
-    speechSynthesis.speak(utterance);
+    if(!available())return;
+    $('voiceOutput').textContent=text;
+    speak(text);
+  }
+  function normalize(text) {
+    return text.trim().replace(/[.!?。]+$/u,'').replace(/^(?:(?:hey|ok|okay) sai[, ]*|please\s+|can you\s+|could you\s+)/i,'').trim();
   }
   function renderTasks() {
     $('voiceTasks').replaceChildren();
@@ -59,12 +109,30 @@
   }
   async function run(raw) {
     if (!available() || busy) return;
-    const command=raw.trim().replace(/[.!?。]+$/u,'').trim(), lower=command.toLowerCase(), tamil=$('voiceLanguage').value==='ta-IN';
+    let command=normalize(raw), lower=command.toLowerCase(); const tamil=$('voiceLanguage').value==='ta-IN';
     if (!command) return;
-    const turn=epoch; busy=true; $('voiceStatus').textContent='Working…';
+    $('voiceTranscript').textContent=raw;
+    const turn=epoch; busy=true; state('thinking','Thinking…');
     const controller=new AbortController(), timeout=setTimeout(()=>controller.abort(),15000);
     try {
       let match;
+      if (/^(stop|cancel|never mind|நிறுத்து)$/iu.test(lower)) { pending=''; stop(); return; }
+      if(pending==='task') { command='add task '+command; lower=command.toLowerCase(); pending=''; }
+      else if(pending==='search') { command='search products '+command; lower=command.toLowerCase(); pending=''; }
+      else if(pending==='complete') { command='complete task '+command; lower=command.toLowerCase(); pending=''; }
+      if(/^(add (?:a |new )?task|new task|create (?:a )?task|பணி சேர்)$/iu.test(lower)) { pending='task'; reply(tamil?'என்ன பணி சேர்க்க வேண்டும்?':'Sure. What task should I add?'); return; }
+      if(/^(search|find) products?$/i.test(lower)) { pending='search'; reply('Which product are you looking for?'); return; }
+      if(/^(complete|finish) (?:a )?task$/i.test(lower)) { pending='complete'; reply('Which task number did you finish?'); return; }
+      command=command.replace(/^(?:add (?:a |new )?task|create (?:a )?task|make (?:a )?task)(?: to)?\s+/i,'add task ');
+      command=command.replace(/^(?:mark )?task (one|two|three|four|five|\d+) (?:as )?(?:done|complete|completed)$/i,'complete task $1');
+      command=command.replace(/^(complete task|finish task) (one|two|three|four|five)$/i,(_,prefix,n)=>prefix+' '+({one:1,two:2,three:3,four:4,five:5}[n.toLowerCase()]));
+      lower=command.toLowerCase();
+      if(/^(hi|hello|hey|வணக்கம்)$/iu.test(lower)) { reply(tamil?'வணக்கம்! உங்கள் பணிகள் மற்றும் கடை அறிக்கைகளில் உதவுகிறேன்.':'Hi! I can tell you how your shop is doing, find products, or help with your tasks. What would you like?'); return; }
+      if(/^(thank you|thanks|bye|goodbye)$/i.test(lower)) { conversation=false;reply('You’re welcome. Tap the mic whenever you need me.');return; }
+      if(!/^(add task|பணி சேர்)\s/u.test(lower) && /\b(today|yesterday|this week|this month|sales|revenue|orders|visitors)\b/i.test(lower)) { reply('I can read current product totals and all-time recorded product clicks. I don’t have sales, visitor, or date-filtered reports here yet.'); return; }
+      if(/^(how is my shop doing|how's my shop doing|give me (?:a |my )?report|tell me about my shop|how many (?:(?:free|paid|visible|hidden) )?products(?: do i have)?|what is my product count)$/i.test(lower)) lower='read report';
+      if(/^(what are my (?:pending )?tasks|what do i (?:have|need) to do|show (?:me )?my tasks|read my tasks)$/i.test(lower)) lower='list tasks';
+      if(/^(which product (?:is most popular|has the most clicks)|how many clicks(?: do i have)?|read (?:my )?clicks)$/i.test(lower)) lower='click report';
       if ((match=command.match(/^(?:add task|new task|பணி சேர்)\s+(.+)$/iu))) {
         if(tasks.length>=200) { reply('Task list is full (200 tasks).'); return; }
         if(persist([...tasks,{text:match[1],done:false}])) reply(tamil?'பணி சேர்க்கப்பட்டது.':'Task added: '+match[1]);
@@ -95,24 +163,51 @@
         reply(tamil?'கட்டளைகள்: அறிக்கை படி; கிளிக் அறிக்கை; பணி சேர் வாடிக்கையாளரை அழைக்கவும்; பணிகள்; பணி முடி 1; தேடு business card.':'Commands: Read report; Click report; Add task call customer; List tasks; Complete task 1; Search products business card; Open analytics. Use a task number to complete it.');
       }
     } catch(error) { if(turn===epoch) reply(error.name==='AbortError'?'Report timed out. Please try again.':error.message); }
-    finally { clearTimeout(timeout); busy=false; if(turn===epoch && available()) $('voiceStatus').textContent='Ready.'; }
+    finally { clearTimeout(timeout); busy=false; if(turn===epoch && available() && !speaking && $('voiceWindow').dataset.state==='thinking') state('idle','Tap the mic to talk'); }
   }
-  function stop() { epoch++; listening=false; recognition?.abort(); window.speechSynthesis?.cancel(); $('voiceStatus').textContent='Stopped.'; }
+  function stop() {
+    epoch++; conversation=false; pending=''; listening=false; speaking=false; ++speechId;
+    clearTimeout(restartTimer);clearTimeout(speechTimer);recognition?.abort();window.speechSynthesis?.cancel();
+    state('idle','Conversation stopped. Tap the mic to start.');
+  }
   const Recognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+  function startListening() {
+    if(!available() || $('voiceWindow').hidden || busy || listening || speaking || !recognition)return;
+    recognition.lang=$('voiceLanguage').value;
+    try{listening=true;recognition.start();}catch{listening=false;conversation=false;state('idle','Microphone could not start. Tap the mic to retry.');}
+  }
   if(Recognition) {
-    recognition=new Recognition(); recognition.continuous=false; recognition.interimResults=false;
-    recognition.onstart=()=>{listening=true;$('voiceListen').textContent='Listening…';$('voiceStatus').textContent='Listening. Say one command.';};
-    recognition.onend=()=>{listening=false;$('voiceListen').textContent='🎤 Start listening';};
-    recognition.onresult=event=>{ if(!available() || !listening) return; const transcript=event.results[0][0].transcript; $('voiceInput').value=transcript; run(transcript); };
-    recognition.onerror=event=>{ if(available()) $('voiceStatus').textContent=event.error==='not-allowed'?'Microphone permission denied. Allow microphone access or type your command.':event.error==='aborted'?'Stopped.':'Could not hear the command ('+event.error+'). Try again or type it.'; };
-  } else { $('voiceListen').disabled=true; $('voiceStatus').textContent='Voice input is unavailable in this browser. Type a command below.'; }
-  $('voiceListen').onclick=()=>{if(!available() || busy || listening || !recognition)return;window.speechSynthesis?.cancel();recognition.lang=$('voiceLanguage').value;try{recognition.start();}catch{$('voiceStatus').textContent='Microphone could not start. Try again.';}};
+    recognition=new Recognition(); recognition.continuous=false; recognition.interimResults=true;
+    recognition.onstart=()=>{if(!conversation || !available()){recognition.abort();return;}listening=true;state('listening','Listening…');};
+    recognition.onend=()=>{listening=false;if($('voiceWindow').dataset.state==='listening')state('idle','Tap the mic to talk');};
+    recognition.onresult=event=>{
+      if(!available() || !conversation || !listening)return;
+      const result=event.results[event.resultIndex];
+      $('voiceTranscript').textContent=result[0].transcript;
+      if(result.isFinal){listening=false;recognition.stop();run(result[0].transcript);}
+    };
+    recognition.onerror=event=>{
+      if(event.error==='aborted')return;
+      listening=false;conversation=false;
+      const messages={'not-allowed':'Allow microphone access in your browser, then tap the mic.','no-speech':'I didn’t hear anything. Tap the mic to try again.','audio-capture':'No microphone was found. Check your microphone connection.','network':'The voice service could not connect. Check your connection or type below.'};
+      state('idle',messages[event.error] || 'Voice input failed. Try again or type below.');
+    };
+  } else { $('voiceListen').disabled=true;state('idle','Voice input is unavailable here. Type a message below.'); }
+  function open() { $('voiceWindow').hidden=false;$('voiceLaunch').setAttribute('aria-expanded','true');$('voiceClose').focus(); }
+  function close() {stop();$('voiceWindow').hidden=true;$('voiceLaunch').setAttribute('aria-expanded','false');$('voiceLaunch').focus();}
+  $('voiceLaunch').onclick=()=>{if(!available())return;if(!$('voiceWindow').hidden){close();return;}open();conversation=true;startListening();};
+  $('voiceClose').onclick=close;
+  panel.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
+  $('voiceListen').onclick=()=>{if(!available() || busy)return;const followup=pending;stop();pending=followup;conversation=true;startListening();};
+  $('voiceReplay').onclick=()=>{if(!available())return;const text=$('voiceOutput').textContent;stop();speak(text);};
   $('voiceStop').onclick=stop;
   $('voiceLanguage').onchange=stop;
-  $('voiceSpeak').onchange=()=>{if(!$('voiceSpeak').checked)window.speechSynthesis?.cancel();};
-  $('voiceForm').onsubmit=event=>{event.preventDefault();run($('voiceInput').value);};
-  panel.querySelectorAll('[data-command]').forEach(button=>button.onclick=()=>run(button.dataset.command));
-  new MutationObserver(()=>{if(dashboard.hidden){stop();$('voiceInput').value='';$('voiceOutput').textContent='';}}).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
+  $('voiceSpeak').onchange=()=>{stop();};
+  function send(text) {const followup=pending;stop();pending=followup;run(text);$('voiceInput').value='';}
+  $('voiceForm').onsubmit=event=>{event.preventDefault();if(!busy)send($('voiceInput').value);};
+  panel.querySelectorAll('[data-command]').forEach(button=>button.onclick=()=>{if(!busy)send(button.dataset.command);});
+  new MutationObserver(()=>{if(dashboard.hidden){stop();$('voiceWindow').hidden=true;$('voiceLaunch').setAttribute('aria-expanded','false');$('voiceInput').value='';$('voiceTranscript').textContent='';$('voiceOutput').textContent='Hi! What can I help you with?';}}).observe(dashboard,{attributes:true,attributeFilter:['hidden']});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
   window.addEventListener('pagehide',stop);
   renderTasks();
 })();
