@@ -69,7 +69,7 @@
       ".product-star-filled{color:#f5a623}" +
       ".product-star-empty{color:#b9bec7}" +
       ".product-popularity-rating{color:#252525;font-weight:800}" +
-      ".product-popularity-hype{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.35px}" +
+      ".product-popularity-hype{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800;letter-spacing:.2px}" +
       ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(17,24,39,.06);color:#4b5563;font-size:10px;font-weight:800}";
     document.head.appendChild(style);
   }
@@ -92,19 +92,13 @@
 
     var box = document.createElement("div");
     box.className = "product-popularity";
-    box.setAttribute("aria-label", data.clicks > 0 ? "Hype popularity " + data.rating.toFixed(1) + " out of 5, rank " + data.rank : "No hype yet");
+    box.setAttribute("aria-label", data.clicks + " Hype, popularity " + data.rating.toFixed(1) + " out of 5" + (data.rank ? ", rank " + data.rank : ""));
 
-    if (data.clicks > 0) {
-      box.innerHTML =
-        '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(data.rating) + '</span>' +
-        '<span class="product-popularity-rating">' + data.rating.toFixed(1) + '</span>' +
-        '<span class="product-popularity-hype">Hype</span>' +
-        (data.rank ? '<span class="product-popularity-rank">#' + data.rank + '</span>' : '');
-    } else {
-      box.innerHTML =
-        '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(0) + '</span>' +
-        '<span class="product-popularity-hype">Hype</span>';
-    }
+    box.innerHTML =
+      '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(data.rating) + '</span>' +
+      (data.clicks > 0 ? '<span class="product-popularity-rating">' + data.rating.toFixed(1) + '</span>' : '') +
+      '<span class="product-popularity-hype">' + data.clicks.toLocaleString("en-IN") + ' Hype</span>' +
+      (data.rank ? '<span class="product-popularity-rank">#' + data.rank + '</span>' : '');
 
     var bottom = info.querySelector(".product-bottom");
     if (bottom) info.insertBefore(box, bottom);
