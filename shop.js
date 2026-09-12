@@ -12,424 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
        PRODUCT DATA
     ===================================================== */
 
-    let products = [
+    // The admin database is the source of truth, including an empty catalog.
+    let products = [];
+    let catalogStatus = "loading";
 
-        /* =================================================
-           PRINTING DESIGNS
-        ================================================= */
-
-        {
-            id: "business-card-01",
-            name: "Premium Business Card 01",
-            price: 99,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Premium business card template suitable for travel agency businesses. Editable CDR file.",
-            images: [
-                "Images/Shop/business-card-01/3.jpg",
-                "Images/Shop/business-card-01/1.jpg",
-                "Images/Shop/business-card-01/2.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-02",
-            name: "Premium Business Card 02",
-            price: 99,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Modern premium business card template suitable for makeup studio businesses. Editable CDR file.",
-            images: [
-                "Images/Shop/business-card-02/1.jpg",
-                "Images/Shop/business-card-02/2.jpg",
-                "Images/Shop/business-card-02/3.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-03",
-            name: "Premium Business Card 03",
-            price: 99,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Creative professional business card template suitable for hotel businesses. Editable CDR file.",
-            images: [
-                "Images/Shop/business-card-03/1.jpg",
-                "Images/Shop/business-card-03/2.jpg",
-                "Images/Shop/business-card-03/3.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-04",
-            name: "Premium Business Card 04",
-            price: 99,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Elegant editable business card template suitable for international travel businesses. Editable CDR file.",
-            images: [
-                "Images/Shop/business-card-04/1.jpg",
-                "Images/Shop/business-card-04/2.jpg",
-                "Images/Shop/business-card-04/3.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-05",
-            name: "Premium Business Card 05",
-            price: 99,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Free collection of Premium creative business card template suitable for hospital and clinic businesses. Editable CDR file.",
-            images: [
-                "Images/Shop/business-card-05/1.jpg",
-                "Images/Shop/business-card-05/2.jpg",
-                "Images/Shop/business-card-05/3.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-Bundle-01",
-            name: "4 Business Card Bundle 01",
-            price: 0,
-            downloadUrl: "https://drive.google.com/file/d/1OR4JnPjFzQgT0BNh1MFFVV21HdG8ybNT/view?usp=sharing",
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Free collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/business-card-Bundel-01/1.jpg",
-                "Images/Shop/business-card-Bundel-01/2.jpg",
-                "Images/Shop/business-card-Bundel-01/3.jpg",
-                "Images/Shop/business-card-Bundel-01/4.jpg",
-                "Images/Shop/business-card-Bundel-01/5.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-Bundle-02",
-            name: "4 Business Card Bundle 02",
-            price: 0,
-            downloadUrl: "https://drive.google.com/file/d/1OR4JnPjFzQgT0BNh1MFFVV21HdG8ybNT/view?usp=sharing",
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Free collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/business-card-Bundel-02/1.jpg",
-                "Images/Shop/business-card-Bundel-02/2.jpg",
-                "Images/Shop/business-card-Bundel-02/3.jpg",
-                "Images/Shop/business-card-Bundel-02/4.jpg",
-                "Images/Shop/business-card-Bundel-02/5.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-Bundle-03",
-            name: "4 Business Card Bundle 03",
-            price: 0,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Free collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/business-card-Bundel-03/1.jpg",
-                "Images/Shop/business-card-Bundel-03/2.jpg",
-                "Images/Shop/business-card-Bundel-03/3.jpg",
-                "Images/Shop/business-card-Bundel-03/4.jpg",
-                "Images/Shop/business-card-Bundel-03/5.jpg"
-            ]
-        },
-
-        {
-            id: "business-card-Bundle-04",
-            name: "4 Business Card Bundle 04",
-            price: 0,
-            category: "Printing Designs",
-            type: "business-card",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/business-card-Bundel-04/1.jpg",
-                "Images/Shop/business-card-Bundel-04/2.jpg",
-                "Images/Shop/business-card-Bundel-04/3.jpg",
-                "Images/Shop/business-card-Bundel-04/4.jpg",
-                "Images/Shop/business-card-Bundel-04/5.jpg"
-            ]
-        },
-
-        {
-            id: "letterhead-01",
-            name: "Letterhead Template 01",
-            price: 0,
-            category: "Printing Designs",
-            type: "letter-head",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/Letter-head-01/1.jpg",
-            ]
-        },
-
-        {
-            id: "letterhead-02",
-            name: "Letterhead Template 02",
-            price: 0,
-            category: "Printing Designs",
-            type: "letter-head",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/Letter-head-02/1.jpg",
-            ]
-        },
-        {
-            id: "letterhead-03",
-            name: "Letterhead Template 03",
-            price: 0,
-            category: "Printing Designs",
-            type: "letter-head",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/Letter-head-03/1.jpg",
-            ]
-        },
-        {
-            id: "letterhead-04",
-            name: "Letterhead Template 04",
-            price: 0,
-            category: "Printing Designs",
-            type: "letter-head",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/Letter-head-04/1.jpg",
-            ]
-        },
-
-        {
-            id: "letterhead-05",
-            name: "Letterhead Template 05",
-            price: 0,
-            category: "Printing Designs",
-            type: "letter-head",
-            formats: ["cdr"],
-            description:
-                "Professional collection of 4 premium business card templates. Editable CDR files.",
-            images: [
-                "Images/Shop/Letter-head-05/1.jpg",
-            ]
-        },
-
-        /* =================================================
-           DIGITAL & SOCIAL MEDIA DESIGNS
-        ================================================= */
-
-        {
-            id: "social-media-01",
-            name: "Premium Social Media Design 01",
-            price: 99,
-            category: "Digital & Social Media Designs",
-            type: "social-media",
-            formats: ["psd", "png"],
-            description:
-                "Premium editable social media poster template for digital marketing.",
-            images: [
-                "Images/Shop/social-media-01/1.jpg",
-                "Images/Shop/social-media-01/2.jpg",
-                "Images/Shop/social-media-01/3.jpg",
-                "Images/Shop/social-media-01/4.jpg",
-                "Images/Shop/social-media-01/5.jpg"
-            ]
-        },
-
-        {
-            id: "social-media-02",
-            name: "Premium Social Media Design 02",
-            price: 99,
-            category: "Digital & Social Media Designs",
-            type: "social-media",
-            formats: ["psd", "png"],
-            description:
-                "Creative social media design template for businesses and promotions.",
-            images: [
-                "Images/Shop/social-media-02/1.jpg",
-                "Images/Shop/social-media-02/2.jpg",
-                "Images/Shop/social-media-02/3.jpg",
-                "Images/Shop/social-media-02/4.jpg",
-                "Images/Shop/social-media-02/5.jpg"
-            ]
-        },
-
-        {
-            id: "social-media-03",
-            name: "Premium Social Media Design 03",
-            price: 99,
-            category: "Digital & Social Media Designs",
-            type: "social-media",
-            formats: ["psd", "png"],
-            description:
-                "Professional editable social media marketing design.",
-            images: [
-                "Images/Shop/social-media-03/1.jpg",
-                "Images/Shop/social-media-03/2.jpg",
-                "Images/Shop/social-media-03/3.jpg",
-                "Images/Shop/social-media-03/4.jpg",
-                "Images/Shop/social-media-03/5.jpg"
-            ]
-        },
-
-        {
-            id: "social-media-04",
-            name: "Premium Social Media Design 04",
-            price: 99,
-            category: "Digital & Social Media Designs",
-            type: "social-media",
-            formats: ["psd", "png"],
-            description:
-                "Modern premium social media poster template.",
-            images: [
-                "Images/Shop/social-media-04/1.jpg",
-                "Images/Shop/social-media-04/2.jpg",
-                "Images/Shop/social-media-04/3.jpg",
-                "Images/Shop/social-media-04/4.jpg",
-                "Images/Shop/social-media-04/5.jpg"
-            ]
-        },
-
-        {
-            id: "social-media-05",
-            name: "Premium Social Media Design 05",
-            price: 99,
-            category: "Digital & Social Media Designs",
-            type: "social-media",
-            formats: ["psd", "png"],
-            description:
-                "Premium editable digital marketing design template.",
-            images: [
-                "Images/Shop/social-media-05/1.jpg",
-                "Images/Shop/social-media-05/2.jpg",
-                "Images/Shop/social-media-05/3.jpg",
-                "Images/Shop/social-media-05/4.jpg",
-                "Images/Shop/social-media-05/5.jpg"
-            ]
-        },
-
-
-        /* =================================================
-           PACKAGING DESIGNS
-        ================================================= */
-
-        {
-            id: "packaging-01",
-            name: "Premium Packaging Design 01",
-            price: 250,
-            category: "Packaging Designs",
-            type: "packaging",
-            formats: ["cdr", "png"],
-            description:
-                "Professional editable packaging template for product branding.",
-            images: [
-                "Images/Shop/packaging-01/1.jpg",
-                "Images/Shop/packaging-01/2.jpg",
-                "Images/Shop/packaging-01/3.jpg",
-                "Images/Shop/packaging-01/4.jpg",
-                "Images/Shop/packaging-01/5.jpg"
-            ]
-        },
-
-        {
-            id: "packaging-02",
-            name: "Premium Packaging Design 02",
-            price: 250,
-            category: "Packaging Designs",
-            type: "packaging",
-            formats: ["cdr", "png"],
-            description:
-                "Creative editable packaging design suitable for commercial products.",
-            images: [
-                "Images/Shop/packaging-02/1.jpg",
-                "Images/Shop/packaging-02/2.jpg",
-                "Images/Shop/packaging-02/3.jpg",
-                "Images/Shop/packaging-02/4.jpg",
-                "Images/Shop/packaging-02/5.jpg"
-            ]
-        },
-
-        {
-            id: "packaging-03",
-            name: "Premium Packaging Design 03",
-            price: 300,
-            category: "Packaging Designs",
-            type: "packaging",
-            formats: ["cdr", "png"],
-            description:
-                "Premium product packaging template with professional presentation.",
-            images: [
-                "Images/Shop/packaging-03/1.jpg",
-                "Images/Shop/packaging-03/2.jpg",
-                "Images/Shop/packaging-03/3.jpg",
-                "Images/Shop/packaging-03/4.jpg",
-                "Images/Shop/packaging-03/5.jpg"
-            ]
-        },
-
-        {
-            id: "packaging-04",
-            name: "Premium Packaging Design 04",
-            price: 300,
-            category: "Packaging Designs",
-            type: "packaging",
-            formats: ["cdr", "png"],
-            description:
-                "Editable premium packaging template for modern brands.",
-            images: [
-                "Images/Shop/packaging-04/1.jpg",
-                "Images/Shop/packaging-04/2.jpg",
-                "Images/Shop/packaging-04/3.jpg",
-                "Images/Shop/packaging-04/4.jpg",
-                "Images/Shop/packaging-04/5.jpg"
-            ]
-        },
-
-        {
-            id: "packaging-05",
-            name: "Premium Packaging Design 05",
-            price: 500,
-            category: "Packaging Designs",
-            type: "packaging",
-            formats: ["cdr", "png"],
-            description:
-                "High-quality editable packaging design for premium products.",
-            images: [
-                "Images/Shop/packaging-05/1.jpg",
-                "Images/Shop/packaging-05/2.jpg",
-                "Images/Shop/packaging-05/3.jpg",
-                "Images/Shop/packaging-05/4.jpg",
-                "Images/Shop/packaging-05/5.jpg"
-            ]
-        }
-
-    ];
 
 
     /* =====================================================
@@ -854,6 +440,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         allProducts.innerHTML = "";
 
+        if (catalogStatus !== "ready") {
+            const status = document.createElement("div");
+            status.className = "shop-filter-empty";
+            status.setAttribute("role", "status");
+            status.textContent = catalogStatus === "loading"
+                ? "Loading designs…"
+                : "Unable to load designs. Please refresh to try again.";
+            allProducts.appendChild(status);
+            return;
+        }
 
         const filteredProducts =
             getFilteredProducts();
@@ -2440,54 +2036,45 @@ Thank you! 😊`;
        INITIALIZE
     ===================================================== */
 
-    const fallbackProducts = products.slice();
+    let catalogRequest = 0;
 
     async function loadManagedProducts() {
+        const requestId = ++catalogRequest;
         try {
             const response = await fetch("/api/products", {
+                cache: "no-store",
                 headers: { "Accept": "application/json" }
             });
-
             if (!response.ok) {
-                return;
+                throw new Error("Product request failed: " + response.status);
             }
-
             const data = await response.json();
-            const managedProducts = Array.isArray(data.products)
-                ? data.products
-                : [];
-            const hiddenIds = new Set(
-                Array.isArray(data.hiddenIds)
-                    ? data.hiddenIds
-                    : []
-            );
-            const managedIds = new Set(
-                managedProducts.map(function (product) {
-                    return product.id;
-                })
-            );
+            if (!Array.isArray(data.products)) {
+                throw new Error("Invalid product response.");
+            }
+            if (requestId !== catalogRequest) return;
 
-            products = fallbackProducts
-                .filter(function (product) {
-                    return !managedIds.has(product.id) &&
-                        !hiddenIds.has(product.id);
-                })
-                .concat(managedProducts)
-                .sort(function (first, second) {
-                    return (Number(first.sort_order) || 0) -
-                        (Number(second.sort_order) || 0);
-                });
-
-            setupFilters();
-            renderProducts();
-
+            products = data.products.slice().sort(function (first, second) {
+                return (Number(first.sort_order) || 0) -
+                    (Number(second.sort_order) || 0);
+            });
+            catalogStatus = "ready";
         } catch (error) {
-            console.warn(
-                "Using built-in products because the admin database is unavailable.",
-                error
-            );
+            if (requestId !== catalogRequest) return;
+            products = [];
+            catalogStatus = "error";
+            console.warn("Unable to load the shop catalog.", error);
         }
+        renderProducts();
     }
+
+    // Refresh after visiting the admin tab or restoring a cached shop page.
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") loadManagedProducts();
+    });
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) loadManagedProducts();
+    });
 
     setupFilters();
 

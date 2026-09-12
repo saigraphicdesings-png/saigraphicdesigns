@@ -53,8 +53,11 @@ Enter the same `ADMIN_TOKEN` value to access the product manager.
 
 ## How products work
 
-- Products created in D1 are added to the existing Shop.
-- A D1 product with the same ID replaces the matching built-in product.
-- Hiding that D1 product also hides the matching built-in product.
-- Existing products remain available as a fallback if D1 is temporarily unavailable.
+- The Shop displays only visible products returned by the admin database.
+- Use **Import Existing Products** once to bring the original catalog into the admin panel.
+- Deleting a product removes it from the Shop. Hiding a product keeps it in the admin panel only.
+- An empty database produces an empty Shop; old built-in products are never added back.
+- If the database is unavailable, the Shop displays a retry message instead of outdated products.
+- The Shop refreshes its catalog when you return to the tab or restore the page from browser history.
+- Import Existing Products explicitly restores the original products, so do not repeat the import after deleting items unless you want to restore them.
 - Hidden product details and download links are never returned by the public API.
