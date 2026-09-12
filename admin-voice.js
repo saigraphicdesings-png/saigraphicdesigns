@@ -75,7 +75,7 @@
     };
     // Keep the utterance alive and detect engines that never start playback.
     speech.onstart=()=>clearTimeout(speechTimer);
-    speechTimer=setTimeout(()=>{if(id!==speechId)return;conversation=false;speaking=false;++speechId;speechSynthesis.cancel();state('idle','No audio started. Tap Replay to retry.');},8000);
+    speechTimer=setTimeout(()=>{if(id!==speechId)return;conversation=false;speaking=false;++speechId;speechSynthesis.cancel();state('idle','Tap Replay to play this reply. If silent, check your phone volume.');},8000);
     speechSynthesis.resume(); speechSynthesis.speak(speech);
   }
   function reply(text) {
@@ -118,9 +118,9 @@
     if(data.code==='GEMINI_NOT_CONFIGURED'){
       geminiMode=false;$('voiceProvider').textContent='Basic mode · Gemini key needed';return false;
     }
-    if(!response.ok)throw new Error(data.error || 'Gemini is unavailable. Try again.');
+    if(!response.ok){geminiMode=false;$('voiceProvider').textContent=data.code || 'Gemini connection failed';throw new Error(data.error || 'Gemini is unavailable. Try again.');}
     if(data.provider!=='gemini' || typeof data.reply!=='string' || !['none','add_task','complete_task','search_products','open_analytics'].includes(data.action))throw new Error('Invalid assistant response. Nothing changed.');
-    geminiMode=true;$('voiceProvider').textContent='Powered by Gemini';
+    geminiMode=true;$('voiceProvider').textContent='Powered by Gemini'+(data.model?' · '+data.model:'');
     let answer=data.reply;
     if(data.action==='add_task'){
       if(typeof data.text!=='string' || !data.text.trim() || data.text.length>500)throw new Error('Task text is invalid.');
@@ -198,7 +198,13 @@
       } else {
         reply(geminiMode===false?'Gemini is not connected yet. Add GEMINI_API_KEY as a Cloudflare secret and deploy to enable natural conversations. For now, try Read report, Add task, or List tasks.':tamil?'கட்டளைகள்: அறிக்கை படி; கிளிக் அறிக்கை; பணி சேர் வாடிக்கையாளரை அழைக்கவும்; பணிகள்; பணி முடி 1; தேடு business card.':'Commands: Read report; Click report; Add task call customer; List tasks; Complete task 1; Search products business card; Open analytics. Use a task number to complete it.');
       }
-    } catch(error) { if(turn===epoch) reply(error.name==='AbortError'?'Report timed out. Please try again.':error.message); }
+    } catch(error) {
+      if(turn===epoch && available()) {
+        conversation=false;clearTimeout(restartTimer);clearTimeout(speechTimer);++speechId;speaking=false;window.speechSynthesis?.cancel();
+        $('voiceOutput').textContent=error.name==='AbortError'?'The request timed out. Please try again.':error.message;
+        state('idle','Request failed. See the message below.');
+      }
+    }
     finally { clearTimeout(timeout); busy=false; if(turn===epoch && available() && !speaking && $('voiceWindow').dataset.state==='thinking') state('idle','Tap the mic to talk'); }
   }
   function stop() {

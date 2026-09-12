@@ -82,7 +82,7 @@ The floating Sai Assistant uses Gemini when the Worker has `GEMINI_API_KEY`.
 3. Choose **Secret**, name it **GEMINI_API_KEY**, and paste the key as its value. Save/deploy the Worker.
 4. Refresh `/admin.html`, log in, open **Ask Sai**, and ask a question. The label changes to **Powered by Gemini** after the first successful reply.
 
-Never paste the API key into chat, client JavaScript, or the repository. Optional plain-text variable `GEMINI_MODEL` overrides the default `gemini-3.8-flash`. Choose a text model supporting structured output in your Google account.
+Never paste the API key into chat, client JavaScript, or the repository. By default the Worker selects a stable Flash text model returned by Google's models endpoint. Optional plain-text variable `GEMINI_MODEL` pins a specific model; remove an unavailable override to restore automatic selection. Choose a text model supporting structured output in your Google account.
 
 The Worker sends message text, the last eight conversation entries, local task text, aggregate product statistics and up to 100 product summaries to Google. Admin credentials, download URLs and image URLs are excluded. Conversation history stays in page memory and clears on reload/logout; tasks remain in browser storage.
 
