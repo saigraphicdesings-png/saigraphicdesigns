@@ -340,7 +340,8 @@ async function sendPasswordResetEmail(request, env, customer, rawToken) {
 
   const firstName = escapeHtml(String(customer.name || "Customer").split(" ")[0]);
   const safeResetUrl = escapeHtml(resetUrl.toString());
-  const from = String(env.RESEND_FROM || "Sai Graphic Designs <onboarding@resend.dev>").trim();
+  const from = String(env.RESEND_FROM || "").trim();
+if (!from) throw new Error("RESEND_FROM binding missing");
 
   const html = `
     <div style="font-family:Arial,Helvetica,sans-serif;background:#f6f8f7;padding:32px 16px;color:#111827">
@@ -372,8 +373,8 @@ async function sendPasswordResetEmail(request, env, customer, rawToken) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
-    console.error("Resend password reset failed:", response.status, detail.slice(0, 500));
-    throw new Error(`Resend request failed with status ${response.status}`);
+    console.error("Resend password reset failed:", response.status, detail.slice(0, 1000));
+    throw new Error(`Resend request failed with status ${response.status}: ${detail.slice(0, 300)}`);
   }
 }
 
