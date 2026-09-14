@@ -9,22 +9,54 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="site-polish.css">
   <link rel="stylesheet" href="sai-10-10.css?v=20260914-1">
-  <link rel="stylesheet" href="account.css?v=5">
+  <link rel="stylesheet" href="account.css?v=6">
 </head>
 <body class="account-page">
   <header class="site-header"><div class="nav-container"><a href="index.html" class="logo" aria-label="Sai Graphic Designs Home"><div class="logo-icon">SG</div><span class="logo-name">Sai <strong>Graphic Designs</strong></span></a><nav class="main-nav account-nav" aria-label="Main Navigation"><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="customizer.html" class="nav-link">Services</a><a href="shop.html" class="nav-link">Shop</a><a href="contact.html" class="nav-link">Contact</a><a href="account.html" class="nav-link active account-nav-pill">My Account</a></nav></div></header>
+
   <main class="account-shell"><div class="account-layout">
     <section class="account-brand-panel" aria-label="Sai Graphic Designs customer account"><span class="account-eyebrow">SAI GRAPHIC DESIGNS</span><h1>Your creative account,<br><span>all in one place.</span></h1><p>Sign in to keep your customer details ready and enjoy a smoother experience while browsing Sai Graphic Designs.</p><div class="account-benefits"><div><span class="benefit-icon">✓</span><div><strong>Quick Access</strong><small>Keep your customer session active.</small></div></div><div><span class="benefit-icon">✓</span><div><strong>Easy Shopping</strong><small>Continue directly to our design shop.</small></div></div><div><span class="benefit-icon">✓</span><div><strong>Secure Account</strong><small>Your account access is handled securely.</small></div></div></div><a class="back-shop-link" href="shop.html">← Explore Design Shop</a></section>
-    <section class="account-card" id="authView"><div class="account-intro"><span class="account-kicker">CUSTOMER ACCOUNT</span><h2>Welcome back</h2><p>Login to your account or create a new customer account.</p></div><div class="auth-tabs" role="tablist" aria-label="Account access"><button class="auth-tab active" id="loginTab" type="button">Login</button><button class="auth-tab" id="signupTab" type="button">Sign Up</button></div>
+
+    <section class="account-card" id="authView">
+      <div class="account-intro"><span class="account-kicker">CUSTOMER ACCOUNT</span><h2>Welcome back</h2><p>Login to your account or create a new customer account.</p></div>
+      <div class="auth-tabs" role="tablist" aria-label="Account access"><button class="auth-tab active" id="loginTab" type="button">Login</button><button class="auth-tab" id="signupTab" type="button">Sign Up</button></div>
       <a class="google-login-btn" href="/api/auth/google/start" aria-label="Continue with Google"><span class="google-mark" aria-hidden="true">G</span><span>Continue with Google</span></a>
       <div class="auth-divider"><span>or continue with email</span></div>
-      <form id="loginForm" class="auth-form"><label>Email Address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label><label>Password<span class="password-field"><input id="loginPassword" type="password" name="password" autocomplete="current-password" placeholder="Enter your password" minlength="8" required><button class="password-toggle" type="button" data-password-toggle="loginPassword" aria-label="Show password" title="Show password"><span aria-hidden="true">👁</span></button></span></label><button class="account-primary" type="submit">Login to My Account</button></form>
-      <form id="signupForm" class="auth-form is-hidden"><label>Full Name<input type="text" name="name" autocomplete="name" placeholder="Your full name" maxlength="80" required></label><label>Email Address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label><label>Create Password<span class="password-field"><input id="signupPassword" type="password" name="password" autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" required><button class="password-toggle" type="button" data-password-toggle="signupPassword" aria-label="Show password" title="Show password"><span aria-hidden="true">👁</span></button></span></label><button class="account-primary" type="submit">Create My Account</button></form>
-      <p class="account-message" id="authMessage" role="status" aria-live="polite"></p><div class="account-help">Need help? <a href="contact.html">Contact Sai Graphic Designs</a></div></section>
+
+      <form id="loginForm" class="auth-form">
+        <label>Email Address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label>Password<span class="password-field"><input id="loginPassword" type="password" name="password" autocomplete="current-password" placeholder="Enter your password" minlength="8" required><button class="password-toggle" type="button" data-password-toggle="loginPassword" aria-label="Show password" title="Show password"><span aria-hidden="true">👁</span></button></span></label>
+        <div class="login-options"><button class="text-link-btn" id="forgotPasswordBtn" type="button">Forgot Password?</button></div>
+        <button class="account-primary" type="submit">Login to My Account</button>
+      </form>
+
+      <form id="forgotForm" class="auth-form is-hidden">
+        <div class="forgot-heading"><strong>Forgot your password?</strong><span>Enter your account email and we will record a secure password-reset request.</span></div>
+        <label>Email Address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <button class="account-primary" type="submit">Request Password Reset</button>
+        <button class="text-link-btn text-link-center" id="backToLoginBtn" type="button">← Back to Login</button>
+        <p class="account-message" id="forgotMessage" role="status" aria-live="polite"></p>
+      </form>
+
+      <form id="signupForm" class="auth-form is-hidden">
+        <label>Full Name<input type="text" name="name" autocomplete="name" placeholder="Your full name" maxlength="80" required></label>
+        <label>Email Address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label>Create Password<span class="password-field"><input id="signupPassword" type="password" name="password" autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" required><button class="password-toggle" type="button" data-password-toggle="signupPassword" aria-label="Show password" title="Show password"><span aria-hidden="true">👁</span></button></span></label>
+        <label class="terms-check"><input id="termsAccepted" type="checkbox" name="terms" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+        <button class="account-primary" type="submit">Create My Account</button>
+      </form>
+
+      <p class="account-message" id="authMessage" role="status" aria-live="polite"></p>
+      <div class="account-help">Need help? <a href="contact.html">Contact Sai Graphic Designs</a></div>
+    </section>
+
     <section class="account-card profile-card is-hidden" id="profileView"><div class="profile-heading"><div class="profile-avatar" id="profileAvatar">SG</div><div><span class="account-kicker">MY ACCOUNT</span><h2>Hello, <span id="profileName">Customer</span></h2></div></div><p class="profile-subtitle">Welcome to your Sai Graphic Designs customer account.</p><div class="profile-grid"><div><span>Name</span><strong id="profileFullName">—</strong></div><div><span>Email</span><strong id="profileEmail">—</strong><small class="verified-note" id="profileEmailStatus"></small></div><div><span>Login Method</span><strong id="profileProvider">—</strong></div><div><span>Member Since</span><strong id="profileCreated">—</strong></div></div>
       <div class="mobile-account-box"><div class="mobile-account-head"><div><span class="account-kicker">CONTACT NUMBER</span><h3>Mobile Number</h3></div><span class="saved-badge is-hidden" id="mobileSavedBadge">Saved</span></div><p>Add your mobile number for enquiries and order communication. This number is saved to your account and is not OTP verified.</p><form id="mobileForm" class="mobile-form"><div class="mobile-input-wrap"><span class="country-code">+91</span><input id="mobileNumber" name="phone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="9876543210" aria-label="Indian mobile number" required></div><button class="account-secondary" id="saveMobileBtn" type="submit">Save Mobile Number</button></form><p class="account-message" id="mobileMessage" role="status" aria-live="polite"></p></div>
-      <div class="profile-actions"><a class="account-secondary" href="shop.html">Continue Shopping</a><button class="account-primary" id="logoutBtn" type="button">Logout</button></div><p class="account-message" id="profileMessage" role="status" aria-live="polite"></p></section>
+      <div class="profile-actions"><a class="account-secondary" href="shop.html">Continue Shopping</a><button class="account-primary" id="logoutBtn" type="button">Logout</button></div><p class="account-message" id="profileMessage" role="status" aria-live="polite"></p>
+    </section>
   </div></main>
+
   <footer class="account-footer"><div><strong>Sai Graphic Designs</strong><span>Professional Graphic Design • Branding • Printing</span></div><p>© 2026 Sai Graphic Designs. All rights reserved.</p></footer>
-  <script src="account.js?v=4" defer></script>
-</body></html>
+  <script src="account.js?v=5" defer></script>
+</body>
+</html>
