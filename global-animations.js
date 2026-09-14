@@ -31,15 +31,15 @@
         link.setAttribute('aria-label', 'Logout');
         link.dataset.saiLogout = 'true';
         var label = link.querySelector('.sai-account-label');
-        if (label) label.textContent = 'Logout';
-        else link.textContent = 'Logout';
+        if (label && label.textContent !== 'Logout') label.textContent = 'Logout';
+        else if (!label && link.textContent !== 'Logout') link.textContent = 'Logout';
       } else {
         link.href = 'account.html';
         link.setAttribute('aria-label', 'Login or open My Account');
         delete link.dataset.saiLogout;
         var label = link.querySelector('.sai-account-label');
-        if (label) label.textContent = 'Login';
-        else if (link.classList.contains('sai-account-link')) link.textContent = 'My Account';
+        if (label && label.textContent !== 'Login') label.textContent = 'Login';
+        else if (!label && link.classList.contains('sai-account-link') && link.textContent !== 'My Account') link.textContent = 'My Account';
       }
     });
     updateFreeTemplateLocks();
@@ -62,14 +62,8 @@
     event.preventDefault();
     link.style.pointerEvents = 'none';
     try {
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' }
-      });
-    } catch (error) {
-      // The account page will re-check the session after navigation.
-    }
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {}
     window.location.href = 'account.html';
   }
 
@@ -82,7 +76,6 @@
       navAccount.textContent = 'My Account';
       nav.appendChild(navAccount);
     }
-
     var actions = document.querySelector('.nav-actions');
     if (actions && !actions.querySelector('.sai-account-action')) {
       var account = document.createElement('a');
@@ -92,7 +85,6 @@
       account.innerHTML = '<span aria-hidden="true">👤</span><span class="sai-account-label">Login</span>';
       actions.insertBefore(account, actions.firstChild);
     }
-
     refreshAccountState();
   }
 
@@ -101,10 +93,7 @@
   }
 
   function isFreeCard(card) {
-    if (!card) return false;
-    var price = card.querySelector('.free-price');
-    if (price) return true;
-    return /\bFREE\b/i.test(card.textContent || '');
+    return Boolean(card && (card.querySelector('.free-price') || /\bFREE\b/i.test(card.textContent || '')));
   }
 
   function isFreeModalButton(button) {
@@ -115,10 +104,13 @@
 
   function styleFreeButton(button, locked) {
     if (!button) return;
+    var lockValue = locked ? 'true' : 'false';
+    var text = locked ? '🔒 Login to Unlock' : '🔓 Download Free';
+    var label = locked ? 'Login to unlock this free template' : 'Download this free template';
     button.dataset.saiFreeAccess = 'true';
-    button.dataset.saiLocked = locked ? 'true' : 'false';
-    button.textContent = locked ? '🔒 Login to Unlock' : '🔓 Download Free';
-    button.setAttribute('aria-label', locked ? 'Login to unlock this free template' : 'Download this free template');
+    button.dataset.saiLocked = lockValue;
+    if (button.textContent !== text) button.textContent = text;
+    if (button.getAttribute('aria-label') !== label) button.setAttribute('aria-label', label);
     button.style.cursor = 'pointer';
     button.style.opacity = '1';
   }
@@ -126,8 +118,7 @@
   function updateFreeTemplateLocks() {
     if (!isShopPage()) return;
     document.querySelectorAll('.shop-product').forEach(function (card) {
-      if (!isFreeCard(card)) return;
-      styleFreeButton(card.querySelector('.add-product-btn'), !customerSignedIn);
+      if (isFreeCard(card)) styleFreeButton(card.querySelector('.add-product-btn'), !customerSignedIn);
     });
     var modalButton = document.getElementById('modalAddCart');
     if (isFreeModalButton(modalButton)) styleFreeButton(modalButton, !customerSignedIn);
@@ -146,22 +137,15 @@
   }
 
   async function unlockFreeTemplate(productId, button) {
-    if (!productId) {
-      showFreeAccessMessage('Please reopen the free template and try again.');
-      return;
-    }
+    if (!productId) return showFreeAccessMessage('Please reopen the free template and try again.');
     var original = button.textContent;
     button.disabled = true;
     button.textContent = 'Unlocking…';
     try {
-      var response = await fetch('/api/free-download?id=' + encodeURIComponent(productId), {
-        credentials: 'same-origin',
-        cache: 'no-store'
-      });
+      var response = await fetch('/api/free-download?id=' + encodeURIComponent(productId), { credentials: 'same-origin', cache: 'no-store' });
       var data = await response.json().catch(function () { return {}; });
       if (response.status === 401 || data.loginRequired) {
         customerSignedIn = false;
-        updateFreeTemplateLocks();
         window.location.href = 'account.html';
         return;
       }
@@ -179,56 +163,54 @@
 
   function shopFreeAccessCapture(event) {
     if (!isShopPage()) return;
-
     var card = event.target.closest('.shop-product');
     if (card && card.dataset.id) selectedShopProductId = card.dataset.id;
-
     var button = event.target.closest('.add-product-btn, #modalAddCart');
     if (!button) return;
     var free = button.id === 'modalAddCart' ? isFreeModalButton(button) : isFreeCard(button.closest('.shop-product'));
     if (!free) return;
-
     event.preventDefault();
     event.stopPropagation();
     if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
-
     if (!customerSignedIn) {
       showFreeAccessMessage('🔒 Login to unlock free templates.');
       setTimeout(function () { window.location.href = 'account.html'; }, 450);
       return;
     }
-
-    var id = button.id === 'modalAddCart' ? selectedShopProductId : (button.closest('.shop-product') || {}).dataset?.id;
+    var ownerCard = button.closest('.shop-product');
+    var id = button.id === 'modalAddCart' ? selectedShopProductId : (ownerCard ? ownerCard.dataset.id : '');
     unlockFreeTemplate(id, button);
   }
 
   function watchShopProducts() {
     if (!isShopPage()) return;
     updateFreeTemplateLocks();
-    var target = document.getElementById('allProducts') || document.body;
-    var observer = new MutationObserver(function () { updateFreeTemplateLocks(); });
-    observer.observe(target, { childList: true, subtree: true });
-    var modal = document.getElementById('productModal');
-    if (modal) observer.observe(modal, { childList: true, subtree: true, characterData: true });
+    var target = document.getElementById('allProducts');
+    if (!target) return;
+    var scheduled = false;
+    var observer = new MutationObserver(function (mutations) {
+      var hasNewCards = mutations.some(function (mutation) { return mutation.type === 'childList' && mutation.addedNodes.length > 0; });
+      if (!hasNewCards || scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        scheduled = false;
+        updateFreeTemplateLocks();
+      });
+    });
+    observer.observe(target, { childList: true });
   }
 
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
-
-  loadStyle("sai-10-10.css?v=20260914-2");
+  loadStyle("sai-10-10.css?v=20260914-3");
   loadScript("global-animations-core.js");
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      addAccountLink();
-      watchShopProducts();
-    });
+    document.addEventListener('DOMContentLoaded', function () { addAccountLink(); watchShopProducts(); });
   } else {
     addAccountLink();
     watchShopProducts();
   }
 
-  if (location.pathname === "/" || location.pathname.endsWith("/index.html")) {
-    loadScript("seo-homepage-schema.js");
-  }
+  if (location.pathname === "/" || location.pathname.endsWith("/index.html")) loadScript("seo-homepage-schema.js");
 })();
