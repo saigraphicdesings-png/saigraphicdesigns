@@ -169,6 +169,44 @@ async function savePhone(request, env) {
   return json({ success: true, user: publicCustomer(updated), message: "Mobile number saved." });
 }
 
+async function freeDownload(request, env) {
+  if (!env.DB) return json({ error: "Download service is unavailable." }, 503);
+  await ensureGoogleSchema(env);
+  const customer = await getSessionCustomer(request, env);
+  if (!customer) return json({ error: "Login required to unlock free templates.", loginRequired: true }, 401);
+
+  const url = new URL(request.url);
+  const id = String(url.searchParams.get("id") || "").trim();
+  if (!/^[A-Za-z0-9_-]+$/.test(id)) return json({ error: "Invalid product." }, 400);
+
+  const product = await env.DB.prepare(`
+    SELECT id, name, price, download_url
+    FROM products
+    WHERE id = ? AND active = 1
+    LIMIT 1
+  `).bind(id).first();
+
+  if (!product) return json({ error: "Template not found." }, 404);
+  if (Number(product.price) !== 0) return json({ error: "This is not a free template." }, 403);
+  if (!product.download_url) return json({ error: "Download link is not available yet." }, 404);
+
+  return json({ success: true, id: product.id, name: product.name, downloadUrl: product.download_url });
+}
+
+async function publicProductsWithoutDownloads(request, env, ctx) {
+  const response = await baseWorker.fetch(request, env, ctx);
+  if (!response.ok) return response;
+  try {
+    const data = await response.clone().json();
+    if (Array.isArray(data.products)) {
+      data.products = data.products.map((product) => ({ ...product, downloadUrl: "" }));
+    }
+    return json(data, response.status);
+  } catch {
+    return response;
+  }
+}
+
 async function startGoogle(request, env) {
   if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) return new Response("Google login is not configured yet.", { status: 503 });
   const state = randomToken(24);
@@ -239,10 +277,13 @@ export default {
       if (url.pathname === "/api/auth/google/start" && request.method === "GET") return await startGoogle(request, env);
       if (url.pathname === "/api/auth/google/callback" && request.method === "GET") return await finishGoogle(request, env);
       if (url.pathname === "/api/auth/phone/save" && request.method === "POST") return await savePhone(request, env);
+      if (url.pathname === "/api/free-download" && request.method === "GET") return await freeDownload(request, env);
+      if (url.pathname === "/api/products" && request.method === "GET") return await publicProductsWithoutDownloads(request, env, ctx);
     } catch (error) {
       console.error("Account extension error:", error);
       if (url.pathname.startsWith("/api/auth/google/")) return accountError(request, "server");
       if (url.pathname === "/api/auth/phone/save") return json({ error: "Unable to save mobile number right now." }, 500);
+      if (url.pathname === "/api/free-download") return json({ error: "Unable to unlock this free template right now." }, 500);
     }
     return baseWorker.fetch(request, env, ctx);
   }
