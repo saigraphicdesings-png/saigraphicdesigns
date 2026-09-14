@@ -1,7 +1,8 @@
 import { pbkdf2 } from "node:crypto";
 import baseWorker from "./index.js";
 
-const PASSWORD_HASH_ITERATIONS = 120000;
+// The deployed Workers runtime caps PBKDF2 at 100,000 iterations.
+const PASSWORD_HASH_ITERATIONS = 100000;
 const RESET_TTL_MINUTES = 30;
 
 function bytesToBase64(bytes) {
@@ -18,11 +19,9 @@ function base64ToBytes(value) {
   return bytes;
 }
 
-async function derivePasswordHash(password, saltBytes) {
-  // Preserve the existing PBKDF2 hash format without relying on Web Crypto's
-  // runtime-specific iteration limits.
+async function derivePasswordHash(password, saltBytes, iterations = PASSWORD_HASH_ITERATIONS) {
   return new Promise((resolve, reject) => {
-    pbkdf2(new TextEncoder().encode(password), saltBytes, PASSWORD_HASH_ITERATIONS, 32, "sha256", (error, key) => {
+    pbkdf2(new TextEncoder().encode(password), saltBytes, iterations, 32, "sha256", (error, key) => {
       if (error) reject(error);
       else resolve(bytesToBase64(key));
     });
@@ -224,7 +223,7 @@ async function signup(request, env) {
 
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
-  const passwordHash = await derivePasswordHash(password, salt);
+  const passwordHash = `pbkdf2-sha256${PASSWORD_HASH_ITERATIONS}${await derivePasswordHash(password, salt)}`;
   const id = crypto.randomUUID();
 
   await env.DB.prepare(`
@@ -266,8 +265,24 @@ async function login(request, env) {
     return json({ error: "Invalid email or password." }, 401);
   }
 
-  const candidate = await derivePasswordHash(password, base64ToBytes(customer.password_salt));
-  if (candidate !== customer.password_hash) return json({ error: "Invalid email or password." }, 401);
+  const stored = String(customer.password_hash);
+  const versioned = /^pbkdf2-sha256\$(100000)\$([A-Za-z0-9+/]{43}=)$/.exec(stored);
+  // Unversioned hashes were written with 120,000 iterations. Never silently
+  // reinterpret them as the new format.
+  if (!versioned && !/^[A-Za-z0-9+/]{43}=$/.test(stored)) {
+    return json({ error: "Invalid email or password." }, 401);
+  }
+  const iterations = versioned ? Number(versioned[1]) : 120000;
+  let candidate;
+  try {
+    candidate = await derivePasswordHash(password, base64ToBytes(customer.password_salt), iterations);
+  } catch (error) {
+    if (!versioned && error.name === "NotSupportedError") {
+      return json({ error: "Please use Forgot Password to reset this account's password before signing in.", code: "PASSWORD_RESET_REQUIRED" }, 409);
+    }
+    throw error;
+  }
+  if (candidate !== (versioned ? versioned[2] : stored)) return json({ error: "Invalid email or password." }, 401);
 
   await env.DB.prepare("UPDATE customer_accounts SET last_login_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
     .bind(customer.id)
@@ -451,7 +466,7 @@ async function resetPassword(request, env) {
 
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
-  const passwordHash = await derivePasswordHash(password, salt);
+  const passwordHash = `pbkdf2-sha256${PASSWORD_HASH_ITERATIONS}${await derivePasswordHash(password, salt)}`;
 
   await env.DB.batch([
     env.DB.prepare(`
