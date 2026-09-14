@@ -42,7 +42,6 @@
         else if (!label && link.classList.contains('sai-account-link') && link.textContent !== 'My Account') link.textContent = 'My Account';
       }
     });
-    updateFreeTemplateLocks();
   }
 
   async function refreshAccountState() {
@@ -102,28 +101,6 @@
     return Boolean(price && /\bFREE\b/i.test(price.textContent || ''));
   }
 
-  function styleFreeButton(button, locked) {
-    if (!button) return;
-    var lockValue = locked ? 'true' : 'false';
-    var text = locked ? '🔒 Login to Unlock' : '🔓 Download Free';
-    var label = locked ? 'Login to unlock this free template' : 'Download this free template';
-    button.dataset.saiFreeAccess = 'true';
-    button.dataset.saiLocked = lockValue;
-    if (button.textContent !== text) button.textContent = text;
-    if (button.getAttribute('aria-label') !== label) button.setAttribute('aria-label', label);
-    button.style.cursor = 'pointer';
-    button.style.opacity = '1';
-  }
-
-  function updateFreeTemplateLocks() {
-    if (!isShopPage()) return;
-    document.querySelectorAll('.shop-product').forEach(function (card) {
-      if (isFreeCard(card)) styleFreeButton(card.querySelector('.add-product-btn'), !customerSignedIn);
-    });
-    var modalButton = document.getElementById('modalAddCart');
-    if (isFreeModalButton(modalButton)) styleFreeButton(modalButton, !customerSignedIn);
-  }
-
   function showFreeAccessMessage(message) {
     var old = document.getElementById('saiFreeAccessNotice');
     if (old) old.remove();
@@ -152,7 +129,7 @@
       if (!response.ok || !data.downloadUrl) throw new Error(data.error || 'Download link is unavailable.');
       window.open(data.downloadUrl, '_blank', 'noopener,noreferrer');
       button.textContent = '✓ Unlocked';
-      setTimeout(function () { styleFreeButton(button, false); }, 1400);
+      setTimeout(function () { button.textContent = 'Download Free'; }, 1400);
     } catch (error) {
       showFreeAccessMessage(error.message || 'Unable to unlock this template right now.');
       button.textContent = original;
@@ -169,48 +146,29 @@
     if (!button) return;
     var free = button.id === 'modalAddCart' ? isFreeModalButton(button) : isFreeCard(button.closest('.shop-product'));
     if (!free) return;
+
     event.preventDefault();
     event.stopPropagation();
     if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+
     if (!customerSignedIn) {
-      showFreeAccessMessage('🔒 Login to unlock free templates.');
-      setTimeout(function () { window.location.href = 'account.html'; }, 450);
+      showFreeAccessMessage('Login to unlock this free template.');
+      setTimeout(function () { window.location.href = 'account.html'; }, 350);
       return;
     }
+
     var ownerCard = button.closest('.shop-product');
     var id = button.id === 'modalAddCart' ? selectedShopProductId : (ownerCard ? ownerCard.dataset.id : '');
     unlockFreeTemplate(id, button);
   }
 
-  function watchShopProducts() {
-    if (!isShopPage()) return;
-    updateFreeTemplateLocks();
-    var target = document.getElementById('allProducts');
-    if (!target) return;
-    var scheduled = false;
-    var observer = new MutationObserver(function (mutations) {
-      var hasNewCards = mutations.some(function (mutation) { return mutation.type === 'childList' && mutation.addedNodes.length > 0; });
-      if (!hasNewCards || scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(function () {
-        scheduled = false;
-        updateFreeTemplateLocks();
-      });
-    });
-    observer.observe(target, { childList: true });
-  }
-
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
-  loadStyle("sai-10-10.css?v=20260914-3");
+  loadStyle("sai-10-10.css?v=20260914-4");
   loadScript("global-animations-core.js");
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { addAccountLink(); watchShopProducts(); });
-  } else {
-    addAccountLink();
-    watchShopProducts();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
+  else addAccountLink();
 
   if (location.pathname === "/" || location.pathname.endsWith("/index.html")) loadScript("seo-homepage-schema.js");
 })();
