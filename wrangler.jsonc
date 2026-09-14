@@ -26,5 +26,8 @@
       "head_sampling_rate": 1,
       "persist": true
     }
-  }
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
 }

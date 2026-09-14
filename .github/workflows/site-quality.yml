@@ -17,3 +17,7 @@ jobs:
         run: node scripts/validate-site.mjs
       - name: Validate Cloudflare Worker bundle
         run: npx --yes wrangler@4.129.1 deploy --dry-run --outdir /tmp/wrangler-dry-run
+      - name: Test email accounts in Workers runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/account-runtime" --no-audit --no-fund miniflare@4
+          node scripts/test-email-accounts.mjs

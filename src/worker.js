@@ -1,3 +1,4 @@
+import { pbkdf2 } from "node:crypto";
 import baseWorker from "./index.js";
 
 const PASSWORD_HASH_ITERATIONS = 120000;
@@ -18,24 +19,14 @@ function base64ToBytes(value) {
 }
 
 async function derivePasswordHash(password, saltBytes) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(password),
-    "PBKDF2",
-    false,
-    ["deriveBits"]
-  );
-  const bits = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      hash: "SHA-256",
-      salt: saltBytes,
-      iterations: PASSWORD_HASH_ITERATIONS
-    },
-    key,
-    256
-  );
-  return bytesToBase64(bits);
+  // Preserve the existing PBKDF2 hash format without relying on Web Crypto's
+  // runtime-specific iteration limits.
+  return new Promise((resolve, reject) => {
+    pbkdf2(new TextEncoder().encode(password), saltBytes, PASSWORD_HASH_ITERATIONS, 32, "sha256", (error, key) => {
+      if (error) reject(error);
+      else resolve(bytesToBase64(key));
+    });
+  });
 }
 
 async function hashText(value) {
