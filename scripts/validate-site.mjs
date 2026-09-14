@@ -3,6 +3,9 @@ import { extname, join } from "node:path";
 
 const root = process.cwd();
 const ignoredSchemes = /^(?:https?:|mailto:|tel:|#|data:|javascript:)/i;
+// This navigation URL is handled by src/worker.js, not a static file.
+// Keep this list explicit so unknown API links still fail validation.
+const workerRoutes = new Set(["/api/auth/google/start"]);
 const files = [];
 
 async function walk(dir) {
@@ -26,7 +29,7 @@ for (const file of candidates) {
   for (const ref of refs) {
     if (ignoredSchemes.test(ref) || ref.startsWith("//") || ref.includes("${") || /[\r\n]/.test(ref)) continue;
     const clean = decodeURIComponent(ref.split(/[?#]/)[0]);
-    if (!clean) continue;
+    if (!clean || workerRoutes.has(clean)) continue;
     try { await stat(join(root, clean)); } catch { missing.add(`${file.replace(root + "/", "")}: ${clean}`); }
   }
   if (extname(file) === ".html") {
