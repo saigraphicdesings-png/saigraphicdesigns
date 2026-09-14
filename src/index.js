@@ -88,11 +88,42 @@ async function ensureClickAnalytics(env) {
   await env.DB.prepare(productClickSchema).run();
 }
 
+async function addMissingColumns(env, table, definitions) {
+  const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all();
+  const existing = new Set((info.results || []).map((column) => column.name));
+  for (const [name, definition] of Object.entries(definitions)) {
+    if (!existing.has(name)) {
+      await env.DB.prepare(`ALTER TABLE ${table} ADD COLUMN ${name} ${definition}`).run();
+    }
+  }
+}
+
 async function ensureCustomerTables(env) {
-  await env.DB.batch([
-    env.DB.prepare(customerSchema),
-    env.DB.prepare(customerSessionSchema)
-  ]);
+  await env.DB.prepare(customerSchema).run();
+  await addMissingColumns(env, "customers", {
+    name: "TEXT NOT NULL DEFAULT 'Customer'",
+    email: "TEXT",
+    phone: "TEXT",
+    password_hash: "TEXT",
+    password_salt: "TEXT",
+    auth_provider: "TEXT NOT NULL DEFAULT 'email'",
+    email_verified: "INTEGER NOT NULL DEFAULT 0",
+    phone_verified: "INTEGER NOT NULL DEFAULT 0",
+    active: "INTEGER NOT NULL DEFAULT 1",
+    created_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    updated_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    last_login_at: "TEXT"
+  });
+
+  await env.DB.prepare(customerSessionSchema).run();
+  await addMissingColumns(env, "customer_sessions", {
+    customer_id: "TEXT",
+    created_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    expires_at: "TEXT"
+  });
+
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_customer_sessions_customer ON customer_sessions(customer_id)").run();
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email)").run();
 }
 
 function bytesToBase64(bytes) {
