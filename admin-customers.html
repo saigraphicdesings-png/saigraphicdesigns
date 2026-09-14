@@ -1,14 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Customers | Sai Graphic Designs Admin</title>
-  <link rel="icon" href="Images/favicon.png">
-  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" href="Images/favicon.png"><link rel="stylesheet" href="admin.css">
   <style>
-    .customers-wrap{max-width:1200px;margin:0 auto;padding:28px 20px 50px}.customer-top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:22px;flex-wrap:wrap}.customer-actions{display:flex;gap:10px;flex-wrap:wrap}.customer-actions a,.customer-actions button{border:1px solid #dbe3e8;background:#fff;color:#111827;padding:10px 14px;border-radius:12px;font-weight:800;text-decoration:none;cursor:pointer}.customer-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}.customer-stats article{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;box-shadow:0 8px 25px rgba(15,23,42,.05)}.customer-stats strong{display:block;font-size:1.7rem;color:#111827}.customer-stats span{font-size:.82rem;color:#64748b}.customer-panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 12px 35px rgba(15,23,42,.06)}.customer-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}.customer-toolbar input{min-width:260px;max-width:420px;width:100%;padding:11px 13px;border:1px solid #dbe3e8;border-radius:11px}.customer-table-wrap{overflow:auto}.customer-table{width:100%;border-collapse:collapse;min-width:850px}.customer-table th,.customer-table td{text-align:left;padding:13px 12px;border-bottom:1px solid #eef2f4;vertical-align:middle}.customer-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b}.customer-table td{font-size:.88rem;color:#1f2937}.provider-badge,.status-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800}.provider-email{background:#ecfdf5;color:#047857}.provider-google{background:#eff6ff;color:#1d4ed8}.provider-mobile{background:#fff7ed;color:#c2410c}.status-active{background:#ecfdf5;color:#047857}.status-inactive{background:#fef2f2;color:#b91c1c}.empty-state{padding:40px;text-align:center;color:#64748b}.error-box{display:none;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:12px 14px;border-radius:12px;margin-bottom:14px}.login-required{max-width:540px;margin:70px auto;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px;text-align:center;box-shadow:0 12px 35px rgba(15,23,42,.08)}@media(max-width:850px){.customer-stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.customer-stats{grid-template-columns:1fr}.customers-wrap{padding:20px 12px}}
+    .customers-wrap{max-width:1300px;margin:0 auto;padding:28px 20px 50px}.customer-top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:22px;flex-wrap:wrap}.customer-actions{display:flex;gap:10px;flex-wrap:wrap}.customer-actions a,.customer-actions button{border:1px solid #dbe3e8;background:#fff;color:#111827;padding:10px 14px;border-radius:12px;font-weight:800;text-decoration:none;cursor:pointer}.customer-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:20px}.customer-stats article{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;box-shadow:0 8px 25px rgba(15,23,42,.05)}.customer-stats strong{display:block;font-size:1.7rem;color:#111827}.customer-stats span{font-size:.82rem;color:#64748b}.customer-panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 12px 35px rgba(15,23,42,.06)}.customer-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}.customer-toolbar input{min-width:260px;max-width:420px;width:100%;padding:11px 13px;border:1px solid #dbe3e8;border-radius:11px}.customer-table-wrap{overflow:auto}.customer-table{width:100%;border-collapse:collapse;min-width:1250px}.customer-table th,.customer-table td{text-align:left;padding:13px 12px;border-bottom:1px solid #eef2f4;vertical-align:middle}.customer-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b}.customer-table td{font-size:.88rem;color:#1f2937}.provider-badge,.status-badge,.online-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800}.provider-email{background:#ecfdf5;color:#047857}.provider-google{background:#eff6ff;color:#1d4ed8}.provider-mobile{background:#fff7ed;color:#c2410c}.status-active{background:#ecfdf5;color:#047857}.status-inactive{background:#fef2f2;color:#b91c1c}.online-yes{background:#ecfdf5;color:#047857}.online-no{background:#f1f5f9;color:#64748b}.count{font-weight:900}.empty-state{padding:40px;text-align:center;color:#64748b}.error-box{display:none;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:12px 14px;border-radius:12px;margin-bottom:14px}.login-required{max-width:540px;margin:70px auto;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px;text-align:center;box-shadow:0 12px 35px rgba(15,23,42,.08)}@media(max-width:1000px){.customer-stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:600px){.customer-stats{grid-template-columns:repeat(2,1fr)}.customers-wrap{padding:20px 12px}}
   </style>
 </head>
 <body>
@@ -16,20 +14,19 @@
 <main class="customers-wrap">
   <section id="loginRequired" class="login-required" hidden><p class="eyebrow">SECURE ACCESS</p><h1>Admin login required</h1><p>Open the main Admin Panel and login first. Then return to Customers.</p><a href="admin.html" class="primary" style="display:inline-flex;text-decoration:none;padding:11px 16px;border-radius:12px;margin-top:8px">Open Admin Panel</a></section>
   <section id="customerDashboard" hidden>
-    <div class="customer-top"><div><p class="eyebrow">CUSTOMER MANAGEMENT</p><h1>Customers</h1><p>Customer accounts created from your website are saved in Cloudflare D1 and shown here.</p></div><div class="customer-actions"><a href="admin.html">← Products</a><button id="refreshCustomers" type="button">Refresh</button></div></div>
+    <div class="customer-top"><div><p class="eyebrow">CUSTOMER & VISIT ANALYTICS</p><h1>Customers</h1><p>Login activity and website opens are stored in Cloudflare D1. Online means the customer's authenticated session has been active recently.</p></div><div class="customer-actions"><a href="admin.html">← Products</a><button id="refreshCustomers" type="button">Refresh</button></div></div>
     <div id="customerError" class="error-box"></div>
     <div class="customer-stats">
       <article><strong id="totalCustomers">0</strong><span>Total Customers</span></article>
-      <article><strong id="activeCustomers">0</strong><span>Active Customers</span></article>
-      <article><strong id="emailCustomers">0</strong><span>Email Login</span></article>
-      <article><strong id="googleCustomers">0</strong><span>Google Login</span></article>
-      <article><strong id="mobileCustomers">0</strong><span>Mobile Login</span></article>
+      <article><strong id="activeCustomers">0</strong><span>Active Accounts</span></article>
+      <article><strong id="onlineCustomers">0</strong><span>Currently Online</span></article>
+      <article><strong id="totalLogins">0</strong><span>Total Logins</span></article>
+      <article><strong id="totalWebsiteOpens">0</strong><span>Customer Website Opens</span></article>
+      <article><strong id="totalVisitors">—</strong><span>Unique Visitors</span></article>
     </div>
     <section class="customer-panel">
-      <div class="customer-toolbar"><div><h2>Customer List</h2><p style="margin:3px 0 0;color:#64748b;font-size:.84rem">Passwords, OTPs and login tokens are never shown here.</p></div><input id="customerSearch" type="search" placeholder="Search name, email or mobile…"></div>
-      <div class="customer-table-wrap">
-        <table class="customer-table"><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Login Method</th><th>Created</th><th>Last Login</th><th>Status</th></tr></thead><tbody id="customerRows"></tbody></table>
-      </div>
+      <div class="customer-toolbar"><div><h2>Customer Activity</h2><p style="margin:3px 0 0;color:#64748b;font-size:.84rem">Login count = successful logins. Website opens = authenticated browser sessions started by that customer.</p></div><input id="customerSearch" type="search" placeholder="Search name, email or mobile…"></div>
+      <div class="customer-table-wrap"><table class="customer-table"><thead><tr><th>Customer</th><th>Email</th><th>Mobile</th><th>Login Method</th><th>Online</th><th>Login Count</th><th>Website Opens</th><th>Last Login</th><th>Last Website Open</th><th>Last Active</th></tr></thead><tbody id="customerRows"></tbody></table></div>
       <div id="customerEmpty" class="empty-state" hidden>No customer accounts yet.</div>
     </section>
   </section>
