@@ -16,116 +16,43 @@
 
   <main class="admin-shell">
     <section class="login-card" id="loginCard">
-      <div class="admin-mark">🔐</div>
-      <p class="eyebrow">SECURE ACCESS</p>
-      <h1>Shop Admin Panel</h1>
+      <div class="admin-mark">🔐</div><p class="eyebrow">SECURE ACCESS</p><h1>Shop Admin Panel</h1>
       <p>Enter the admin token configured in Cloudflare to manage products.</p>
-      <form id="loginForm">
-        <label for="adminToken">Admin token</label>
-        <input id="adminToken" type="password" autocomplete="current-password" required>
-        <button type="submit">Open Admin Panel →</button>
-      </form>
+      <form id="loginForm"><label for="adminToken">Admin token</label><input id="adminToken" type="password" autocomplete="current-password" required><button type="submit">Open Admin Panel →</button></form>
       <p class="error" id="loginError" role="alert"></p>
     </section>
 
     <section class="dashboard" id="dashboard" hidden>
-      <div class="dashboard-top">
-        <div><p class="eyebrow">PRODUCT MANAGEMENT</p><h1>Shop Products</h1></div>
-        <div class="top-actions">
-          <a class="secondary" href="admin-analytics.html" style="text-decoration:none;padding:11px 15px;border-radius:12px;font-weight:900">Analytics Report</a>
-          <button class="secondary import-btn" id="importBtn" type="button">Import Existing Products</button>
-          <button class="secondary" id="refreshBtn" type="button">Refresh</button>
-          <button class="secondary danger" id="logoutBtn" type="button">Log out</button>
-        </div>
-      </div>
+      <div class="dashboard-top"><div><p class="eyebrow">PRODUCT MANAGEMENT</p><h1>Shop Products</h1></div><div class="top-actions"><a class="secondary" href="admin-analytics.html" style="text-decoration:none;padding:11px 15px;border-radius:12px;font-weight:900">Analytics Report</a><button class="secondary import-btn" id="importBtn" type="button">Import Existing Products</button><button class="secondary" id="refreshBtn" type="button">Refresh</button><button class="secondary danger" id="logoutBtn" type="button">Log out</button></div></div>
+      <div class="stats"><article><strong id="totalCount">0</strong><span>Total products</span></article><article><strong id="activeCount">0</strong><span>Visible products</span></article><article><strong id="freeCount">0</strong><span>Free products</span></article></div>
 
-      <div class="stats">
-        <article><strong id="totalCount">0</strong><span>Total products</span></article>
-        <article><strong id="activeCount">0</strong><span>Visible products</span></article>
-        <article><strong id="freeCount">0</strong><span>Free products</span></article>
-      </div>
+      <section class="panel mockup-generator" aria-labelledby="mockupTitle">
+        <div class="panel-title"><div><p class="eyebrow">DESIGN TOOL</p><h2 id="mockupTitle">Auto Mockup Generator</h2></div><button class="secondary" id="mockupReset" type="button">Clear</button></div>
+        <p class="mockup-intro">Upload the front and back of a business card. The admin panel will automatically create a square presentation mockup with multiple cards, perspective, rounded corners and shadows.</p>
+        <div class="mockup-workspace">
+          <div class="mockup-controls">
+            <label>Front design<input id="mockupFront" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label>Back design<input id="mockupBack" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label>Layout<select id="mockupLayout"><option value="scatter">5 Card – Scattered</option><option value="clean">3 Card – Clean</option></select></label>
+            <button class="primary" id="generateMockup" type="button">Generate Mockup</button>
+            <button class="secondary mockup-download" id="downloadMockup" type="button" disabled>Download PNG</button>
+            <p class="form-message" id="mockupMessage" role="status"></p>
+          </div>
+          <div class="mockup-preview-wrap"><canvas id="mockupCanvas" width="1200" height="1200" aria-label="Generated business card mockup preview"></canvas><div class="mockup-placeholder" id="mockupPlaceholder"><strong>Mockup Preview</strong><span>Upload front + back designs and click Generate Mockup</span></div></div>
+        </div>
+      </section>
 
       <div class="admin-grid">
-        <section class="panel">
-          <div class="panel-title"><h2 id="formTitle">Add Product</h2><button class="text-btn" id="resetBtn" type="button">Clear</button></div>
-          <form id="productForm">
-            <input id="originalId" type="hidden">
-            <div class="form-grid">
-              <label>Product ID<input id="productId" required placeholder="business-card-06" pattern="[A-Za-z0-9_-]+"></label>
-              <label>Product name<input id="productName" required placeholder="Premium Business Card 06"></label>
-              <label>Price (₹)<input id="productPrice" required type="number" min="0" step="0.01" value="0"></label>
-              <label>Sort order<input id="sortOrder" type="number" step="1" value="0"></label>
-              <label>Category
-                <select id="productCategory" required>
-                  <option value="" selected disabled>Select category</option>
-                  <option value="Printing Designs">Printing Designs</option>
-                  <option value="Digital &amp; Social Media Designs">Digital &amp; Social Media Designs</option>
-                  <option value="Packaging Designs">Packaging Designs</option>
-                </select>
-              </label>
-              <label>Type<input id="productType" required placeholder="business-card"></label>
-              <label class="full">Formats
-                <select id="productFormats" multiple required aria-describedby="formatsHelp">
-                  <option value="cdr">CDR</option>
-                  <option value="psd">PSD</option>
-                  <option value="ai">AI</option>
-                  <option value="eps">EPS</option>
-                  <option value="pdf">PDF</option>
-                  <option value="png">PNG</option>
-                  <option value="jpg">JPG</option>
-                  <option value="svg">SVG</option>
-                </select>
-                <small id="formatsHelp">Select one or more formats. On computer use Ctrl; on mobile tap each option.</small>
-              </label>
-              <label class="full">Preview images (one path or URL per line)<textarea id="productImages" required rows="4" placeholder="Images/Shop/product/1.jpg"></textarea></label>
-              <label class="full">Description<textarea id="productDescription" rows="4"></textarea></label>
-              <label class="full">Download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."><small>Copy this link from the Product Drive Link section. Free products also use it in the shop.</small></label>
-              <label class="check"><input id="productActive" type="checkbox" checked> Show this product in Shop</label>
-            </div>
-            <button class="primary" type="submit" id="saveBtn">Save Product</button>
-            <p class="form-message" id="formMessage" role="status"></p>
-          </form>
-        </section>
-
-        <div class="products-column">
-        <section class="panel products-panel">
-          <div class="panel-title">
-            <h2>Products</h2>
-            <input id="productSearch" type="search" placeholder="Search products…">
-          </div>
-          <div class="product-list" id="productList"></div>
-        </section>
-        <section class="panel link-panel" aria-labelledby="linkPanelTitle">
-          <h2 id="linkPanelTitle">Product Drive Link</h2>
-          <p class="link-intro">Select a product to view and copy its saved download link.</p>
-          <label for="linkProduct">Select product</label>
-          <select id="linkProduct"><option value="">Select a product</option></select>
-          <label for="productDriveLink">Drive link</label>
-          <div class="copy-link-row">
-            <input id="productDriveLink" type="text" readonly placeholder="Select a product to show its link" aria-describedby="copyLinkMessage">
-            <button class="primary" id="copyProductLink" type="button" disabled>Copy Link</button>
-          </div>
-          <p class="form-message" id="copyLinkMessage" role="status"></p>
-        </section>
-        </div>
+        <section class="panel"><div class="panel-title"><h2 id="formTitle">Add Product</h2><button class="text-btn" id="resetBtn" type="button">Clear</button></div><form id="productForm"><input id="originalId" type="hidden"><div class="form-grid">
+          <label>Product ID<input id="productId" required placeholder="business-card-06" pattern="[A-Za-z0-9_-]+"></label><label>Product name<input id="productName" required placeholder="Premium Business Card 06"></label><label>Price (₹)<input id="productPrice" required type="number" min="0" step="0.01" value="0"></label><label>Sort order<input id="sortOrder" type="number" step="1" value="0"></label>
+          <label>Category<select id="productCategory" required><option value="" selected disabled>Select category</option><option value="Printing Designs">Printing Designs</option><option value="Digital &amp; Social Media Designs">Digital &amp; Social Media Designs</option><option value="Packaging Designs">Packaging Designs</option></select></label><label>Type<input id="productType" required placeholder="business-card"></label>
+          <label class="full">Formats<select id="productFormats" multiple required aria-describedby="formatsHelp"><option value="cdr">CDR</option><option value="psd">PSD</option><option value="ai">AI</option><option value="eps">EPS</option><option value="pdf">PDF</option><option value="png">PNG</option><option value="jpg">JPG</option><option value="svg">SVG</option></select><small id="formatsHelp">Select one or more formats. On computer use Ctrl; on mobile tap each option.</small></label>
+          <label class="full">Preview images (one path or URL per line)<textarea id="productImages" required rows="4" placeholder="Images/Shop/product/1.jpg"></textarea></label><label class="full">Description<textarea id="productDescription" rows="4"></textarea></label><label class="full">Download URL<input id="downloadUrl" type="url" placeholder="https://drive.google.com/..."><small>Copy this link from the Product Drive Link section. Free products also use it in the shop.</small></label><label class="check"><input id="productActive" type="checkbox" checked> Show this product in Shop</label>
+        </div><button class="primary" type="submit" id="saveBtn">Save Product</button><p class="form-message" id="formMessage" role="status"></p></form></section>
+        <div class="products-column"><section class="panel products-panel"><div class="panel-title"><h2>Products</h2><input id="productSearch" type="search" placeholder="Search products…"></div><div class="product-list" id="productList"></div></section><section class="panel link-panel" aria-labelledby="linkPanelTitle"><h2 id="linkPanelTitle">Product Drive Link</h2><p class="link-intro">Select a product to view and copy its saved download link.</p><label for="linkProduct">Select product</label><select id="linkProduct"><option value="">Select a product</option></select><label for="productDriveLink">Drive link</label><div class="copy-link-row"><input id="productDriveLink" type="text" readonly placeholder="Select a product to show its link" aria-describedby="copyLinkMessage"><button class="primary" id="copyProductLink" type="button" disabled>Copy Link</button></div><p class="form-message" id="copyLinkMessage" role="status"></p></section></div>
       </div>
     </section>
   </main>
-  <dialog class="delete-dialog" id="deleteDialog" aria-labelledby="deleteDialogTitle" aria-describedby="deleteDialogDescription">
-    <form method="dialog" class="delete-dialog-content">
-      <div class="delete-dialog-icon" aria-hidden="true">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/></svg>
-      </div>
-      <p class="eyebrow">PRODUCT MANAGEMENT</p>
-      <h2 id="deleteDialogTitle">Delete product?</h2>
-      <p id="deleteDialogDescription">Permanently delete <strong id="deleteDialogName"></strong>? This will also remove it from your shop.</p>
-      <div class="delete-dialog-actions">
-        <button class="glass-cancel" value="cancel" autofocus>Cancel</button>
-        <button class="glass-delete" value="delete">OK, delete</button>
-      </div>
-    </form>
-  </dialog>
-  <script src="admin.js" defer></script>
-  <script src="admin-link-status.js" defer></script>
-</body>
-</html>
+  <dialog class="delete-dialog" id="deleteDialog" aria-labelledby="deleteDialogTitle" aria-describedby="deleteDialogDescription"><form method="dialog" class="delete-dialog-content"><div class="delete-dialog-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6"/></svg></div><p class="eyebrow">PRODUCT MANAGEMENT</p><h2 id="deleteDialogTitle">Delete product?</h2><p id="deleteDialogDescription">Permanently delete <strong id="deleteDialogName"></strong>? This will also remove it from your shop.</p><div class="delete-dialog-actions"><button class="glass-cancel" value="cancel" autofocus>Cancel</button><button class="glass-delete" value="delete">OK, delete</button></div></form></dialog>
+  <script src="admin.js" defer></script><script src="admin-link-status.js" defer></script><script src="admin-mockup.js" defer></script>
+</body></html>
