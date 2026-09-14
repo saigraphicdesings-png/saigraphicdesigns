@@ -267,22 +267,34 @@ async function login(request, env) {
 
   const stored = String(customer.password_hash);
   const versioned = /^pbkdf2-sha256\$(100000)\$([A-Za-z0-9+/]{43}=)$/.exec(stored);
-  // Unversioned hashes were written with 120,000 iterations. Never silently
-  // reinterpret them as the new format.
-  if (!versioned && !/^[A-Za-z0-9+/]{43}=$/.test(stored)) {
+  const malformedVersioned = /^pbkdf2-sha256100000([A-Za-z0-9+/]{43}=)$/.exec(stored);
+  // Older unversioned hashes were written with 120,000 iterations. Never silently
+  // reinterpret those hashes as the new 100,000-iteration format.
+  const unversioned = /^[A-Za-z0-9+/]{43}=$/.test(stored);
+  if (!versioned && !malformedVersioned && !unversioned) {
     return json({ error: "Invalid email or password." }, 401);
   }
-  const iterations = versioned ? Number(versioned[1]) : 120000;
+
+  const iterations = versioned || malformedVersioned ? PASSWORD_HASH_ITERATIONS : 120000;
+  const expectedHash = versioned ? versioned[2] : malformedVersioned ? malformedVersioned[1] : stored;
   let candidate;
   try {
     candidate = await derivePasswordHash(password, base64ToBytes(customer.password_salt), iterations);
   } catch (error) {
-    if (!versioned && error.name === "NotSupportedError") {
+    if (unversioned && error.name === "NotSupportedError") {
       return json({ error: "Please use Forgot Password to reset this account's password before signing in.", code: "PASSWORD_RESET_REQUIRED" }, 409);
     }
     throw error;
   }
-  if (candidate !== (versioned ? versioned[2] : stored)) return json({ error: "Invalid email or password." }, 401);
+  if (candidate !== expectedHash) return json({ error: "Invalid email or password." }, 401);
+
+  // Migrate hashes produced by the old malformed formatter after a successful login.
+  if (malformedVersioned) {
+    const migratedHash = `pbkdf2-sha256$${PASSWORD_HASH_ITERATIONS}$${candidate}`;
+    await env.DB.prepare("UPDATE customer_accounts SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
+      .bind(migratedHash, customer.id)
+      .run();
+  }
 
   await env.DB.prepare("UPDATE customer_accounts SET last_login_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
     .bind(customer.id)
