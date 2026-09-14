@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | Sai Graphic Designs</title>
+  <meta name="robots" content="noindex,follow">
+  <link rel="stylesheet" href="site-polish.css">
+  <link rel="stylesheet" href="sai-10-10.css?v=20260914-1">
+  <link rel="stylesheet" href="account.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">SG</div>
+        <span class="logo-name">Sai <strong>Graphic Designs</strong></span>
+      </a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="customizer.html" class="nav-link">Services</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="account.html" class="nav-link active">My Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="account-shell">
+    <section class="account-card" id="authView">
+      <div class="account-intro">
+        <span class="account-kicker">CUSTOMER ACCOUNT</span>
+        <h1>Welcome to Sai Graphic Designs</h1>
+        <p>Create an account or sign in to keep your customer session active across visits.</p>
+      </div>
+
+      <div class="auth-tabs" role="tablist" aria-label="Account access">
+        <button class="auth-tab active" id="loginTab" type="button">Login</button>
+        <button class="auth-tab" id="signupTab" type="button">Sign Up</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>Email
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="current-password" minlength="8" required>
+        </label>
+        <button class="account-primary" type="submit">Login</button>
+      </form>
+
+      <form id="signupForm" class="auth-form is-hidden">
+        <label>Full Name
+          <input type="text" name="name" autocomplete="name" maxlength="80" required>
+        </label>
+        <label>Email
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <button class="account-primary" type="submit">Create Account</button>
+      </form>
+
+      <p class="account-message" id="authMessage" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="account-card is-hidden" id="profileView">
+      <span class="account-kicker">MY ACCOUNT</span>
+      <h1>Hello, <span id="profileName">Customer</span></h1>
+      <div class="profile-grid">
+        <div><span>Name</span><strong id="profileFullName">—</strong></div>
+        <div><span>Email</span><strong id="profileEmail">—</strong></div>
+        <div><span>Member Since</span><strong id="profileCreated">—</strong></div>
+      </div>
+      <div class="profile-actions">
+        <a class="account-secondary" href="shop.html">Continue Shopping</a>
+        <button class="account-primary" id="logoutBtn" type="button">Logout</button>
+      </div>
+      <p class="account-message" id="profileMessage" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="account.js?v=1" defer></script>
+</body>
+</html>
