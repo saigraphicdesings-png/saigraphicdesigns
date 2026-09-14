@@ -5,6 +5,20 @@
   const productList = document.getElementById("productList");
   if (!productList) return;
 
+  const topActions = document.querySelector(".top-actions");
+  if (topActions && !document.getElementById("customersAdminLink")) {
+    const customersLink = document.createElement("a");
+    customersLink.id = "customersAdminLink";
+    customersLink.className = "secondary";
+    customersLink.href = "admin-customers.html";
+    customersLink.textContent = "Customers";
+    customersLink.style.textDecoration = "none";
+    customersLink.style.padding = "11px 15px";
+    customersLink.style.borderRadius = "12px";
+    customersLink.style.fontWeight = "900";
+    topActions.insertBefore(customersLink, topActions.firstChild);
+  }
+
   let refreshTimer = 0;
 
   function makeStatusBadge(linked) {
