@@ -13,5 +13,18 @@
       "database_name": "sai-shop-products",
       "database_id": "b9f7a39b-cf52-4a74-b31c-ded8c012d5f9"
     }
-  ]
+  ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  }
 }
