@@ -106,11 +106,16 @@
     if (old) old.remove();
     var notice = document.createElement('div');
     notice.id = 'saiFreeAccessNotice';
-    notice.textContent = message;
+    notice.innerHTML = '<strong style="display:block;font-size:15px;margin-bottom:3px">🔒 Login Required</strong><span>' + message + '</span>';
     notice.setAttribute('role', 'status');
-    notice.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 12px 35px rgba(0,0,0,.22);max-width:90%;text-align:center';
+    notice.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;padding:14px 20px;border-radius:14px;font-weight:600;box-shadow:0 12px 35px rgba(0,0,0,.25);max-width:92%;text-align:center;line-height:1.4';
     document.body.appendChild(notice);
     setTimeout(function () { if (notice.parentNode) notice.remove(); }, 2600);
+  }
+
+  function requireFreeLogin() {
+    showFreeAccessMessage('Please login to unlock and preview this FREE template.');
+    setTimeout(function () { window.location.href = 'account.html'; }, 900);
   }
 
   async function unlockFreeTemplate(productId, button) {
@@ -123,7 +128,7 @@
       var data = await response.json().catch(function () { return {}; });
       if (response.status === 401 || data.loginRequired) {
         customerSignedIn = false;
-        window.location.href = 'account.html';
+        requireFreeLogin();
         return;
       }
       if (!response.ok || !data.downloadUrl) throw new Error(data.error || 'Download link is unavailable.');
@@ -140,8 +145,19 @@
 
   function shopFreeAccessCapture(event) {
     if (!isShopPage()) return;
+
     var card = event.target.closest('.shop-product');
     if (card && card.dataset.id) selectedShopProductId = card.dataset.id;
+
+    /* Logged-out visitors cannot open any part of a FREE product card. */
+    if (card && isFreeCard(card) && !customerSignedIn) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+      requireFreeLogin();
+      return;
+    }
+
     var button = event.target.closest('.add-product-btn, #modalAddCart');
     if (!button) return;
     var free = button.id === 'modalAddCart' ? isFreeModalButton(button) : isFreeCard(button.closest('.shop-product'));
@@ -152,8 +168,7 @@
     if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
 
     if (!customerSignedIn) {
-      showFreeAccessMessage('Login to unlock this free template.');
-      setTimeout(function () { window.location.href = 'account.html'; }, 350);
+      requireFreeLogin();
       return;
     }
 
@@ -164,7 +179,7 @@
 
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
-  loadStyle("sai-10-10.css?v=20260914-4");
+  loadStyle("sai-10-10.css?v=20260914-5");
   loadScript("global-animations-core.js");
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
