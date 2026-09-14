@@ -100,27 +100,46 @@ async function addMissingColumns(env, table, definitions) {
 
 async function ensureCustomerTables(env) {
   await env.DB.prepare(customerSchema).run();
+
+  /*
+   * SQLite/D1 does not allow ALTER TABLE ADD COLUMN with a non-constant
+   * DEFAULT such as CURRENT_TIMESTAMP. Older auth tables can therefore fail
+   * if we try to add created_at/updated_at with that default. Add compatible
+   * nullable columns first, then backfill them below.
+   */
   await addMissingColumns(env, "customers", {
-    name: "TEXT NOT NULL DEFAULT 'Customer'",
+    name: "TEXT",
     email: "TEXT",
     phone: "TEXT",
     password_hash: "TEXT",
     password_salt: "TEXT",
-    auth_provider: "TEXT NOT NULL DEFAULT 'email'",
-    email_verified: "INTEGER NOT NULL DEFAULT 0",
-    phone_verified: "INTEGER NOT NULL DEFAULT 0",
-    active: "INTEGER NOT NULL DEFAULT 1",
-    created_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
-    updated_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    auth_provider: "TEXT",
+    email_verified: "INTEGER",
+    phone_verified: "INTEGER",
+    active: "INTEGER",
+    created_at: "TEXT",
+    updated_at: "TEXT",
     last_login_at: "TEXT"
   });
+
+  await env.DB.prepare(`
+    UPDATE customers SET
+      name = COALESCE(NULLIF(TRIM(name), ''), 'Customer'),
+      auth_provider = COALESCE(NULLIF(TRIM(auth_provider), ''), 'email'),
+      email_verified = COALESCE(email_verified, 0),
+      phone_verified = COALESCE(phone_verified, 0),
+      active = COALESCE(active, 1),
+      created_at = COALESCE(created_at, CURRENT_TIMESTAMP),
+      updated_at = COALESCE(updated_at, CURRENT_TIMESTAMP)
+  `).run();
 
   await env.DB.prepare(customerSessionSchema).run();
   await addMissingColumns(env, "customer_sessions", {
     customer_id: "TEXT",
-    created_at: "TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP",
+    created_at: "TEXT",
     expires_at: "TEXT"
   });
+  await env.DB.prepare("UPDATE customer_sessions SET created_at = COALESCE(created_at, CURRENT_TIMESTAMP)").run();
 
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_customer_sessions_customer ON customer_sessions(customer_id)").run();
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email)").run();
