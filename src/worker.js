@@ -193,20 +193,6 @@ async function freeDownload(request, env) {
   return json({ success: true, id: product.id, name: product.name, downloadUrl: product.download_url });
 }
 
-async function publicProductsWithoutDownloads(request, env, ctx) {
-  const response = await baseWorker.fetch(request, env, ctx);
-  if (!response.ok) return response;
-  try {
-    const data = await response.clone().json();
-    if (Array.isArray(data.products)) {
-      data.products = data.products.map((product) => ({ ...product, downloadUrl: "" }));
-    }
-    return json(data, response.status);
-  } catch {
-    return response;
-  }
-}
-
 async function startGoogle(request, env) {
   if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) return new Response("Google login is not configured yet.", { status: 503 });
   const state = randomToken(24);
@@ -278,7 +264,6 @@ export default {
       if (url.pathname === "/api/auth/google/callback" && request.method === "GET") return await finishGoogle(request, env);
       if (url.pathname === "/api/auth/phone/save" && request.method === "POST") return await savePhone(request, env);
       if (url.pathname === "/api/free-download" && request.method === "GET") return await freeDownload(request, env);
-      if (url.pathname === "/api/products" && request.method === "GET") return await publicProductsWithoutDownloads(request, env, ctx);
     } catch (error) {
       console.error("Account extension error:", error);
       if (url.pathname.startsWith("/api/auth/google/")) return accountError(request, "server");
