@@ -223,7 +223,7 @@ async function signup(request, env) {
 
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
-  const passwordHash = `pbkdf2-sha256${PASSWORD_HASH_ITERATIONS}${await derivePasswordHash(password, salt)}`;
+  const passwordHash = `pbkdf2-sha256$${PASSWORD_HASH_ITERATIONS}$${await derivePasswordHash(password, salt)}`;
   const id = crypto.randomUUID();
 
   await env.DB.prepare(`
@@ -478,7 +478,7 @@ async function resetPassword(request, env) {
 
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
-  const passwordHash = `pbkdf2-sha256${PASSWORD_HASH_ITERATIONS}${await derivePasswordHash(password, salt)}`;
+  const passwordHash = `pbkdf2-sha256$${PASSWORD_HASH_ITERATIONS}$${await derivePasswordHash(password, salt)}`;
 
   await env.DB.batch([
     env.DB.prepare(`
