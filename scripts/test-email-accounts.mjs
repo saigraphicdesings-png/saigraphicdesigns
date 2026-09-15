@@ -20,7 +20,8 @@ const mf = new Miniflare({
   // Stable v4 emulator date; production retains its configured date.
   compatibilityDate: "2026-08-06",
   compatibilityFlags: ["nodejs_compat"],
-  d1Databases: ["DB"]
+  d1Databases: ["DB"],
+  bindings: { ADMIN_TOKEN: "test-admin" }
 });
 try {
   const input = { name: "Account Test", email: "account-test@example.invalid", password: "Test-only-password-9!", termsAccepted: true };
@@ -31,6 +32,14 @@ try {
   assert.equal(signup.status, 201, await signup.clone().text());
   const db = await mf.getD1Database("DB");
   const row = await db.prepare("SELECT * FROM customer_accounts WHERE email = ?").bind(input.email).first();
+  const adminReset = await mf.dispatchFetch("https://test.local/api/admin/customers/" + row.id + "/reset-link", {
+    method: "POST", headers: { Authorization: "Bearer test-admin" }
+  });
+  assert.equal(adminReset.status, 200, await adminReset.clone().text());
+  const adminResetBody = await adminReset.json();
+  assert.match(adminResetBody.resetUrl, /^https:\/\/test\.local\/reset-password\.html\?token=/);
+  const noAdminReset = await mf.dispatchFetch("https://test.local/api/admin/customers/" + row.id + "/reset-link", { method: "POST" });
+  assert.equal(noAdminReset.status, 401);
   const expectedHash = pbkdf2Sync(input.password, Buffer.from(row.password_salt, "base64"), 100000, 32, "sha256").toString("base64");
   assert.equal(row.password_hash, "pbkdf2-sha256$100000$" + expectedHash);
   assert.notEqual(row.password_hash, input.password);

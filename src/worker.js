@@ -548,6 +548,45 @@ async function savePhone(request, env) {
   return json({ success: true, user: publicCustomer(updated), message: "Mobile number saved." });
 }
 
+function isAdminAuthorized(request, env) {
+  const expected = String(env.ADMIN_TOKEN || "");
+  const authorization = request.headers.get("authorization") || "";
+  const supplied = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  if (!expected || supplied.length !== expected.length) return false;
+  let difference = 0;
+  for (let index = 0; index < expected.length; index += 1) {
+    difference |= supplied.charCodeAt(index) ^ expected.charCodeAt(index);
+  }
+  return difference === 0;
+}
+
+async function createAdminResetLink(request, env, url) {
+  if (!isAdminAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+  const id = decodeURIComponent(url.pathname.slice("/api/admin/customers/".length, -"/reset-link".length)).trim();
+  if (!/^[A-Za-z0-9-]{20,}$/.test(id)) return json({ error: "Invalid customer." }, 400);
+
+  await ensureAccountSchema(env);
+  const customer = await env.DB.prepare("SELECT id, name, email FROM customer_accounts WHERE id = ? AND active = 1 LIMIT 1")
+    .bind(id)
+    .first();
+  if (!customer?.email) return json({ error: "Active customer email not found." }, 404);
+
+  const rawToken = randomToken(32);
+  const tokenHash = await hashText(rawToken);
+  await env.DB.batch([
+    env.DB.prepare("UPDATE customer_password_reset_tokens SET used_at = CURRENT_TIMESTAMP WHERE customer_id = ? AND used_at IS NULL")
+      .bind(customer.id),
+    env.DB.prepare(`INSERT INTO customer_password_reset_tokens
+      (token_hash, customer_id, email, expires_at)
+      VALUES (?, ?, ?, datetime('now', '+${RESET_TTL_MINUTES} minutes'))`)
+      .bind(tokenHash, customer.id, customer.email)
+  ]);
+
+  const resetUrl = new URL("/reset-password.html", request.url);
+  resetUrl.searchParams.set("token", rawToken);
+  return json({ success: true, email: customer.email, resetUrl: resetUrl.toString(), expiresInMinutes: RESET_TTL_MINUTES });
+}
+
 async function freeDownload(request, env) {
   await ensureAccountSchema(env);
   const customer = await getSessionCustomer(request, env);
@@ -688,6 +727,7 @@ export default {
       if (url.pathname === "/api/auth/google/start" && request.method === "GET") return await startGoogle(request, env);
       if (url.pathname === "/api/auth/google/callback" && request.method === "GET") return await finishGoogle(request, env);
       if (url.pathname === "/api/auth/phone/save" && request.method === "POST") return await savePhone(request, env);
+      if (url.pathname.startsWith("/api/admin/customers/") && url.pathname.endsWith("/reset-link") && request.method === "POST") return await createAdminResetLink(request, env, url);
       if (url.pathname === "/api/free-download" && request.method === "GET") return await freeDownload(request, env);
     } catch (error) {
       console.error("Customer account error:", error);
