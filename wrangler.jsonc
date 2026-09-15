@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "saigraphicdesigns",
   "compatibility_date": "2026-09-08",
-  "main": "src/analytics-worker.js",
+  "main": "src/payment-worker.js",
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
