@@ -35,23 +35,6 @@
   }
   twitterImage.setAttribute("content", HERO_IMAGE);
 
-  /* Use the real homepage hero image in the visible hero section. */
-  const heroImage = document.querySelector(".hero-img");
-  if (heroImage) {
-    heroImage.src = "Images/Hero image.png";
-    heroImage.alt = "Sai Graphic Designs - designing and printing agency with template shop";
-  }
-
-  const heroBadge = document.querySelector(".hero-badge");
-  if (heroBadge) {
-    heroBadge.textContent = "Designing & Printing Agency • Template Shop";
-  }
-
-  const heroDescription = document.querySelector(".hero-desc");
-  if (heroDescription) {
-    heroDescription.textContent = "Creative design, professional printing and ready-to-use templates for businesses, brands and individuals — all from Sai Graphic Designs.";
-  }
-
   const oldSchemas = document.querySelectorAll('script[type="application/ld+json"]');
   oldSchemas.forEach(function (node) { node.remove(); });
 
