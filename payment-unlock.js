@@ -147,7 +147,8 @@
   function refreshCheckoutLabel(){
     var button=document.getElementById('cartCheckout');if(!button)return;
     if(!button.dataset.saiOriginalText)button.dataset.saiOriginalText=button.textContent.trim()||'Checkout';
-    button.textContent=paidShopItems().length?'Pay Cart by GPay / UPI':button.dataset.saiOriginalText;
+    var desired=paidShopItems().length?'Pay Cart by GPay / UPI':button.dataset.saiOriginalText;
+    if(button.textContent.trim()!==desired)button.textContent=desired;
   }
 
   document.addEventListener('click',function(event){
