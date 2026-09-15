@@ -4,28 +4,45 @@
   if (location.pathname !== "/" && !location.pathname.endsWith("/index.html")) return;
 
   const SITE_URL = "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/";
-  const HERO_IMAGE = SITE_URL + "Images/Hero%20image.png";
+  // Keep SEO/social metadata aligned with the existing homepage visual asset.
+  // This does not change the visible hero image or layout.
+  const HERO_IMAGE = SITE_URL + "Images/logo.png";
   const LOGO_IMAGE = SITE_URL + "Images/logo.png";
+  const PAGE_TITLE = "Sai Graphic Designs | Designing & Printing Agency in Madurai";
+  const PAGE_DESCRIPTION = "Sai Graphic Designs is a designing and printing agency in Madurai offering logo design, branding, social media creatives, packaging, print services and ready-to-use design templates for businesses and individuals.";
 
-  /* =========================================
-     HOMEPAGE POSITIONING
-     Designing + Printing Agency + Template Shop
-  ========================================== */
-  document.title = "Sai Graphic Designs | Designing, Printing Agency & Template Shop";
+  document.title = PAGE_TITLE;
 
   function setMeta(selector, attribute, value) {
     const node = document.querySelector(selector);
     if (node) node.setAttribute(attribute, value);
   }
 
-  setMeta('meta[name="description"]', "content", "Sai Graphic Designs is a professional designing and printing agency with a template shop, offering branding, logo design, social media creatives, packaging, print materials and ready-to-use design templates.");
-  setMeta('meta[name="keywords"]', "content", "Sai Graphic Designs, designing agency, printing agency, template shop, graphic design templates, printing services, logo design, branding, social media design, packaging design, Madurai graphic design");
-  setMeta('meta[property="og:title"]', "content", "Sai Graphic Designs | Designing, Printing Agency & Template Shop");
-  setMeta('meta[property="og:description"]', "content", "Professional designing and printing agency with a template shop for branding, marketing, packaging, print materials and ready-to-use design templates.");
+  // Core search metadata.
+  setMeta('meta[name="description"]', "content", PAGE_DESCRIPTION);
+  setMeta('meta[name="robots"]', "content", "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1");
+
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute("href", SITE_URL);
+
+  // Open Graph / social entity signals.
+  setMeta('meta[property="og:type"]', "content", "website");
+  setMeta('meta[property="og:title"]', "content", PAGE_TITLE);
+  setMeta('meta[property="og:description"]', "content", PAGE_DESCRIPTION);
+  setMeta('meta[property="og:url"]', "content", SITE_URL);
   setMeta('meta[property="og:image"]', "content", HERO_IMAGE);
-  setMeta('meta[property="og:image:alt"]', "content", "Sai Graphic Designs homepage hero image - designing, printing and template shop");
-  setMeta('meta[name="twitter:title"]', "content", "Sai Graphic Designs | Designing, Printing Agency & Template Shop");
-  setMeta('meta[name="twitter:description"]', "content", "Professional designing and printing agency with a template shop for branding, marketing, packaging, print materials and ready-to-use design templates.");
+  setMeta('meta[property="og:image:alt"]', "content", "Sai Graphic Designs logo - designing and printing agency in Madurai");
+  setMeta('meta[property="og:site_name"]', "content", "Sai Graphic Designs");
+  setMeta('meta[property="og:locale"]', "content", "en_IN");
+
+  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+  setMeta('meta[name="twitter:title"]', "content", PAGE_TITLE);
+  setMeta('meta[name="twitter:description"]', "content", PAGE_DESCRIPTION);
 
   let twitterImage = document.querySelector('meta[name="twitter:image"]');
   if (!twitterImage) {
@@ -35,6 +52,15 @@
   }
   twitterImage.setAttribute("content", HERO_IMAGE);
 
+  let twitterImageAlt = document.querySelector('meta[name="twitter:image:alt"]');
+  if (!twitterImageAlt) {
+    twitterImageAlt = document.createElement("meta");
+    twitterImageAlt.setAttribute("name", "twitter:image:alt");
+    document.head.appendChild(twitterImageAlt);
+  }
+  twitterImageAlt.setAttribute("content", "Sai Graphic Designs logo - designing and printing agency in Madurai");
+
+  // Replace legacy/duplicate JSON-LD with one authoritative entity graph.
   const oldSchemas = document.querySelectorAll('script[type="application/ld+json"]');
   oldSchemas.forEach(function (node) { node.remove(); });
 
@@ -81,7 +107,7 @@
         "@type": "WebSite",
         "@id": SITE_URL + "#website",
         "url": SITE_URL,
-        "name": "Sai Graphic Designs | Designing, Printing Agency & Template Shop",
+        "name": "Sai Graphic Designs | Designing & Printing Agency in Madurai",
         "publisher": {"@id": SITE_URL + "#business"},
         "inLanguage": "en-IN"
       },
@@ -89,11 +115,12 @@
         "@type": "WebPage",
         "@id": SITE_URL + "#webpage",
         "url": SITE_URL,
-        "name": "Sai Graphic Designs | Designing, Printing Agency & Template Shop",
+        "name": PAGE_TITLE,
+        "description": PAGE_DESCRIPTION,
         "primaryImageOfPage": {
           "@type": "ImageObject",
           "url": HERO_IMAGE,
-          "caption": "Sai Graphic Designs - designing, printing agency and template shop"
+          "caption": "Sai Graphic Designs - designing and printing agency in Madurai"
         },
         "isPartOf": {"@id": SITE_URL + "#website"},
         "about": {"@id": SITE_URL + "#business"},
@@ -130,6 +157,4 @@
   document.head.appendChild(script);
 
   document.documentElement.lang = "en-IN";
-  const robots = document.querySelector('meta[name="robots"]');
-  if (robots) robots.content = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
 })();
