@@ -20,7 +20,15 @@
   }
 
   function accountLinks() {
-    return Array.prototype.slice.call(document.querySelectorAll('.sai-account-link, .sai-account-action, a[href="account.html"], a[href="/account"]'));
+    return Array.prototype.slice.call(document.querySelectorAll('.sai-account-action'));
+  }
+
+  function removeNavAccountLinks() {
+    var nav = document.querySelector('.main-nav');
+    if (!nav) return;
+    nav.querySelectorAll('.sai-account-link, a[href="account.html"], a[href="/account"]').forEach(function (link) {
+      link.remove();
+    });
   }
 
   function setAccountState(signedIn) {
@@ -32,14 +40,12 @@
         link.dataset.saiLogout = 'true';
         var label = link.querySelector('.sai-account-label');
         if (label && label.textContent !== 'Logout') label.textContent = 'Logout';
-        else if (!label && link.textContent !== 'Logout') link.textContent = 'Logout';
       } else {
         link.href = '/account';
         link.setAttribute('aria-label', 'Login or open My Account');
         delete link.dataset.saiLogout;
         var label = link.querySelector('.sai-account-label');
         if (label && label.textContent !== 'Login') label.textContent = 'Login';
-        else if (!label && link.classList.contains('sai-account-link') && link.textContent !== 'My Account') link.textContent = 'My Account';
       }
     });
   }
@@ -67,21 +73,15 @@
   }
 
   function addAccountLink() {
-    var nav = document.querySelector('.main-nav');
-    if (nav && !nav.querySelector('a[href="account.html"], a[href="/account"], .sai-account-link')) {
-      var navAccount = document.createElement('a');
-      navAccount.href = '/account';
-      navAccount.className = 'nav-link sai-account-link';
-      navAccount.textContent = 'My Account';
-      nav.appendChild(navAccount);
-    }
+    removeNavAccountLinks();
+
     var actions = document.querySelector('.nav-actions');
     if (actions && !actions.querySelector('.sai-account-action')) {
       var account = document.createElement('a');
       account.href = '/account';
       account.className = 'sai-account-action';
       account.setAttribute('aria-label', 'Login or open My Account');
-      account.innerHTML = '<span aria-hidden="true">👤</span><span class="sai-account-label">Login</span>';
+      account.innerHTML = '<span class="sai-account-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 20c.9-4 3.4-6 7.5-6s6.6 2 7.5 6"></path></svg></span><span class="sai-account-label">Login</span>';
       actions.insertBefore(account, actions.firstChild);
     }
     refreshAccountState();
@@ -179,7 +179,7 @@
 
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
-  loadStyle("sai-10-10.css?v=20260914-5");
+  loadStyle("sai-10-10.css?v=20260915-6");
   loadScript("global-animations-core.js");
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
