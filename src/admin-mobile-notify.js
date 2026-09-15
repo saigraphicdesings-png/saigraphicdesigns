@@ -17,6 +17,50 @@ function telegramSettings(env) {
   return { token, chatId, configured };
 }
 
+function base64Url(bytes) {
+  let binary = "";
+  for (const byte of new Uint8Array(bytes)) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+async function signAction(secret, value) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
+  return base64Url(signature);
+}
+
+async function buildActionUrls(env, details, token) {
+  const utr = clean(details.utr || "", 60);
+  const kind = details.kind === "cart" ? "cart" : "single";
+  if (!utr || !details.adminUrl || !token) return null;
+
+  const expires = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
+  const base = new URL("/telegram-payment-action", details.adminUrl);
+
+  async function make(action) {
+    const payload = `${kind}|${utr}|${action}|${expires}`;
+    const signature = await signAction(token, payload);
+    const url = new URL(base.toString());
+    url.searchParams.set("k", kind);
+    url.searchParams.set("u", utr);
+    url.searchParams.set("a", action);
+    url.searchParams.set("e", String(expires));
+    url.searchParams.set("s", signature);
+    return url.toString();
+  }
+
+  return {
+    approveUrl: await make("approve"),
+    rejectUrl: await make("reject")
+  };
+}
+
 export async function notifyPendingPayment(env, details = {}) {
   const settings = telegramSettings(env);
   if (!settings.configured) return { sent: false, reason: "not_configured" };
@@ -41,17 +85,26 @@ export async function notifyPendingPayment(env, details = {}) {
   if (itemLines.length) lines.push("", "Products:", ...itemLines);
   if (details.adminUrl) lines.push("", "Payment Admin:", String(details.adminUrl));
 
+  let actionUrls = null;
+  try {
+    actionUrls = details.approveUrl && details.rejectUrl
+      ? { approveUrl: String(details.approveUrl), rejectUrl: String(details.rejectUrl) }
+      : await buildActionUrls(env, details, settings.token);
+  } catch (error) {
+    console.error("Unable to build Telegram action buttons:", error);
+  }
+
   const payload = {
     chat_id: settings.chatId,
     text: lines.join("\n"),
     disable_web_page_preview: true
   };
 
-  if (details.approveUrl && details.rejectUrl) {
+  if (actionUrls?.approveUrl && actionUrls?.rejectUrl) {
     payload.reply_markup = {
       inline_keyboard: [
-        [{ text: "✅ Approve & Unlock", url: String(details.approveUrl) }],
-        [{ text: "❌ Reject", url: String(details.rejectUrl) }]
+        [{ text: "✅ Approve & Unlock", url: actionUrls.approveUrl }],
+        [{ text: "❌ Reject", url: actionUrls.rejectUrl }]
       ]
     };
   }
