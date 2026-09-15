@@ -1,0 +1,21 @@
+/* Lightweight shop/cart performance overrides. */
+.cart-overlay{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  will-change:opacity;
+}
+.cart-drawer{
+  will-change:transform;
+  contain:layout paint style;
+}
+.shop-product{
+  contain:layout paint;
+}
+body.cart-open .shop-product,
+body.cart-open .sai-reveal{
+  animation:none!important;
+  transition:none!important;
+}
+@media (max-width:768px){
+  .cart-drawer{box-shadow:-8px 0 24px rgba(0,0,0,.14)!important;}
+}
