@@ -149,7 +149,6 @@
     var card = event.target.closest('.shop-product');
     if (card && card.dataset.id) selectedShopProductId = card.dataset.id;
 
-    /* Logged-out visitors cannot open any part of a FREE product card. */
     if (card && isFreeCard(card) && !customerSignedIn) {
       event.preventDefault();
       event.stopPropagation();
@@ -180,13 +179,13 @@
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
   loadStyle("sai-10-10.css?v=20260915-6");
-  loadScript("global-animations-core.js");
+  loadScript("global-animations-core.js?v=20260915-2");
 
   if (isShopPage()) {
     loadStyle("payment-unlock.css?v=20260915-3");
     loadStyle("dynamic-upi-qr.css?v=20260915-1");
-    loadScript("payment-unlock.js?v=20260915-2");
-    loadScript("dynamic-upi-qr.js?v=20260915-1");
+    loadStyle("shop-performance.css?v=20260915-1");
+    loadScript("payment-unlock.js?v=20260915-4");
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
