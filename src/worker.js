@@ -90,7 +90,7 @@ function redirect(location, cookies = []) {
 }
 
 function accountError(request, code) {
-  const url = new URL("/account.html", request.url);
+  const url = new URL("/account", request.url);
   url.searchParams.set("google", "error");
   url.searchParams.set("reason", code);
   return redirect(url.toString(), [clearOauthStateCookie()]);
@@ -707,7 +707,7 @@ async function finishGoogle(request, env) {
   }
 
   const session = await createSession(env, customerId);
-  const accountUrl = new URL("/account.html", request.url);
+  const accountUrl = new URL("/account", request.url);
   accountUrl.searchParams.set("google", "success");
 
   return redirect(accountUrl.toString(), [sessionCookie(session), clearOauthStateCookie()]);
