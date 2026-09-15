@@ -182,6 +182,11 @@
   loadStyle("sai-10-10.css?v=20260915-6");
   loadScript("global-animations-core.js");
 
+  if (isShopPage()) {
+    loadStyle("payment-unlock.css?v=20260915-1");
+    loadScript("payment-unlock.js?v=20260915-1");
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
   else addAccountLink();
 
