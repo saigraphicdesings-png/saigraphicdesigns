@@ -1,4 +1,5 @@
 import baseWorker from "./cart-payment-worker.js";
+import { notifyPendingPayment } from "./admin-mobile-notify.js";
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -257,6 +258,65 @@ async function adminEarnings(request, env, url) {
   });
 }
 
+async function sendPendingPaymentNotification(env, requestUrl, kind, id) {
+  if (!env.DB || !id) return;
+  const adminUrl = new URL("/admin-payments.html", requestUrl).toString();
+
+  if (kind === "single") {
+    const row = await env.DB.prepare(`
+      SELECT pr.amount, pr.utr, pr.product_name,
+             c.name AS customer_name
+      FROM payment_requests pr
+      LEFT JOIN customer_accounts c ON c.id = pr.customer_id
+      WHERE pr.id = ? AND pr.status = 'pending'
+      LIMIT 1
+    `).bind(id).first();
+    if (!row) return;
+
+    await notifyPendingPayment(env, {
+      kind: "single",
+      amount: Number(row.amount) || 0,
+      utr: row.utr || "",
+      customerName: row.customer_name || "Customer",
+      items: [{ name: row.product_name || "Product", qty: 1 }],
+      adminUrl
+    });
+    return;
+  }
+
+  const order = await env.DB.prepare(`
+    SELECT o.amount, o.utr, c.name AS customer_name
+    FROM cart_payment_orders o
+    LEFT JOIN customer_accounts c ON c.id = o.customer_id
+    WHERE o.id = ? AND o.status = 'pending'
+    LIMIT 1
+  `).bind(id).first();
+  if (!order) return;
+
+  const items = await env.DB.prepare(`
+    SELECT product_name, qty
+    FROM cart_payment_order_items
+    WHERE order_id = ?
+    ORDER BY product_name
+  `).bind(id).all();
+
+  await notifyPendingPayment(env, {
+    kind: "cart",
+    amount: Number(order.amount) || 0,
+    utr: order.utr || "",
+    customerName: order.customer_name || "Customer",
+    items: (items.results || []).map((item) => ({ name: item.product_name, qty: Number(item.qty) || 1 })),
+    adminUrl
+  });
+}
+
+function queueCreatedPaymentNotification(ctx, env, requestUrl, kind, id) {
+  const task = sendPendingPaymentNotification(env, requestUrl, kind, id).catch((error) => {
+    console.error("Pending payment mobile notification error:", error);
+  });
+  if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(task);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -268,6 +328,21 @@ export default {
         return json({ error: error.message || "Unable to load earnings." }, 500);
       }
     }
-    return baseWorker.fetch(request, env, ctx);
+
+    const isSinglePayment = url.pathname === "/api/payment/request" && request.method === "POST";
+    const isCartPayment = url.pathname === "/api/payment/cart-request" && request.method === "POST";
+    const response = await baseWorker.fetch(request, env, ctx);
+
+    if ((isSinglePayment || isCartPayment) && response.status === 201) {
+      try {
+        const data = await response.clone().json();
+        const id = isCartPayment ? data.orderId : data.requestId;
+        if (id) queueCreatedPaymentNotification(ctx, env, request.url, isCartPayment ? "cart" : "single", id);
+      } catch (error) {
+        console.error("Unable to queue pending payment notification:", error);
+      }
+    }
+
+    return response;
   }
 };
