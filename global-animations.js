@@ -20,7 +20,7 @@
   }
 
   function accountLinks() {
-    return Array.prototype.slice.call(document.querySelectorAll('.sai-account-link, .sai-account-action, a[href="account.html"]'));
+    return Array.prototype.slice.call(document.querySelectorAll('.sai-account-link, .sai-account-action, a[href="account.html"], a[href="/account"]'));
   }
 
   function setAccountState(signedIn) {
@@ -34,7 +34,7 @@
         if (label && label.textContent !== 'Logout') label.textContent = 'Logout';
         else if (!label && link.textContent !== 'Logout') link.textContent = 'Logout';
       } else {
-        link.href = 'account.html';
+        link.href = '/account';
         link.setAttribute('aria-label', 'Login or open My Account');
         delete link.dataset.saiLogout;
         var label = link.querySelector('.sai-account-label');
@@ -63,14 +63,14 @@
     try {
       await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } });
     } catch (error) {}
-    window.location.href = 'account.html';
+    window.location.href = '/account';
   }
 
   function addAccountLink() {
     var nav = document.querySelector('.main-nav');
-    if (nav && !nav.querySelector('a[href="account.html"], .sai-account-link')) {
+    if (nav && !nav.querySelector('a[href="account.html"], a[href="/account"], .sai-account-link')) {
       var navAccount = document.createElement('a');
-      navAccount.href = 'account.html';
+      navAccount.href = '/account';
       navAccount.className = 'nav-link sai-account-link';
       navAccount.textContent = 'My Account';
       nav.appendChild(navAccount);
@@ -78,7 +78,7 @@
     var actions = document.querySelector('.nav-actions');
     if (actions && !actions.querySelector('.sai-account-action')) {
       var account = document.createElement('a');
-      account.href = 'account.html';
+      account.href = '/account';
       account.className = 'sai-account-action';
       account.setAttribute('aria-label', 'Login or open My Account');
       account.innerHTML = '<span aria-hidden="true">👤</span><span class="sai-account-label">Login</span>';
@@ -115,7 +115,7 @@
 
   function requireFreeLogin() {
     showFreeAccessMessage('Please login to unlock and preview this FREE template.');
-    setTimeout(function () { window.location.href = 'account.html'; }, 900);
+    setTimeout(function () { window.location.href = '/account'; }, 900);
   }
 
   async function unlockFreeTemplate(productId, button) {
