@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Notification Test | Sai Graphic Designs</title>
+<link rel="icon" href="Images/favicon.png">
+<link rel="stylesheet" href="admin.css">
+<style>
+body{min-height:100vh;background:linear-gradient(145deg,#f4fff9,#f8fafc);color:#0f172a}.notify-shell{max-width:620px;margin:70px auto;padding:22px}.notify-card{background:rgba(255,255,255,.94);border:1px solid #dbe7e1;border-radius:26px;padding:28px;box-shadow:0 24px 70px rgba(15,23,42,.10)}.notify-icon{display:grid;width:64px;height:64px;place-items:center;border-radius:20px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:28px;box-shadow:0 14px 34px rgba(16,185,129,.24)}.notify-card h1{margin:18px 0 8px;font-size:26px}.notify-card p{margin:0;color:#64748b;line-height:1.6}.notify-form{display:grid;gap:12px;margin-top:22px}.notify-form label{font-size:12px;font-weight:900;color:#334155}.notify-form input{width:100%;min-height:48px;border:1px solid #d8e1dd;border-radius:14px;padding:0 14px;font:inherit;outline:0}.notify-form input:focus{border-color:#10b981;box-shadow:0 0 0 4px rgba(16,185,129,.12)}.notify-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.notify-btn,.notify-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border-radius:14px;padding:0 18px;font:inherit;font-weight:900;text-decoration:none;cursor:pointer}.notify-btn{border:0;background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 12px 26px rgba(16,185,129,.22)}.notify-link{border:1px solid #dbe3df;background:#fff;color:#334155}.notify-status{margin-top:16px;min-height:22px;font-size:13px;font-weight:850}.notify-status.ok{color:#047857}.notify-status.err{color:#b91c1c}.notify-note{margin-top:18px!important;padding:12px 14px;border-radius:14px;background:#f8fafc;color:#475569!important;font-size:12px}.notify-btn[disabled]{opacity:.65;cursor:wait}
+</style>
+</head>
+<body>
+<header class="admin-header"><a class="brand" href="index.html"><span>SG</span> Sai Graphic Designs</a><a class="shop-link" href="admin-payments.html">← Payment Admin</a></header>
+<main class="notify-shell">
+<section class="notify-card">
+<div class="notify-icon">🔔</div>
+<p class="eyebrow" style="margin-top:16px">MOBILE ALERT TEST</p>
+<h1>Test Telegram Notification</h1>
+<p>This sends a safe ₹99 sample payment alert to your Telegram bot. It does not create a real payment or change earnings.</p>
+<form class="notify-form" id="notifyTestForm">
+<label for="notifyAdminToken">Admin Token</label>
+<input id="notifyAdminToken" type="password" autocomplete="current-password" placeholder="Same admin token used for Payment Admin">
+<div class="notify-actions"><button class="notify-btn" id="notifyTestButton" type="submit">Send Test Notification</button><a class="notify-link" href="admin-payments.html">Payment Admin</a></div>
+<p class="notify-status" id="notifyStatus" role="status"></p>
+</form>
+<p class="notify-note">If you are already logged into Payment Admin in this browser, the saved admin token will be used automatically.</p>
+</section>
+</main>
+<script>
+(function(){
+  'use strict';
+  var KEY='saiShopAdminToken';
+  var form=document.getElementById('notifyTestForm');
+  var input=document.getElementById('notifyAdminToken');
+  var button=document.getElementById('notifyTestButton');
+  var status=document.getElementById('notifyStatus');
+  var saved=sessionStorage.getItem(KEY)||'';
+  if(saved) input.value=saved;
+  form.addEventListener('submit',async function(event){
+    event.preventDefault();
+    var token=(input.value||'').trim();
+    if(!token){status.textContent='Enter your admin token first.';status.className='notify-status err';return;}
+    sessionStorage.setItem(KEY,token);
+    button.disabled=true;button.textContent='Sending…';status.textContent='Contacting Telegram…';status.className='notify-status';
+    try{
+      var response=await fetch('/api/admin/test-payment-notification',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},cache:'no-store'});
+      var data={};try{data=await response.json();}catch(_){ }
+      if(!response.ok)throw new Error(data.error||'Unable to send test notification.');
+      status.textContent='✓ Test notification sent. Check Telegram on your phone.';status.className='notify-status ok';
+    }catch(error){status.textContent=error.message||'Unable to send test notification.';status.className='notify-status err';}
+    finally{button.disabled=false;button.textContent='Send Test Notification';}
+  });
+})();
+</script>
+</body>
+</html>
