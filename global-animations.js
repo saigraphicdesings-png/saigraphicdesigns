@@ -187,7 +187,7 @@
     loadStyle("dynamic-upi-qr.css?v=20260915-1");
     loadStyle("shop-performance.css?v=20260915-1");
     loadScript("payment-unlock.js?v=20260915-4");
-    loadScript("payment-proof-upload.js?v=20260915-1");
+    loadScript("payment-proof-upload.js?v=20260915-2");
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
