@@ -1,5 +1,9 @@
 import baseWorker from "./notification-test-worker.js";
 import { telegramWebhookSecret } from "./admin-mobile-notify.js";
+import {
+  handleCustomerNotifications,
+  recordCustomerPaymentReviewNotification
+} from "./customer-notifications.js";
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -53,6 +57,8 @@ async function reviewSingle(env, utr, action) {
   if (row.status !== "pending") {
     return {
       status: row.status,
+      paymentId: row.id,
+      kind: "single",
       message: row.status === "approved" ? "Payment is already approved and unlocked." : "Payment is already rejected."
     };
   }
@@ -75,15 +81,19 @@ async function reviewSingle(env, utr, action) {
     `).bind(row.customer_id, row.product_id, row.id).run();
   }
 
+  await recordCustomerPaymentReviewNotification(env, "single", row.id, nextStatus);
+
   return {
     status: nextStatus,
+    paymentId: row.id,
+    kind: "single",
     message: nextStatus === "approved" ? "Payment approved. Drive file unlocked." : "Payment rejected."
   };
 }
 
 async function reviewCart(env, utr, action) {
   const row = await env.DB.prepare(`
-    SELECT id, status
+    SELECT id, customer_id, status
     FROM cart_payment_orders
     WHERE utr = ?
     LIMIT 1
@@ -93,6 +103,8 @@ async function reviewCart(env, utr, action) {
   if (row.status !== "pending") {
     return {
       status: row.status,
+      paymentId: row.id,
+      kind: "cart",
       message: row.status === "approved" ? "Cart payment is already approved and unlocked." : "Cart payment is already rejected."
     };
   }
@@ -105,8 +117,12 @@ async function reviewCart(env, utr, action) {
     WHERE id = ? AND status = 'pending'
   `).bind(nextStatus, action === "approve" ? "Approved from Telegram." : "Rejected from Telegram.", row.id).run();
 
+  await recordCustomerPaymentReviewNotification(env, "cart", row.id, nextStatus);
+
   return {
     status: nextStatus,
+    paymentId: row.id,
+    kind: "cart",
     message: nextStatus === "approved" ? "Cart payment approved. Purchased files unlocked." : "Cart payment rejected."
   };
 }
@@ -180,12 +196,38 @@ async function handleTelegramWebhook(request, env) {
   return json({ ok: true });
 }
 
+function parseAdminReview(pathname) {
+  let match = /^\/api\/admin\/payment-requests\/([^/]+)\/(approve|reject)$/.exec(pathname);
+  if (match) return { kind: "single", id: decodeURIComponent(match[1]), status: match[2] === "approve" ? "approved" : "rejected" };
+  match = /^\/api\/admin\/cart-payment-orders\/([^/]+)\/(approve|reject)$/.exec(pathname);
+  if (match) return { kind: "cart", id: decodeURIComponent(match[1]), status: match[2] === "approve" ? "approved" : "rejected" };
+  return null;
+}
+
+function queueAdminCustomerNotification(ctx, env, review) {
+  if (!review) return;
+  const task = recordCustomerPaymentReviewNotification(env, review.kind, review.id, review.status).catch((error) => {
+    console.error("Customer payment notification error:", error);
+  });
+  if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(task);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
     if (url.pathname === "/telegram-bot-webhook" && request.method === "POST") {
       return handleTelegramWebhook(request, env);
     }
-    return baseWorker.fetch(request, env, ctx);
+
+    if (url.pathname === "/api/customer/notifications" && (request.method === "GET" || request.method === "POST")) {
+      return handleCustomerNotifications(request, env, url);
+    }
+
+    const adminReview = request.method === "POST" ? parseAdminReview(url.pathname) : null;
+    const response = await baseWorker.fetch(request, env, ctx);
+
+    if (adminReview && response.ok) queueAdminCustomerNotification(ctx, env, adminReview);
+    return response;
   }
 };
