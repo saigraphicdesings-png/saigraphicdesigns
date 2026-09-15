@@ -4,6 +4,7 @@
   if(!location.pathname.endsWith('/shop') && !location.pathname.endsWith('/shop.html')) return;
 
   var observer=null;
+  var overlayObserver=null;
   var previewUrl='';
 
   function money(value){return '₹'+(Number(value)||0).toLocaleString('en-IN',{maximumFractionDigits:2});}
@@ -16,12 +17,9 @@
     document.head.appendChild(style);
   }
 
-  function prepareProofUi(){
-    var form=document.getElementById('saiPayForm');
-    if(!form || form.dataset.saiProofReady==='1')return;
-    injectStyles();
-    form.dataset.saiProofReady='1';
-    form.innerHTML=''+
+  function proofFormHtml(){
+    return ''+
+      '<input id="saiPayUtr" type="hidden" value="">'+
       '<div class="sai-proof-drop">'+
         '<strong>Upload Payment Screenshot</strong>'+
         '<small>Upload the completed GPay / PhonePe / Paytm / UPI payment screen. We will automatically detect the UTR and verify the paid amount.</small>'+
@@ -33,13 +31,40 @@
       '<p class="sai-pay-message" id="saiPayMessage" role="status"></p>';
   }
 
+  function prepareProofUi(force){
+    var form=document.getElementById('saiPayForm');
+    if(!form)return;
+    if(form.dataset.saiProofReady==='1'&&!force)return;
+    injectStyles();
+    form.dataset.saiProofReady='1';
+    form.dataset.saiProofState='ready';
+    form.innerHTML=proofFormHtml();
+    showPreview(null);
+  }
+
+  function attachOverlayObserver(){
+    var overlay=document.getElementById('saiPayOverlay');
+    if(!overlay||overlayObserver)return;
+    overlayObserver=new MutationObserver(function(mutations){
+      for(var i=0;i<mutations.length;i+=1){
+        if(mutations[i].type==='attributes'&&mutations[i].attributeName==='class'&&overlay.classList.contains('active')){
+          var form=document.getElementById('saiPayForm');
+          if(form&&form.dataset.saiProofState==='success')prepareProofUi(true);
+          else prepareProofUi(false);
+          break;
+        }
+      }
+    });
+    overlayObserver.observe(overlay,{attributes:true,attributeFilter:['class']});
+  }
+
   function watchForModal(){
-    prepareProofUi();
+    prepareProofUi(false);attachOverlayObserver();
     if(document.getElementById('saiPayForm'))return;
     if(observer)return;
     observer=new MutationObserver(function(){
       if(document.getElementById('saiPayForm')){
-        prepareProofUi();
+        prepareProofUi(false);attachOverlayObserver();
         observer.disconnect();observer=null;
       }
     });
@@ -55,8 +80,8 @@
 
   function showPreview(file){
     var img=document.getElementById('saiProofPreview');
-    if(!img)return;
     if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl='';}
+    if(!img)return;
     if(!file){img.removeAttribute('src');img.classList.remove('active');return;}
     previewUrl=URL.createObjectURL(file);
     img.src=previewUrl;img.classList.add('active');
@@ -101,24 +126,19 @@
 
       var utr=String(data.detectedUtr||'');
       var amount=Number(data.detectedAmount)||0;
-      setMessage('Payment screenshot verified and sent for approval.','success');
-
       var status=document.getElementById('saiPayStatus');
       if(status){
         status.className='sai-pay-status pending';
         status.innerHTML='Screenshot verified. <strong>UTR '+utr+'</strong> · '+money(amount)+' matched. Waiting for admin approval.';
       }
 
-      var result=document.createElement('div');
-      result.className='sai-proof-result';
-      result.innerHTML='<b>✓ UTR detected automatically:</b> '+utr+'<br><b>✓ Amount verified:</b> '+money(amount)+'<br>Your purchased files will unlock after approval.';
-      form.innerHTML='';form.appendChild(result);
+      form.dataset.saiProofState='success';
+      form.innerHTML='<input id="saiPayUtr" type="hidden" value="'+utr+'"><div class="sai-proof-result"><b>✓ UTR detected automatically:</b> '+utr+'<br><b>✓ Amount verified:</b> '+money(amount)+'<br>Your screenshot has been sent for approval. Purchased files will unlock after approval.</div>';
       var upi=document.getElementById('saiUpiBox');if(upi)upi.hidden=true;
     }catch(error){
       setMessage(error.message||'Unable to verify payment screenshot.','error');
     }finally{
-      button.disabled=false;
-      button.textContent='Verify Screenshot & Submit Payment';
+      if(button&&button.isConnected){button.disabled=false;button.textContent='Verify Screenshot & Submit Payment';}
     }
   }
 
