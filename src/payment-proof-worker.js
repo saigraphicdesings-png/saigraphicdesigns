@@ -51,15 +51,117 @@ function parseJsonText(value) {
   return null;
 }
 
-function geminiModels(env) {
-  const requested = String(env.GEMINI_PAYMENT_MODEL || "").trim();
-  return [...new Set([requested, "gemini-3.8-flash", "gemini-2.5-flash"].filter(Boolean))];
+function normalizeModelName(value) {
+  return String(value || "").trim().replace(/^models\//, "");
+}
+
+function supportedGenerateMethods(model) {
+  const methods = model?.supportedGenerationMethods || model?.supportedActions || [];
+  return Array.isArray(methods) && methods.some((method) => String(method).toLowerCase() === "generatecontent");
+}
+
+function paymentVisionCandidate(name) {
+  const value = normalizeModelName(name).toLowerCase();
+  if (!/^gemini-/.test(value)) return false;
+  if (/(embedding|imagen|veo|tts|audio|live|image-generation)/.test(value)) return false;
+  return true;
+}
+
+function modelScore(name) {
+  const value = normalizeModelName(name).toLowerCase();
+  let score = 0;
+  if (value.includes("flash")) score += 100;
+  if (!value.includes("lite")) score += 20;
+  if (!value.includes("preview")) score += 15;
+  if (value.includes("3.8")) score += 12;
+  else if (value.includes("3.6")) score += 11;
+  else if (value.includes("3.5")) score += 10;
+  else if (value.includes("3.1")) score += 9;
+  else if (value.includes("3")) score += 8;
+  else if (value.includes("2.5")) score += 5;
+  return score;
+}
+
+function classifyGeminiFailure(status, body) {
+  const text = String(body || "");
+  const lower = text.toLowerCase();
+
+  if (status === 429 || lower.includes("resource_exhausted") || lower.includes("quota")) {
+    return { status: 503, message: "Screenshot verification quota is temporarily exhausted. Please try again shortly." };
+  }
+  if (
+    lower.includes("api_key_invalid") ||
+    lower.includes("api key not valid") ||
+    lower.includes("api key expired") ||
+    lower.includes("invalid api key")
+  ) {
+    return { status: 503, message: "Screenshot verification is not configured correctly. The Gemini API key needs to be updated by Sai Graphic Designs." };
+  }
+  if (status === 401 || status === 403 || lower.includes("permission_denied")) {
+    return { status: 503, message: "Screenshot verification does not have permission to use Gemini. Please contact Sai Graphic Designs." };
+  }
+  if (status === 404 || lower.includes("not found") || lower.includes("not supported")) {
+    return { status: 503, message: "The configured screenshot-reading AI model is unavailable. Please try again shortly." };
+  }
+  if (status === 400) {
+    return { status: 503, message: "Gemini rejected the screenshot verification request. Please contact Sai Graphic Designs to check the AI configuration." };
+  }
+  if (status >= 500) {
+    return { status: 502, message: "Gemini is temporarily unavailable. Please wait a moment and try the screenshot again." };
+  }
+  return { status: 502, message: "Unable to read the payment screenshot right now. Please try again." };
+}
+
+async function discoverGeminiModels(apiKey) {
+  let response;
+  try {
+    response = await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=100", {
+      method: "GET",
+      headers: { "x-goog-api-key": apiKey }
+    });
+  } catch (error) {
+    console.error("Gemini model discovery network error:", error);
+    return { models: [], failure: { status: 0, body: "network_error" } };
+  }
+
+  const body = await response.text().catch(() => "");
+  if (!response.ok) {
+    console.error(`Gemini model discovery failed (${response.status}):`, body.slice(0, 500));
+    return { models: [], failure: { status: response.status, body } };
+  }
+
+  let data = {};
+  try { data = JSON.parse(body); } catch (_) {}
+  const models = (Array.isArray(data.models) ? data.models : [])
+    .filter((model) => supportedGenerateMethods(model) && paymentVisionCandidate(model?.name))
+    .map((model) => normalizeModelName(model.name))
+    .filter(Boolean)
+    .sort((a, b) => modelScore(b) - modelScore(a));
+
+  return { models, failure: null };
+}
+
+async function geminiModels(env, apiKey) {
+  const requested = normalizeModelName(env.GEMINI_PAYMENT_MODEL || "");
+  const discovered = await discoverGeminiModels(apiKey);
+  const fallback = [
+    "gemini-3.8-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3.1-flash",
+    "gemini-3-flash-preview",
+    "gemini-2.5-flash"
+  ];
+
+  const models = [...new Set([requested, ...discovered.models, ...fallback].filter(Boolean))];
+  return { models, discoveryFailure: discovered.failure };
 }
 
 async function generatePaymentProofJson(env, apiKey, prompt, mimeType, base64) {
-  const models = geminiModels(env);
-  let lastStatus = 0;
-  let lastBody = "";
+  const selection = await geminiModels(env, apiKey);
+  const models = selection.models;
+  let lastStatus = selection.discoveryFailure?.status || 0;
+  let lastBody = selection.discoveryFailure?.body || "";
 
   for (const model of models) {
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
@@ -74,11 +176,14 @@ async function generatePaymentProofJson(env, apiKey, prompt, mimeType, base64) {
         body: JSON.stringify({
           contents: [{
             parts: [
-              { text: prompt },
-              { inline_data: { mime_type: mimeType, data: base64 } }
+              { inline_data: { mime_type: mimeType, data: base64 } },
+              { text: prompt }
             ]
           }],
-          generationConfig: { temperature: 0 }
+          generationConfig: {
+            temperature: 0,
+            responseMimeType: "application/json"
+          }
         })
       });
     } catch (error) {
@@ -88,9 +193,13 @@ async function generatePaymentProofJson(env, apiKey, prompt, mimeType, base64) {
 
     if (response.ok) {
       try {
-        return await response.json();
+        const data = await response.json();
+        console.log(`Payment proof recognition succeeded with ${model}`);
+        return data;
       } catch (error) {
         console.error(`Payment proof Gemini JSON response error (${model}):`, error);
+        lastStatus = 502;
+        lastBody = "invalid_json_response";
         continue;
       }
     }
@@ -99,17 +208,23 @@ async function generatePaymentProofJson(env, apiKey, prompt, mimeType, base64) {
     lastBody = await response.text().catch(() => "");
     console.error(`Payment proof recognition failed (${model}, ${response.status}):`, lastBody.slice(0, 500));
 
-    if (response.status === 401 || response.status === 403) break;
+    const lower = lastBody.toLowerCase();
+    if (
+      response.status === 401 ||
+      response.status === 403 ||
+      response.status === 429 ||
+      lower.includes("api_key_invalid") ||
+      lower.includes("api key not valid") ||
+      lower.includes("permission_denied") ||
+      lower.includes("resource_exhausted") ||
+      lower.includes("quota")
+    ) {
+      break;
+    }
   }
 
-  if (lastStatus === 401 || lastStatus === 403) {
-    throw Object.assign(new Error("Payment screenshot verification is temporarily unavailable. Please contact Sai Graphic Designs."), { status: 503 });
-  }
-  if (lastStatus === 429) {
-    throw Object.assign(new Error("Screenshot verification is busy right now. Please wait a moment and try again."), { status: 503 });
-  }
-
-  throw Object.assign(new Error("Unable to read the payment screenshot right now. Please try again."), { status: 502 });
+  const failure = classifyGeminiFailure(lastStatus, lastBody);
+  throw Object.assign(new Error(failure.message), { status: failure.status });
 }
 
 async function readPaymentProof(env, file, expectedAmount) {
