@@ -152,3 +152,10 @@
 
   if(token())loadAll();else showLogin('');
 })();
+
+(function(){
+  var script=document.createElement('script');
+  script.src='admin-earnings.js?v=20260915-1';
+  script.defer=true;
+  document.head.appendChild(script);
+})();
