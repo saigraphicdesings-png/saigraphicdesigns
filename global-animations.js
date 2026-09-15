@@ -184,7 +184,9 @@
 
   if (isShopPage()) {
     loadStyle("payment-unlock.css?v=20260915-3");
+    loadStyle("dynamic-upi-qr.css?v=20260915-1");
     loadScript("payment-unlock.js?v=20260915-2");
+    loadScript("dynamic-upi-qr.js?v=20260915-1");
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
