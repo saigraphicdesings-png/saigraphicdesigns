@@ -36,7 +36,8 @@ export default {
           utr: "TEST123456",
           customerName: "Notification Test",
           items: [{ name: "Premium Business Card — Test", qty: 1 }],
-          adminUrl: new URL("/admin-payments.html", request.url).toString()
+          adminUrl: new URL("/admin-payments.html", request.url).toString(),
+          actions: false
         });
         if (!result?.sent) {
           return json({
