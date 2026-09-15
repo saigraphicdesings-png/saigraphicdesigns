@@ -92,7 +92,7 @@
   }
 
   function isFreeCard(card) {
-    return Boolean(card && (card.querySelector('.free-price') || /\bFREE\b/i.test(card.textContent || '')));
+    return Boolean(card && card.querySelector('.free-price'));
   }
 
   function isFreeModalButton(button) {
