@@ -23,47 +23,47 @@ function base64Url(bytes) {
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 
-async function signAction(secret, value) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
-  return base64Url(signature);
+export async function telegramWebhookSecret(env) {
+  const token = String(env.TELEGRAM_BOT_TOKEN || "").trim();
+  if (!token) return "";
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  return `sg_${base64Url(digest)}`;
 }
 
-async function buildActionUrls(env, details, token) {
-  const utr = clean(details.utr || "", 60);
-  const kind = details.kind === "cart" ? "cart" : "single";
-  if (!utr || !details.adminUrl || !token) return null;
+async function ensureTelegramWebhook(env, adminUrl, token) {
+  if (!adminUrl || !token) return;
+  const webhookUrl = new URL("/telegram-bot-webhook", adminUrl).toString();
+  const secret = await telegramWebhookSecret(env);
+  if (!secret) return;
 
-  const expires = Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60;
-  const base = new URL("/telegram-payment-action", details.adminUrl);
+  const response = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+    method: "POST",
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify({
+      url: webhookUrl,
+      secret_token: secret,
+      allowed_updates: ["callback_query"],
+      drop_pending_updates: false
+    })
+  });
 
-  async function make(action) {
-    const payload = `${kind}|${utr}|${action}|${expires}`;
-    const signature = await signAction(token, payload);
-    const url = new URL(base.toString());
-    url.searchParams.set("k", kind);
-    url.searchParams.set("u", utr);
-    url.searchParams.set("a", action);
-    url.searchParams.set("e", String(expires));
-    url.searchParams.set("s", signature);
-    return url.toString();
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Telegram webhook setup failed (${response.status})${body ? `: ${body.slice(0, 180)}` : ""}`);
   }
-
-  return {
-    approveUrl: await make("approve"),
-    rejectUrl: await make("reject")
-  };
 }
 
 export async function notifyPendingPayment(env, details = {}) {
   const settings = telegramSettings(env);
   if (!settings.configured) return { sent: false, reason: "not_configured" };
+
+  if (details.adminUrl) {
+    try {
+      await ensureTelegramWebhook(env, details.adminUrl, settings.token);
+    } catch (error) {
+      console.error("Unable to configure Telegram webhook:", error);
+    }
+  }
 
   const items = Array.isArray(details.items) ? details.items : [];
   const itemLines = items.slice(0, 5).map((item) => {
@@ -85,26 +85,19 @@ export async function notifyPendingPayment(env, details = {}) {
   if (itemLines.length) lines.push("", "Products:", ...itemLines);
   if (details.adminUrl) lines.push("", "Payment Admin:", String(details.adminUrl));
 
-  let actionUrls = null;
-  try {
-    actionUrls = details.approveUrl && details.rejectUrl
-      ? { approveUrl: String(details.approveUrl), rejectUrl: String(details.rejectUrl) }
-      : await buildActionUrls(env, details, settings.token);
-  } catch (error) {
-    console.error("Unable to build Telegram action buttons:", error);
-  }
-
   const payload = {
     chat_id: settings.chatId,
     text: lines.join("\n"),
     disable_web_page_preview: true
   };
 
-  if (actionUrls?.approveUrl && actionUrls?.rejectUrl) {
+  const utr = clean(details.utr || "", 60);
+  const kind = details.kind === "cart" ? "cart" : "single";
+  if (details.actions !== false && /^[A-Z0-9]{6,40}$/.test(utr)) {
     payload.reply_markup = {
       inline_keyboard: [
-        [{ text: "✅ Approve & Unlock", url: actionUrls.approveUrl }],
-        [{ text: "❌ Reject", url: actionUrls.rejectUrl }]
+        [{ text: "✅ Approve & Unlock", callback_data: `pay:approve:${kind}:${utr}` }],
+        [{ text: "❌ Reject", callback_data: `pay:reject:${kind}:${utr}` }]
       ]
     };
   }
