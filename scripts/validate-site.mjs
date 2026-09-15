@@ -2,7 +2,7 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
 
 const root = process.cwd();
-const ignoredSchemes = /^(?:https?:|mailto:|tel:|#|data:|javascript:)/i;
+const ignoredSchemes = /^(?:https?:|mailto:|tel:|upi:|#|data:|javascript:)/i;
 // This navigation URL is handled by src/worker.js, not a static file.
 // Keep this list explicit so unknown API links still fail validation.
 const workerRoutes = new Set(["/api/auth/google/start", "/account", "/reset-password"]);
