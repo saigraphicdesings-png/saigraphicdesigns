@@ -39,17 +39,28 @@ export async function notifyPendingPayment(env, details = {}) {
   ];
 
   if (itemLines.length) lines.push("", "Products:", ...itemLines);
-  if (details.adminUrl) lines.push("", "Approve payment:", String(details.adminUrl));
+  if (details.adminUrl) lines.push("", "Payment Admin:", String(details.adminUrl));
+
+  const payload = {
+    chat_id: settings.chatId,
+    text: lines.join("\n"),
+    disable_web_page_preview: true
+  };
+
+  if (details.approveUrl && details.rejectUrl) {
+    payload.reply_markup = {
+      inline_keyboard: [
+        [{ text: "✅ Approve & Unlock", url: String(details.approveUrl) }],
+        [{ text: "❌ Reject", url: String(details.rejectUrl) }]
+      ]
+    };
+  }
 
   const endpoint = `https://api.telegram.org/bot${settings.token}/sendMessage`;
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "content-type": "application/json; charset=utf-8" },
-    body: JSON.stringify({
-      chat_id: settings.chatId,
-      text: lines.join("\n"),
-      disable_web_page_preview: true
-    })
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
