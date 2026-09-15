@@ -6,17 +6,32 @@
   if (!productList) return;
 
   const topActions = document.querySelector(".top-actions");
-  if (topActions && !document.getElementById("customersAdminLink")) {
-    const customersLink = document.createElement("a");
-    customersLink.id = "customersAdminLink";
-    customersLink.className = "secondary";
-    customersLink.href = "admin-customers.html";
-    customersLink.textContent = "Customers";
-    customersLink.style.textDecoration = "none";
-    customersLink.style.padding = "11px 15px";
-    customersLink.style.borderRadius = "12px";
-    customersLink.style.fontWeight = "900";
-    topActions.insertBefore(customersLink, topActions.firstChild);
+  if (topActions) {
+    if (!document.getElementById("paymentsAdminLink")) {
+      const paymentsLink = document.createElement("a");
+      paymentsLink.id = "paymentsAdminLink";
+      paymentsLink.className = "secondary";
+      paymentsLink.href = "admin-payments.html";
+      paymentsLink.textContent = "Payments";
+      paymentsLink.style.textDecoration = "none";
+      paymentsLink.style.padding = "11px 15px";
+      paymentsLink.style.borderRadius = "12px";
+      paymentsLink.style.fontWeight = "900";
+      topActions.insertBefore(paymentsLink, topActions.firstChild);
+    }
+
+    if (!document.getElementById("customersAdminLink")) {
+      const customersLink = document.createElement("a");
+      customersLink.id = "customersAdminLink";
+      customersLink.className = "secondary";
+      customersLink.href = "admin-customers.html";
+      customersLink.textContent = "Customers";
+      customersLink.style.textDecoration = "none";
+      customersLink.style.padding = "11px 15px";
+      customersLink.style.borderRadius = "12px";
+      customersLink.style.fontWeight = "900";
+      topActions.insertBefore(customersLink, topActions.firstChild);
+    }
   }
 
   let refreshTimer = 0;
