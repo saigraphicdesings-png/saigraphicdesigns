@@ -3,7 +3,7 @@ import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pbkdf2Sync, createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
-const require = createRequire(join(process.env.RUNNER_TEMP, "account-runtime", "package.json"));
+const require = createRequire(join(process.env.RUNNER_TEMP || "/tmp/sai-review", "account-runtime", "package.json"));
 const { Miniflare } = require("miniflare");
 const mf = new Miniflare({
   modules: [
@@ -45,6 +45,12 @@ try {
   assert.equal((await post("/api/auth/logout", {}, cookie)).status, 200);
   const afterLogout = await mf.dispatchFetch("https://test.local/api/auth/me", { headers: { cookie } });
   assert.equal((await afterLogout.json()).user, null);
+  const expiredLogin = await post("/api/auth/login", input);
+  const expiredCookie = expiredLogin.headers.get("set-cookie").split(";")[0];
+  await db.prepare("UPDATE customer_account_sessions SET expires_at = ? WHERE customer_id = ?")
+    .bind(new Date(Date.now() - 60000).toISOString(), row.id).run();
+  const expiredMe = await mf.dispatchFetch("https://test.local/api/auth/me", { headers: { cookie: expiredCookie } });
+  assert.equal((await expiredMe.json()).user, null, "ISO timestamp sessions expire immediately, not at midnight");
   // Simulate a legacy hash and verify a clear recovery path under the live cap.
   const legacy = pbkdf2Sync(input.password, Buffer.from(row.password_salt, "base64"), 120000, 32, "sha256").toString("base64");
   await db.prepare("UPDATE customer_accounts SET password_hash = ? WHERE id = ?").bind(legacy, row.id).run();
@@ -61,6 +67,14 @@ try {
   assert.equal((await post("/api/auth/login", { ...input, password })).status, 200);
   assert.equal((await post("/api/auth/login", input)).status, 401);
   assert.equal((await post("/api/auth/reset-password", { token, password })).status, 400);
+  const concurrentToken = "concurrent-reset-token-0123456789abcdef";
+  await db.prepare("INSERT INTO customer_password_reset_tokens (token_hash, customer_id, email, expires_at) VALUES (?, ?, ?, datetime('now', '+30 minutes'))")
+    .bind(createHash("sha256").update(concurrentToken).digest("base64"), row.id, input.email).run();
+  const concurrent = await Promise.all([
+    post("/api/auth/reset-password", {token: concurrentToken, password: "Concurrent-password-1!"}),
+    post("/api/auth/reset-password", {token: concurrentToken, password: "Concurrent-password-2!"})
+  ]);
+  assert.deepEqual(concurrent.map(r => r.status).sort(), [200, 400], "Only one reset request may consume a token");
   console.log("PASS under 100,000 iteration cap: signup, login, wrong password, duplicate account, session, logout, legacy recovery and one-time password reset.");
 } finally {
   await mf.dispose();

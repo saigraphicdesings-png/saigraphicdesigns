@@ -3,7 +3,6 @@
   "use strict";
 
   const VISITOR_KEY = "saiAnalyticsVisitorId";
-  const SESSION_KEY = "saiAnalyticsSessionId";
   const HEARTBEAT_MS = 30000;
 
   function id() {
@@ -27,13 +26,18 @@
   const visitorId = getOrCreate(VISITOR_KEY);
   const sessionId = id();
 
+  function safeReferrer() {
+    try { const url = new URL(document.referrer); return url.origin + url.pathname; }
+    catch (_) { return ""; }
+  }
+
   function send(type, extra) {
     const payload = JSON.stringify(Object.assign({
       type,
       visitorId,
       sessionId,
       path: location.pathname,
-      referrer: document.referrer || ""
+      referrer: safeReferrer()
     }, extra || {}));
 
     if (navigator.sendBeacon) {
@@ -53,13 +57,17 @@
   }
 
   function pageOpen() { send("page_open"); }
-  function heartbeat() { send("heartbeat"); }
+  function heartbeat() { if (document.visibilityState === "visible") send("heartbeat"); }
 
   pageOpen();
-  const timer = setInterval(heartbeat, HEARTBEAT_MS);
+  let timer = setInterval(heartbeat, HEARTBEAT_MS);
   window.addEventListener("pagehide", function () {
     clearInterval(timer);
     send("session_end");
+  });
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) { clearInterval(timer); timer = setInterval(heartbeat, HEARTBEAT_MS); pageOpen(); }
   });
 
   window.SaiAnalytics = {

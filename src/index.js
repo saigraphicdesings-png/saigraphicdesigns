@@ -242,7 +242,7 @@ async function getSessionCustomer(request, env) {
     SELECT c.*
     FROM customer_sessions s
     JOIN customers c ON c.id = s.customer_id
-    WHERE s.token_hash = ? AND s.expires_at > CURRENT_TIMESTAMP AND c.active = 1
+    WHERE s.token_hash = ? AND datetime(s.expires_at) > CURRENT_TIMESTAMP AND c.active = 1
     LIMIT 1
   `).bind(tokenHash).first();
   return row || null;
@@ -310,6 +310,7 @@ async function handleAuth(request, env, url) {
 
 async function listProducts(env, includeHidden) {
   if (!env.DB) return [];
+  await ensureClickAnalytics(env);
   let query;
   if (includeHidden) {
     query = `
@@ -319,7 +320,6 @@ async function listProducts(env, includeHidden) {
       ORDER BY p.sort_order, p.created_at, p.name
     `;
   } else {
-    await ensureClickAnalytics(env);
     query = `
       SELECT p.*, COALESCE(pc.clicks, 0) AS clicks
       FROM products p
@@ -367,6 +367,10 @@ function validateProduct(input) {
   const category = String(input.category || "").trim();
   const type = String(input.type || "").trim();
   const images = parseList(input.images);
+  const price = Number(input.price ?? 0);
+  if (!Number.isFinite(price) || price < 0) throw new Error("Price must be a finite, non-negative number.");
+  const downloadUrl = String(input.downloadUrl || "").trim();
+  if (downloadUrl && !/^https?:\/\//i.test(downloadUrl)) throw new Error("Download URL must start with https:// or http://.");
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
   if (!name || !category || !type) throw new Error("Name, category and type are required.");
   if (!images.length) throw new Error("Add at least one preview image.");
@@ -374,13 +378,13 @@ function validateProduct(input) {
     id,
     originalId: String(input.originalId || id).trim(),
     name,
-    price: Math.max(0, Number(input.price) || 0),
+    price,
     category,
     type,
     formats: JSON.stringify(parseList(input.formats)),
     description: String(input.description || "").trim(),
     images: JSON.stringify(images),
-    downloadUrl: String(input.downloadUrl || "").trim() || null,
+    downloadUrl: downloadUrl || null,
     active: input.active === false ? 0 : 1,
     sortOrder: Number.parseInt(input.sort_order, 10) || 0
   };
@@ -496,6 +500,10 @@ async function handleAPI(request, env, url) {
     try { product = validateProduct(input); } catch (error) { return json({ error: error.message }, 400); }
     const deleted = await env.DB.prepare("SELECT id FROM deleted_products WHERE id = ?").bind(product.id).all();
     if (deleted.results?.length) return json({ error: "This product ID was deleted. Use a new ID to create a new product." }, 409);
+    if (product.originalId !== product.id) {
+      const target = await env.DB.prepare("SELECT id FROM products WHERE id = ?").bind(product.id).all();
+      if (target.results?.length) return json({ error: "Another product already uses this ID. Choose a unique ID." }, 409);
+    }
     const statements = [];
     if (product.originalId && product.originalId !== product.id) {
       statements.push(

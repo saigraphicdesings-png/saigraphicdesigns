@@ -175,7 +175,7 @@ async function getSessionCustomer(request, env) {
     FROM customer_account_sessions s
     JOIN customer_accounts c ON c.id = s.customer_id
     WHERE s.token_hash = ?
-      AND s.expires_at > CURRENT_TIMESTAMP
+      AND datetime(s.expires_at) > CURRENT_TIMESTAMP
       AND c.active = 1
     LIMIT 1
   `).bind(tokenHash).first();
@@ -381,7 +381,7 @@ if (!from) throw new Error("RESEND_FROM binding missing");
 async function forgotPassword(request, env) {
   await ensureAccountSchema(env);
 
-  if (!env.RESEND_API_KEY) {
+  if (!env.RESEND_API_KEY || !String(env.RESEND_FROM || "").trim()) {
     return json({ error: "Password reset email service is not configured yet." }, 503);
   }
 
@@ -481,17 +481,26 @@ async function resetPassword(request, env) {
   crypto.getRandomValues(salt);
   const passwordHash = `pbkdf2-sha256$${PASSWORD_HASH_ITERATIONS}$${await derivePasswordHash(password, salt)}`;
 
-  await env.DB.batch([
+  const results = await env.DB.batch([
     env.DB.prepare(`
       UPDATE customer_accounts
       SET password_hash = ?, password_salt = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `).bind(passwordHash, bytesToBase64(salt), reset.customer_id),
-    env.DB.prepare("UPDATE customer_password_reset_tokens SET used_at = CURRENT_TIMESTAMP WHERE customer_id = ? AND used_at IS NULL")
+      WHERE id = ? AND EXISTS (
+        SELECT 1 FROM customer_password_reset_tokens
+        WHERE token_hash = ? AND used_at IS NULL AND expires_at > CURRENT_TIMESTAMP
+      )
+    `).bind(passwordHash, bytesToBase64(salt), reset.customer_id, tokenHash),
+    env.DB.prepare("DELETE FROM customer_account_sessions WHERE customer_id = ? AND changes() > 0")
       .bind(reset.customer_id),
-    env.DB.prepare("DELETE FROM customer_account_sessions WHERE customer_id = ?")
-      .bind(reset.customer_id)
+    env.DB.prepare(`UPDATE customer_password_reset_tokens SET used_at = CURRENT_TIMESTAMP
+      WHERE customer_id = ? AND used_at IS NULL AND EXISTS (
+        SELECT 1 FROM customer_accounts WHERE id = ? AND password_hash = ?
+      )`).bind(reset.customer_id, reset.customer_id, passwordHash)
   ]);
+
+  if (!Number(results[0].meta?.changes || 0)) {
+    return json({ error: "This password reset link has already been used or expired." }, 400);
+  }
 
   return json({
     success: true,

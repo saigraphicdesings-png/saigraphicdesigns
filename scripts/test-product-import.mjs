@@ -71,3 +71,22 @@ test('unauthorized imports and deletes cannot change products', async () => {
   assert.equal((await call('/api/admin/products/one', 'DELETE', null, false)).status, 401);
   assert.equal((await call('/api/products')).products.length, 0); env.db.close();
 });
+
+test('renaming onto another product preserves both products', async () => {
+  const env = database(); const call = client(env);
+  await call('/api/admin/products', 'POST', product('one'));
+  await call('/api/admin/products', 'POST', product('two'));
+  assert.equal((await call('/api/admin/products', 'POST', {...product('two'), originalId: 'one'})).status, 409);
+  assert.deepEqual((await call('/api/admin/products')).products.map(p => p.id).sort(), ['one', 'two']);
+  env.db.close();
+});
+
+test('invalid prices and executable download URLs are rejected', async () => {
+  const env = database(); const call = client(env);
+  for (const price of [-1, 'Infinity', 'invalid']) {
+    assert.equal((await call('/api/admin/products', 'POST', {...product('one'), price})).status, 400);
+  }
+  assert.equal((await call('/api/admin/products', 'POST', {...product('one'), downloadUrl: 'javascript:alert(1)'})).status, 400);
+  assert.equal((await call('/api/admin/products')).products.length, 0);
+  env.db.close();
+});

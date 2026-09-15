@@ -6,3 +6,5 @@ src
 README.md
 LICENSE.txt
 wrangler.jsonc
+*.md
+*.sql
