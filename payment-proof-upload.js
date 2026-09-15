@@ -87,6 +87,40 @@
     img.src=previewUrl;img.classList.add('active');
   }
 
+  function optimizeImage(file){
+    return new Promise(function(resolve){
+      if(!file||!/^image\/(png|jpeg|webp)$/i.test(file.type||''))return resolve(file);
+      var url=URL.createObjectURL(file);
+      var image=new Image();
+      image.onload=function(){
+        try{
+          var maxSide=1800;
+          var width=image.naturalWidth||image.width;
+          var height=image.naturalHeight||image.height;
+          if(!width||!height){URL.revokeObjectURL(url);return resolve(file);}
+          var scale=Math.min(1,maxSide/Math.max(width,height));
+          if(scale===1&&file.size<900*1024){URL.revokeObjectURL(url);return resolve(file);}
+          var canvas=document.createElement('canvas');
+          canvas.width=Math.max(1,Math.round(width*scale));
+          canvas.height=Math.max(1,Math.round(height*scale));
+          var context=canvas.getContext('2d',{alpha:false});
+          if(!context){URL.revokeObjectURL(url);return resolve(file);}
+          context.drawImage(image,0,0,canvas.width,canvas.height);
+          canvas.toBlob(function(blob){
+            URL.revokeObjectURL(url);
+            if(!blob)return resolve(file);
+            var name=(file.name||'payment-proof').replace(/\.[^.]+$/,'')+'.jpg';
+            resolve(new File([blob],name,{type:'image/jpeg',lastModified:Date.now()}));
+          },'image/jpeg',0.88);
+        }catch(_){
+          URL.revokeObjectURL(url);resolve(file);
+        }
+      };
+      image.onerror=function(){URL.revokeObjectURL(url);resolve(file);};
+      image.src=url;
+    });
+  }
+
   async function submitProof(form){
     var overlay=document.getElementById('saiPayOverlay');
     var input=document.getElementById('saiPayProof');
@@ -103,17 +137,26 @@
     if(!Array.isArray(items)||!items.length){setMessage('Cart details are unavailable. Close this window and try again.','error');return;}
 
     button.disabled=true;
-    button.textContent='Reading Screenshot…';
-    setMessage('Detecting UTR and checking the paid amount…');
+    button.textContent='Preparing Screenshot…';
+    setMessage('Optimizing the screenshot for faster verification…');
+
+    var controller=new AbortController();
+    var timer=null;
 
     try{
+      var uploadFile=await optimizeImage(file);
+      button.textContent='Reading Screenshot…';
+      setMessage('Detecting UTR and checking the paid amount…');
+
       var body=new FormData();
       body.append('items',JSON.stringify(items));
-      body.append('proof',file,file.name||'payment-proof.jpg');
+      body.append('proof',uploadFile,uploadFile.name||'payment-proof.jpg');
+      timer=setTimeout(function(){controller.abort();},20000);
       var response=await fetch('/api/payment/cart-proof-request',{
         method:'POST',
         credentials:'same-origin',
-        body:body
+        body:body,
+        signal:controller.signal
       });
       var data={};
       try{data=await response.json();}catch(_){ }
@@ -136,8 +179,10 @@
       form.innerHTML='<input id="saiPayUtr" type="hidden" value="'+utr+'"><div class="sai-proof-result"><b>✓ UTR detected automatically:</b> '+utr+'<br><b>✓ Amount verified:</b> '+money(amount)+'<br>Your screenshot has been sent for approval. Purchased files will unlock after approval.</div>';
       var upi=document.getElementById('saiUpiBox');if(upi)upi.hidden=true;
     }catch(error){
-      setMessage(error.message||'Unable to verify payment screenshot.','error');
+      if(error&&error.name==='AbortError')setMessage('Verification is taking too long. Please tap the button once more.','error');
+      else setMessage(error.message||'Unable to verify payment screenshot.','error');
     }finally{
+      if(timer)clearTimeout(timer);
       if(button&&button.isConnected){button.disabled=false;button.textContent='Verify Screenshot & Submit Payment';}
     }
   }
