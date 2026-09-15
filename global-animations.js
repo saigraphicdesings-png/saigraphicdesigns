@@ -180,7 +180,7 @@
   document.addEventListener('click', logoutCustomer);
   loadStyle("sai-10-10.css?v=20260915-6");
   loadScript("global-animations-core.js?v=20260915-2");
-  loadScript("customer-payment-notifications.js?v=20260915-1");
+  loadScript("customer-payment-notifications.js?v=20260915-2");
 
   if (isShopPage()) {
     loadStyle("payment-unlock.css?v=20260915-3");
