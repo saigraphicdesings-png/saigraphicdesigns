@@ -5,9 +5,10 @@
 
   var CART_KEY='saiGraphicCart';
   var configPromise=null;
+  var QR_ENDPOINT='https://quickchart.io/qr';
 
   function money(value){return "₹"+(Number(value)||0).toLocaleString("en-IN",{maximumFractionDigits:2});}
-  function esc(value){return String(value==null?"":value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+  function esc(value){return String(value==null?"":value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");}
 
   function toast(message,login){
     var old=document.querySelector('.sai-pay-toast');if(old)old.remove();
@@ -17,10 +18,7 @@
   }
 
   function readCart(){
-    try{
-      var parsed=JSON.parse(localStorage.getItem(CART_KEY)||'[]');
-      return Array.isArray(parsed)?parsed:[];
-    }catch(_){return[];}
+    try{var parsed=JSON.parse(localStorage.getItem(CART_KEY)||'[]');return Array.isArray(parsed)?parsed:[];}catch(_){return[];}
   }
 
   function paidShopItems(){
@@ -42,14 +40,15 @@
       '<div class="sai-pay-cart-list" id="saiPayCartList"></div>'+
       '<div class="sai-pay-product"><div><strong>Cart Total</strong><small>Pay the exact amount shown</small></div><span id="saiPayAmount">₹0</span></div>'+
       '<div class="sai-pay-status" id="saiPayStatus"></div>'+
-      '<div class="sai-upi-box" id="saiUpiBox"><div class="sai-upi-label">Pay to UPI ID</div><div class="sai-upi-id" id="saiUpiId">Loading…</div><a class="sai-upi-pay" id="saiUpiPay" href="#">Pay with GPay / UPI</a></div>'+
+      '<div class="sai-upi-box" id="saiUpiBox">'+
+        '<div class="sai-upi-qr-wrap"><img class="sai-upi-qr-img" id="saiUpiQrImg" alt="UPI payment QR code" hidden><div class="sai-upi-qr-caption" id="saiUpiQrCaption">Preparing payment QR…</div><div class="sai-upi-qr-error" id="saiUpiQrError" hidden>QR is unavailable. Use the Pay with GPay / UPI button below.</div></div>'+
+        '<div class="sai-upi-label">Pay to UPI ID</div><div class="sai-upi-id" id="saiUpiId">Loading…</div><a class="sai-upi-pay" id="saiUpiPay" href="#">Pay with GPay / UPI</a></div>'+
       '<form class="sai-pay-form" id="saiPayForm"><label for="saiPayUtr">UPI Transaction / UTR ID</label><input id="saiPayUtr" autocomplete="off" maxlength="40" placeholder="Enter transaction ID after payment" required><p class="sai-pay-help">After payment, enter the UTR/transaction ID. After admin approval, every paid product in this cart will unlock.</p><button class="sai-pay-submit" id="saiPaySubmit" type="submit">I Have Paid — Submit UTR</button><p class="sai-pay-message" id="saiPayMessage" role="status"></p></form>'+
       '<div class="sai-pay-files" id="saiPayFiles" hidden></div>'+
       '</div>';
     document.body.appendChild(overlay);
     overlay.querySelector('.sai-pay-close').addEventListener('click',closeModal);
     overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('active'))closeModal();});
     overlay.querySelector('#saiPayForm').addEventListener('submit',submitUtr);
     overlay.querySelector('#saiPayFiles').addEventListener('click',function(e){var b=e.target.closest('[data-download-id]');if(b)downloadProduct(b.dataset.downloadId);});
     return overlay;
@@ -57,6 +56,21 @@
 
   function closeModal(){var overlay=document.getElementById('saiPayOverlay');if(!overlay)return;overlay.classList.remove('active');overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
   function setMessage(text,type){var el=document.getElementById('saiPayMessage');if(!el)return;el.textContent=text||'';el.className='sai-pay-message'+(type?' '+type:'');}
+
+  function renderQr(upiUri,total){
+    var img=document.getElementById('saiUpiQrImg'),caption=document.getElementById('saiUpiQrCaption'),error=document.getElementById('saiUpiQrError');
+    if(!img||!caption||!error)return;
+    if(!/^upi:\/\/pay\?/i.test(upiUri||'')){
+      img.removeAttribute('src');img.hidden=true;error.hidden=true;caption.textContent='Preparing payment QR…';return;
+    }
+    var qrUrl=QR_ENDPOINT+'?text='+encodeURIComponent(upiUri)+'&size=280&margin=2&ecLevel=M&format=png';
+    caption.textContent='Scan to pay '+money(total)+' exactly';
+    img.alt='UPI QR code to pay '+money(total);
+    error.hidden=true;img.hidden=false;
+    img.onload=function(){img.hidden=false;error.hidden=true;};
+    img.onerror=function(){img.hidden=true;error.hidden=false;};
+    img.src=qrUrl;
+  }
 
   async function getQuote(items){
     var response=await fetch('/api/payment/cart-quote',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})}),data={};
@@ -95,12 +109,14 @@
         if(cfg.configured&&cfg.upiId){
           upi.textContent=cfg.upiId;
           var params=new URLSearchParams({pa:cfg.upiId,pn:cfg.payeeName||'Sai Graphic Designs',am:String(Number(quote.total)||0),cu:'INR',tn:'Sai Graphic Designs Cart Payment'});
-          pay.href='upi://pay?'+params.toString();pay.setAttribute('aria-disabled','false');pay.textContent='Pay '+money(quote.total)+' with GPay / UPI';
+          var upiUri='upi://pay?'+params.toString();
+          pay.href=upiUri;pay.setAttribute('aria-disabled','false');pay.textContent='Pay '+money(quote.total)+' with GPay / UPI';
+          renderQr(upiUri,quote.total);
         }else{
           upi.textContent='UPI ID not configured yet';pay.href='#';pay.setAttribute('aria-disabled','true');pay.textContent='Payment setup pending';
-          setMessage('Admin must configure the business UPI ID first.','error');
+          renderQr('',0);setMessage('Admin must configure the business UPI ID first.','error');
         }
-      }catch(e){setMessage(e.message||'Unable to load payment settings.','error');}
+      }catch(e){renderQr('',0);setMessage(e.message||'Unable to load payment settings.','error');}
     }
 
     overlay.classList.add('active');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
@@ -152,13 +168,17 @@
   }
 
   document.addEventListener('click',function(event){
-    var button=event.target.closest('#cartCheckout');if(!button)return;
-    if(!paidShopItems().length)return;
-    event.preventDefault();event.stopPropagation();if(typeof event.stopImmediatePropagation==='function')event.stopImmediatePropagation();
-    beginCartPayment();
+    var checkout=event.target.closest('#cartCheckout');
+    if(checkout&&paidShopItems().length){
+      event.preventDefault();event.stopPropagation();if(typeof event.stopImmediatePropagation==='function')event.stopImmediatePropagation();
+      beginCartPayment();return;
+    }
+    if(event.target.closest('.add-product-btn, #modalAddCart, .cart-qty-btn, .cart-remove, #cartToggle')){
+      setTimeout(refreshCheckoutLabel,0);
+    }
   },true);
 
-  var observer=new MutationObserver(refreshCheckoutLabel);observer.observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+  document.addEventListener('keydown',function(e){var overlay=document.getElementById('saiPayOverlay');if(e.key==='Escape'&&overlay&&overlay.classList.contains('active'))closeModal();});
   window.addEventListener('storage',refreshCheckoutLabel);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshCheckoutLabel);else refreshCheckoutLabel();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshCheckoutLabel,{once:true});else refreshCheckoutLabel();
 })();
