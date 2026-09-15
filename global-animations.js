@@ -183,8 +183,8 @@
   loadScript("global-animations-core.js");
 
   if (isShopPage()) {
-    loadStyle("payment-unlock.css?v=20260915-2");
-    loadScript("payment-unlock.js?v=20260915-1");
+    loadStyle("payment-unlock.css?v=20260915-3");
+    loadScript("payment-unlock.js?v=20260915-2");
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAccountLink);
