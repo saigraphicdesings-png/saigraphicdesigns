@@ -473,7 +473,7 @@ export default {
       const siteMode = await getSiteMode(env);
       if (siteMode.isSleep) {
         return json({
-          error: "Payments are unavailable while Sai Graphic Designs is in Sleep mode. Please return during working hours: 8:00 AM–11:00 PM (India time).",
+          error: `Payments are unavailable while Sai Graphic Designs is in Sleep mode. Please return during working hours: ${siteMode.schedule.start}–${siteMode.schedule.end} (India time).`,
           code: "SITE_SLEEP_MODE",
           siteMode
         }, 503);
