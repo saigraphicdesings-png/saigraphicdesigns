@@ -7,11 +7,13 @@
 
   function setStatus(data) {
     const online = Boolean(data && data.isWork);
+    const schedule = data?.schedule || {};
+    const hours = (schedule.start || "08:00") + "–" + (schedule.end || "23:00") + " India time";
     indicator.classList.toggle("is-online", online);
     indicator.classList.toggle("is-offline", !online);
     label.textContent = online
       ? "Payment Online — accepting paid orders now"
-      : "Payment Offline right now — available 8:00 AM–11:00 PM";
+      : "Payment Offline right now — available " + hours;
   }
 
   async function refreshStatus() {
