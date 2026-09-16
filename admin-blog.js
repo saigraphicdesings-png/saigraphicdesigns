@@ -1,4 +1,6 @@
 (function(){
+  const favicon=document.querySelector('link[rel="icon"]')||document.head.appendChild(document.createElement('link'));
+  favicon.rel='icon';favicon.type='image/png';favicon.href='/Images/favicon.png';
   let token='',posts=[];const $=id=>document.getElementById(id);
   const presets={
     'Business Cards':'How to Choose the Right Business Card Template for Your Business in Tamil Nadu',
