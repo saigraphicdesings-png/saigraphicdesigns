@@ -79,7 +79,7 @@ function notificationText(details) {
     "",
     `Amount: ${money(details.amount)}`,
     `Customer: ${clean(details.customerName || "Customer", 80)}`,
-    `UTR: ${clean(details.utr || "—", 60)}`,
+    `RRN / UTR: ${clean(details.utr || "—", 60)}`,
     `Type: ${details.kind === "cart" ? "Cart order" : "Single product"}`
   ];
 
