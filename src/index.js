@@ -60,6 +60,45 @@ const productClickSchema = `CREATE TABLE IF NOT EXISTS product_clicks (
   last_clicked_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`;
 
+const blogSchema = `CREATE TABLE IF NOT EXISTS blog_posts (
+  id TEXT PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  excerpt TEXT NOT NULL,
+  content TEXT NOT NULL,
+  keywords TEXT NOT NULL DEFAULT '',
+  city TEXT NOT NULL DEFAULT 'Tamil Nadu',
+  published INTEGER NOT NULL DEFAULT 1 CHECK(published IN (0,1)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  published_at TEXT
+)`;
+
+async function ensureBlogTable(env) {
+  await env.DB.prepare(blogSchema).run();
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(published, published_at, updated_at)").run();
+}
+
+function blogSlug(value) {
+  return String(value || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 100);
+}
+
+function publicBlog(row) {
+  return { id: row.id, slug: row.slug, title: row.title, excerpt: row.excerpt, content: row.content, keywords: row.keywords || "", city: row.city || "Tamil Nadu", published: Boolean(row.published), createdAt: row.created_at, updatedAt: row.updated_at, publishedAt: row.published_at || "" };
+}
+
+function validateBlog(input) {
+  const title = String(input.title || "").trim().slice(0, 150);
+  const excerpt = String(input.excerpt || "").trim().slice(0, 350);
+  const content = String(input.content || "").trim().slice(0, 20000);
+  const slug = blogSlug(input.slug || title);
+  if (title.length < 8) throw new Error("Blog title must be at least 8 characters.");
+  if (excerpt.length < 20) throw new Error("Add a short excerpt of at least 20 characters.");
+  if (content.length < 80) throw new Error("Blog content must be at least 80 characters.");
+  if (!slug) throw new Error("Enter a valid blog title or URL slug.");
+  return { title, excerpt, content, slug, keywords: String(input.keywords || "").trim().slice(0, 500), city: String(input.city || "Tamil Nadu").trim().slice(0, 80) || "Tamil Nadu", published: input.published !== false ? 1 : 0 };
+}
+
 const customerSchema = `CREATE TABLE IF NOT EXISTS customers (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -419,8 +458,51 @@ async function handleAPI(request, env, url) {
     return json({ success: true });
   }
 
+  if (url.pathname === "/api/blog-posts" && request.method === "GET") {
+    await ensureBlogTable(env);
+    const result = await env.DB.prepare(`SELECT * FROM blog_posts WHERE published = 1 ORDER BY datetime(COALESCE(published_at, updated_at)) DESC LIMIT 100`).all();
+    return json({ posts: (result.results || []).map(publicBlog) });
+  }
+
+  if (url.pathname.startsWith("/api/blog-posts/") && request.method === "GET") {
+    await ensureBlogTable(env);
+    const slug = blogSlug(decodeURIComponent(url.pathname.slice("/api/blog-posts/".length)));
+    const post = await env.DB.prepare("SELECT * FROM blog_posts WHERE slug = ? AND published = 1 LIMIT 1").bind(slug).first();
+    if (!post) return json({ error: "Blog post not found." }, 404);
+    return json({ post: publicBlog(post) });
+  }
+
   if (!url.pathname.startsWith("/api/admin/")) return json({ error: "Not found." }, 404);
   if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+
+  if (url.pathname === "/api/admin/blog-posts" && request.method === "GET") {
+    await ensureBlogTable(env);
+    const result = await env.DB.prepare("SELECT * FROM blog_posts ORDER BY datetime(updated_at) DESC LIMIT 200").all();
+    return json({ posts: (result.results || []).map(publicBlog) });
+  }
+
+  if (url.pathname === "/api/admin/blog-posts" && request.method === "POST") {
+    await ensureBlogTable(env);
+    let input; try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+    let post; try { post = validateBlog(input); } catch (error) { return json({ error: error.message }, 400); }
+    const id = String(input.id || crypto.randomUUID());
+    const existing = await env.DB.prepare("SELECT id FROM blog_posts WHERE slug = ? AND id <> ? LIMIT 1").bind(post.slug, id).first();
+    if (existing) return json({ error: "Another blog already uses this URL slug." }, 409);
+    await env.DB.prepare(`INSERT INTO blog_posts(id, slug, title, excerpt, content, keywords, city, published, published_at, updated_at)
+      VALUES(?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 1 THEN CURRENT_TIMESTAMP ELSE NULL END, CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET slug=excluded.slug,title=excluded.title,excerpt=excluded.excerpt,content=excluded.content,keywords=excluded.keywords,city=excluded.city,published=excluded.published,published_at=CASE WHEN excluded.published=1 THEN COALESCE(blog_posts.published_at,CURRENT_TIMESTAMP) ELSE NULL END,updated_at=CURRENT_TIMESTAMP`
+    ).bind(id, post.slug, post.title, post.excerpt, post.content, post.keywords, post.city, post.published, post.published).run();
+    const saved = await env.DB.prepare("SELECT * FROM blog_posts WHERE id = ? LIMIT 1").bind(id).first();
+    return json({ success: true, post: publicBlog(saved) });
+  }
+
+  if (url.pathname.startsWith("/api/admin/blog-posts/") && request.method === "DELETE") {
+    await ensureBlogTable(env);
+    const id = decodeURIComponent(url.pathname.slice("/api/admin/blog-posts/".length));
+    if (!/^[A-Za-z0-9-]{20,}$/.test(id)) return json({ error: "Invalid blog post." }, 400);
+    await env.DB.prepare("DELETE FROM blog_posts WHERE id = ?").bind(id).run();
+    return json({ success: true });
+  }
 
   if (url.pathname === "/api/admin/customers" && request.method === "GET") {
     await ensureCustomerTables(env);
