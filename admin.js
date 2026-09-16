@@ -422,8 +422,8 @@ const $=id=>document.getElementById(id);
 const loginCard=$("loginCard"),dashboard=$("dashboard"),loginForm=$("loginForm"),loginError=$("loginError"),form=$("productForm"),list=$("productList"),message=$("formMessage");
 function authHeaders(json){const h={Authorization:"Bearer "+token};if(json)h["Content-Type"]="application/json";return h}
 async function api(path,options={}){const response=await fetch(path,{...options,headers:{...authHeaders(Boolean(options.body)),...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(response.status===401){logout();throw new Error("Invalid or expired admin token.");}if(!response.ok)throw new Error(data.error||"Request failed.");return data}
-function showDashboard(){loginCard.hidden=true;dashboard.hidden=false;loadProducts();window.dispatchEvent(new Event("sai-admin-open"))}
-function logout(){token="";sessionStorage.removeItem(tokenKey);dashboard.hidden=true;loginCard.hidden=false;$("adminToken").value="";loginError.textContent=""}
+function showDashboard(){loginCard.hidden=true;dashboard.hidden=false;$("adminSessionActions").hidden=false;loadProducts();window.dispatchEvent(new Event("sai-admin-open"))}
+function logout(){token="";sessionStorage.removeItem(tokenKey);dashboard.hidden=true;$("adminSessionActions").hidden=true;loginCard.hidden=false;$("adminToken").value="";loginError.textContent=""}
 loginForm.addEventListener("submit",async e=>{e.preventDefault();token=$("adminToken").value.trim();loginError.textContent="";try{await api("/api/admin/products");sessionStorage.setItem(tokenKey,token);showDashboard()}catch(err){loginError.textContent=err.message}})
 async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];render();updateLinkProducts()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
 function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
