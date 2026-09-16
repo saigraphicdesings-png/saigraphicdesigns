@@ -70,16 +70,20 @@ export async function recordCustomerPaymentReviewNotification(env, kind, payment
 
   let customerId = "";
   let detail = "your purchase";
+  let amountDue = 0;
+  let receivedAmount = null;
 
   if (kind === "cart") {
     const order = await env.DB.prepare(`
-      SELECT customer_id, status
+      SELECT customer_id, status, amount, received_amount
       FROM cart_payment_orders
       WHERE id = ?
       LIMIT 1
     `).bind(paymentId).first();
     if (!order || order.status !== status) return null;
     customerId = String(order.customer_id || "");
+    amountDue = Number(order.amount) || 0;
+    receivedAmount = order.received_amount == null ? null : Number(order.received_amount);
 
     const items = await env.DB.prepare(`
       SELECT product_name
@@ -92,7 +96,7 @@ export async function recordCustomerPaymentReviewNotification(env, kind, payment
     if (names.length) detail = names.join(", ");
   } else {
     const payment = await env.DB.prepare(`
-      SELECT customer_id, product_name, status
+      SELECT customer_id, product_name, status, amount, received_amount
       FROM payment_requests
       WHERE id = ?
       LIMIT 1
@@ -100,6 +104,8 @@ export async function recordCustomerPaymentReviewNotification(env, kind, payment
     if (!payment || payment.status !== status) return null;
     customerId = String(payment.customer_id || "");
     detail = String(payment.product_name || "your purchase").trim() || "your purchase";
+    amountDue = Number(payment.amount) || 0;
+    receivedAmount = payment.received_amount == null ? null : Number(payment.received_amount);
   }
 
   if (!customerId) return null;
@@ -108,10 +114,22 @@ export async function recordCustomerPaymentReviewNotification(env, kind, payment
   const eventKey = `payment-review:${kind}:${paymentId}:${status}`;
   const id = crypto.randomUUID();
   const title = approved ? "Payment approved — files unlocked" : "Payment update — action needed";
+  const balance = receivedAmount == null ? 0 : Math.max(0, amountDue - receivedAmount);
+  const currency = (value) => `₹${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
   const message = approved
     ? `Your payment has been approved. ${detail} is now unlocked and ready to download.`
-    : `Your payment for ${detail} was rejected. Please contact Sai Graphic Designs if you need help.`;
-  const linkUrl = approved ? "/shop.html" : "/contact.html";
+    : receivedAmount !== null
+      ? `Your payment for ${detail} could not be approved. Amount due: ${currency(amountDue)}. Amount received: ${currency(receivedAmount)}. Please pay the remaining ${currency(balance)} and submit a new payment proof.`
+      : `Your payment for ${detail} was rejected. Please pay again and submit a new payment proof. Contact Sai Graphic Designs if you need help.`;
+  const linkUrl = approved ? "/shop.html" : "/shop.html";
+
+  if (approved) {
+    await env.DB.prepare(`
+      UPDATE customer_notifications
+      SET read_at = COALESCE(read_at, CURRENT_TIMESTAMP)
+      WHERE customer_id = ? AND event_key = ?
+    `).bind(customerId, `payment-review:${kind}:${paymentId}:rejected`).run();
+  }
 
   await env.DB.prepare(`
     INSERT OR IGNORE INTO customer_notifications(

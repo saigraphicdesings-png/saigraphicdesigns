@@ -103,7 +103,9 @@
     }else if(quote.pendingOrder){
       status.className+=' pending';status.textContent='This cart payment is already waiting for admin approval. UTR '+quote.pendingOrder.utr+'.';form.hidden=true;upiBox.hidden=true;
     }else{
-      status.textContent='Pay the cart total once, then submit the UTR for approval.';
+      status.textContent=Number(quote.creditAmount)>0
+        ?'Previous payment credit '+money(quote.creditAmount)+' applied. Pay only the pending balance '+money(quote.total)+', then submit the UTR for approval.'
+        :'Pay the cart total once, then submit the UTR for approval.';
       try{
         var cfg=await config(),upi=document.getElementById('saiUpiId'),pay=document.getElementById('saiUpiPay');
         if(cfg.configured&&cfg.upiId){

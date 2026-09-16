@@ -3,7 +3,7 @@
   var KEY='saiShopAdminToken';
   var login=document.getElementById('payLogin'),dashboard=document.getElementById('payDashboard'),loginForm=document.getElementById('payLoginForm'),tokenInput=document.getElementById('payAdminToken'),loginError=document.getElementById('payLoginError');
   var list=document.getElementById('paymentList'),upiForm=document.getElementById('upiSettingsForm'),upiId=document.getElementById('upiId'),payeeName=document.getElementById('payeeName'),upiMessage=document.getElementById('upiMessage');
-  var confirmOverlay=document.getElementById('payConfirmOverlay'),confirmIcon=document.getElementById('payConfirmIcon'),confirmKicker=document.getElementById('payConfirmKicker'),confirmTitle=document.getElementById('payConfirmTitle'),confirmText=document.getElementById('payConfirmText'),confirmNote=document.getElementById('payConfirmNote'),confirmNoteInput=document.getElementById('payConfirmNoteInput'),confirmCancel=document.getElementById('payConfirmCancel'),confirmSubmit=document.getElementById('payConfirmSubmit');
+  var confirmOverlay=document.getElementById('payConfirmOverlay'),confirmIcon=document.getElementById('payConfirmIcon'),confirmKicker=document.getElementById('payConfirmKicker'),confirmTitle=document.getElementById('payConfirmTitle'),confirmText=document.getElementById('payConfirmText'),confirmNote=document.getElementById('payConfirmNote'),confirmNoteInput=document.getElementById('payConfirmNoteInput'),confirmReceived=document.getElementById('payConfirmReceived'),confirmReceivedInput=document.getElementById('payConfirmReceivedInput'),confirmCancel=document.getElementById('payConfirmCancel'),confirmSubmit=document.getElementById('payConfirmSubmit');
   var confirmResolver=null;
 
   function token(){return sessionStorage.getItem(KEY)||'';}
@@ -34,27 +34,31 @@
     if(!confirmOverlay)return;
     var resolver=confirmResolver;confirmResolver=null;
     var note=confirmNoteInput?confirmNoteInput.value.trim():'';
+    var receivedAmount=confirmReceivedInput&&confirmReceivedInput.value!==''?Number(confirmReceivedInput.value):null;
     confirmOverlay.classList.remove('active');confirmOverlay.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
-    if(resolver)resolver({confirmed:Boolean(confirmed),note:note});
+    if(resolver)resolver({confirmed:Boolean(confirmed),note:note,receivedAmount:receivedAmount});
   }
 
-  function askPaymentAction(action,kind){
+  function askPaymentAction(action,kind,item){
     return new Promise(function(resolve){
       if(!confirmOverlay){resolve({confirmed:false,note:''});return;}
       if(confirmResolver)closeConfirm(false);
       confirmResolver=resolve;
       var rejecting=action==='reject';
+      var restoring=action==='restore';
       var isCart=kind==='cart';
       confirmIcon.textContent=rejecting?'×':'✓';
-      confirmKicker.textContent=rejecting?'PAYMENT REVIEW':'PAYMENT APPROVAL';
-      confirmTitle.textContent=rejecting?'Reject this payment?':(isCart?'Approve cart payment?':'Approve payment?');
+      confirmKicker.textContent=rejecting?'PAYMENT REVIEW & CUSTOMER NOTICE':(restoring?'PAYMENT RESTORE':'PAYMENT APPROVAL');
+      confirmTitle.textContent=rejecting?'Reject & send Pay Again notice?':(restoring?'Approve rejected payment?':(isCart?'Approve cart payment?':'Approve payment?'));
       confirmText.textContent=rejecting
-        ?'The payment will be marked as rejected and no Drive files will be unlocked.'
-        :(isCart?'This will approve the cart payment and unlock every purchased product in this order.':'This will approve the payment and unlock the product Drive link for this customer.');
+        ?'The payment will be marked as rejected and no Drive files will be unlocked. Add the amount received only when the customer paid less than '+money(item.amount)+'.'
+        :(restoring?'This manually approves the rejected payment. The customer will be notified that their file is unlocked and ready to download.':(isCart?'This will approve the cart payment and unlock every purchased product in this order.':'This will approve the payment and unlock the product Drive link for this customer.'));
       confirmNote.hidden=!rejecting;
       confirmNoteInput.value='';
-      confirmSubmit.textContent=rejecting?'Reject Payment':'Approve & Unlock';
+      if(confirmReceived){confirmReceived.hidden=!rejecting;}
+      if(confirmReceivedInput){confirmReceivedInput.value='';confirmReceivedInput.max=String(Number(item.amount)||0);}
+      confirmSubmit.textContent=rejecting?'Reject & Notify Pay Again':(restoring?'Approve Payment':'Approve & Unlock');
       confirmSubmit.classList.toggle('reject',rejecting);
       confirmOverlay.classList.add('active');confirmOverlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
       setTimeout(function(){(rejecting?confirmNoteInput:confirmSubmit).focus();},30);
@@ -75,6 +79,7 @@
 
   function render(data){
     var rows=Array.isArray(data.requests)?data.requests:[];
+    window.__saiPaymentRows=rows;
     document.getElementById('payTotal').textContent=rows.length;
     document.getElementById('payPending').textContent=rows.filter(function(i){return i.status==='pending';}).length;
     document.getElementById('payApproved').textContent=rows.filter(function(i){return i.status==='approved';}).length;
@@ -85,8 +90,10 @@
       var isCart=item.kind==='cart';
       var actionKind=isCart?'cart':'single';
       var actions=item.status==='pending'
-        ?'<div class="pay-row-actions"><button class="pay-approve" type="button" data-approve="'+esc(item.id)+'" data-kind="'+actionKind+'">Approve & Unlock</button><button class="pay-reject" type="button" data-reject="'+esc(item.id)+'" data-kind="'+actionKind+'">Reject</button></div>'
-        :'<div class="pay-row-actions"><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span></div>';
+        ?'<div class="pay-row-actions"><button class="pay-approve" type="button" data-approve="'+esc(item.id)+'" data-kind="'+actionKind+'">Approve & Unlock</button><button class="pay-reject" type="button" data-reject="'+esc(item.id)+'" data-kind="'+actionKind+'">Reject & Notify</button></div>'
+        :item.status==='rejected'
+          ?'<div class="pay-row-actions"><button class="pay-approve" type="button" data-restore="'+esc(item.id)+'" data-kind="'+actionKind+'">Approve Payment</button></div>'
+          :'<div class="pay-row-actions"><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span></div>';
 
       var productBlock='';
       if(isCart){
@@ -99,7 +106,7 @@
       return '<article class="pay-row">'+
         productBlock+
         '<div><strong>'+esc(item.customerName)+'</strong><small>'+esc(item.customerEmail||'No email')+'</small><small>'+esc(item.customerPhone||'No phone')+'</small></div>'+
-        '<div><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span><strong class="pay-utr">'+esc(item.utr)+'</strong><small>'+(item.reviewedAt?'Reviewed '+esc(dateText(item.reviewedAt)):'Waiting for review')+'</small></div>'+actions+
+        '<div><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span><strong class="pay-utr">'+esc(item.utr)+'</strong><small>'+(item.receivedAmount!=null&&item.status==='rejected'?'Received '+money(item.receivedAmount)+' · Balance '+money(Math.max(0,Number(item.amount)-Number(item.receivedAmount))):'')+'</small><small>'+(item.reviewedAt?'Reviewed '+esc(dateText(item.reviewedAt)):'Waiting for review')+'</small></div>'+actions+
       '</article>';
     }).join('');
   }
@@ -134,16 +141,17 @@
   });
 
   list.addEventListener('click',async function(event){
-    var approve=event.target.closest('[data-approve]'),reject=event.target.closest('[data-reject]');
-    var button=approve||reject;if(!button)return;
-    var id=approve?approve.dataset.approve:reject.dataset.reject;
-    var action=approve?'approve':'reject';
+    var approve=event.target.closest('[data-approve]'),reject=event.target.closest('[data-reject]'),restore=event.target.closest('[data-restore]');
+    var button=approve||reject||restore;if(!button)return;
+    var id=approve?approve.dataset.approve:(reject?reject.dataset.reject:restore.dataset.restore);
+    var action=approve?'approve':(reject?'reject':'restore');
     var kind=button.dataset.kind||'single';
-    var choice=await askPaymentAction(action,kind);if(!choice.confirmed)return;
+    var payment=(window.__saiPaymentRows||[]).find(function(row){return row.id===id;});
+    var choice=await askPaymentAction(action,kind,payment||{amount:0});if(!choice.confirmed)return;
     var note=choice.note||'';
-    button.disabled=true;button.textContent=action==='approve'?'Approving…':'Rejecting…';
+    button.disabled=true;button.textContent=action==='reject'?'Rejecting…':'Approving…';
     var base=kind==='cart'?'/api/admin/cart-payment-orders/':'/api/admin/payment-requests/';
-    try{await api(base+encodeURIComponent(id)+'/'+action,{method:'POST',body:JSON.stringify({note:note})});notice(action==='approve'?'Payment approved and files unlocked.':'Payment rejected.',false);await loadPayments();}
+    try{var endpoint=action==='restore'?'approve':action;await api(base+encodeURIComponent(id)+'/'+endpoint,{method:'POST',body:JSON.stringify({note:note,receivedAmount:choice.receivedAmount})});notice(action==='reject'?'Payment rejected and customer notified to pay again.':'Payment approved and files unlocked.',false);await loadPayments();}
     catch(error){notice(error.message,true);button.disabled=false;}
   });
 

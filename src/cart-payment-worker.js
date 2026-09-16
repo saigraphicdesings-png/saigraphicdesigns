@@ -93,6 +93,10 @@ async function ensureCartPaymentSchema(env) {
     env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_cart_order_items_product
       ON cart_payment_order_items(product_id, order_id)`)
   ]);
+  const columns = await env.DB.prepare("PRAGMA table_info(cart_payment_orders)").all();
+  if (!(columns.results || []).some((column) => column.name === "received_amount")) {
+    await env.DB.prepare("ALTER TABLE cart_payment_orders ADD COLUMN received_amount REAL").run();
+  }
 }
 
 function validProductId(value) {
@@ -194,6 +198,31 @@ async function findMatchingPendingOrder(env, customerId, payableItems) {
   return null;
 }
 
+async function matchingRejectedCredit(env, customerId, payableItems) {
+  if (!payableItems.length) return 0;
+  const target = itemSignature(payableItems);
+  const orders = await env.DB.prepare(`
+    SELECT id, received_amount
+    FROM cart_payment_orders
+    WHERE customer_id = ? AND status = 'rejected' AND received_amount > 0
+    ORDER BY created_at ASC
+    LIMIT 40
+  `).bind(customerId).all();
+
+  let credit = 0;
+  for (const order of orders.results || []) {
+    const rows = await env.DB.prepare(`
+      SELECT product_id, qty
+      FROM cart_payment_order_items
+      WHERE order_id = ?
+      ORDER BY product_id
+    `).bind(order.id).all();
+    const signature = itemSignature((rows.results || []).map((row) => ({ id: row.product_id, qty: Number(row.qty) || 1 })));
+    if (signature === target) credit += Number(order.received_amount) || 0;
+  }
+  return credit;
+}
+
 async function buildCartQuote(env, customer, rawItems) {
   await ensureCartPaymentSchema(env);
   const requested = normalizeCartItems(rawItems);
@@ -223,10 +252,12 @@ async function buildCartQuote(env, customer, rawItems) {
   }
 
   const payableItems = items.filter((item) => !item.unlocked);
-  const total = payableItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const fullTotal = payableItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const creditAmount = Math.min(fullTotal, await matchingRejectedCredit(env, customer.id, payableItems));
+  const total = Math.max(0, fullTotal - creditAmount);
   const pendingOrder = await findMatchingPendingOrder(env, customer.id, payableItems);
 
-  return { items, payableItems, total, pendingOrder };
+  return { items, payableItems, total, fullTotal, creditAmount, pendingOrder };
 }
 
 async function cartQuote(request, env) {
@@ -241,6 +272,8 @@ async function cartQuote(request, env) {
     items: quote.items,
     payableItems: quote.payableItems,
     total: quote.total,
+    fullTotal: quote.fullTotal,
+    creditAmount: quote.creditAmount,
     allUnlocked: quote.items.length > 0 && quote.payableItems.length === 0,
     pendingOrder: quote.pendingOrder
   });
@@ -330,7 +363,7 @@ async function adminCartOrders(request, env) {
   await ensureCartPaymentSchema(env);
 
   const orders = await env.DB.prepare(`
-    SELECT o.id, o.customer_id, o.amount, o.utr, o.status, o.created_at, o.reviewed_at, o.admin_note,
+    SELECT o.id, o.customer_id, o.amount, o.received_amount, o.utr, o.status, o.created_at, o.reviewed_at, o.admin_note,
            c.name AS customer_name, c.email AS customer_email, c.phone AS customer_phone
     FROM cart_payment_orders o
     LEFT JOIN customer_accounts c ON c.id = o.customer_id
@@ -355,6 +388,7 @@ async function adminCartOrders(request, env) {
       customerEmail: order.customer_email || "",
       customerPhone: order.customer_phone || "",
       amount: Number(order.amount) || 0,
+      receivedAmount: order.received_amount == null ? null : Number(order.received_amount),
       utr: order.utr,
       status: order.status,
       createdAt: order.created_at,
@@ -389,18 +423,24 @@ async function reviewCartOrder(request, env, url, status) {
   let body = {};
   try { body = await request.json(); } catch (_) {}
   const note = String(body.note || "").trim().slice(0, 300);
+  let receivedAmount = null;
+  if (status === "rejected" && body.receivedAmount !== null && body.receivedAmount !== undefined && String(body.receivedAmount).trim() !== "") {
+    receivedAmount = Number(body.receivedAmount);
+    if (!Number.isFinite(receivedAmount) || receivedAmount < 0) return json({ error: "Received amount must be a valid positive number." }, 400);
+  }
 
-  const order = await env.DB.prepare("SELECT id, status FROM cart_payment_orders WHERE id = ? LIMIT 1").bind(id).first();
+  const order = await env.DB.prepare("SELECT id, amount, status FROM cart_payment_orders WHERE id = ? LIMIT 1").bind(id).first();
   if (!order) return json({ error: "Cart payment order not found." }, 404);
-  if (order.status !== "pending") return json({ error: `This order is already ${order.status}.` }, 409);
+  if (order.status === "approved") return json({ error: "This order is already approved." }, 409);
+  if (receivedAmount !== null && receivedAmount >= Number(order.amount)) return json({ error: "Received amount must be less than the amount due. Approve the payment when it is fully received." }, 400);
 
   await env.DB.prepare(`
     UPDATE cart_payment_orders
-    SET status = ?, reviewed_at = CURRENT_TIMESTAMP, reviewed_by = 'admin', admin_note = ?
-    WHERE id = ? AND status = 'pending'
-  `).bind(status, note, id).run();
+    SET status = ?, reviewed_at = CURRENT_TIMESTAMP, reviewed_by = 'admin', admin_note = ?, received_amount = ?
+    WHERE id = ? AND status <> 'approved'
+  `).bind(status, note, receivedAmount, id).run();
 
-  return json({ success: true, id, status });
+  return json({ success: true, id, status, receivedAmount });
 }
 
 export default {

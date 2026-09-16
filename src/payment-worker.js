@@ -70,6 +70,10 @@ async function ensurePaymentSchema(env) {
     env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_payment_requests_status
       ON payment_requests(status, created_at)`)
   ]);
+  const columns = await env.DB.prepare("PRAGMA table_info(payment_requests)").all();
+  if (!(columns.results || []).some((column) => column.name === "received_amount")) {
+    await env.DB.prepare("ALTER TABLE payment_requests ADD COLUMN received_amount REAL").run();
+  }
 }
 
 async function sessionCustomer(request, env) {
@@ -151,7 +155,7 @@ async function paymentStatus(request, env, url) {
   if (!product) return json({ error: "Paid product not found." }, 404);
 
   const requestRow = await env.DB.prepare(`
-    SELECT id, utr, status, amount, created_at, reviewed_at, admin_note
+    SELECT id, utr, status, amount, received_amount, created_at, reviewed_at, admin_note
     FROM payment_requests
     WHERE customer_id = ? AND product_id = ?
     ORDER BY CASE status WHEN 'approved' THEN 0 WHEN 'pending' THEN 1 ELSE 2 END, created_at DESC
@@ -165,6 +169,7 @@ async function paymentStatus(request, env, url) {
       utr: requestRow.utr,
       status: requestRow.status,
       amount: Number(requestRow.amount) || 0,
+      receivedAmount: requestRow.received_amount == null ? null : Number(requestRow.received_amount),
       createdAt: requestRow.created_at,
       reviewedAt: requestRow.reviewed_at || "",
       adminNote: requestRow.admin_note || ""
@@ -272,7 +277,7 @@ async function adminPaymentRequests(request, env) {
   await ensurePaymentSchema(env);
 
   const result = await env.DB.prepare(`
-    SELECT pr.id, pr.customer_id, pr.product_id, pr.product_name, pr.amount, pr.utr,
+    SELECT pr.id, pr.customer_id, pr.product_id, pr.product_name, pr.amount, pr.received_amount, pr.utr,
            pr.status, pr.created_at, pr.reviewed_at, pr.admin_note,
            c.name AS customer_name, c.email AS customer_email, c.phone AS customer_phone
     FROM payment_requests pr
@@ -291,6 +296,7 @@ async function adminPaymentRequests(request, env) {
     productId: row.product_id,
     productName: row.product_name,
     amount: Number(row.amount) || 0,
+    receivedAmount: row.received_amount == null ? null : Number(row.received_amount),
     utr: row.utr,
     status: row.status,
     createdAt: row.created_at,
@@ -318,16 +324,22 @@ async function reviewPayment(request, env, url, status) {
   let input = {};
   try { input = await request.json(); } catch (_) {}
   const note = String(input.note || "").trim().slice(0, 300);
+  let receivedAmount = null;
+  if (status === "rejected" && input.receivedAmount !== null && input.receivedAmount !== undefined && String(input.receivedAmount).trim() !== "") {
+    receivedAmount = Number(input.receivedAmount);
+    if (!Number.isFinite(receivedAmount) || receivedAmount < 0) return json({ error: "Received amount must be a valid positive number." }, 400);
+  }
 
-  const current = await env.DB.prepare("SELECT id, customer_id, product_id, status FROM payment_requests WHERE id = ? LIMIT 1")
+  const current = await env.DB.prepare("SELECT id, customer_id, product_id, amount, status FROM payment_requests WHERE id = ? LIMIT 1")
     .bind(id).first();
   if (!current) return json({ error: "Payment request not found." }, 404);
+  if (receivedAmount !== null && receivedAmount >= Number(current.amount)) return json({ error: "Received amount must be less than the amount due. Approve the payment when it is fully received." }, 400);
 
   await env.DB.prepare(`
     UPDATE payment_requests
-    SET status = ?, reviewed_at = CURRENT_TIMESTAMP, reviewed_by = 'admin', admin_note = ?
+    SET status = ?, reviewed_at = CURRENT_TIMESTAMP, reviewed_by = 'admin', admin_note = ?, received_amount = ?
     WHERE id = ?
-  `).bind(status, note, id).run();
+  `).bind(status, note, receivedAmount, id).run();
 
   if (status === "approved") {
     await env.DB.prepare(`
@@ -339,7 +351,7 @@ async function reviewPayment(request, env, url, status) {
     `).bind(current.customer_id, current.product_id, id).run();
   }
 
-  return json({ success: true, id, status });
+  return json({ success: true, id, status, receivedAmount });
 }
 
 export default {

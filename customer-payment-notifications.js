@@ -243,8 +243,8 @@
     actions.className = 'sai-customer-notice-actions';
     var open = document.createElement('a');
     open.className = 'sai-customer-notice-open';
-    open.href = item.linkUrl || (rejected ? '/contact.html' : '/shop.html');
-    open.textContent = rejected ? 'Contact Us' : 'Open Unlocked Files';
+    open.href = item.linkUrl || '/shop.html';
+    open.textContent = rejected ? 'Pay Again' : 'Open Unlocked Files';
     open.addEventListener('click', function () {
       markRead(item.id);
       setLocalRead(item.id);
