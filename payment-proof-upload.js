@@ -22,12 +22,12 @@
       '<input id="saiPayUtr" type="hidden" value="">'+
       '<div class="sai-proof-drop">'+
         '<strong>Upload Payment Screenshot</strong>'+
-        '<small>Upload the completed GPay / PhonePe / Paytm / UPI payment screen. We will automatically detect the UTR and verify the paid amount.</small>'+
+        '<small>Upload the completed GPay / PhonePe / Paytm / UPI payment screen. It will be sent directly to Sai Graphic Designs for manual review.</small>'+
         '<input class="sai-proof-input" id="saiPayProof" type="file" accept="image/png,image/jpeg,image/webp" required>'+
         '<img class="sai-proof-preview" id="saiProofPreview" alt="Payment screenshot preview">'+
       '</div>'+
-      '<div class="sai-proof-note"><span>✓</span><span>No UTR typing needed. The screenshot is checked automatically, then sent to Sai Graphic Designs for final approval.</span></div>'+
-      '<button class="sai-proof-submit" id="saiPayProofSubmit" type="submit">Verify Screenshot & Submit Payment</button>'+
+      '<div class="sai-proof-note"><span>✓</span><span>No UTR typing needed. Your screenshot is sent directly for manual approval.</span></div>'+
+      '<button class="sai-proof-submit" id="saiPayProofSubmit" type="submit">Send Screenshot for Approval</button>'+
       '<p class="sai-pay-message" id="saiPayMessage" role="status"></p>';
   }
 
@@ -145,8 +145,8 @@
 
     try{
       var uploadFile=await optimizeImage(file);
-      button.textContent='Reading Screenshot…';
-      setMessage('Detecting UTR and checking the paid amount…');
+      button.textContent='Sending Screenshot…';
+      setMessage('Sending your payment screenshot to Sai Graphic Designs for manual review…');
 
       var body=new FormData();
       body.append('items',JSON.stringify(items));
@@ -165,25 +165,23 @@
         setMessage(data.error||'Please login before submitting payment.','error');
         return;
       }
-      if(!response.ok)throw new Error(data.error||'Unable to verify payment screenshot.');
+      if(!response.ok)throw new Error(data.error||'Unable to send payment screenshot.');
 
-      var utr=String(data.detectedUtr||'');
-      var amount=Number(data.detectedAmount)||0;
       var status=document.getElementById('saiPayStatus');
       if(status){
         status.className='sai-pay-status pending';
-        status.innerHTML='Screenshot verified. <strong>UTR '+utr+'</strong> · '+money(amount)+' matched. Waiting for admin approval.';
+        status.textContent='Payment screenshot sent successfully. Waiting for manual admin approval.';
       }
 
       form.dataset.saiProofState='success';
-      form.innerHTML='<input id="saiPayUtr" type="hidden" value="'+utr+'"><div class="sai-proof-result"><b>✓ UTR detected automatically:</b> '+utr+'<br><b>✓ Amount verified:</b> '+money(amount)+'<br>Your screenshot has been sent for approval. Purchased files will unlock after approval.</div>';
+      form.innerHTML='<div class="sai-proof-result"><b>✓ Payment screenshot sent.</b><br>Sai Graphic Designs will review it manually. Purchased files will unlock after approval.</div>';
       var upi=document.getElementById('saiUpiBox');if(upi)upi.hidden=true;
     }catch(error){
-      if(error&&error.name==='AbortError')setMessage('Verification is taking too long. Please tap the button once more.','error');
-      else setMessage(error.message||'Unable to verify payment screenshot.','error');
+      if(error&&error.name==='AbortError')setMessage('Upload is taking too long. Please tap the button once more.','error');
+      else setMessage(error.message||'Unable to send payment screenshot.','error');
     }finally{
       if(timer)clearTimeout(timer);
-      if(button&&button.isConnected){button.disabled=false;button.textContent='Verify Screenshot & Submit Payment';}
+      if(button&&button.isConnected){button.disabled=false;button.textContent='Send Screenshot for Approval';}
     }
   }
 

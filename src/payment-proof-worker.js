@@ -325,16 +325,13 @@ async function cartProofRequest(request, env, ctx) {
   if (quote.pendingOrder) return json({ error: "This cart payment is already waiting for admin approval.", pending: true, orderId: quote.pendingOrder.id }, 409);
   if (!(Number(quote.total) > 0)) return json({ error: "There is no payable amount in this cart." }, 409);
 
-  let detected;
-  try {
-    detected = await readPaymentProof(env, proof, quote.total);
-  } catch (error) {
-    return json({ error: error.message || "Unable to verify payment screenshot." }, Number(error.status) || 500);
-  }
+  // Screenshot verification is intentionally manual: the image is sent straight
+  // to the business Telegram account for review, without calling Gemini/AI.
+  const proofReference = `PROOF${crypto.randomUUID().replace(/-/g, "").toUpperCase()}`;
 
   const paymentResponse = await callCartWorker(request, env, ctx, "/api/payment/cart-request", {
     items,
-    utr: detected.utr
+    utr: proofReference
   });
   let payment = {};
   try { payment = await paymentResponse.clone().json(); } catch (_) {}
@@ -360,13 +357,12 @@ async function cartProofRequest(request, env, ctx) {
       const task = notifyPendingPayment(env, {
         kind: "cart",
         amount: Number(order?.amount) || Number(quote.total) || 0,
-        utr: order?.utr || detected.utr,
+        utr: order?.utr || proofReference,
         customerName: order?.customer_name || "Customer",
         items: (rows.results || []).map((item) => ({ name: item.product_name, qty: Number(item.qty) || 1 })),
         adminUrl,
         proofFile: proof,
-        proofVerified: true,
-        proofProvider: detected.provider
+        proofVerified: false
       }).catch((error) => console.error("Payment proof Telegram notification error:", error));
       if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(task);
       else await task;
@@ -377,12 +373,9 @@ async function cartProofRequest(request, env, ctx) {
 
   return json({
     ...payment,
-    detectedUtr: detected.utr,
-    detectedAmount: detected.amount,
-    amountVerified: true,
-    proofVerified: true,
-    provider: detected.provider,
-    message: "Payment screenshot verified and submitted. Your files will unlock after admin approval."
+    proofReference,
+    proofVerified: false,
+    message: "Payment screenshot sent to Sai Graphic Designs for manual approval. Your files will unlock after approval."
   }, 201);
 }
 
