@@ -2204,3 +2204,6 @@ footer {
         transition: none;
     }
 }
+
+/* Live paid-order availability */
+.payment-status-indicator{display:inline-flex;align-items:center;gap:9px;margin:4px 0 20px;padding:8px 13px;border:1px solid rgba(148,163,184,.28);border-radius:999px;background:rgba(255,255,255,.72);color:#334155;font-size:.84rem;font-weight:800;box-shadow:0 8px 20px rgba(15,23,42,.08);backdrop-filter:blur(12px)}.payment-status-dot{width:10px;height:10px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 4px rgba(148,163,184,.16)}.payment-status-indicator.is-online{border-color:rgba(34,197,94,.3);color:#087f3e}.payment-status-indicator.is-online .payment-status-dot{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.16),0 0 14px rgba(34,197,94,.82);animation:paymentPulse 1.6s ease-in-out infinite}.payment-status-indicator.is-offline{border-color:rgba(239,68,68,.29);color:#b4233b}.payment-status-indicator.is-offline .payment-status-dot{background:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.14),0 0 13px rgba(239,68,68,.72)}@keyframes paymentPulse{50%{transform:scale(.8);box-shadow:0 0 0 7px rgba(34,197,94,0),0 0 17px rgba(34,197,94,.9)}}
