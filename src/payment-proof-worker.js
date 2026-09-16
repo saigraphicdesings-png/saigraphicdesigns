@@ -16,6 +16,66 @@ function json(data, status = 200) {
   });
 }
 
+const siteModeSchema = `CREATE TABLE IF NOT EXISTS site_mode_settings (
+  id INTEGER PRIMARY KEY CHECK(id = 1),
+  manual_mode TEXT NOT NULL DEFAULT 'auto' CHECK(manual_mode IN ('auto','work','sleep')),
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+
+function isAdminAuthorized(request, env) {
+  const expected = String(env.ADMIN_TOKEN || "");
+  const authorization = request.headers.get("authorization") || "";
+  const supplied = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  if (!expected || supplied.length !== expected.length) return false;
+  let difference = 0;
+  for (let index = 0; index < expected.length; index += 1) {
+    difference |= supplied.charCodeAt(index) ^ expected.charCodeAt(index);
+  }
+  return difference === 0;
+}
+
+async function getSiteMode(env) {
+  if (!env.DB) throw Object.assign(new Error("Website settings are unavailable."), { status: 503 });
+  await env.DB.prepare(siteModeSchema).run();
+  await env.DB.prepare("INSERT OR IGNORE INTO site_mode_settings(id, manual_mode) VALUES(1, 'auto')").run();
+  const row = await env.DB.prepare("SELECT manual_mode, updated_at FROM site_mode_settings WHERE id = 1").first();
+  const manualMode = ["auto", "work", "sleep"].includes(row?.manual_mode) ? row.manual_mode : "auto";
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata", hour: "2-digit", hourCycle: "h23"
+  }).formatToParts(new Date());
+  const hour = Number(parts.find((part) => part.type === "hour")?.value || 0);
+  const scheduledWork = hour >= 8 && hour < 23;
+  const isWork = manualMode === "work" ? true : manualMode === "sleep" ? false : scheduledWork;
+  return {
+    isWork,
+    isSleep: !isWork,
+    manualMode,
+    schedule: { timezone: "Asia/Kolkata", start: "08:00", end: "23:00" },
+    source: manualMode === "auto" ? "schedule" : "admin",
+    updatedAt: row?.updated_at || ""
+  };
+}
+
+async function handleSiteMode(request, env, url) {
+  if (url.pathname === "/api/site-mode" && request.method === "GET") return json(await getSiteMode(env));
+  if (url.pathname !== "/api/admin/site-mode") return null;
+  if (!isAdminAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+  if (request.method === "GET") return json(await getSiteMode(env));
+  if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
+  let body = {};
+  try { body = await request.json(); } catch (_) { return json({ error: "Invalid request." }, 400); }
+  const mode = String(body.mode || "").toLowerCase();
+  if (!["auto", "work", "sleep"].includes(mode)) return json({ error: "Choose Auto, Work or Sleep mode." }, 400);
+  await env.DB.prepare(siteModeSchema).run();
+  await env.DB.prepare("INSERT OR IGNORE INTO site_mode_settings(id, manual_mode) VALUES(1, 'auto')").run();
+  await env.DB.prepare("UPDATE site_mode_settings SET manual_mode = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 1").bind(mode).run();
+  return json({ success: true, ...(await getSiteMode(env)) });
+}
+
+function isPaidPaymentRoute(url, request) {
+  return request.method === "POST" && url.pathname.startsWith("/api/payment/");
+}
+
 function cleanUtr(value) {
   return String(value || "")
     .toUpperCase()
@@ -382,6 +442,20 @@ async function cartProofRequest(request, env, ctx) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    const modeResponse = await handleSiteMode(request, env, url);
+    if (modeResponse) return modeResponse;
+
+    if (isPaidPaymentRoute(url, request)) {
+      const siteMode = await getSiteMode(env);
+      if (siteMode.isSleep) {
+        return json({
+          error: "Payments are unavailable while Sai Graphic Designs is in Sleep mode. Please return during working hours: 8:00 AM–11:00 PM (India time).",
+          code: "SITE_SLEEP_MODE",
+          siteMode
+        }, 503);
+      }
+    }
+
     if (url.pathname === "/api/payment/cart-proof-request" && request.method === "POST") {
       return cartProofRequest(request, env, ctx);
     }
