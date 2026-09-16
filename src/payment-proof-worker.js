@@ -19,6 +19,8 @@ function json(data, status = 200) {
 const siteModeSchema = `CREATE TABLE IF NOT EXISTS site_mode_settings (
   id INTEGER PRIMARY KEY CHECK(id = 1),
   manual_mode TEXT NOT NULL DEFAULT 'auto' CHECK(manual_mode IN ('auto','work','sleep')),
+  start_time TEXT NOT NULL DEFAULT '08:00',
+  end_time TEXT NOT NULL DEFAULT '23:00',
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`;
 
@@ -28,32 +30,43 @@ function isAdminAuthorized(request, env) {
   const supplied = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
   if (!expected || supplied.length !== expected.length) return false;
   let difference = 0;
-  for (let index = 0; index < expected.length; index += 1) {
-    difference |= supplied.charCodeAt(index) ^ expected.charCodeAt(index);
-  }
+  for (let index = 0; index < expected.length; index += 1) difference |= supplied.charCodeAt(index) ^ expected.charCodeAt(index);
   return difference === 0;
 }
 
-async function getSiteMode(env) {
+function validScheduleTime(value) {
+  return /^([01]\d|2[0-3]):[0-5]\d$/.test(String(value || ""));
+}
+
+function minutesForTime(value) {
+  const [hour, minute] = String(value).split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+async function ensureSiteModeSettings(env) {
   if (!env.DB) throw Object.assign(new Error("Website settings are unavailable."), { status: 503 });
   await env.DB.prepare(siteModeSchema).run();
-  await env.DB.prepare("INSERT OR IGNORE INTO site_mode_settings(id, manual_mode) VALUES(1, 'auto')").run();
-  const row = await env.DB.prepare("SELECT manual_mode, updated_at FROM site_mode_settings WHERE id = 1").first();
+  for (const statement of [
+    "ALTER TABLE site_mode_settings ADD COLUMN start_time TEXT NOT NULL DEFAULT '08:00'",
+    "ALTER TABLE site_mode_settings ADD COLUMN end_time TEXT NOT NULL DEFAULT '23:00'"
+  ]) {
+    try { await env.DB.prepare(statement).run(); } catch (_) {}
+  }
+  await env.DB.prepare("INSERT OR IGNORE INTO site_mode_settings(id, manual_mode, start_time, end_time) VALUES(1, 'auto', '08:00', '23:00')").run();
+}
+
+async function getSiteMode(env) {
+  await ensureSiteModeSettings(env);
+  const row = await env.DB.prepare("SELECT manual_mode, start_time, end_time, updated_at FROM site_mode_settings WHERE id = 1").first();
   const manualMode = ["auto", "work", "sleep"].includes(row?.manual_mode) ? row.manual_mode : "auto";
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Kolkata", hour: "2-digit", hourCycle: "h23"
-  }).formatToParts(new Date());
-  const hour = Number(parts.find((part) => part.type === "hour")?.value || 0);
-  const scheduledWork = hour >= 8 && hour < 23;
+  const startTime = validScheduleTime(row?.start_time) ? row.start_time : "08:00";
+  const endTime = validScheduleTime(row?.end_time) ? row.end_time : "23:00";
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+  const now = Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
+  const start = minutesForTime(startTime), end = minutesForTime(endTime);
+  const scheduledWork = start < end ? now >= start && now < end : now >= start || now < end;
   const isWork = manualMode === "work" ? true : manualMode === "sleep" ? false : scheduledWork;
-  return {
-    isWork,
-    isSleep: !isWork,
-    manualMode,
-    schedule: { timezone: "Asia/Kolkata", start: "08:00", end: "23:00" },
-    source: manualMode === "auto" ? "schedule" : "admin",
-    updatedAt: row?.updated_at || ""
-  };
+  return { isWork, isSleep: !isWork, manualMode, schedule: { timezone: "Asia/Kolkata", start: startTime, end: endTime }, source: manualMode === "auto" ? "schedule" : "admin", updatedAt: row?.updated_at || "" };
 }
 
 async function handleSiteMode(request, env, url) {
@@ -64,11 +77,22 @@ async function handleSiteMode(request, env, url) {
   if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
   let body = {};
   try { body = await request.json(); } catch (_) { return json({ error: "Invalid request." }, 400); }
-  const mode = String(body.mode || "").toLowerCase();
-  if (!["auto", "work", "sleep"].includes(mode)) return json({ error: "Choose Auto, Work or Sleep mode." }, 400);
-  await env.DB.prepare(siteModeSchema).run();
-  await env.DB.prepare("INSERT OR IGNORE INTO site_mode_settings(id, manual_mode) VALUES(1, 'auto')").run();
-  await env.DB.prepare("UPDATE site_mode_settings SET manual_mode = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 1").bind(mode).run();
+  const mode = body.mode === undefined ? null : String(body.mode || "").toLowerCase();
+  if (mode !== null && !["auto", "work", "sleep"].includes(mode)) return json({ error: "Choose Auto, Work or Sleep mode." }, 400);
+  const hasStart = body.startTime !== undefined, hasEnd = body.endTime !== undefined;
+  if (hasStart !== hasEnd) return json({ error: "Enter both start and end times." }, 400);
+  let startTime = null, endTime = null;
+  if (hasStart) {
+    startTime = String(body.startTime || "");
+    endTime = String(body.endTime || "");
+    if (!validScheduleTime(startTime) || !validScheduleTime(endTime)) return json({ error: "Choose valid start and end times." }, 400);
+    if (startTime === endTime) return json({ error: "Start and end times must be different." }, 400);
+  }
+  if (mode === null && !hasStart) return json({ error: "Choose a mode or update the schedule." }, 400);
+  await ensureSiteModeSettings(env);
+  const current = await env.DB.prepare("SELECT manual_mode, start_time, end_time FROM site_mode_settings WHERE id = 1").first();
+  await env.DB.prepare("UPDATE site_mode_settings SET manual_mode = ?, start_time = ?, end_time = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 1")
+    .bind(mode === null ? current.manual_mode : mode, startTime || current.start_time || "08:00", endTime || current.end_time || "23:00").run();
   return json({ success: true, ...(await getSiteMode(env)) });
 }
 
@@ -449,7 +473,7 @@ export default {
       const siteMode = await getSiteMode(env);
       if (siteMode.isSleep) {
         return json({
-          error: "Payments are unavailable while Sai Graphic Designs is in Sleep mode. Please return during working hours: 8:00 AM–11:00 PM (India time).",
+          error: `Payments are unavailable while Sai Graphic Designs is in Sleep mode. Please return during working hours: ${siteMode.schedule.start}–${siteMode.schedule.end} (India time).`,
           code: "SITE_SLEEP_MODE",
           siteMode
         }, 503);
