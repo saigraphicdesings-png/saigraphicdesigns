@@ -155,13 +155,13 @@
     catch(error){notice(error.message,true);button.disabled=false;}
   });
 
-  var paymentTest=document.getElementById('paymentTestNotification');
-  if(paymentTest)paymentTest.addEventListener('click',async function(){
-    paymentTest.disabled=true;var original=paymentTest.textContent;paymentTest.textContent='Sending…';
-    try{await api('/api/admin/payment-test-notification',{method:'POST'});notice('✓ Payment test notification sent to Telegram.',false);}
-    catch(error){notice(error.message||'Could not send payment test notification.',true);}
+  window.saiPaymentTestNotification=async function(){
+    var paymentTest=document.getElementById('paymentTestNotification'),message=document.getElementById('paymentTestMessage');if(!paymentTest||paymentTest.disabled)return;
+    paymentTest.disabled=true;var original=paymentTest.textContent;paymentTest.textContent='Sending…';if(message){message.textContent='Checking payment Telegram…';message.style.color='#075891';}
+    try{await api('/api/admin/payment-test-notification',{method:'POST'});if(message){message.textContent='✓ Payment test notification sent.';message.style.color='#047857';}notice('✓ Payment test notification sent to Telegram.',false);}
+    catch(error){if(message){message.textContent=error.message||'Could not send payment test notification.';message.style.color='#b91c1c';}notice(error.message||'Could not send payment test notification.',true);}
     finally{paymentTest.disabled=false;paymentTest.textContent=original;}
-  });
+  };
   document.getElementById('payRefresh').addEventListener('click',loadAll);
   document.getElementById('payLogout').addEventListener('click',function(){sessionStorage.removeItem(KEY);showLogin('');});
 
