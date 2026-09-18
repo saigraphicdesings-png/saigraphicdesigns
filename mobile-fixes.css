@@ -675,3 +675,119 @@ svg {
     transition-duration: .01ms !important;
   }
 }
+
+
+/* =========================================================
+   FINAL MOBILE HEADER — LOGO / CART / MENU ONLY
+   Navigation + account links live inside the opened menu.
+========================================================= */
+@media (max-width: 900px) {
+  .site-header,
+  .site-header .nav-container {
+    overflow: visible !important;
+  }
+
+  .site-header .nav-container {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .site-header .logo {
+    order: 1 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Closed mobile header: never show account / CTA controls here. */
+  .site-header .account-header-link,
+  .site-header .nav-actions .btn-header {
+    display: none !important;
+  }
+
+  .site-header .nav-actions {
+    order: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    gap: 8px !important;
+  }
+
+  .site-header .nav-actions .cart-icon-btn {
+    display: inline-flex !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header .mobile-menu-btn {
+    order: 3 !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    margin: 0 0 0 8px !important;
+    display: inline-grid !important;
+    place-items: center !important;
+  }
+
+  /* Notification UI must not create a fourth control in the closed header. */
+  .site-header .sai-notification-wrap,
+  .sai-notification-wrap.sai-bell-mobile {
+    display: none !important;
+  }
+
+  /* Keep the dropdown anchored to the header and fully inside the viewport. */
+  .site-header .main-nav {
+    left: var(--mobile-gutter, 16px) !important;
+    right: var(--mobile-gutter, 16px) !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    top: calc(100% + 8px) !important;
+    max-height: calc(100dvh - 90px) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .site-header .main-nav .nav-link {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .site-header .main-nav .account-nav-link {
+    font-weight: 800 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .nav-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    gap: 6px !important;
+  }
+
+  .site-header .logo-name {
+    max-width: 150px !important;
+    font-size: .96rem !important;
+  }
+
+  .site-header .logo-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+
+  .site-header .nav-actions .cart-icon-btn,
+  .site-header .mobile-menu-btn {
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+  }
+}
