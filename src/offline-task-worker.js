@@ -8,6 +8,7 @@ const schema = `CREATE TABLE IF NOT EXISTS offline_customer_tasks (
   task_title TEXT NOT NULL,
   notes TEXT NOT NULL DEFAULT '',
   poster_dates TEXT NOT NULL DEFAULT '[]',
+  poster_reminders_sent TEXT NOT NULL DEFAULT '[]',
   end_date TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','completed','cancelled')),
   reminder_sent_at TEXT,
@@ -17,12 +18,14 @@ const schema = `CREATE TABLE IF NOT EXISTS offline_customer_tasks (
 async function ensure(env) {
   await env.DB.prepare(schema).run();
   try { await env.DB.prepare("ALTER TABLE offline_customer_tasks ADD COLUMN poster_dates TEXT NOT NULL DEFAULT '[]'").run(); } catch (_) {}
+  try { await env.DB.prepare("ALTER TABLE offline_customer_tasks ADD COLUMN poster_reminders_sent TEXT NOT NULL DEFAULT '[]'").run(); } catch (_) {}
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_offline_tasks_reminder ON offline_customer_tasks(status, end_date, reminder_sent_at)").run();
 }
 function clean(v, max) { return String(v || "").replace(/[\r\n\t]+/g," ").replace(/\s+/g," ").trim().slice(0,max); }
 function validDate(v) { return /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v+"T00:00:00Z")); }
 function posterDates(value) { try { const items=Array.isArray(value)?value:JSON.parse(value||"[]"); return Array.isArray(items)?items.map(item=>({date:clean(item?.date,10),headline:clean(item?.headline,160),content:clean(item?.content,1000)})).filter(item=>validDate(item.date)&&item.headline).slice(0,60):[]; } catch (_) { return []; } }
-function task(row) { return { id:row.id, customerName:row.customer_name, customerPhone:row.customer_phone||"", taskTitle:row.task_title, notes:row.notes||"", posterDates:posterDates(row.poster_dates), endDate:row.end_date, status:row.status, reminderSentAt:row.reminder_sent_at||"", createdAt:row.created_at, updatedAt:row.updated_at }; }
+function sentPosterReminders(value) { try { const dates=JSON.parse(value||"[]"); return Array.isArray(dates)?dates.filter(validDate):[]; } catch (_) { return []; } }
+function task(row) { return { id:row.id, customerName:row.customer_name, customerPhone:row.customer_phone||"", taskTitle:row.task_title, notes:row.notes||"", posterDates:posterDates(row.poster_dates), endDate:row.end_date, status:row.status, reminderSentAt:row.reminder_sent_at||"", posterRemindersSent:sentPosterReminders(row.poster_reminders_sent), createdAt:row.created_at, updatedAt:row.updated_at }; }
 async function body(request) {
   try { return await request.json(); } catch { throw Object.assign(new Error("Enter valid task details."), { status:400 }); }
 }
@@ -59,8 +62,9 @@ export async function handleTaskApi(request, env, url, authorized) {
     if(!current) return json({error:"Task not found."},404);
     const next=details({...task(current),...input});
     const status=["open","completed","cancelled"].includes(input.status)?input.status:current.status;
-    const resetReminder=next.endDate!==current.end_date || status==="open" && current.status!=="open";
-    await env.DB.prepare("UPDATE offline_customer_tasks SET customer_name=?,customer_phone=?,task_title=?,notes=?,poster_dates=?,end_date=?,status=?,reminder_sent_at=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(next.customerName,next.customerPhone,next.taskTitle,next.notes,JSON.stringify(next.posterDates),next.endDate,status,resetReminder?null:current.reminder_sent_at,id).run();
+    const previousDates=posterDates(current.poster_dates).map(item=>item.date), changedDates=next.posterDates.map(item=>item.date);
+    const sent=sentPosterReminders(current.poster_reminders_sent).filter(date=>changedDates.includes(date));
+    await env.DB.prepare("UPDATE offline_customer_tasks SET customer_name=?,customer_phone=?,task_title=?,notes=?,poster_dates=?,poster_reminders_sent=?,end_date=?,status=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(next.customerName,next.customerPhone,next.taskTitle,next.notes,JSON.stringify(next.posterDates),JSON.stringify(sent),next.endDate,status,id).run();
     const row=await env.DB.prepare("SELECT * FROM offline_customer_tasks WHERE id=?").bind(id).first();
     return json({task:task(row)});
   }
@@ -84,15 +88,20 @@ async function telegram(env,text) {
 export async function sendTaskDueReminders(env) {
   if(!env.DB) return {sent:0};
   await ensure(env);
-  const date=indiaDate();
-  const rows=await env.DB.prepare("SELECT * FROM offline_customer_tasks WHERE status='open' AND reminder_sent_at IS NULL AND date(end_date, '-1 day')=? ORDER BY end_date,created_at").bind(date).all();
+  const today=indiaDate(), rows=await env.DB.prepare("SELECT * FROM offline_customer_tasks WHERE status='open'").all();
   let sent=0;
   for(const row of rows.results||[]) {
-    const lines=["⏰ Sai Graphic Designs — Task due tomorrow","",`Task: ${row.task_title}`,`Customer: ${row.customer_name}`,`End date: ${row.end_date}`];
-    if(row.customer_phone) lines.push(`Phone: ${row.customer_phone}`);
-    if(row.notes) lines.push(`Notes: ${row.notes}`);
-    try { await telegram(env,lines.join("\n")); await env.DB.prepare("UPDATE offline_customer_tasks SET reminder_sent_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(row.id).run(); sent++; }
-    catch(error) { console.error("Task reminder failed:",error); }
+    const already=sentPosterReminders(row.poster_reminders_sent), dates=posterDates(row.poster_dates);
+    for(const poster of dates) {
+      const dueTomorrow=new Date(poster.date+"T00:00:00Z"); dueTomorrow.setUTCDate(dueTomorrow.getUTCDate()-1);
+      const reminderDate=dueTomorrow.toISOString().slice(0,10);
+      if(reminderDate!==today || already.includes(poster.date)) continue;
+      const lines=["🖼 Sai Graphic Designs — Poster due tomorrow","",`Poster: ${poster.headline}`,`Date: ${poster.date}`,`Customer: ${row.customer_name}`,`Task: ${row.task_title}`];
+      if(poster.content) lines.push(`Content: ${poster.content}`);
+      if(row.customer_phone) lines.push(`Phone: ${row.customer_phone}`);
+      try { await telegram(env,lines.join("\n")); already.push(poster.date); await env.DB.prepare("UPDATE offline_customer_tasks SET poster_reminders_sent=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(JSON.stringify(already),row.id).run(); sent++; }
+      catch(error) { console.error("Poster date reminder failed:",error); }
+    }
   }
   return {sent};
 }
