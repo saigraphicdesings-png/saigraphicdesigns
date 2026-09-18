@@ -472,11 +472,14 @@ $("resetBtn").addEventListener("click",reset);$("refreshBtn").addEventListener("
 function updateLinkProducts() {
   const select = $("linkProduct");
   const selected = select.value;
-  select.replaceChildren(new Option("Select a product", ""));
-  products.forEach(product => {
+  const linkedProducts = products.filter(product => String(product.downloadUrl || "").trim());
+  select.replaceChildren(new Option(linkedProducts.length ? "Select a Drive-linked product" : "No Drive-linked products", ""));
+  linkedProducts.forEach(product => {
     select.add(new Option(product.name + (product.active ? "" : " (Hidden)"), product.id));
   });
-  select.value = products.some(product => product.id === selected) ? selected : "";
+  select.value = linkedProducts.some(product => product.id === selected) ? selected : "";
+  $("copyLinkMessage").style.color = "#64748b";
+  $("copyLinkMessage").textContent = linkedProducts.length ? "" : "Add a Download URL to a product first.";
   updateProductLink();
 }
 function updateProductLink() {
