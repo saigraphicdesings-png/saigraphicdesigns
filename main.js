@@ -1123,85 +1123,91 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       5. MOBILE MENU
+       5. SHARED RESPONSIVE NAVIGATION
+       One menu behavior across every public page.
     ===================================================== */
 
-   document.addEventListener("DOMContentLoaded", function () {
+    function initMobileMenu() {
 
-    const mobileMenuToggle =
-        document.getElementById("mobileMenuToggle");
+        const mobileMenuToggle =
+            document.getElementById("mobileMenuBtn") ||
+            document.getElementById("mobileMenuToggle");
 
-    const mainNav =
-        document.getElementById("mainNav");
+        const mainNav =
+            document.getElementById("mainNav");
 
-    if (!mobileMenuToggle || !mainNav) {
-        return;
-    }
-
-    mobileMenuToggle.addEventListener("click", function () {
-
-        const isOpen =
-            mainNav.classList.toggle("mobile-open");
-
-        mobileMenuToggle.setAttribute(
-            "aria-expanded",
-            isOpen ? "true" : "false"
-        );
-
-        mobileMenuToggle.innerHTML =
-            isOpen ? "✕" : "☰";
-
-    });
-
-
-    /* Close menu when a link is clicked */
-
-    mainNav.querySelectorAll(".nav-link")
-        .forEach(function (link) {
-
-            link.addEventListener("click", function () {
-
-                mainNav.classList.remove(
-                    "mobile-open"
-                );
-
-                mobileMenuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                mobileMenuToggle.innerHTML = "☰";
-
-            });
-
-        });
-
-
-    /* Close when clicking outside */
-
-    document.addEventListener("click", function (event) {
-
-        if (
-            !mainNav.contains(event.target) &&
-            !mobileMenuToggle.contains(event.target)
-        ) {
-
-            mainNav.classList.remove(
-                "mobile-open"
-            );
-
-            mobileMenuToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-            mobileMenuToggle.innerHTML = "☰";
-
+        if (!mobileMenuToggle || !mainNav) {
+            return;
         }
 
-    });
+        /* Prevent duplicate initialization. */
+        if (mobileMenuToggle.dataset.menuInitialized === "true") {
+            return;
+        }
 
-});
+        mobileMenuToggle.dataset.menuInitialized = "true";
+
+        function closeMenu() {
+            mainNav.classList.remove("mobile-open", "mobile-menu-open");
+            document.body.classList.remove("mobile-nav-open");
+            mobileMenuToggle.setAttribute("aria-expanded", "false");
+            mobileMenuToggle.setAttribute("aria-label", "Open navigation menu");
+            mobileMenuToggle.innerHTML = "☰";
+        }
+
+        function openMenu() {
+            mainNav.classList.add("mobile-open", "mobile-menu-open");
+            document.body.classList.add("mobile-nav-open");
+            mobileMenuToggle.setAttribute("aria-expanded", "true");
+            mobileMenuToggle.setAttribute("aria-label", "Close navigation menu");
+            mobileMenuToggle.innerHTML = "✕";
+        }
+
+        mobileMenuToggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (mainNav.classList.contains("mobile-open")) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        mainNav.querySelectorAll(".nav-link").forEach(function (link) {
+            link.addEventListener("click", closeMenu);
+        });
+
+        document.addEventListener("click", function (event) {
+            if (
+                !mainNav.contains(event.target) &&
+                !mobileMenuToggle.contains(event.target)
+            ) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        });
+
+        /* Highlight the current page consistently on desktop + mobile. */
+        const currentPage =
+            window.location.pathname.split("/").pop() || "index.html";
+
+        mainNav.querySelectorAll(".nav-link").forEach(function (link) {
+            const linkPage =
+                link.getAttribute("href").split("/").pop().split("#")[0] ||
+                "index.html";
+
+            link.classList.toggle(
+                "active",
+                linkPage === currentPage
+            );
+        });
+    }
     /* =====================================================
        INITIALIZE EVERYTHING
     ===================================================== */
