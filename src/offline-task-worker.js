@@ -43,8 +43,8 @@ export async function handleTaskApi(request, env, url, authorized) {
   if(!env.DB) return json({error:"Task storage is unavailable."},503);
   await ensure(env);
   if(url.pathname === "/api/admin/tasks/test-notification" && request.method === "POST") {
-    try { await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n")); return json({success:true}); }
-    catch(error) { return json({error:"Could not send Telegram test notification. Check Telegram settings."},503); }
+    try { const sent=await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n")); const chat=sent?.result?.chat||{}; return json({success:true, recipient:String(chat.title||chat.username||chat.first_name||"Telegram chat").slice(0,80)}); }
+    catch(error) { return json({error:String(error?.message||"Could not send Telegram test notification.").slice(0,180)},503); }
   }
   const match=url.pathname.match(/^\/api\/admin\/tasks(?:\/([a-z0-9-]+))?$/);
   if(!match) return json({error:"Not found."},404);
@@ -88,7 +88,9 @@ async function telegram(env,text) {
   const token=String(env.TELEGRAM_BOT_TOKEN||"").trim(), chatId=String(env.TELEGRAM_CHAT_ID||"").trim();
   if(!token||!chatId) throw new Error("Telegram is not configured.");
   const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({chat_id:chatId,text,disable_web_page_preview:true})});
-  if(!r.ok) throw new Error("Telegram notification failed.");
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(`Telegram notification failed${data?.description ? `: ${String(data.description).slice(0,120)}` : "."}`);
+  return data;
 }
 export async function sendTaskDueReminders(env) {
   if(!env.DB) return {sent:0};
