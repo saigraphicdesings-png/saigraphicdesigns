@@ -1,3 +1,4 @@
+import { telegramWebhookSecret } from "./admin-mobile-notify.js";
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 }
@@ -43,7 +44,7 @@ export async function handleTaskApi(request, env, url, authorized) {
   if(!env.DB) return json({error:"Task storage is unavailable."},503);
   await ensure(env);
   if(url.pathname === "/api/admin/tasks/test-notification" && request.method === "POST") {
-    try { const sent=await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n")); const chat=sent?.result?.chat||{}; return json({success:true, recipient:String(chat.title||chat.username||chat.first_name||"Telegram chat").slice(0,80)}); }
+    try { await configureTelegramWebhook(env, url.origin); const sent=await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n")); const chat=sent?.result?.chat||{}; return json({success:true, recipient:String(chat.title||chat.username||chat.first_name||"Telegram chat").slice(0,80)}); }
     catch(error) { return json({error:String(error?.message||"Could not send Telegram test notification.").slice(0,180)},503); }
   }
   const match=url.pathname.match(/^\/api\/admin\/tasks(?:\/([a-z0-9-]+))?$/);
@@ -84,8 +85,16 @@ function indiaDate(now=new Date()) {
   const get=t=>pieces.find(p=>p.type===t)?.value||"";
   return `${get("year")}-${get("month")}-${get("day")}`;
 }
+async function configureTelegramWebhook(env, origin) {
+  const token=String(env.TELEGRAM_BOT_TOKEN||"").trim(); if(!token) throw new Error("Telegram bot token is not configured.");
+  const secret=await telegramWebhookSecret(env);
+  const r=await fetch(`https://api.telegram.org/bot${token}/setWebhook`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({url:new URL("/telegram-bot-webhook",origin).toString(),secret_token:secret,allowed_updates:["callback_query","message"],drop_pending_updates:false})});
+  if(!r.ok) throw new Error("Telegram webhook setup failed.");
+}
 async function telegram(env,text) {
-  const token=String(env.TELEGRAM_BOT_TOKEN||"").trim(), chatId=String(env.TELEGRAM_CHAT_ID||"").trim();
+  const token=String(env.TELEGRAM_BOT_TOKEN||"").trim();
+  let chatId=""; try { const row=await env.DB.prepare("SELECT chat_id FROM telegram_admin_settings WHERE id=1").first(); chatId=String(row?.chat_id||"").trim(); } catch (_) {}
+  chatId=chatId||String(env.TELEGRAM_CHAT_ID||"").trim();
   if(!token||!chatId) throw new Error("Telegram is not configured.");
   const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({chat_id:chatId,text,disable_web_page_preview:true})});
   const data=await r.json().catch(()=>({}));
