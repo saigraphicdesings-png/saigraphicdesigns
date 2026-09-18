@@ -1,6 +1,7 @@
 import baseWorker from "./telegram-webhook-worker.js";
 import cartWorker from "./cart-payment-worker.js";
 import { notifyPendingPayment } from "./admin-mobile-notify.js";
+import { handleTaskApi, sendTaskDueReminders } from "./offline-task-worker.js";
 
 let cachedGeminiModel = "";
 let cachedGeminiModelUntil = 0;
@@ -469,6 +470,9 @@ export default {
     const modeResponse = await handleSiteMode(request, env, url);
     if (modeResponse) return modeResponse;
 
+    const taskResponse = await handleTaskApi(request, env, url, isAdminAuthorized);
+    if (taskResponse) return taskResponse;
+
     if (isPaidPaymentRoute(url, request)) {
       const siteMode = await getSiteMode(env);
       if (siteMode.isSleep) {
@@ -484,5 +488,10 @@ export default {
       return cartProofRequest(request, env, ctx);
     }
     return baseWorker.fetch(request, env, ctx);
+  },
+  async scheduled(event, env, ctx) {
+    const job = sendTaskDueReminders(env).catch((error) => console.error("Offline task reminder job error:", error));
+    if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(job);
+    else await job;
   }
 };
