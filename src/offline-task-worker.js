@@ -31,7 +31,8 @@ function details(input) {
   if(!customerName) throw Object.assign(new Error("Enter the customer name."),{status:400});
   if(!taskTitle) throw Object.assign(new Error("Enter the task title."),{status:400});
   if(!validDate(endDate)) throw Object.assign(new Error("Choose a valid end date."),{status:400});
-  const dates=posterDates(input.posterDates);\n  return {customerName,customerPhone,taskTitle,notes,endDate,posterDates:dates};
+  const dates=posterDates(input.posterDates);
+  return {customerName,customerPhone,taskTitle,notes,endDate,posterDates:dates};
 }
 export async function handleTaskApi(request, env, url, authorized) {
   if(!url.pathname.startsWith("/api/admin/tasks")) return null;
