@@ -27,6 +27,6 @@
       "persist": true
     }
   },
-  "triggers": { "crons": ["30 3 * * *"] },
+  "triggers": { "crons": ["30 3,12 * * *"] },
   "compatibility_flags": ["nodejs_compat"]
 }
