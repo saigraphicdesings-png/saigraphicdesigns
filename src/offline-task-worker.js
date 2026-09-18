@@ -1,4 +1,4 @@
-import { telegramWebhookSecret } from "./admin-mobile-notify.js";
+import { taskTelegramWebhookSecret } from "./admin-mobile-notify.js";
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 }
@@ -86,14 +86,14 @@ function indiaDate(now=new Date()) {
   return `${get("year")}-${get("month")}-${get("day")}`;
 }
 async function configureTelegramWebhook(env, origin) {
-  const token=String(env.TELEGRAM_BOT_TOKEN||"").trim(); if(!token) throw new Error("Telegram bot token is not configured.");
-  const secret=await telegramWebhookSecret(env);
+  const token=String(env.TASK_TELEGRAM_BOT_TOKEN||"").trim(); if(!token) throw new Error("Telegram bot token is not configured.");
+  const secret=await taskTelegramWebhookSecret(env);
   const r=await fetch(`https://api.telegram.org/bot${token}/setWebhook`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({url:new URL("/telegram-bot-webhook",origin).toString(),secret_token:secret,allowed_updates:["callback_query","message"],drop_pending_updates:false})});
   if(!r.ok) throw new Error("Telegram webhook setup failed.");
 }
 async function telegram(env,text) {
-  const token=String(env.TELEGRAM_BOT_TOKEN||"").trim();
-  let chatId=""; try { const row=await env.DB.prepare("SELECT chat_id FROM telegram_admin_settings WHERE id=1").first(); chatId=String(row?.chat_id||"").trim(); } catch (_) {}
+  const token=String(env.TASK_TELEGRAM_BOT_TOKEN||"").trim();
+  let chatId=""; try { const row=await env.DB.prepare("SELECT chat_id FROM task_telegram_settings WHERE id=1").first(); chatId=String(row?.chat_id||"").trim(); } catch (_) {}
   chatId=chatId||String(env.TELEGRAM_CHAT_ID||"").trim();
   if(!token||!chatId) throw new Error("Telegram is not configured.");
   const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({chat_id:chatId,text,disable_web_page_preview:true})});
