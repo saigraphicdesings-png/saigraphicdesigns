@@ -158,6 +158,18 @@ async function handleTelegramWebhook(request, env) {
 
   let update = {};
   try { update = await request.json(); } catch (_) { return json({ ok: true }); }
+  const message = update.message;
+  if (message?.chat?.id && /^\/start(?:\s|$)/i.test(String(message.text || ""))) {
+    await env.DB.prepare("CREATE TABLE IF NOT EXISTS telegram_admin_settings (id INTEGER PRIMARY KEY CHECK(id=1), chat_id TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
+    await env.DB.prepare("INSERT OR IGNORE INTO telegram_admin_settings(id, chat_id) VALUES(1, ?)").bind(String(message.chat.id)).run();
+    const saved = await env.DB.prepare("SELECT chat_id FROM telegram_admin_settings WHERE id=1").first();
+    if (String(saved?.chat_id) === String(message.chat.id)) {
+      await telegramApi(env, "sendMessage", { chat_id: message.chat.id, text: "✅ Sai Graphic Designs notifications are connected. You will receive poster-date reminders here.", disable_web_page_preview: true });
+    } else {
+      await telegramApi(env, "sendMessage", { chat_id: message.chat.id, text: "⚠️ This bot is already connected to another admin chat.", disable_web_page_preview: true });
+    }
+    return json({ ok: true });
+  }
   const callback = update.callback_query;
   if (!callback?.id) return json({ ok: true });
 
