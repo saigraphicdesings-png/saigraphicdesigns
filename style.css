@@ -264,6 +264,33 @@ header,
 
 
 /* =========================================
+   CUSTOMER ACCOUNT BUTTON
+========================================= */
+
+.account-header-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 42px;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    color: var(--primary);
+    background: var(--white);
+    font-size: 0.86rem;
+    font-weight: 750;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.account-header-link:hover {
+    color: var(--white);
+    background: var(--primary);
+}
+
+/* =========================================
    CART BUTTON
 ========================================= */
 
