@@ -791,3 +791,54 @@ svg {
     height: 42px !important;
   }
 }
+
+
+/* Mobile header: remove the SG mark, keep the wordmark and notification bell. */
+@media (max-width: 900px) {
+  .site-header .logo-icon {
+    display: none !important;
+  }
+
+  .site-header .logo {
+    gap: 0 !important;
+  }
+
+  .site-header .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .site-header .sai-notification-wrap,
+  .site-header .sai-notification-wrap.sai-bell-mobile {
+    position: static !important;
+    display: flex !important;
+    order: 1 !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+  }
+
+  .site-header .sai-notification-bell {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .site-header .nav-actions .cart-icon-btn {
+    order: 2 !important;
+  }
+
+  .site-header .mobile-menu-btn {
+    order: 3 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .sai-notification-wrap,
+  .site-header .sai-notification-wrap.sai-bell-mobile,
+  .site-header .sai-notification-bell {
+    width: 42px !important;
+    height: 42px !important;
+    flex-basis: 42px !important;
+  }
+}
