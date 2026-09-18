@@ -4,7 +4,7 @@
     const header = document.querySelector(".admin-header");
     if (!header) return;
     const file = location.pathname.split("/").pop() || "";
-    const active = file === "admin-customers.html" ? "customers" : file === "admin-payments.html" ? "payments" : file === "admin-analytics.html" ? "analytics" : "";
+    const active = file === "admin-customers.html" ? "customers" : file === "admin-payments.html" ? "payments" : file === "admin-analytics.html" ? "analytics" : file === "admin-tasks.html" ? "tasks" : "";
     const navItem = (key, href, icon, label) => `<a class="${active === key ? "nav-active" : ""}" href="${href}">${icon} <span>${label}</span></a>`;
     document.body.classList.add("admin-subpage");
     header.innerHTML = `
@@ -14,6 +14,7 @@
         ${navItem("products", "admin.html#productForm", "▣", "Products")}
         <p class="nav-label">Management</p>
         ${navItem("customers", "admin-customers.html", "♙", "Customers")}
+        ${navItem("tasks", "admin-tasks.html", "✓", "Task Management")}
         ${navItem("payments", "admin-payments.html", "₹", "Payments")}
         ${navItem("analytics", "admin-analytics.html", "↗", "Analytics Report")}
         ${navItem("tools", "admin.html#mockupTitle", "✦", "Design tools")}
