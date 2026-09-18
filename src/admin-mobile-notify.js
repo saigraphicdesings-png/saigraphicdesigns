@@ -42,7 +42,7 @@ async function ensureTelegramWebhook(env, adminUrl, token) {
     body: JSON.stringify({
       url: webhookUrl,
       secret_token: secret,
-      allowed_updates: ["callback_query"],
+      allowed_updates: ["callback_query", "message"],
       drop_pending_updates: false
     })
   });
