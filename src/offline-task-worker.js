@@ -95,7 +95,8 @@ async function telegram(env,text) {
   const token=String(env.TASK_TELEGRAM_BOT_TOKEN||"").trim();
   let chatId=""; try { const row=await env.DB.prepare("SELECT chat_id FROM task_telegram_settings WHERE id=1").first(); chatId=String(row?.chat_id||"").trim(); } catch (_) {}
   chatId=chatId||String(env.TELEGRAM_CHAT_ID||"").trim();
-  if(!token||!chatId) throw new Error("Telegram is not configured.");
+  if(!token) throw new Error("TASK_TELEGRAM_BOT_TOKEN is not configured in Cloudflare.");
+  if(!chatId) throw new Error("Task bot is ready. Now open the new Telegram bot, send /start, then click Send Test Notification again.");
   const r=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({chat_id:chatId,text,disable_web_page_preview:true})});
   const data=await r.json().catch(()=>({}));
   if(!r.ok) throw new Error(`Telegram notification failed${data?.description ? `: ${String(data.description).slice(0,120)}` : "."}`);
