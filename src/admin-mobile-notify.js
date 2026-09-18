@@ -30,6 +30,13 @@ export async function telegramWebhookSecret(env) {
   return `sg_${base64Url(digest)}`;
 }
 
+export async function taskTelegramWebhookSecret(env) {
+  const token = String(env.TASK_TELEGRAM_BOT_TOKEN || "").trim();
+  if (!token) return "";
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  return `task_${base64Url(digest)}`;
+}
+
 async function ensureTelegramWebhook(env, adminUrl, token) {
   if (!adminUrl || !token) return;
   const webhookUrl = new URL("/telegram-bot-webhook", adminUrl).toString();
