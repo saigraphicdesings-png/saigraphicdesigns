@@ -473,6 +473,20 @@ export default {
     const taskResponse = await handleTaskApi(request, env, url, isAdminAuthorized);
     if (taskResponse) return taskResponse;
 
+    if (url.pathname === "/api/admin/payment-test-notification" && request.method === "POST") {
+      if (!isAdminAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+      try {
+        const result = await notifyPendingPayment(env, {
+          kind: "single", amount: 99, utr: "TESTPAY12345", customerName: "Test Customer",
+          items: [{ name: "Test Payment Notification", qty: 1 }], adminUrl: new URL("/admin-payments.html", request.url).toString(), actions: false
+        });
+        if (!result?.sent) return json({ error: "Payment Telegram bot is not configured." }, 503);
+        return json({ success: true });
+      } catch (error) {
+        return json({ error: String(error?.message || "Could not send payment test notification.").slice(0, 180) }, 503);
+      }
+    }
+
     if (isPaidPaymentRoute(url, request)) {
       const siteMode = await getSiteMode(env);
       if (siteMode.isSleep) {
