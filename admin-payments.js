@@ -155,6 +155,13 @@
     catch(error){notice(error.message,true);button.disabled=false;}
   });
 
+  var paymentTest=document.getElementById('paymentTestNotification');
+  if(paymentTest)paymentTest.addEventListener('click',async function(){
+    paymentTest.disabled=true;var original=paymentTest.textContent;paymentTest.textContent='Sending…';
+    try{await api('/api/admin/payment-test-notification',{method:'POST'});notice('✓ Payment test notification sent to Telegram.',false);}
+    catch(error){notice(error.message||'Could not send payment test notification.',true);}
+    finally{paymentTest.disabled=false;paymentTest.textContent=original;}
+  });
   document.getElementById('payRefresh').addEventListener('click',loadAll);
   document.getElementById('payLogout').addEventListener('click',function(){sessionStorage.removeItem(KEY);showLogin('');});
 
