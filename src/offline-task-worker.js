@@ -24,7 +24,7 @@ async function ensure(env) {
 function clean(v, max) { return String(v || "").replace(/[\r\n\t]+/g," ").replace(/\s+/g," ").trim().slice(0,max); }
 function validDate(v) { return /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v+"T00:00:00Z")); }
 function posterDates(value) { try { const items=Array.isArray(value)?value:JSON.parse(value||"[]"); return Array.isArray(items)?items.map(item=>({date:clean(item?.date,10),headline:clean(item?.headline,160),content:clean(item?.content,1000)})).filter(item=>validDate(item.date)&&item.headline).slice(0,60):[]; } catch (_) { return []; } }
-function sentPosterReminders(value) { try { const dates=JSON.parse(value||"[]"); return Array.isArray(dates)?dates.filter(validDate):[]; } catch (_) { return []; } }
+function sentPosterReminders(value) { try { const entries=JSON.parse(value||"[]"); return Array.isArray(entries)?entries.filter(item=>/^\\d{4}-\\d{2}-\\d{2}:(morning|evening)$/.test(String(item))):[]; } catch (_) { return []; } }
 function task(row) { return { id:row.id, customerName:row.customer_name, customerPhone:row.customer_phone||"", taskTitle:row.task_title, notes:row.notes||"", posterDates:posterDates(row.poster_dates), endDate:row.end_date, status:row.status, reminderSentAt:row.reminder_sent_at||"", posterRemindersSent:sentPosterReminders(row.poster_reminders_sent), createdAt:row.created_at, updatedAt:row.updated_at }; }
 async function body(request) {
   try { return await request.json(); } catch { throw Object.assign(new Error("Enter valid task details."), { status:400 }); }
@@ -74,6 +74,7 @@ export async function handleTaskApi(request, env, url, authorized) {
   }
   return json({error:"Method not allowed."},405);
 }
+function indiaHour(now=new Date()) { const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Kolkata",hour:"2-digit",hourCycle:"h23"}).formatToParts(now); return Number(parts.find(p=>p.type==="hour")?.value||0); }
 function indiaDate(now=new Date()) {
   const pieces=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kolkata",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);
   const get=t=>pieces.find(p=>p.type===t)?.value||"";
@@ -88,18 +89,19 @@ async function telegram(env,text) {
 export async function sendTaskDueReminders(env) {
   if(!env.DB) return {sent:0};
   await ensure(env);
-  const today=indiaDate(), rows=await env.DB.prepare("SELECT * FROM offline_customer_tasks WHERE status='open'").all();
+  const today=indiaDate(), hour=indiaHour(), slot=hour >= 17 ? "evening" : "morning", slotLabel=slot === "evening" ? "Evening 6:00 PM" : "Morning 9:00 AM", rows=await env.DB.prepare("SELECT * FROM offline_customer_tasks WHERE status='open'").all();
   let sent=0;
   for(const row of rows.results||[]) {
     const already=sentPosterReminders(row.poster_reminders_sent), dates=posterDates(row.poster_dates);
     for(const poster of dates) {
       const dueTomorrow=new Date(poster.date+"T00:00:00Z"); dueTomorrow.setUTCDate(dueTomorrow.getUTCDate()-1);
       const reminderDate=dueTomorrow.toISOString().slice(0,10);
-      if(reminderDate!==today || already.includes(poster.date)) continue;
-      const lines=["🖼 Sai Graphic Designs — Poster due tomorrow","",`Poster: ${poster.headline}`,`Date: ${poster.date}`,`Customer: ${row.customer_name}`,`Task: ${row.task_title}`];
+      const reminderKey=poster.date+":"+slot;
+      if(reminderDate!==today || already.includes(reminderKey)) continue;
+      const lines=[`🖼 Sai Graphic Designs — ${slotLabel} Poster Reminder`,"",`Poster: ${poster.headline}`,`Date: ${poster.date}`,`Customer: ${row.customer_name}`,`Task: ${row.task_title}`];
       if(poster.content) lines.push(`Content: ${poster.content}`);
       if(row.customer_phone) lines.push(`Phone: ${row.customer_phone}`);
-      try { await telegram(env,lines.join("\n")); already.push(poster.date); await env.DB.prepare("UPDATE offline_customer_tasks SET poster_reminders_sent=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(JSON.stringify(already),row.id).run(); sent++; }
+      try { await telegram(env,lines.join("\n")); already.push(reminderKey); await env.DB.prepare("UPDATE offline_customer_tasks SET poster_reminders_sent=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(JSON.stringify(already),row.id).run(); sent++; }
       catch(error) { console.error("Poster date reminder failed:",error); }
     }
   }
