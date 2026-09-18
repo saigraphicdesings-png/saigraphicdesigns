@@ -84,7 +84,11 @@
     if (!bellWrap) return;
     var mobile = window.matchMedia && window.matchMedia('(max-width:780px)').matches;
     if (mobile) {
-      if (bellWrap.parentNode !== document.body) document.body.appendChild(bellWrap);
+      var mobileActions = document.querySelector('.nav-actions');
+      var mobileContainer = mobileActions || document.querySelector('.nav-container') || document.body;
+      if (bellWrap.parentNode !== mobileContainer) {
+        mobileContainer.insertBefore(bellWrap, mobileContainer.firstChild || null);
+      }
       bellWrap.classList.add('sai-bell-mobile');
       return;
     }
