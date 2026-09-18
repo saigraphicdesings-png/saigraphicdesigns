@@ -42,6 +42,10 @@ export async function handleTaskApi(request, env, url, authorized) {
   if(!authorized(request, env)) return json({error:"Unauthorized."},401);
   if(!env.DB) return json({error:"Task storage is unavailable."},503);
   await ensure(env);
+  if(url.pathname === "/api/admin/tasks/test-notification" && request.method === "POST") {
+    try { await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n")); return json({success:true}); }
+    catch(error) { return json({error:"Could not send Telegram test notification. Check Telegram settings."},503); }
+  }
   const match=url.pathname.match(/^\/api\/admin\/tasks(?:\/([a-z0-9-]+))?$/);
   if(!match) return json({error:"Not found."},404);
   const id=match[1];
