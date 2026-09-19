@@ -27,6 +27,7 @@
     function setOpen(open) {
       nav.classList.toggle("mobile-menu-open", open);
       nav.classList.toggle("mobile-open", open);
+      nav.classList.toggle("mobile-active", open);
       document.body.classList.toggle("mobile-nav-open", open);
       button.setAttribute("aria-expanded", open ? "true" : "false");
       button.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
