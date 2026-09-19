@@ -16,3 +16,6 @@ html{scroll-behavior:smooth;scroll-padding-top:88px}body{overflow-x:hidden;text-
 
 @keyframes sai-quick-ball-icon{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.12) rotate(8deg)}}
 @media(max-width:768px){.mobile-menu-btn.sai-quick-menu-ball{font-size:0!important}.mobile-menu-btn.sai-quick-menu-ball::before{content:"☰";display:block;color:#fff;font-size:25px;line-height:1;animation:sai-quick-ball-icon 1.8s ease-in-out infinite}.mobile-menu-btn.sai-quick-menu-ball[aria-expanded="true"]::before{content:"✕";animation:none;font-size:22px}}
+
+/* Keep the Sai Graphic Designs initials visible inside the quick ball. */
+@media(max-width:768px){.mobile-menu-btn.sai-quick-menu-ball::before{content:"SG"!important;position:relative!important;z-index:2!important;display:grid!important;place-items:center!important;width:100%!important;height:100%!important;opacity:1!important;visibility:visible!important;color:#fff!important;font-family:Arial,sans-serif!important;font-size:15px!important;font-weight:900!important;letter-spacing:-1px!important;text-shadow:0 1px 2px rgba(0,0,0,.22)!important}.mobile-menu-btn.sai-quick-menu-ball::after{content:none!important}.mobile-menu-btn.sai-quick-menu-ball[aria-expanded="true"]::before{content:"✕"!important;font-size:22px!important;letter-spacing:0!important}}
