@@ -178,7 +178,7 @@
 
   document.addEventListener('click', shopFreeAccessCapture, true);
   document.addEventListener('click', logoutCustomer);
-  loadStyle("sai-10-10.css?v=20260919-refined-quickball");
+  loadStyle("sai-10-10.css?v=20260919-real-menu-icon");
   loadScript("global-animations-core.js?v=20260915-2");
   loadScript("customer-payment-notifications.js?v=20260919-1");
 
