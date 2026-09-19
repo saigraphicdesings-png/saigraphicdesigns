@@ -20,7 +20,7 @@
     el.querySelector(".orders-refresh").addEventListener("click", function () { load(el); });
   }
   async function load(el) {
-    el.hidden = false; el.innerHTML = '<p class="orders-empty">Loading your orders...</p>';
+    el.hidden = false; el.innerHTML = '<p class="orders-empty">Loading your orders...</p>'; window.setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 0);
     try { var r = await fetch("/api/customer/orders", { credentials: "same-origin", cache: "no-store" }); var data = await r.json(); if (!r.ok) throw new Error(data.error || "Unable to load your orders."); render(el, Array.isArray(data.orders) ? data.orders : []); }
     catch (e) { el.innerHTML = '<p class="orders-error">' + esc(e.message) + '</p>'; }
   }
