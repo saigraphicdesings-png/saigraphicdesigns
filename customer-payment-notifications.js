@@ -49,7 +49,7 @@
       '.sai-notification-item p{margin:5px 0 0;color:#64748b;font-size:12px;line-height:1.5}',
       '.sai-notification-empty{padding:30px 18px;text-align:center;color:#64748b;font-size:12px;line-height:1.6}',
       '@keyframes saiNoticeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}',
-      '@media(max-width:780px){.sai-notification-wrap.sai-bell-mobile{position:fixed;top:13px;right:68px;z-index:100004}.sai-notification-wrap.sai-bell-mobile .sai-notification-panel{position:fixed;top:66px;right:14px;width:calc(100vw - 28px);max-height:72vh}}',
+      '@media(max-width:780px){.sai-notification-wrap.sai-bell-mobile{position:fixed;top:13px;right:68px;z-index:100004}.sai-notification-wrap.sai-bell-mobile .sai-notification-panel{position:fixed;top:70px;left:12px;right:12px;width:auto;max-height:min(56vh,430px);border-radius:18px}.sai-notification-wrap.sai-bell-mobile .sai-notification-list{max-height:calc(min(56vh,430px) - 62px);overscroll-behavior:contain}}',
       '@media(max-width:560px){.sai-customer-notice{left:14px;right:14px;bottom:14px;width:auto}.sai-notification-bell{width:42px;height:42px;border-radius:14px}}'
     ].join('');
     document.head.appendChild(style);
