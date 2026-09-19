@@ -413,6 +413,49 @@ async function adminCartOrders(request, env) {
   });
 }
 
+async function customerOrders(request, env) {
+  await ensureCartPaymentSchema(env);
+  const customer = await currentCustomer(request, env);
+  if (!customer) return json({ error: "Please login to view your orders." }, 401);
+
+  const orders = await env.DB.prepare(`
+    SELECT id, amount, received_amount, utr, status, created_at, reviewed_at, admin_note
+    FROM cart_payment_orders
+    WHERE customer_id = ?
+    ORDER BY created_at DESC
+    LIMIT 100
+  `).bind(customer.id).all();
+
+  const itemsByOrder = await Promise.all((orders.results || []).map(async (order) => {
+    const items = await env.DB.prepare(`
+      SELECT product_id, product_name, unit_price, qty, line_total
+      FROM cart_payment_order_items
+      WHERE order_id = ?
+      ORDER BY product_name
+    `).bind(order.id).all();
+    return {
+      id: order.id,
+      kind: "cart",
+      amount: Number(order.amount) || 0,
+      receivedAmount: order.received_amount == null ? null : Number(order.received_amount),
+      utr: order.utr,
+      status: order.status,
+      createdAt: order.created_at,
+      reviewedAt: order.reviewed_at || "",
+      adminNote: order.admin_note || "",
+      items: (items.results || []).map((item) => ({
+        productId: item.product_id,
+        productName: item.product_name,
+        unitPrice: Number(item.unit_price) || 0,
+        qty: Number(item.qty) || 1,
+        lineTotal: Number(item.line_total) || 0
+      }))
+    };
+  }));
+
+  return json({ orders: itemsByOrder, total: itemsByOrder.length });
+}
+
 async function reviewCartOrder(request, env, url, status) {
   if (!isAdminAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
   await ensureCartPaymentSchema(env);
@@ -449,6 +492,7 @@ export default {
     try {
       if (url.pathname === "/api/payment/cart-quote" && request.method === "POST") return await cartQuote(request, env);
       if (url.pathname === "/api/payment/cart-request" && request.method === "POST") return await cartPaymentRequest(request, env);
+      if (url.pathname === "/api/customer/orders" && request.method === "GET") return await customerOrders(request, env);
       if (url.pathname === "/api/admin/cart-payment-orders" && request.method === "GET") return await adminCartOrders(request, env);
       if (url.pathname.startsWith("/api/admin/cart-payment-orders/") && url.pathname.endsWith("/approve") && request.method === "POST") {
         return await reviewCartOrder(request, env, url, "approved");
@@ -463,6 +507,7 @@ export default {
     } catch (error) {
       console.error("Cart payment service error:", error);
       if (url.pathname.startsWith("/api/payment/cart-")) return json({ error: error.message || "Unable to process cart payment." }, error.status || 500);
+      if (url.pathname === "/api/customer/orders") return json({ error: error.message || "Unable to load your orders." }, error.status || 500);
       if (url.pathname.startsWith("/api/admin/cart-payment-orders")) return json({ error: error.message || "Unable to manage cart payments." }, error.status || 500);
     }
     return baseWorker.fetch(request, env, ctx);
