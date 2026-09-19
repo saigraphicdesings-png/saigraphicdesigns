@@ -24,6 +24,11 @@
     if (!nav.id) nav.id = "mainNav";
     button.setAttribute("aria-controls", nav.id);
 
+    // main.js already owns the menu on most public pages. Avoid a second
+    // click handler, which otherwise opens and closes the menu in one tap.
+    if (button.dataset.menuInitialized === "true") return;
+    button.dataset.menuInitialized = "true";
+
     function setOpen(open) {
       nav.classList.toggle("mobile-menu-open", open);
       nav.classList.toggle("mobile-open", open);
