@@ -49,7 +49,7 @@
       '.sai-notification-item p{margin:5px 0 0;color:#64748b;font-size:12px;line-height:1.5}',
       '.sai-notification-empty{padding:30px 18px;text-align:center;color:#64748b;font-size:12px;line-height:1.6}',
       '@keyframes saiNoticeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}',
-      '@media(max-width:780px){.sai-notification-wrap.sai-bell-mobile{position:fixed;top:13px;right:68px;z-index:100004}.sai-notification-wrap.sai-bell-mobile .sai-notification-panel{position:fixed;top:70px;left:12px;right:12px;width:auto;max-height:min(56vh,430px);border-radius:18px}.sai-notification-wrap.sai-bell-mobile .sai-notification-list{max-height:calc(min(56vh,430px) - 62px);overscroll-behavior:contain}}',
+      '@media(max-width:780px){.sai-notification-wrap.sai-bell-mobile{position:fixed;top:13px;right:68px;z-index:100004}.sai-notification-panel-mobile{position:fixed!important;top:70px!important;left:12px!important;right:12px!important;width:auto!important;max-height:min(56vh,430px)!important;z-index:100005!important;border-radius:18px!important}.sai-notification-panel-mobile .sai-notification-list{max-height:calc(min(56vh,430px) - 62px);overscroll-behavior:contain}}',
       '@media(max-width:560px){.sai-customer-notice{left:14px;right:14px;bottom:14px;width:auto}.sai-notification-bell{width:42px;height:42px;border-radius:14px}}'
     ].join('');
     document.head.appendChild(style);
@@ -90,9 +90,15 @@
         mobileContainer.insertBefore(bellWrap, mobileContainer.firstChild || null);
       }
       bellWrap.classList.add('sai-bell-mobile');
+      // The header uses backdrop effects, which can trap a fixed child in a narrow container.
+      // Move the open drawer to body so it always uses the full phone viewport.
+      if (bellPanel && bellPanel.parentNode !== document.body) document.body.appendChild(bellPanel);
+      if (bellPanel) bellPanel.classList.add('sai-notification-panel-mobile');
       return;
     }
     bellWrap.classList.remove('sai-bell-mobile');
+    if (bellPanel && bellPanel.parentNode !== bellWrap) bellWrap.appendChild(bellPanel);
+    if (bellPanel) bellPanel.classList.remove('sai-notification-panel-mobile');
     var actions = document.querySelector('.nav-actions');
     var target = actions || document.querySelector('.nav-container') || document.body;
     if (bellWrap.parentNode !== target) target.insertBefore(bellWrap, target.firstChild || null);
