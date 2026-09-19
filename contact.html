@@ -2377,6 +2377,9 @@ Sai Graphic Designs Website
                     encodeURIComponent(message);
 
 
+                if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
+
+
                 window.open(
                     whatsappURL,
                     "_blank"

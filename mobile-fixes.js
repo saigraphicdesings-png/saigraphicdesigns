@@ -180,10 +180,12 @@
     if (!root) return;
 
     var existingEmpty = root.querySelector(".shop-search-empty");
-    if (existingEmpty) existingEmpty.remove();
 
     var cards = Array.from(root.querySelectorAll(".shop-product"));
-    if (!cards.length) return;
+    if (!cards.length) {
+      if (existingEmpty) existingEmpty.remove();
+      return;
+    }
 
     var visibleCount = 0;
     cards.forEach(function (card) {
@@ -194,10 +196,14 @@
     });
 
     if (searchQuery && visibleCount === 0) {
+      if (existingEmpty) return;
       var empty = document.createElement("div");
       empty.className = "shop-search-empty";
+      empty.setAttribute("role", "status");
       empty.innerHTML = '<strong>No matching designs</strong><span>Try another product name, category or format.</span>';
       root.appendChild(empty);
+    } else if (existingEmpty) {
+      existingEmpty.remove();
     }
   }
 
@@ -278,12 +284,6 @@
     });
   }
 
-  function starMarkup(rating) {
-    var rounded = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
-    return '<span class="product-star-filled">' + "★".repeat(rounded) + '</span>' +
-           '<span class="product-star-empty">' + "★".repeat(5 - rounded) + '</span>';
-  }
-
   function decorateCard(card) {
     if (!card || !card.dataset) return;
     var id = card.dataset.id;
@@ -296,12 +296,12 @@
 
     var box = document.createElement("div");
     box.className = "product-popularity";
-    box.setAttribute("aria-label", data.clicks + " Hype, popularity " + data.rating.toFixed(1) + " out of 5" + (data.rank ? ", rank " + data.rank : ""));
+    box.setAttribute("aria-label", data.clicks + " views, popularity score " + data.rating.toFixed(1) + " out of 5" + (data.rank ? ", rank " + data.rank : ""));
 
+    box.title = "Popularity is based on product views, not customer reviews.";
     box.innerHTML =
-      '<span class="product-popularity-stars" aria-hidden="true">' + starMarkup(data.rating) + '</span>' +
-      (data.clicks > 0 ? '<span class="product-popularity-rating">' + data.rating.toFixed(1) + '</span>' : '') +
-      '<span class="product-popularity-hype">' + data.clicks.toLocaleString("en-IN") + ' Hype</span>' +
+      (data.clicks > 0 ? '<span class="product-popularity-rating">Popularity: ' + data.rating.toFixed(1) + '/5</span>' : '') +
+      '<span class="product-popularity-hype">' + data.clicks.toLocaleString("en-IN") + ' views</span>' +
       (data.rank ? '<span class="product-popularity-rank">#' + data.rank + '</span>' : '');
 
     var bottom = info.querySelector(".product-bottom");

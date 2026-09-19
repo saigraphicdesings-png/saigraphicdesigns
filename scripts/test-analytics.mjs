@@ -48,5 +48,15 @@ try {
   assert.equal((await call('/api/admin/customer-analytics')).currentlyOnline, 0);
   await call('/api/analytics/event', {...event, sessionId: 'expired'}, 'sai_customer_session=test-session');
   assert.equal(db.prepare("SELECT customer_id FROM website_sessions WHERE session_id='expired'").get().customer_id, null);
+  for (const type of ['whatsapp_click','quote_request','free_download_link','paid_download_link']) await call('/api/analytics/event', {...event,type});
+  const conversions = await call('/api/admin/analytics/conversions');
+  assert.equal(conversions.days, 30);
+  assert.equal(conversions.counts.whatsapp_click, 1);
+  assert.equal(conversions.counts.free_download_link, 1);
+  assert.equal(conversions.counts.page_open, undefined);
+  db.exec("UPDATE website_events SET created_at=datetime('now','-31 days') WHERE event_type='quote_request'");
+  assert.equal((await call('/api/admin/analytics/conversions')).counts.quote_request, undefined);
+  const denied=await worker.fetch(new Request('https://test.local/api/admin/analytics/conversions'),{DB,ADMIN_TOKEN:'test-admin'});
+  assert.equal(denied.status,401);
   console.log('PASS: analytics activity, closed/restored sessions, expired cookies, password status and referrer privacy.');
 } finally { db.close(); }

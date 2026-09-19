@@ -971,11 +971,11 @@
 
             <div class="hero-img-wrap">
 
-                <img
-                    src="Images/logo.png"
-                    alt="Sai Graphic Designs - graphic designer in Madurai working on a creative branding project"
+                <img width="810" height="1000" decoding="async"
+                    src="Images/home-logo.webp"
+                    alt="Sai Graphic Designs logo"
                     class="hero-img"
-                    loading="eager">
+                    loading="eager" fetchpriority="high">
 
                 <div class="hero-stat-card">
 
@@ -1176,8 +1176,8 @@
 
                 <div class="custom-visual-card">
 
-                    <img
-                        src="Images/Designing.png"
+                    <img width="1000" height="892" decoding="async"
+                        src="Images/home-designing.webp"
                         alt="Creative graphic design workspace in Madurai"
                         class="custom-visual-img"
                         loading="lazy">
@@ -1191,8 +1191,8 @@
 
                 <div class="custom-visual-card">
 
-                    <img
-                        src="Images/Printing.png"
+                    <img width="1000" height="839" decoding="async"
+                        src="Images/home-printing.webp"
                         alt="Professional printing service in Madurai"
                         class="custom-visual-img"
                         loading="lazy">
@@ -1320,14 +1320,14 @@
 
                 <div class="collection-img-wrap large">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=85"
-                        alt="Professional brand identity and stationery design"
-                        class="collection-img"
+                    <img width="1000" height="1000" decoding="async"
+                        src="Images/portfolio-cards.webp"
+                        alt="Happy to Go visiting card design"
+                        class="collection-img" style="object-fit:contain;background:#f8fafc"
                         loading="lazy">
 
                     <div class="portfolio-label">
-                        Branding & Identity
+                        Visiting Card Design
                     </div>
 
                 </div>
@@ -1335,10 +1335,10 @@
 
                 <div class="collection-img-wrap">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=85"
-                        alt="Creative graphic design project"
-                        class="collection-img"
+                    <img width="1000" height="1000" decoding="async"
+                        src="Images/portfolio-social.webp"
+                        alt="Happy to Go social media design"
+                        class="collection-img" style="object-fit:contain;background:#f8fafc"
                         loading="lazy">
 
                     <div class="portfolio-label">
@@ -1350,14 +1350,14 @@
 
                 <div class="collection-img-wrap">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=900&q=85"
-                        alt="Creative digital design project"
-                        class="collection-img"
+                    <img width="1000" height="1000" decoding="async"
+                        src="Images/portfolio-brochure.webp"
+                        alt="Happy to Go brochure and flyer design"
+                        class="collection-img" style="object-fit:contain;background:#f8fafc"
                         loading="lazy">
 
                     <div class="portfolio-label">
-                        Digital Design
+                        Brochure & Flyer Design
                     </div>
 
                 </div>
@@ -1371,14 +1371,14 @@
                     class="collection-img-wrap"
                     style="grid-column:span 2;height:500px;">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1523726491678-bf852e717f6a?auto=format&fit=crop&w=1400&q=85"
-                        alt="Professional graphic designer workspace"
-                        class="collection-img"
+                    <img width="694" height="694" decoding="async"
+                        src="Images/portfolio-logo.webp"
+                        alt="Happy to Go logo design"
+                        class="collection-img" style="object-fit:contain;background:#f8fafc"
                         loading="lazy">
 
                     <div class="portfolio-label">
-                        Creative Design Studio
+                        Logo Design
                     </div>
 
                 </div>
@@ -2481,6 +2481,9 @@ Thank you!`;
                 const whatsappURL =
                     "https://wa.me/916381128781?text=" +
                     encodeURIComponent(message);
+
+
+                if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
 
 
                 window.open(

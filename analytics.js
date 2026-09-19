@@ -70,6 +70,20 @@
     if (event.persisted) { clearInterval(timer); timer = setInterval(heartbeat, HEARTBEAT_MS); pageOpen(); }
   });
 
+  document.addEventListener("click", function (event) {
+    const link = event.target.closest && event.target.closest("a[href]");
+    if (!link) return;
+    let url;
+    try { url = new URL(link.href, location.href); } catch (_) { return; }
+    if (url.hostname === "wa.me" || url.hostname === "api.whatsapp.com" || url.hostname === "web.whatsapp.com") send("whatsapp_click");
+    else if (url.protocol === "tel:") send("phone_click");
+  });
+  document.addEventListener("submit", function (event) {
+    const form = event.target;
+    if (!form.checkValidity()) return;
+    if (form.id === "serviceForm" || /formsubmit\.co/.test(form.action || "")) send("quote_request");
+  });
+
   window.SaiAnalytics = {
     trackLogin: function () { send("login"); },
     trackEvent: function (name, data) { send(String(name || "event"), data); },

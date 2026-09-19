@@ -1093,6 +1093,8 @@ Thank you!`;
             "?text=" +
             encodeURIComponent(message);
 
+        if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
+
         window.open(
             whatsappURL,
             "_blank",
@@ -1755,6 +1757,9 @@ Thank you! 😊`;
             encodeURIComponent(
                 message
             );
+
+
+        if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
 
 
         window.open(

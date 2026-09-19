@@ -132,6 +132,7 @@
         return;
       }
       if (!response.ok || !data.downloadUrl) throw new Error(data.error || 'Download link is unavailable.');
+      if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("free_download_link");
       window.open(data.downloadUrl, '_blank', 'noopener,noreferrer');
       button.textContent = '✓ Unlocked';
       setTimeout(function () { button.textContent = 'Download Free'; }, 1400);

@@ -158,6 +158,7 @@
       if(response.status===401){toast(data.error||'Please login to download.',true);return;}
       if(!response.ok)throw new Error(data.error||'Drive link is not unlocked yet.');
       if(!data.downloadUrl)throw new Error('Drive link is unavailable.');
+      if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("paid_download_link");
       window.open(data.downloadUrl,'_blank','noopener,noreferrer');
     }catch(e){toast(e.message||'Unable to open the Drive link.');}
   }

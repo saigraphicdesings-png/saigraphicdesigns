@@ -2235,6 +2235,9 @@ Thank you!`;
                 encodeURIComponent(message);
 
 
+            if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
+
+
             window.open(
                 whatsappURL,
                 "_blank"
@@ -2310,6 +2313,9 @@ Thank you!`;
             const whatsappURL =
                 "https://wa.me/916381128781?text=" +
                 encodeURIComponent(message);
+
+
+            if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
 
 
             window.open(
