@@ -789,6 +789,8 @@
     <link rel="stylesheet" href="cart-unified.css">
     <link rel="stylesheet" href="site-polish.css">
     <link rel="stylesheet" href="mobile-fixes.css">
+    <link rel="stylesheet" href="home-showcase.css">
+    <script src="home-showcase.js" defer></script>
     <script src="/analytics.js" defer></script>
 </head>
 
@@ -1026,143 +1028,40 @@
 
 
 
-    <!-- =========================================
-         SERVICES
-    ========================================= -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <span class="section-tag">
-                Our Services
-            </span>
-
-            <h2 class="section-title">
-                Everything Your Brand Needs
-            </h2>
-
-        </div>
-
-
-        <div class="features-grid">
-
-            <div class="feature-card">
-
-                <div class="service-icon">
-                    ✦
-                </div>
-
-                <h3 class="feature-title">
-                    Logo Design & Recreation
-                </h3>
-
-                <p class="feature-desc">
-
-                    Create a professional new logo or recreate your existing
-                    logo in high-quality vector format.
-
-                </p>
-
-                <a
-                    href="customizer.html"
-                    class="btn-primary">
-
-                    View Service →
-
-                </a>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="service-icon">
-                    ◈
-                </div>
-
-                <h3 class="feature-title">
-                    Branding & Brand Identity
-                </h3>
-
-                <p class="feature-desc">
-
-                    Build a strong and professional brand identity with
-                    consistent colours, typography and visual elements.
-
-                </p>
-
-                <a
-                    href="customizer.html"
-                    class="btn-primary">
-
-                    View Service →
-
-                </a>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="service-icon">
-                    ◎
-                </div>
-
-                <h3 class="feature-title">
-                    Social Media Designs
-                </h3>
-
-                <p class="feature-desc">
-
-                    Attractive Instagram, Facebook and promotional creatives
-                    designed to make your business stand out online.
-
-                </p>
-
-                <a
-                    href="customizer.html"
-                    class="btn-primary">
-
-                    View Service →
-
-                </a>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="service-icon">
-                    ▣
-                </div>
-
-                <h3 class="feature-title">
-                    Print & Marketing Designs
-                </h3>
-
-                <p class="feature-desc">
-
-                    Professional visiting cards, brochures, flyers, posters,
-                    letterheads, envelopes and other print materials.
-
-                </p>
-
-                <a
-                    href="customizer.html"
-                    class="btn-primary">
-
-                    View Service →
-
-                </a>
-
-            </div>
-
-        </div>
-
+    <section class="home-showcase section" id="services-showcase" aria-labelledby="services-showcase-title">
+      <div class="home-showcase-heading">
+        <div><span class="section-tag">Made for your brand</span><h2 id="services-showcase-title">Our Services</h2><p>Custom design support, from your first idea to the final artwork.</p></div>
+        <a class="home-showcase-all" href="customizer.html">View all services <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="home-showcase-grid">
+        <a class="home-showcase-card" href="customizer.html#service-logo-design">
+          <div class="home-showcase-image"><img src="Images/portfolio-logo.webp" alt="Logo Design example" width="1000" height="1000" loading="lazy" decoding="async"></div>
+          <div class="home-showcase-body"><span class="home-showcase-kind">Custom service</span><h3>Logo Design</h3><p>Create a recognisable identity for your business.</p><div class="home-showcase-bottom"><strong>From ₹1,000</strong><span>Explore <span aria-hidden="true">↗</span></span></div></div>
+        </a>
+        <a class="home-showcase-card" href="customizer.html#service-visiting-card">
+          <div class="home-showcase-image"><img src="Images/portfolio-cards.webp" alt="Visiting Card Design example" width="1000" height="1000" loading="lazy" decoding="async"></div>
+          <div class="home-showcase-body"><span class="home-showcase-kind">Custom service</span><h3>Visiting Card Design</h3><p>Make a lasting first impression, ready for print.</p><div class="home-showcase-bottom"><strong>From ₹200</strong><span>Explore <span aria-hidden="true">↗</span></span></div></div>
+        </a>
+        <a class="home-showcase-card" href="customizer.html#service-social-media">
+          <div class="home-showcase-image"><img src="Images/portfolio-social.webp" alt="Social Media Poster example" width="1000" height="1000" loading="lazy" decoding="async"></div>
+          <div class="home-showcase-body"><span class="home-showcase-kind">Custom service</span><h3>Social Media Poster</h3><p>Branded creatives for your next promotion.</p><div class="home-showcase-bottom"><strong>From ₹200</strong><span>Explore <span aria-hidden="true">↗</span></span></div></div>
+        </a>
+        <a class="home-showcase-card" href="customizer.html#service-brochure">
+          <div class="home-showcase-image"><img src="Images/portfolio-brochure.webp" alt="Brochure Design example" width="1000" height="1000" loading="lazy" decoding="async"></div>
+          <div class="home-showcase-body"><span class="home-showcase-kind">Custom service</span><h3>Brochure Design</h3><p>Present your products and services clearly.</p><div class="home-showcase-bottom"><strong>From ₹200 / page</strong><span>Explore <span aria-hidden="true">↗</span></span></div></div>
+        </a>
+      </div>
     </section>
 
-
+    <section class="home-showcase home-showcase-shop section" id="shop-showcase" aria-labelledby="shop-showcase-title">
+      <div class="home-showcase-heading">
+        <div><span class="section-tag">Ready to make it yours</span><h2 id="shop-showcase-title">From Our Shop</h2><p>Explore ready-made designs and find your next favourite.</p></div>
+        <a class="home-showcase-all" href="shop.html">View all products <span aria-hidden="true">↗</span></a>
+      </div>
+      <div id="homeShopProducts" class="home-showcase-grid" aria-busy="true"></div>
+      <p id="homeShopStatus" class="home-showcase-status" role="status">Loading shop designs…</p>
+      <noscript><p>Browse our latest designs in the <a href="shop.html">shop</a>.</p></noscript>
+    </section>
 
     <!-- =========================================
          WHY US

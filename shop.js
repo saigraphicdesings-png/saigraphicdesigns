@@ -2041,6 +2041,17 @@ Thank you! 😊`;
        INITIALIZE
     ===================================================== */
 
+    let requestedProductOpened = false;
+    function openRequestedProduct() {
+        if (requestedProductOpened) return;
+        const id = new URLSearchParams(window.location.search).get("product");
+        if (!id) return;
+        const product = products.find(item => String(item.id) === id);
+        if (!product) return;
+        requestedProductOpened = true;
+        openProductModal(product);
+    }
+
     let catalogRequest = 0;
 
     async function loadManagedProducts() {
@@ -2071,6 +2082,7 @@ Thank you! 😊`;
             console.warn("Unable to load the shop catalog.", error);
         }
         renderProducts();
+        if (catalogStatus === "ready") openRequestedProduct();
     }
 
     // Refresh after visiting the admin tab or restoring a cached shop page.
