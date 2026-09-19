@@ -23,6 +23,7 @@
 
     if (!nav.id) nav.id = "mainNav";
     button.setAttribute("aria-controls", nav.id);
+    button.textContent = button.getAttribute("aria-expanded") === "true" ? "✕" : "SG";
     button.classList.add("sai-quick-menu-ball");
     if (button.parentNode !== document.body) document.body.appendChild(button);
 
@@ -38,7 +39,7 @@
       document.body.classList.toggle("mobile-nav-open", open);
       button.setAttribute("aria-expanded", open ? "true" : "false");
       button.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
-      button.textContent = open ? "✕" : "☰";
+      button.textContent = open ? "✕" : "SG";
     }
 
     button.addEventListener("click", function (event) {
