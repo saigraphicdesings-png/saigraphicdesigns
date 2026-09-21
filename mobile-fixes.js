@@ -24,12 +24,13 @@
     if (!nav.id) nav.id = "mainNav";
     button.setAttribute("aria-controls", nav.id);
     button.textContent = button.getAttribute("aria-expanded") === "true" ? "✕" : "☰";
-    button.classList.add("sai-quick-menu-ball");
-    if (button.parentNode !== document.body) document.body.appendChild(button);
 
     // main.js already owns the menu on most public pages. Avoid a second
-    // click handler, which otherwise opens and closes the menu in one tap.
+    // click handler or moving its header button into a floating position.
     if (button.dataset.menuInitialized === "true") return;
+
+    button.classList.add("sai-quick-menu-ball");
+    if (button.parentNode !== document.body) document.body.appendChild(button);
     button.dataset.menuInitialized = "true";
 
     function setOpen(open) {
