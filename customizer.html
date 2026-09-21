@@ -156,15 +156,23 @@
         }
 
         .service-icon {
-            width: 58px;
-            height: 58px;
-            margin: 0 auto .75rem;
-            border-radius: 16px;
+            width: 100%;
+            height: 138px;
+            margin: 0 auto 1rem;
+            border-radius: 14px;
             background: var(--light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            overflow: hidden;
+        }
+
+        .service-icon img {
+            width: 100%;
+            height: 100%;
+            padding: 8px;
+            object-fit: contain;
+            object-position: center;
         }
 
         .service-option.active .service-icon {
@@ -263,8 +271,20 @@
         }
 
         .mockup-icon {
-            font-size: 5rem;
+            width: min(280px, 80%);
+            height: 180px;
             margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 18px;
+            background: var(--light);
+        }
+
+        .mockup-icon img {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            object-fit: contain;
+            object-position: center;
         }
 
         .mockup-title {
@@ -915,7 +935,7 @@
         <div class="service-category">
 
             <h3 class="service-category-title">
-                🎨 Branding & Identity
+                Branding & Identity
             </h3>
 
             <div class="service-grid">
@@ -927,7 +947,7 @@
                     data-icon="✏️"
                     data-description="Professional logo design created according to your brand identity.">
 
-                    <div class="service-icon">✏️</div>
+                    <div class="service-icon"><img src="Images/portfolio-logo.webp" alt="Logo Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Logo Design</div>
                     <div class="service-price">Starting ₹1,000</div>
 
@@ -943,7 +963,7 @@
                     data-icon="🔄"
                     data-description="Recreate your existing logo into a clean, professional and high-resolution format.">
 
-                    <div class="service-icon">🔄</div>
+                    <div class="service-icon"><img src="Images/portfolio-logo.webp" alt="Logo Recreation example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Logo Recreation</div>
                     <div class="service-price">Starting ₹1,500</div>
 
@@ -959,7 +979,7 @@
                     data-icon="🏢"
                     data-description="Complete brand identity including logo, colours, typography and brand guidelines.">
 
-                    <div class="service-icon">🏢</div>
+                    <div class="service-icon"><img src="Images/portfolio-logo.webp" alt="Brand Identity example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Brand Identity</div>
                     <div class="service-price">Starting ₹5,000</div>
 
@@ -975,7 +995,7 @@
                     data-icon="🚀"
                     data-description="Complete branding solution for businesses, startups and organizations.">
 
-                    <div class="service-icon">🚀</div>
+                    <div class="service-icon"><img src="Images/portfolio-logo.webp" alt="Full Branding example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Full Branding</div>
                     <div class="service-price">Starting ₹10,000</div>
 
@@ -995,7 +1015,7 @@
         <div class="service-category">
 
             <h3 class="service-category-title">
-                🖨️ Print & Business Design
+                Print & Business Design
             </h3>
 
             <div class="service-grid">
@@ -1007,7 +1027,7 @@
                     data-icon="💳"
                     data-description="Professional visiting card design for your business and personal brand.">
 
-                    <div class="service-icon">💳</div>
+                    <div class="service-icon"><img src="Images/Visiting%20Card.png" alt="Visiting Card Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Visiting Card</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1020,7 +1040,7 @@
                     data-icon="📄"
                     data-description="Professional company letterhead design ready for printing.">
 
-                    <div class="service-icon">📄</div>
+                    <div class="service-icon"><img src="Images/Shop/Letter-head-01/1.jpg" alt="Letterhead Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Letterhead</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1033,7 +1053,7 @@
                     data-icon="✉️"
                     data-description="Branded business envelope design matching your company identity.">
 
-                    <div class="service-icon">✉️</div>
+                    <div class="service-icon"><img src="Images/Shop/Letter-head-02/1.jpg" alt="Envelope Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Envelope</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1047,7 +1067,7 @@
                     data-icon="📖"
                     data-description="Professional brochure design for products, services and businesses.">
 
-                    <div class="service-icon">📖</div>
+                    <div class="service-icon"><img src="Images/Broucher%20%26%20Flyer.png" alt="Brochure Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Brochure (Per Page)</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1060,7 +1080,7 @@
                     data-icon="📃"
                     data-description="Creative promotional flyers designed to attract customers.">
 
-                    <div class="service-icon">📃</div>
+                    <div class="service-icon"><img src="Images/Broucher%20%26%20Flyer.png" alt="Flyer Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Flyer Single Side</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1073,7 +1093,7 @@
                     data-icon="🖼️"
                     data-description="Eye-catching promotional poster designs for digital and print advertising.">
 
-                    <div class="service-icon">🖼️</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Poster Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Poster Design</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1086,7 +1106,7 @@
                     data-icon="🪧"
                     data-description="Professional standee designs for exhibitions, shops and business promotions.">
 
-                    <div class="service-icon">🪧</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Standee Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Standee</div>
                     <div class="service-price">Starting ₹300</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1099,7 +1119,7 @@
                     data-icon="🏬"
                     data-description="Professional shop and company name board design.">
 
-                    <div class="service-icon">🏬</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Name Board Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Name Board</div>
                     <div class="service-price">Starting ₹300</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1116,7 +1136,7 @@
         <div class="service-category">
 
             <h3 class="service-category-title">
-                📱 Digital & Social Media
+                Digital & Social Media
             </h3>
 
             <div class="service-grid">
@@ -1128,7 +1148,7 @@
                     data-icon="📱"
                     data-description="Professional Instagram and Facebook promotional poster design.">
 
-                    <div class="service-icon">📱</div>
+                    <div class="service-icon"><img src="Images/Social%20Media.png" alt="Social Media Poster example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Social Media Poster</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1141,7 +1161,7 @@
                     data-icon="🎬"
                     data-description="Creative promotional videos and reels for social media marketing.">
 
-                    <div class="service-icon">🎬</div>
+                    <div class="service-icon"><img src="Images/Social%20Media.png" alt="Social Media Video example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Social Media Video</div>
                     <div class="service-price">Starting ₹500</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1154,7 +1174,7 @@
                     data-icon="🎞️"
                     data-description="Professional video editing for advertisements, reels and business content.">
 
-                    <div class="service-icon">🎞️</div>
+                    <div class="service-icon"><img src="Images/Social%20Media.png" alt="Video Editing example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Video Editing</div>
                     <div class="service-price">Starting ₹500</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1167,7 +1187,7 @@
                     data-icon="🎉"
                     data-description="Creative festival and special occasion promotional designs.">
 
-                    <div class="service-icon">🎉</div>
+                    <div class="service-icon"><img src="Images/Social%20Media.png" alt="Festival Poster example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Festival Poster</div>
                     <div class="service-price">Starting ₹200</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1184,7 +1204,7 @@
         <div class="service-category">
 
             <h3 class="service-category-title">
-                📦 Packaging & Product Design
+                Packaging & Product Design
             </h3>
 
             <div class="service-grid">
@@ -1195,7 +1215,7 @@
                     data-icon="📦"
                     data-description="Professional packaging design for products and FMCG brands.">
 
-                    <div class="service-icon">📦</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Packaging Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Box Design</div>
                     <div class="service-price">Starting ₹1,500</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1208,7 +1228,7 @@
                     data-icon="🏷️"
                     data-description="Creative product label design for bottles, boxes and packaging.">
 
-                    <div class="service-icon">🏷️</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Label Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Label Design</div>
                     <div class="service-price">Starting ₹1,000</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1221,7 +1241,7 @@
                     data-icon="🛍️"
                     data-description="Professional pouch packaging design for consumer products.">
 
-                    <div class="service-icon">🛍️</div>
+                    <div class="service-icon"><img src="Images/Designing.png" alt="Pouch Design example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Pouch Design</div>
                     <div class="service-price">Starting ₹1,500</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1238,7 +1258,7 @@
         <div class="service-category">
 
             <h3 class="service-category-title">
-                🎁 Custom Printing Products
+                Custom Printing Products
             </h3>
 
             <div class="service-grid">
@@ -1249,7 +1269,7 @@
                     data-icon="☕"
                     data-description="Customized mug printing for gifts, businesses and special occasions.">
 
-                    <div class="service-icon">☕</div>
+                    <div class="service-icon"><img src="Images/Printing.png" alt="Mug Printing example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Mug Printing</div>
                     <div class="service-price">Starting ₹250</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1262,7 +1282,7 @@
                     data-icon="👕"
                     data-description="Custom T-shirt printing for events, businesses and personal designs.">
 
-                    <div class="service-icon">👕</div>
+                    <div class="service-icon"><img src="Images/Printing.png" alt="T-Shirt Printing example" loading="lazy" decoding="async"></div>
                     <div class="service-name">T-Shirt Printing</div>
                     <div class="service-price">Starting ₹399</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1275,7 +1295,7 @@
                     data-icon="🔑"
                     data-description="Customized keychains for gifts, businesses and promotional events.">
 
-                    <div class="service-icon">🔑</div>
+                    <div class="service-icon"><img src="Images/Printing.png" alt="Keychain Printing example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Keychain</div>
                     <div class="service-price">Starting ₹150</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1288,7 +1308,7 @@
                     data-icon="🍼"
                     data-description="Customized bottle printing for corporate gifts and promotional products.">
 
-                    <div class="service-icon">🍼</div>
+                    <div class="service-icon"><img src="Images/Printing.png" alt="Bottle Printing example" loading="lazy" decoding="async"></div>
                     <div class="service-name">Bottle Printing</div>
                     <div class="service-price">Starting ₹350</div>
                     <button type="button" class="add-service-btn">Add to Order</button>
@@ -1309,7 +1329,7 @@
                 <div class="mockup-card">
 
                     <div class="mockup-icon" id="mockupIcon">
-                        ✏️
+                        <img src="Images/portfolio-logo.webp" alt="Logo Design preview">
                     </div>
 
                     <div class="mockup-title" id="mockupTitle">
@@ -1727,8 +1747,14 @@ document.addEventListener("DOMContentLoaded", function () {
         mockupTitle.textContent =
             selectedServiceData.name;
 
-        mockupIcon.textContent =
-            selectedServiceData.icon;
+        const selectedImage = option.querySelector(".service-icon img");
+
+        if (selectedImage) {
+            const previewImage = selectedImage.cloneNode(false);
+            previewImage.loading = "eager";
+            previewImage.alt = selectedServiceData.name + " preview";
+            mockupIcon.replaceChildren(previewImage);
+        }
 
         mockupDescription.textContent =
             selectedServiceData.description;

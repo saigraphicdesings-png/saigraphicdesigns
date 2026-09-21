@@ -9,8 +9,6 @@
 .home-showcase-card:focus-visible,.home-showcase-all:focus-visible{outline:3px solid var(--primary);outline-offset:5px}
 .home-showcase-image{position:relative;aspect-ratio:4/3;background:#f5f6f7;overflow:hidden}
 .home-showcase-image img{width:100%;height:100%;object-fit:contain}
-.home-showcase-service-icon{display:grid;place-items:center;background:linear-gradient(145deg,#f7faf9,#ecfdf5)}
-.home-showcase-service-icon span{display:grid;width:72px;height:72px;place-items:center;border-radius:18px;background:#fff;font-size:2.4rem;line-height:1;box-shadow:0 12px 26px rgba(17,24,39,.08)}
 .home-showcase-body{padding:18px;display:flex;flex-direction:column;flex:1}
 .home-showcase-kind{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#047857}
 .home-showcase-body h3{font-size:1rem;line-height:1.4;margin:7px 0;color:var(--dark);overflow-wrap:anywhere}
