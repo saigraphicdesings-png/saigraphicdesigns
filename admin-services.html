@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Services Management | Sai Graphic Designs</title><link rel="icon" href="Images/favicon.png"><link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="admin-services.css"></head>
+<body>
+<header class="admin-header"><a class="brand" href="index.html"><span>SG</span><b>Sai Graphic<br>Designs</b></a><nav class="admin-nav" aria-label="Admin navigation"><a href="admin.html">⌘ <span>Dashboard</span></a><a class="nav-active" href="admin-services.html">✦ <span>Services</span></a><p class="nav-label">Management</p><a href="admin-customers.html">♙ <span>Customers</span></a><a href="admin-tasks.html">✓ <span>Task Management</span></a><a href="admin-payments.html">₹ <span>Payments</span></a><a href="admin-analytics.html">↗ <span>Analytics Report</span></a></nav><div class="header-actions"><a class="shop-link" href="index.html" target="_blank" rel="noopener">View Website ↗</a></div></header>
+<main class="admin-shell"><section class="login-card" id="loginCard"><div class="admin-mark">🔐</div><p class="eyebrow">SECURE ACCESS</p><h1>Services Management</h1><p>Enter the admin token configured in Cloudflare to manage website services.</p><form id="loginForm"><label for="adminToken">Admin token</label><input id="adminToken" type="password" autocomplete="current-password" required><button type="submit">Open Services →</button></form><p class="error" id="loginError" role="alert"></p></section>
+<section class="dashboard" id="dashboard" hidden><div class="welcome-banner"><div><p class="eyebrow">WEBSITE SERVICES</p><h2>Manage Services</h2><p>Control the services shown on your live website without editing HTML.</p></div><div class="welcome-orb">✦</div></div>
+<div class="services-layout">
+<section class="panel"><div class="panel-title"><h2 id="formTitle">Add Service</h2><button class="text-btn" id="resetBtn" type="button">Clear</button></div>
+<form id="serviceForm"><input id="originalId" type="hidden"><div class="form-grid">
+<label>Service ID<input id="serviceId" required placeholder="logo-design" pattern="[A-Za-z0-9_-]+"></label>
+<label>Service name<input id="serviceName" required placeholder="Logo Design"></label>
+<label>Category<select id="serviceCategory" required><option value="Branding">Branding</option><option value="Digital & Social Media">Digital & Social Media</option><option value="Print Design">Print Design</option><option value="Packaging">Packaging</option><option value="Video">Video</option><option value="Other">Other</option></select></label>
+<label>Sort order<input id="sortOrder" type="number" step="1" value="0"></label>
+<label>Price (₹)<input id="servicePrice" type="number" min="0" step="0.01" value="0" required></label>
+<label>Price unit<select id="priceUnit"><option value="">Starting price</option><option value="per page">per page</option><option value="per design">per design</option><option value="per month">per month</option><option value="custom">Custom quote</option></select></label>
+<label class="full">Description<textarea id="serviceDescription" rows="4" required placeholder="Short customer-facing description"></textarea></label>
+<label>Image path / URL<input id="serviceImage" placeholder="Images/services-ai/logo-design.webp"></label>
+<label>Icon<input id="serviceIcon" placeholder="✦"></label>
+<label class="full">Website link<input id="serviceLink" placeholder="customizer.html#service-logo-design"></label>
+<label class="check"><input id="serviceActive" type="checkbox" checked> Active — show on website</label>
+<label class="check"><input id="serviceFeatured" type="checkbox"> Featured — show in the homepage services section</label>
+</div><button class="primary" type="submit" id="saveBtn">Save Service</button><p class="form-message" id="formMessage" role="status"></p></form></section>
+<section class="panel"><div class="panel-title"><h2>Live Services</h2><input id="serviceSearch" type="search" placeholder="Search services…"></div><div class="service-stats"><span><b id="totalCount">0</b> Total</span><span><b id="activeCount">0</b> Active</span><span><b id="featuredCount">0</b> Featured</span></div><div id="serviceList" class="service-list"></div></section>
+</div></section></main>
+<script src="admin-services.js" defer></script>
+</body></html>
