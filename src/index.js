@@ -180,7 +180,7 @@ async function ensureProductHomepageColumn(env) {
            'Digital & Social Media Designs', 'Design Bundle', '["cdr","psd"]',
            'A mega collection of editable CDR and PSD design files for businesses, designers and print-ready creative work.',
            '["Images/Shop/mega-cdr-psd-bundle/cover.svg"]', NULL, 1, 0, 1, -100, CURRENT_TIMESTAMP
-    WHERE EXISTS (SELECT 1 FROM products WHERE id IN ('business-card-01', 'BC-01'))
+    WHERE EXISTS (SELECT 1 FROM products WHERE id IN ('business-card-01', 'BC-01', 'BC-03'))
       AND NOT EXISTS (SELECT 1 FROM products WHERE LOWER(TRIM(name)) = LOWER('Mega CDR & PSD Bundle'))
       AND NOT EXISTS (SELECT 1 FROM products WHERE is_key_product = 1)
       AND NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = 'mega-cdr-psd-bundle')
