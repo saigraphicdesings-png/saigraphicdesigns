@@ -173,6 +173,26 @@ async function ensureProductHomepageColumn(env) {
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_home_sort ON products(show_on_home, active, sort_order, name)").run();
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_key ON products(is_key_product, active)").run();
   await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_one_key ON products(is_key_product) WHERE is_key_product = 1").run();
+  await env.DB.prepare(deletionHistorySchema).run();
+  await env.DB.prepare(`
+    INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+    SELECT 'mega-cdr-psd-bundle', 'Mega CDR & PSD Bundle', 500,
+           'Digital & Social Media Designs', 'Design Bundle', '["cdr","psd"]',
+           'A mega collection of editable CDR and PSD design files for businesses, designers and print-ready creative work.',
+           '["Images/Shop/mega-cdr-psd-bundle/cover.svg"]', NULL, 1, 0, 1, -100, CURRENT_TIMESTAMP
+    WHERE EXISTS (SELECT 1 FROM products WHERE id = 'business-card-01')
+      AND NOT EXISTS (SELECT 1 FROM products WHERE LOWER(TRIM(name)) = LOWER('Mega CDR & PSD Bundle'))
+      AND NOT EXISTS (SELECT 1 FROM products WHERE is_key_product = 1)
+      AND NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = 'mega-cdr-psd-bundle')
+  `).run();
+  await env.DB.prepare(`
+    UPDATE products SET is_key_product = 1, price = 500, active = 1, updated_at = CURRENT_TIMESTAMP
+    WHERE id = (
+      SELECT id FROM products
+      WHERE LOWER(TRIM(name)) = LOWER('Mega CDR & PSD Bundle')
+      ORDER BY sort_order ASC, created_at ASC LIMIT 1
+    ) AND NOT EXISTS (SELECT 1 FROM products WHERE is_key_product = 1)
+  `).run();
 }
 
 async function seedHomepageProductsIfEmpty(env) {
