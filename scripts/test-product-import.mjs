@@ -140,6 +140,19 @@ test('legacy database selects Mega CDR & PSD Bundle at ₹500', async () => {
   env.db.close();
 });
 
+test('existing Sai catalog seeds the Mega bundle as its key product', async () => {
+  const env = database(); const call = client(env);
+  await call('/api/admin/products', 'POST', product('BC-01'));
+  const rows = (await call('/api/admin/products')).products;
+  const mega = rows.find(p => p.id === 'mega-cdr-psd-bundle');
+  assert.equal(mega.name, 'Mega CDR & PSD Bundle');
+  assert.equal(mega.price, 500);
+  assert.equal(mega.active, true);
+  assert.equal(mega.isKeyProduct, true);
+  assert.deepEqual(mega.formats, ['cdr', 'psd']);
+  env.db.close();
+});
+
 test('existing product databases are upgraded without losing products', async () => {
   const env = database({ legacy: true }); const call = client(env);
   const ids = Array.from({ length: 11 }, (_, index) => 'legacy-' + (index + 1));
