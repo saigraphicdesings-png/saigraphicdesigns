@@ -108,6 +108,77 @@ function validateBlog(input) {
   return { title, excerpt, directAnswer, content, blocks, faqs, imageUrls, proof: String(input.proof || "").trim().slice(0, 800), authorName: String(input.authorName || "Sai Graphic Designs").trim().slice(0, 100) || "Sai Graphic Designs", slug, keywords: String(input.keywords || "").trim().slice(0, 500), city: String(input.city || "Tamil Nadu").trim().slice(0, 80) || "Tamil Nadu", published: input.published !== false ? 1 : 0 };
 }
 
+const serviceSchema = `CREATE TABLE IF NOT EXISTS services (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  category TEXT NOT NULL DEFAULT 'Other',
+  description TEXT NOT NULL DEFAULT '',
+  price REAL NOT NULL DEFAULT 0,
+  price_unit TEXT NOT NULL DEFAULT '',
+  image TEXT NOT NULL DEFAULT '',
+  icon TEXT NOT NULL DEFAULT '✦',
+  link TEXT NOT NULL DEFAULT 'customizer.html',
+  active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),
+  featured INTEGER NOT NULL DEFAULT 1 CHECK(featured IN (0,1)),
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+
+const defaultServices = [
+  ['logo-design','Logo Design','Branding','Create a recognisable identity for your business.',1000,'','Images/services-ai/logo-design.webp','✦','customizer.html#service-logo-design',1,1,1],
+  ['logo-recreation','Logo Recreation','Branding','Recreate or modernise an existing logo with professional artwork.',500,'','Images/services-ai/logo-recreation.webp','✎','customizer.html#service-logo-recreation',1,1,2],
+  ['brand-identity','Brand Identity','Branding','Build a consistent visual identity for your business.',5000,'','Images/services-ai/brand-identity.webp','◆','customizer.html#service-brand-identity',1,1,3],
+  ['full-branding','Full Branding','Branding','Complete branding support for businesses and startups.',10000,'','Images/services-ai/full-branding.webp','◇','customizer.html#service-full-branding',1,1,4],
+  ['visiting-card-design','Visiting Card Design','Print Design','Make a lasting first impression with print-ready business cards.',200,'','Images/services-ai/visiting-card-design.webp','▣','customizer.html#service-visiting-card',1,1,5],
+  ['social-media-poster','Social Media Poster','Digital & Social Media','Branded creatives for promotions, campaigns and social media.',200,'','Images/services-ai/social-media-poster.webp','◈','customizer.html#service-social-media',1,1,6],
+  ['brochure-design','Brochure Design','Print Design','Present your products and services clearly with a professional brochure.',200,'per page','Images/services-ai/brochure-design.webp','▤','customizer.html#service-brochure',1,1,7],
+  ['packaging-design','Packaging Design','Packaging','Professional packaging artwork for boxes, pouches and labels.',250,'','Images/services-ai/packaging-design.webp','▱','customizer.html#service-packaging',1,1,8],
+  ['video-editing','Video Editing','Video','Professional promotional videos, reels and social media edits.',500,'','Images/services-ai/video-editing.webp','▶','customizer.html#service-video-editing',1,1,9]
+];
+
+async function ensureServiceTable(env) {
+  await env.DB.prepare(serviceSchema).run();
+  const count = await env.DB.prepare("SELECT COUNT(*) AS count FROM services").first();
+  if (Number(count?.count || 0) === 0) {
+    const statements = defaultServices.map((s) => env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
+    await env.DB.batch(statements);
+  }
+}
+
+function normalizeService(row) {
+  return {
+    id: row.id, name: row.name, slug: row.slug, category: row.category || 'Other',
+    description: row.description || '', price: Number(row.price) || 0, priceUnit: row.price_unit || '',
+    image: row.image || '', icon: row.icon || '✦', link: row.link || 'customizer.html',
+    active: Boolean(row.active), featured: Boolean(row.featured), sortOrder: Number(row.sort_order) || 0,
+    createdAt: row.created_at, updatedAt: row.updated_at
+  };
+}
+
+function validateService(input) {
+  const id = String(input.id || '').trim();
+  const name = String(input.name || '').trim();
+  const category = String(input.category || 'Other').trim().slice(0,80) || 'Other';
+  const description = String(input.description || '').trim().slice(0,500);
+  const price = Number(input.price ?? 0);
+  const priceUnit = String(input.priceUnit || '').trim().slice(0,40);
+  const image = String(input.image || '').trim().slice(0,500);
+  const icon = String(input.icon || '✦').trim().slice(0,20) || '✦';
+  const link = String(input.link || 'customizer.html').trim().slice(0,500) || 'customizer.html';
+  if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error('Service ID may contain only letters, numbers, hyphens and underscores.');
+  if (!name) throw new Error('Service name is required.');
+  if (!Number.isFinite(price) || price < 0) throw new Error('Price must be a finite, non-negative number.');
+  if (image && !/^(https?:\\/\\/|[A-Za-z0-9_./-])/.test(image)) throw new Error('Invalid service image path.');
+  return {
+    id, originalId: String(input.originalId || id).trim(), name, slug: id.toLowerCase(),
+    category, description, price, priceUnit, image, icon, link,
+    active: input.active === false ? 0 : 1, featured: input.featured === false ? 0 : 1,
+    sortOrder: Number.parseInt(input.sort_order,10) || 0
+  };
+}
+
 const customerSchema = `CREATE TABLE IF NOT EXISTS customers (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -508,6 +579,12 @@ async function handleAPI(request, env, url) {
 
   if (url.pathname.startsWith("/api/auth/")) return handleAuth(request, env, url);
 
+  if (url.pathname === "/api/services" && request.method === "GET") {
+    await ensureServiceTable(env);
+    const result = await env.DB.prepare("SELECT * FROM services WHERE active = 1 ORDER BY sort_order ASC, name ASC").all();
+    return json({ services: (result.results || []).map(normalizeService) });
+  }
+
   if (url.pathname === "/api/products" && request.method === "GET") {
     const visibleProducts = await listProducts(env, false);
     const hiddenResult = await env.DB.prepare("SELECT id FROM products WHERE active = 0").all();
@@ -549,6 +626,37 @@ async function handleAPI(request, env, url) {
   if (!url.pathname.startsWith("/api/admin/")) return json({ error: "Not found." }, 404);
   if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
   if (url.pathname.startsWith("/api/admin/products")) await ensureProductHomepageColumn(env);
+
+  if (url.pathname === "/api/admin/services" && request.method === "GET") {
+    await ensureServiceTable(env);
+    const result = await env.DB.prepare("SELECT * FROM services ORDER BY sort_order ASC, name ASC").all();
+    return json({ services: (result.results || []).map(normalizeService) });
+  }
+
+  if (url.pathname === "/api/admin/services" && request.method === "POST") {
+    await ensureServiceTable(env);
+    let input; try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+    let service; try { service = validateService(input); } catch (error) { return json({ error: error.message }, 400); }
+    if (service.originalId !== service.id) {
+      const conflict = await env.DB.prepare("SELECT id FROM services WHERE id = ? LIMIT 1").bind(service.id).first();
+      if (conflict) return json({ error: "Another service already uses this ID." }, 409);
+      await env.DB.prepare("DELETE FROM services WHERE id = ?").bind(service.originalId).run();
+    }
+    await env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order,updated_at)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,category=excluded.category,description=excluded.description,price=excluded.price,price_unit=excluded.price_unit,image=excluded.image,icon=excluded.icon,link=excluded.link,active=excluded.active,featured=excluded.featured,sort_order=excluded.sort_order,updated_at=CURRENT_TIMESTAMP`
+    ).bind(service.id,service.name,service.slug,service.category,service.description,service.price,service.priceUnit,service.image,service.icon,service.link,service.active,service.featured,service.sortOrder).run();
+    const saved = await env.DB.prepare("SELECT * FROM services WHERE id = ? LIMIT 1").bind(service.id).first();
+    return json({ success: true, service: normalizeService(saved) });
+  }
+
+  if (url.pathname.startsWith("/api/admin/services/") && request.method === "DELETE") {
+    await ensureServiceTable(env);
+    const id = decodeURIComponent(url.pathname.slice("/api/admin/services/".length)).trim();
+    if (!/^[A-Za-z0-9_-]+$/.test(id)) return json({ error: "Invalid service ID." }, 400);
+    await env.DB.prepare("DELETE FROM services WHERE id = ?").bind(id).run();
+    return json({ success: true });
+  }
 
   if (url.pathname === "/api/admin/blog-posts" && request.method === "GET") {
     await ensureBlogTable(env);
