@@ -6,6 +6,27 @@
   if (!grid || !status) return;
   const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 });
   let requestId = 0;
+  let carouselTimer = 0;
+
+  grid.setAttribute("aria-label", "Featured shop products carousel");
+
+  function stopCarousel() {
+    window.clearInterval(carouselTimer);
+    carouselTimer = 0;
+  }
+  function startCarousel() {
+    stopCarousel();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || grid.scrollWidth <= grid.clientWidth + 2) return;
+    carouselTimer = window.setInterval(function () {
+      const card = grid.querySelector(".home-showcase-card");
+      if (!card) return;
+      const gap = Number.parseFloat(window.getComputedStyle(grid).columnGap) || 0;
+      const step = card.getBoundingClientRect().width + gap;
+      const maximum = grid.scrollWidth - grid.clientWidth;
+      const next = grid.scrollLeft + step >= maximum - 2 ? 0 : grid.scrollLeft + step;
+      grid.scrollTo({ left: next, behavior: "smooth" });
+    }, 3200);
+  }
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -49,9 +70,12 @@
       const data = await response.json();
       if (!Array.isArray(data.products)) throw new Error("Invalid catalog");
       if (current !== requestId) return;
-      const products = data.products.filter(p => p && p.id && String(p.name || "").trim() && p.active !== false && p.active !== 0 && p.active !== "0" && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0)
-        .sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0)).slice(0, 4);
+      const products = data.products.filter(p => p && p.id && String(p.name || "").trim() && p.active !== false && p.active !== 0 && p.active !== "0" && p.showOnHome === true && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0)
+        .sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0)).slice(0, 10);
+      stopCarousel();
       grid.replaceChildren(...products.map(productCard));
+      grid.scrollLeft = 0;
+      window.requestAnimationFrame(startCarousel);
       status.hidden = products.length > 0;
       status.textContent = products.length ? "" : "New designs are on the way. Explore the shop for updates.";
     } catch (_) {
@@ -64,7 +88,13 @@
       if (current === requestId) grid.setAttribute("aria-busy", "false");
     }
   }
+  grid.addEventListener("pointerenter", stopCarousel);
+  grid.addEventListener("pointerleave", startCarousel);
+  grid.addEventListener("focusin", stopCarousel);
+  grid.addEventListener("focusout", event => { if (!grid.contains(event.relatedTarget)) startCarousel(); });
+  grid.addEventListener("touchstart", stopCarousel, { passive: true });
+  grid.addEventListener("touchend", startCarousel, { passive: true });
   loadProducts();
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadProducts(); });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadProducts(); else stopCarousel(); });
   window.addEventListener("pageshow", event => { if (event.persisted) loadProducts(); });
 })();

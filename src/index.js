@@ -44,6 +44,7 @@ function normalize(row) {
     images: parseList(row.images),
     downloadUrl: row.download_url || "",
     active: Boolean(row.active),
+    showOnHome: Boolean(row.show_on_home),
     sort_order: Number(row.sort_order) || 0,
     clicks: Number(row.clicks) || 0
   };
@@ -142,6 +143,34 @@ async function addMissingColumns(env, table, definitions) {
       await env.DB.prepare(`ALTER TABLE ${table} ADD COLUMN ${name} ${definition}`).run();
     }
   }
+}
+
+async function ensureProductHomepageColumn(env) {
+  const info = await env.DB.prepare("PRAGMA table_info(products)").all();
+  const hasColumn = (info.results || []).some((column) => column.name === "show_on_home");
+  if (!hasColumn) {
+    await env.DB.prepare("ALTER TABLE products ADD COLUMN show_on_home INTEGER NOT NULL DEFAULT 0 CHECK(show_on_home IN (0,1))").run();
+    await env.DB.prepare(`
+      UPDATE products SET show_on_home = 1
+      WHERE id IN (
+        SELECT id FROM products WHERE active = 1
+        ORDER BY sort_order ASC, created_at ASC, name ASC LIMIT 10
+      )
+    `).run();
+  }
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_home_sort ON products(show_on_home, active, sort_order, name)").run();
+}
+
+async function seedHomepageProductsIfEmpty(env) {
+  const selected = await env.DB.prepare("SELECT COUNT(*) AS count FROM products WHERE show_on_home = 1").all();
+  if (Number(selected.results?.[0]?.count || 0) > 0) return;
+  await env.DB.prepare(`
+    UPDATE products SET show_on_home = 1
+    WHERE id IN (
+      SELECT id FROM products WHERE active = 1
+      ORDER BY sort_order ASC, created_at ASC, name ASC LIMIT 10
+    )
+  `).run();
 }
 
 async function ensureCustomerTables(env) {
@@ -356,6 +385,7 @@ async function handleAuth(request, env, url) {
 
 async function listProducts(env, includeHidden) {
   if (!env.DB) return [];
+  await ensureProductHomepageColumn(env);
   await ensureClickAnalytics(env);
   let query;
   if (includeHidden) {
@@ -420,6 +450,7 @@ function validateProduct(input) {
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
   if (!name || !category || !type) throw new Error("Name, category and type are required.");
   if (!images.length) throw new Error("Add at least one preview image.");
+  const active = input.active === false ? 0 : 1;
   return {
     id,
     originalId: String(input.originalId || id).trim(),
@@ -431,7 +462,8 @@ function validateProduct(input) {
     description: String(input.description || "").trim(),
     images: JSON.stringify(images),
     downloadUrl: downloadUrl || null,
-    active: input.active === false ? 0 : 1,
+    active,
+    showOnHome: active && input.showOnHome === true ? 1 : 0,
     sortOrder: Number.parseInt(input.sort_order, 10) || 0
   };
 }
@@ -481,6 +513,7 @@ async function handleAPI(request, env, url) {
 
   if (!url.pathname.startsWith("/api/admin/")) return json({ error: "Not found." }, 404);
   if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+  if (url.pathname.startsWith("/api/admin/products")) await ensureProductHomepageColumn(env);
 
   if (url.pathname === "/api/admin/blog-posts" && request.method === "GET") {
     await ensureBlogTable(env);
@@ -560,13 +593,14 @@ async function handleAPI(request, env, url) {
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, sort_order, updated_at)
-      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, sort_order, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.sortOrder, product.id));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.sortOrder, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
+    await seedHomepageProductsIfEmpty(env);
     return json({ success: true, count, skipped: imported.length - count });
   }
 
@@ -587,6 +621,10 @@ async function handleAPI(request, env, url) {
     try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
     let product;
     try { product = validateProduct(input); } catch (error) { return json({ error: error.message }, 400); }
+    if (product.showOnHome) {
+      const selected = await env.DB.prepare("SELECT COUNT(*) AS count FROM products WHERE show_on_home = 1 AND id <> ?").bind(product.originalId).all();
+      if (Number(selected.results?.[0]?.count || 0) >= 10) return json({ error: "The homepage can show a maximum of 10 products. Remove one homepage product first." }, 409);
+    }
     const deleted = await env.DB.prepare("SELECT id FROM deleted_products WHERE id = ?").bind(product.id).all();
     if (deleted.results?.length) return json({ error: "This product ID was deleted. Use a new ID to create a new product." }, 409);
     if (product.originalId !== product.id) {
@@ -601,16 +639,17 @@ async function handleAPI(request, env, url) {
       );
     }
     statements.push(env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, sort_order, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, sort_order, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
         name = excluded.name, price = excluded.price, category = excluded.category,
         type = excluded.type, formats = excluded.formats, description = excluded.description,
         images = excluded.images, download_url = excluded.download_url, active = excluded.active,
+        show_on_home = excluded.show_on_home,
         sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.sortOrder));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.sortOrder));
     await env.DB.batch(statements);
-    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, sort_order: product.sortOrder }) });
+    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, show_on_home: product.showOnHome, sort_order: product.sortOrder }) });
   }
 
   return json({ error: "Not found." }, 404);

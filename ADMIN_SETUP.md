@@ -56,6 +56,7 @@ Enter the same `ADMIN_TOKEN` value to access the product manager.
 - The Shop displays only visible products returned by the admin database.
 - Use **Import Existing Products** once to bring the original catalog into the admin panel.
 - Deleting a product removes it from the Shop. Hiding a product keeps it in the admin panel only.
+- Use **Show on Homepage** to choose up to ten active products for the automatic homepage carousel. Their Sort order controls the left-to-right display position.
 - An empty database produces an empty Shop; old built-in products are never added back.
 - If the database is unavailable, the Shop displays a retry message instead of outdated products.
 - The Shop refreshes its catalog when you return to the tab or restore the page from browser history.

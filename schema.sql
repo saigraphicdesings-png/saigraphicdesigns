@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS products (
   images TEXT NOT NULL DEFAULT '[]',
   download_url TEXT,
   active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0, 1)),
+  show_on_home INTEGER NOT NULL DEFAULT 0 CHECK (show_on_home IN (0, 1)),
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -16,6 +17,9 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE INDEX IF NOT EXISTS idx_products_active_sort
 ON products(active, sort_order, name);
+
+CREATE INDEX IF NOT EXISTS idx_products_home_sort
+ON products(show_on_home, active, sort_order, name);
 
 -- Retain IDs after deletion to prevent re-importing removed products.
 CREATE TABLE IF NOT EXISTS deleted_products (

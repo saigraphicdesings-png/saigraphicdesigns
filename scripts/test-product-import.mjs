@@ -5,10 +5,13 @@ import test from 'node:test';
 import worker from '../src/index.js';
 
 const schema = await readFile(new URL('../schema.sql', import.meta.url), 'utf8');
-function database() {
+const productSchema = schema.split('-- Retain IDs')[0];
+const legacyProductSchema = productSchema
+  .replace(/  show_on_home INTEGER[^\n]+\n/, '')
+  .replace(/\nCREATE INDEX IF NOT EXISTS idx_products_home_sort\nON products\(show_on_home, active, sort_order, name\);\n/, '\n');
+function database({ legacy = false } = {}) {
   const db = new DatabaseSync(':memory:');
-  // Start with the original schema: the Worker must upgrade it automatically.
-  db.exec(schema.split('-- Retain IDs')[0]);
+  db.exec(legacy ? legacyProductSchema : productSchema);
   const DB = {
     prepare(sql) {
       let args = [];
@@ -88,5 +91,37 @@ test('invalid prices and executable download URLs are rejected', async () => {
   }
   assert.equal((await call('/api/admin/products', 'POST', {...product('one'), downloadUrl: 'javascript:alert(1)'})).status, 400);
   assert.equal((await call('/api/admin/products')).products.length, 0);
+  env.db.close();
+});
+
+test('admin controls up to ten homepage carousel products', async () => {
+  const env = database(); const call = client(env);
+  const originals = Array.from({ length: 11 }, (_, index) => product('product-' + (index + 1)));
+  assert.equal((await call('/api/admin/products/import', 'POST', { products: originals })).count, 11);
+  let rows = (await call('/api/admin/products')).products;
+  assert.equal(rows.filter(p => p.showOnHome).length, 10);
+
+  const selected = rows.find(p => p.showOnHome);
+  const unselected = rows.find(p => !p.showOnHome);
+  assert.equal((await call('/api/admin/products', 'POST', { ...unselected, showOnHome: true })).status, 409);
+  assert.equal((await call('/api/admin/products', 'POST', { ...selected, showOnHome: false })).status, 200);
+  assert.equal((await call('/api/admin/products', 'POST', { ...unselected, showOnHome: true })).status, 200);
+
+  rows = (await call('/api/admin/products')).products;
+  assert.equal(rows.filter(p => p.showOnHome).length, 10);
+  assert.equal(rows.find(p => p.id === unselected.id).showOnHome, true);
+  env.db.close();
+});
+
+test('existing product databases are upgraded without losing products', async () => {
+  const env = database({ legacy: true }); const call = client(env);
+  const ids = Array.from({ length: 11 }, (_, index) => 'legacy-' + (index + 1));
+  for (const id of ids) {
+    env.db.prepare('INSERT INTO products(id,name,category,type,images) VALUES(?,?,?,?,?)')
+      .run(id, id, 'Printing Designs', 'business-card', '["preview.jpg"]');
+  }
+  const rows = (await call('/api/admin/products')).products;
+  assert.equal(rows.length, 11);
+  assert.equal(rows.filter(p => p.showOnHome).length, 10);
   env.db.close();
 });
