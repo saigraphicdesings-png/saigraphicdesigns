@@ -45,6 +45,7 @@ function normalize(row) {
     downloadUrl: row.download_url || "",
     active: Boolean(row.active),
     showOnHome: Boolean(row.show_on_home),
+    isKeyProduct: Boolean(row.is_key_product),
     sort_order: Number(row.sort_order) || 0,
     clicks: Number(row.clicks) || 0
   };
@@ -147,8 +148,8 @@ async function addMissingColumns(env, table, definitions) {
 
 async function ensureProductHomepageColumn(env) {
   const info = await env.DB.prepare("PRAGMA table_info(products)").all();
-  const hasColumn = (info.results || []).some((column) => column.name === "show_on_home");
-  if (!hasColumn) {
+  const columns = new Set((info.results || []).map((column) => column.name));
+  if (!columns.has("show_on_home")) {
     await env.DB.prepare("ALTER TABLE products ADD COLUMN show_on_home INTEGER NOT NULL DEFAULT 0 CHECK(show_on_home IN (0,1))").run();
     await env.DB.prepare(`
       UPDATE products SET show_on_home = 1
@@ -158,7 +159,20 @@ async function ensureProductHomepageColumn(env) {
       )
     `).run();
   }
+  if (!columns.has("is_key_product")) {
+    await env.DB.prepare("ALTER TABLE products ADD COLUMN is_key_product INTEGER NOT NULL DEFAULT 0 CHECK(is_key_product IN (0,1))").run();
+    await env.DB.prepare(`
+      UPDATE products SET is_key_product = 1, price = 500
+      WHERE id = (
+        SELECT id FROM products
+        WHERE active = 1 AND LOWER(TRIM(name)) = LOWER('Mega CDR & PSD Bundle')
+        ORDER BY sort_order ASC, created_at ASC LIMIT 1
+      )
+    `).run();
+  }
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_home_sort ON products(show_on_home, active, sort_order, name)").run();
+  await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_key ON products(is_key_product, active)").run();
+  await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_one_key ON products(is_key_product) WHERE is_key_product = 1").run();
 }
 
 async function seedHomepageProductsIfEmpty(env) {
@@ -464,6 +478,7 @@ function validateProduct(input) {
     downloadUrl: downloadUrl || null,
     active,
     showOnHome: active && input.showOnHome === true ? 1 : 0,
+    isKeyProduct: active && input.isKeyProduct === true ? 1 : 0,
     sortOrder: Number.parseInt(input.sort_order, 10) || 0
   };
 }
@@ -593,11 +608,11 @@ async function handleAPI(request, env, url) {
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, sort_order, updated_at)
-      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.sortOrder, product.id));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
     await seedHomepageProductsIfEmpty(env);
@@ -632,6 +647,9 @@ async function handleAPI(request, env, url) {
       if (target.results?.length) return json({ error: "Another product already uses this ID. Choose a unique ID." }, 409);
     }
     const statements = [];
+    if (product.isKeyProduct) {
+      statements.push(env.DB.prepare("UPDATE products SET is_key_product = 0 WHERE id <> ?").bind(product.originalId || product.id));
+    }
     if (product.originalId && product.originalId !== product.id) {
       statements.push(
         env.DB.prepare("INSERT OR IGNORE INTO deleted_products (id) VALUES (?)").bind(product.originalId),
@@ -639,17 +657,18 @@ async function handleAPI(request, env, url) {
       );
     }
     statements.push(env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, sort_order, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
         name = excluded.name, price = excluded.price, category = excluded.category,
         type = excluded.type, formats = excluded.formats, description = excluded.description,
         images = excluded.images, download_url = excluded.download_url, active = excluded.active,
         show_on_home = excluded.show_on_home,
+        is_key_product = excluded.is_key_product,
         sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.sortOrder));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
     await env.DB.batch(statements);
-    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, show_on_home: product.showOnHome, sort_order: product.sortOrder }) });
+    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
   }
 
   return json({ error: "Not found." }, 404);

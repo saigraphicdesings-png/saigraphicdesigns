@@ -3,7 +3,8 @@
   "use strict";
   const grid = document.getElementById("homeShopProducts");
   const status = document.getElementById("homeShopStatus");
-  if (!grid || !status) return;
+  const keyProduct = document.getElementById("homeKeyProduct");
+  if (!grid || !status || !keyProduct) return;
   const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 });
   let requestId = 0;
   let carouselTimer = 0;
@@ -59,6 +60,29 @@
     body.append(bottom); link.append(preview, body);
     return link;
   }
+  function renderKeyProduct(product) {
+    if (!product) { keyProduct.hidden = true; keyProduct.replaceChildren(); return; }
+    const link = element("a", "home-key-product-link");
+    link.href = "shop.html?product=" + encodeURIComponent(product.id);
+    link.setAttribute("aria-label", "View key product: " + String(product.name));
+    const visual = element("div", "home-key-product-visual");
+    const img = document.createElement("img");
+    img.src = imageUrl(Array.isArray(product.images) ? product.images[0] : "");
+    img.alt = String(product.name); img.width = 760; img.height = 570;
+    img.loading = "lazy"; img.decoding = "async";
+    img.addEventListener("error", function () { img.src = "Images/placeholder.svg"; }, { once: true });
+    visual.append(img, element("span", "home-key-product-ribbon", "★ Featured bundle"));
+    const content = element("div", "home-key-product-content");
+    content.append(element("span", "home-key-product-label", "KEY PRODUCT · BEST VALUE"), element("h3", "", String(product.name)));
+    const description = String(product.description || "").trim();
+    content.append(element("p", "", description || "Get a powerful collection of editable design files in one value-packed bundle."));
+    const formats = Array.isArray(product.formats) ? product.formats.map(value => String(value).toUpperCase()).join(" + ") : "";
+    const features = element("div", "home-key-product-features");
+    features.append(element("span", "", formats || "Editable files"), element("span", "", "Instant digital access"), element("span", "", "Commercial-ready designs"));
+    const action = element("div", "home-key-product-action");
+    action.append(element("strong", "", Number(product.price) === 0 ? "Free" : currency.format(Number(product.price))), element("span", "", "View this bundle →"));
+    content.append(features, action); link.append(visual, content); keyProduct.replaceChildren(link); keyProduct.hidden = false;
+  }
   async function loadProducts() {
     const current = ++requestId;
     grid.setAttribute("aria-busy", "true");
@@ -70,7 +94,10 @@
       const data = await response.json();
       if (!Array.isArray(data.products)) throw new Error("Invalid catalog");
       if (current !== requestId) return;
-      const products = data.products.filter(p => p && p.id && String(p.name || "").trim() && p.active !== false && p.active !== 0 && p.active !== "0" && p.showOnHome === true && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0)
+      const activeProducts = data.products.filter(p => p && p.id && String(p.name || "").trim() && p.active !== false && p.active !== 0 && p.active !== "0");
+      const featured = activeProducts.find(p => p.isKeyProduct === true) || null;
+      renderKeyProduct(featured);
+      const products = activeProducts.filter(p => p.showOnHome === true && p.isKeyProduct !== true && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0)
         .sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0)).slice(0, 10);
       stopCarousel();
       grid.replaceChildren(...products.map(productCard));
@@ -80,6 +107,7 @@
       status.textContent = products.length ? "" : "New designs are on the way. Explore the shop for updates.";
     } catch (_) {
       if (current !== requestId) return;
+      renderKeyProduct(null);
       grid.replaceChildren();
       status.hidden = false;
       status.textContent = "We couldn't load the preview. Visit the shop to browse our designs.";

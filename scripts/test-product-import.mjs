@@ -8,7 +8,10 @@ const schema = await readFile(new URL('../schema.sql', import.meta.url), 'utf8')
 const productSchema = schema.split('-- Retain IDs')[0];
 const legacyProductSchema = productSchema
   .replace(/  show_on_home INTEGER[^\n]+\n/, '')
-  .replace(/\nCREATE INDEX IF NOT EXISTS idx_products_home_sort\nON products\(show_on_home, active, sort_order, name\);\n/, '\n');
+  .replace(/  is_key_product INTEGER[^\n]+\n/, '')
+  .replace(/\nCREATE INDEX IF NOT EXISTS idx_products_home_sort\nON products\(show_on_home, active, sort_order, name\);\n/, '\n')
+  .replace(/\nCREATE INDEX IF NOT EXISTS idx_products_key\nON products\(is_key_product, active\);\n/, '\n')
+  .replace(/\nCREATE UNIQUE INDEX IF NOT EXISTS idx_products_one_key\nON products\(is_key_product\) WHERE is_key_product = 1;\n/, '\n');
 function database({ legacy = false } = {}) {
   const db = new DatabaseSync(':memory:');
   db.exec(legacy ? legacyProductSchema : productSchema);
@@ -110,6 +113,30 @@ test('admin controls up to ten homepage carousel products', async () => {
   rows = (await call('/api/admin/products')).products;
   assert.equal(rows.filter(p => p.showOnHome).length, 10);
   assert.equal(rows.find(p => p.id === unselected.id).showOnHome, true);
+  env.db.close();
+});
+
+test('admin permits exactly one active key product at a time', async () => {
+  const env = database(); const call = client(env);
+  await call('/api/admin/products', 'POST', { ...product('one'), isKeyProduct: true });
+  await call('/api/admin/products', 'POST', { ...product('two'), isKeyProduct: true });
+  let rows = (await call('/api/admin/products')).products;
+  assert.equal(rows.filter(p => p.isKeyProduct).length, 1);
+  assert.equal(rows.find(p => p.id === 'two').isKeyProduct, true);
+
+  await call('/api/admin/products', 'POST', { ...rows.find(p => p.id === 'two'), active: false });
+  rows = (await call('/api/admin/products')).products;
+  assert.equal(rows.filter(p => p.isKeyProduct).length, 0);
+  env.db.close();
+});
+
+test('legacy database selects Mega CDR & PSD Bundle at ₹500', async () => {
+  const env = database({ legacy: true }); const call = client(env);
+  env.db.prepare('INSERT INTO products(id,name,price,category,type,images) VALUES(?,?,?,?,?,?)')
+    .run('mega-bundle', 'Mega CDR & PSD Bundle', 750, 'Digital & Social Media Designs', 'Bundle', '["preview.jpg"]');
+  const rows = (await call('/api/admin/products')).products;
+  assert.equal(rows[0].isKeyProduct, true);
+  assert.equal(rows[0].price, 500);
   env.db.close();
 });
 
