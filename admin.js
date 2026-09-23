@@ -428,7 +428,20 @@ loginForm.addEventListener("submit",async e=>{e.preventDefault();token=$("adminT
 async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];render();updateLinkProducts();updateKeyProductControl()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
 function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function money(v){return Number(v)===0?"FREE":"₹"+Number(v).toLocaleString("en-IN")}
-function render(){const q=$("productSearch").value.trim().toLowerCase();const shown=products.filter(p=>(p.name+" "+p.category+" "+p.id).toLowerCase().includes(q));$("totalCount").textContent=products.length;$("activeCount").textContent=products.filter(p=>p.active).length;$("freeCount").textContent=products.filter(p=>Number(p.price)===0).length;if(!shown.length){list.innerHTML='<p class="empty">No bundles found.</p>';return}list.innerHTML=shown.map(p=>'<article class="product-row"><img src="'+escapeHTML((p.images||[])[0]||"Images/favicon.png")+'" alt=""><div><h3>'+escapeHTML(p.name)+'</h3><p>'+escapeHTML(p.category)+' · '+money(p.price)+'</p><span class="badge '+(p.active?"":"hidden")+'">'+(p.active?"Visible":"Hidden")+'</span>'+(p.isKeyProduct?'<span class="badge key-badge">★ Key Product</span>':'')+(p.showOnHome?'<span class="badge">Homepage</span>':'')+'</div><div class="row-actions"><button class="edit-btn" data-edit="'+escapeHTML(p.id)+'">Edit</button><button class="hide-btn" data-home="'+escapeHTML(p.id)+'" '+(p.active?'':'disabled')+'>'+(p.showOnHome?"Remove Home":"Add Home")+'</button><button class="hide-btn" data-toggle="'+escapeHTML(p.id)+'">'+(p.active?"Hide":"Show")+'</button><button class="delete-btn" data-delete="'+escapeHTML(p.id)+'">Delete</button></div></article>').join("")}
+function isBundle(p){return /\bbundles?\b/i.test(String(p.name||""))}
+function productRow(p,legacy=false){return '<article class="product-row"><img src="'+escapeHTML((p.images||[])[0]||"Images/favicon.png")+'" alt=""><div><h3>'+escapeHTML(p.name)+'</h3><p>'+escapeHTML(p.category)+' · '+money(p.price)+'</p><span class="badge '+(p.active?"":"hidden")+'">'+(p.active?"Visible":"Hidden")+'</span>'+(p.isKeyProduct?'<span class="badge key-badge">★ Key Bundle</span>':'')+(p.showOnHome&&!legacy?'<span class="badge">Homepage</span>':'')+'</div><div class="row-actions"><button class="edit-btn" data-edit="'+escapeHTML(p.id)+'">Edit</button>'+(legacy?'':'<button class="hide-btn" data-home="'+escapeHTML(p.id)+'" '+(p.active?'':'disabled')+'>'+(p.showOnHome?"Remove Home":"Add Home")+'</button>')+'<button class="hide-btn" data-toggle="'+escapeHTML(p.id)+'">'+(p.active?"Hide":"Show")+'</button><button class="delete-btn" data-delete="'+escapeHTML(p.id)+'">Delete</button></div></article>'}
+function render(){
+  const q=$('productSearch').value.trim().toLowerCase();
+  const matches=p=>(p.name+' '+p.category+' '+p.id).toLowerCase().includes(q);
+  const bundles=products.filter(isBundle),legacy=products.filter(p=>!isBundle(p));
+  const shown=bundles.filter(matches),old=legacy.filter(matches);
+  $('totalCount').textContent=bundles.length;
+  $('activeCount').textContent=bundles.filter(p=>p.active).length;
+  $('freeCount').textContent=bundles.filter(p=>Number(p.price)===0).length;
+  list.innerHTML=(shown.length?shown.map(p=>productRow(p)).join(''):'<p class="empty">No bundles found.</p>')+
+    (old.length?'<details class="legacy-products"><summary>Legacy single designs ('+old.length+') — excluded from Bundle World</summary>'+old.map(p=>productRow(p,true)).join('')+'</details>':'');
+}
+
 function confirmProductDelete(product) {
   const dialog = $("deleteDialog");
   if (dialog.open) return Promise.resolve(false);
@@ -447,9 +460,9 @@ async function save(p){return api("/api/admin/products",{method:"POST",body:JSON
 function updateKeyProductControl(){
   const select=$("keyProductSelect");
   if(!select)return;
-  const active=products.filter(product=>product.active);
+  const active=products.filter(product=>product.active&&isBundle(product));
   const current=active.find(product=>product.isKeyProduct);
-  select.replaceChildren(new Option(active.length?"Select one active product":"No active products available",""));
+  select.replaceChildren(new Option(active.length?"Select one active bundle":"No active bundles available",""));
   active.forEach(product=>select.add(new Option(product.name+" · "+money(product.price),product.id)));
   select.value=current?.id||"";
   $("keyProductMessage").style.color=current?"#047857":"#64748b";
@@ -457,7 +470,7 @@ function updateKeyProductControl(){
   $("saveKeyProduct").disabled=!active.length;
 }
 $("saveKeyProduct").addEventListener("click",async()=>{
-  const selected=products.find(product=>product.id===$("keyProductSelect").value&&product.active);
+  const selected=products.find(product=>product.id===$("keyProductSelect").value&&product.active&&isBundle(product));
   if(!selected){$("keyProductMessage").style.color="#dc2626";$("keyProductMessage").textContent="Select an active product first.";return}
   const button=$("saveKeyProduct");button.disabled=true;button.textContent="Saving…";
   try{await save({...selected,isKeyProduct:true});await loadProducts();$("keyProductMessage").style.color="#047857";$("keyProductMessage").textContent="Key product updated to "+selected.name+"."}

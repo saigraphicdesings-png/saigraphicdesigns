@@ -69,11 +69,13 @@
       if (!details) return;
 
       const oldBadge = details.querySelector(".drive-link-status");
+      const linked = Boolean(String(product.downloadUrl || "").trim());
+      if (oldBadge && oldBadge.dataset.linked === String(linked)) return;
       if (oldBadge) oldBadge.remove();
 
-      const linked = Boolean(String(product.downloadUrl || "").trim());
       const visibilityBadge = details.querySelector(".badge");
       const statusBadge = makeStatusBadge(linked);
+      statusBadge.dataset.linked = String(linked);
 
       if (visibilityBadge) {
         visibilityBadge.insertAdjacentElement("afterend", statusBadge);

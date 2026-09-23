@@ -125,6 +125,15 @@ test('admin controls up to ten homepage carousel products', async () => {
   env.db.close();
 });
 
+test('legacy homepage products do not use bundle carousel slots', async () => {
+  const env = database(); const call = client(env);
+  const singles = Array.from({length: 10}, (_, i) => ({...product('single-' + i), name: 'Single design ' + i, showOnHome: true}));
+  assert.equal((await call('/api/admin/products/import', 'POST', {products: singles})).count, 10);
+  assert.equal((await call('/api/admin/products', 'POST', {...product('new'), showOnHome: true})).status, 200);
+  assert.deepEqual((await call('/api/products')).products.map(p => p.id), ['new']);
+  env.db.close();
+});
+
 test('admin permits exactly one active key product at a time', async () => {
   const env = database(); const call = client(env);
   await call('/api/admin/products', 'POST', { ...product('one'), isKeyProduct: true });

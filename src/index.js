@@ -820,9 +820,9 @@ async function handleAPI(request, env, url) {
     try { input = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
     let product;
     try { product = validateProduct(input); } catch (error) { return json({ error: error.message }, 400); }
-    if (product.showOnHome) {
-      const selected = await env.DB.prepare("SELECT COUNT(*) AS count FROM products WHERE show_on_home = 1 AND id <> ?").bind(product.originalId).all();
-      if (Number(selected.results?.[0]?.count || 0) >= 10) return json({ error: "The homepage can show a maximum of 10 products. Remove one homepage product first." }, 409);
+    if (product.showOnHome && isBundle(product)) {
+      const selected = await env.DB.prepare("SELECT name FROM products WHERE show_on_home = 1 AND id <> ?").bind(product.originalId).all();
+      if ((selected.results || []).filter(isBundle).length >= 10) return json({ error: "The homepage can show a maximum of 10 bundles. Remove one homepage bundle first." }, 409);
     }
     const deleted = await env.DB.prepare("SELECT id FROM deleted_products WHERE id = ?").bind(product.id).all();
     if (deleted.results?.length) return json({ error: "This product ID was deleted. Use a new ID to create a new product." }, 409);
