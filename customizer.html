@@ -132,6 +132,7 @@
            SERVICE CARD
         ========================= */
 
+        .service-option[hidden] { display: none !important; }
         .service-option {
             border: 1px solid var(--border);
             background: var(--white);
@@ -1628,8 +1629,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const serviceOptions =
-        document.querySelectorAll(".service-option");
+    const serviceOptions = () => document.querySelectorAll(".service-option");
 
     const selectedService =
         document.getElementById("selectedService");
@@ -1714,7 +1714,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function selectService(option) {
 
-        serviceOptions.forEach(function (item) {
+        serviceOptions().forEach(function (item) {
 
             item.classList.remove("active");
 
@@ -1766,47 +1766,89 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    serviceOptions.forEach(function (option) {
-
-        option.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    event.target.classList.contains(
-                        "add-service-btn"
-                    )
-                ) {
-                    return;
-                }
-
-                selectService(option);
-
-            }
-        );
-
-
-        const addButton =
-            option.querySelector(
-                ".add-service-btn"
-            );
-
-
-        addButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                selectService(option);
-
-                addServiceToCart();
-
-            }
-        );
-
+    // The same delegated handler also covers services added from the admin panel.
+    document.querySelector(".service-studio-container").addEventListener("click", function (event) {
+        const option = event.target.closest(".service-option");
+        if (!option) return;
+        selectService(option);
+        if (event.target.closest(".add-service-btn")) addServiceToCart();
     });
 
+    async function loadManagedServices() {
+        try {
+            const response = await fetch("/api/services", { cache: "no-store" });
+            if (!response.ok) return;
+            const data = await response.json();
+            if (!Array.isArray(data.services)) return;
+            const existing = new Map(Array.from(serviceOptions(), option =>
+                [String(option.dataset.service || "").trim().toLowerCase(), option]));
+            for (const name of data.hiddenNames || []) {
+                const option = existing.get(String(name).trim().toLowerCase());
+                if (option) option.hidden = true;
+            }
+            let extraGrid;
+            for (const service of data.services) {
+                if (!service || !service.id || !service.name) continue;
+                const name = String(service.name);
+                let option = existing.get(name.trim().toLowerCase());
+                if (!option) {
+                    if (!extraGrid) {
+                        const category = document.createElement("div");
+                        category.className = "service-category";
+                        const heading = document.createElement("h3");
+                        heading.className = "service-category-title";
+                        heading.textContent = "More Services";
+                        extraGrid = document.createElement("div");
+                        extraGrid.className = "service-grid";
+                        category.append(heading, extraGrid);
+                        document.querySelector(".mockup-studio").before(category);
+                    }
+                    option = document.createElement("div");
+                    option.className = "service-option";
+                    const icon = document.createElement("div");
+                    icon.className = "service-icon";
+                    option.append(icon);
+                    for (const className of ["service-name", "service-price"]) {
+                        const span = document.createElement("div");
+                        span.className = className;
+                        option.append(span);
+                    }
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "add-service-btn";
+                    button.textContent = "Add to Order";
+                    option.append(button);
+                    extraGrid.append(option);
+                    existing.set(name.trim().toLowerCase(), option);
+                }
+                option.id ||= "service-" + String(service.id).replace(/[^A-Za-z0-9_-]/g, "");
+                option.dataset.service = name;
+                option.hidden = false;
+                option.dataset.price = String(Number(service.price) || 0);
+                option.dataset.description = String(service.description || "");
+                option.dataset.icon = String(service.icon || "✦");
+                option.querySelector(".service-name").textContent = name;
+                option.querySelector(".service-price").textContent = service.priceUnit === "custom"
+                    ? "Custom quote" : "Starting ₹" + Number(service.price || 0).toLocaleString("en-IN")
+                    + (service.priceUnit ? " / " + service.priceUnit : "");
+                const visual = option.querySelector(".service-icon");
+                if (service.image) {
+                    const image = document.createElement("img");
+                    image.src = String(service.image);
+                    image.alt = name + " example";
+                    image.loading = "lazy";
+                    image.decoding = "async";
+                    visual.replaceChildren(image);
+                } else if (!visual.querySelector("img")) {
+                    visual.textContent = String(service.icon || "✦");
+                }
+            }
+            const selected = document.querySelector(".service-option.active:not([hidden])")
+                || document.querySelector(".service-option:not([hidden])");
+            if (selected) selectService(selected);
+        } catch (_) { /* Keep the original service cards when the API is unavailable. */ }
+    }
+    loadManagedServices();
 
     function openCart() {
 

@@ -135,14 +135,30 @@ const defaultServices = [
   ['social-media-poster','Social Media Poster','Digital & Social Media','Branded creatives for promotions, campaigns and social media.',200,'','Images/services-ai/social-media-poster.webp','◈','customizer.html#service-social-media',1,1,6],
   ['brochure-design','Brochure Design','Print Design','Present your products and services clearly with a professional brochure.',200,'per page','Images/services-ai/brochure-design.webp','▤','customizer.html#service-brochure',1,1,7],
   ['packaging-design','Packaging Design','Packaging','Professional packaging artwork for boxes, pouches and labels.',250,'','Images/services-ai/packaging-design.webp','▱','customizer.html#service-packaging',1,1,8],
-  ['video-editing','Video Editing','Video','Professional promotional videos, reels and social media edits.',500,'','Images/services-ai/video-editing.webp','▶','customizer.html#service-video-editing',1,1,9]
+  ['video-editing','Video Editing','Video','Professional promotional videos, reels and social media edits.',500,'','Images/services-ai/video-editing.webp','▶','customizer.html#service-video-editing',1,1,9],
+  ['letterhead-design','Letterhead Design','Print Design','Professional company letterhead design ready for printing.',200,'','Images/services-ai/letterhead-design.webp','▤','customizer.html#service-letterhead-design',1,0,10],
+  ['envelope-design','Envelope Design','Print Design','Branded business envelope design matching your company identity.',200,'','Images/services-ai/envelope-design.webp','✉','customizer.html#service-envelope-design',1,0,11],
+  ['flyer-design','Flyer Design','Print Design','Creative promotional flyers designed to attract customers.',200,'','Images/services-ai/flyer-design.webp','▣','customizer.html#service-flyer-design',1,0,12],
+  ['poster-design','Poster Design','Print Design','Eye-catching promotional poster designs for digital and print advertising.',200,'','Images/services-ai/poster-design.webp','▣','customizer.html#service-poster-design',1,0,13],
+  ['standee-design','Standee Design','Print Design','Professional standee designs for exhibitions, shops and business promotions.',300,'','Images/services-ai/standee-design.webp','▣','customizer.html#service-standee-design',1,0,14],
+  ['name-board-design','Name Board Design','Print Design','Professional shop and company name board design.',300,'','Images/services-ai/name-board-design.webp','▣','customizer.html#service-name-board-design',1,0,15],
+  ['social-media-video','Social Media Video','Digital & Social Media','Creative promotional videos and reels for social media marketing.',500,'','Images/services-ai/social-media-video.webp','▶','customizer.html#service-social-media-video',1,0,16],
+  ['festival-poster','Festival Poster','Digital & Social Media','Creative festival and special occasion promotional designs.',200,'','Images/services-ai/festival-poster.webp','✦','customizer.html#service-festival-poster',1,0,17],
+  ['label-design','Label Design','Packaging','Creative product label design for bottles, boxes and packaging.',1000,'','Images/services-ai/label-design.webp','▱','customizer.html#service-label-design',1,0,18],
+  ['pouch-design','Pouch Design','Packaging','Professional pouch packaging design for consumer products.',1500,'','Images/services-ai/pouch-design.webp','▱','customizer.html#service-pouch-design',1,0,19],
+  ['mug-printing','Mug Printing','Printing','Customized mug printing for gifts, businesses and special occasions.',250,'','Images/services-ai/mug-printing.webp','▣','customizer.html#service-mug-printing',1,0,20],
+  ['tshirt-printing','T-Shirt Printing','Printing','Custom T-shirt printing for events, businesses and personal designs.',399,'','Images/services-ai/tshirt-printing.webp','▣','customizer.html#service-tshirt-printing',1,0,21],
+  ['keychain-printing','Keychain Printing','Printing','Customized keychains for gifts, businesses and promotional events.',150,'','Images/services-ai/keychain-printing.webp','▣','customizer.html#service-keychain-printing',1,0,22],
+  ['bottle-printing','Bottle Printing','Printing','Customized bottle printing for corporate gifts and promotional products.',350,'','Images/services-ai/bottle-printing.webp','▣','customizer.html#service-bottle-printing',1,0,23]
 ];
 
 async function ensureServiceTable(env) {
   await env.DB.prepare(serviceSchema).run();
-  const count = await env.DB.prepare("SELECT COUNT(*) AS count FROM services").first();
-  if (Number(count?.count || 0) === 0) {
-    const statements = defaultServices.map((s) => env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS service_migrations (id TEXT PRIMARY KEY)").run();
+  const seeded = await env.DB.prepare("SELECT id FROM service_migrations WHERE id = 'full-service-catalog' LIMIT 1").first();
+  if (!seeded) {
+    const statements = defaultServices.map((s) => env.DB.prepare(`INSERT OR IGNORE INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
+    statements.push(env.DB.prepare("INSERT OR IGNORE INTO service_migrations (id) VALUES ('full-service-catalog')"));
     await env.DB.batch(statements);
   }
 }
@@ -170,7 +186,7 @@ function validateService(input) {
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error('Service ID may contain only letters, numbers, hyphens and underscores.');
   if (!name) throw new Error('Service name is required.');
   if (!Number.isFinite(price) || price < 0) throw new Error('Price must be a finite, non-negative number.');
-  if (image && !/^(https?:\\/\\/|[A-Za-z0-9_./-])/.test(image)) throw new Error('Invalid service image path.');
+  if (image && !/^(https?:\/\/|[A-Za-z0-9_./-])/.test(image)) throw new Error('Invalid service image path.');
   return {
     id, originalId: String(input.originalId || id).trim(), name, slug: id.toLowerCase(),
     category, description, price, priceUnit, image, icon, link,
@@ -581,8 +597,9 @@ async function handleAPI(request, env, url) {
 
   if (url.pathname === "/api/services" && request.method === "GET") {
     await ensureServiceTable(env);
-    const result = await env.DB.prepare("SELECT * FROM services WHERE active = 1 ORDER BY sort_order ASC, name ASC").all();
-    return json({ services: (result.results || []).map(normalizeService) });
+    const result = await env.DB.prepare("SELECT * FROM services ORDER BY sort_order ASC, name ASC").all();
+    return json({ services: (result.results || []).filter(row => row.active).map(normalizeService),
+      hiddenNames: (result.results || []).filter(row => !row.active).map(row => row.name) });
   }
 
   if (url.pathname === "/api/products" && request.method === "GET") {

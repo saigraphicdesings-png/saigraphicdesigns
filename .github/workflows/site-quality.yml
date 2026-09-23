@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 24
       - name: Product and catalog regression tests
-        run: node --test scripts/test-product-import.mjs scripts/test-shop-catalog.mjs
+        run: node --test scripts/test-product-import.mjs scripts/test-shop-catalog.mjs scripts/test-services.mjs
       - name: Validate local links and duplicate IDs
         run: node scripts/validate-site.mjs
       - name: Validate Cloudflare Worker bundle
