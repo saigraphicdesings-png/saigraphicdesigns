@@ -32,7 +32,7 @@ function database({ legacy = false } = {}) {
   };
   return { DB, db };
 }
-const product = id => ({ id, name: id, category: 'Printing Designs', type: 'business-card', images: ['preview.jpg'], price: 99 });
+const product = id => ({ id, name: id + ' Bundle', category: 'Business Card Bundles', type: 'business-card', images: ['preview.jpg'], price: 99 });
 function client(env) {
   return async (path, method = 'GET', body, authorized = true) => {
     const response = await worker.fetch(new Request('https://test.local' + path, {
@@ -76,6 +76,15 @@ test('unauthorized imports and deletes cannot change products', async () => {
   assert.equal((await call('/api/admin/products/import', 'POST', { products: [product('one')] }, false)).status, 401);
   assert.equal((await call('/api/admin/products/one', 'DELETE', null, false)).status, 401);
   assert.equal((await call('/api/products')).products.length, 0); env.db.close();
+});
+
+test('single designs remain editable in admin but do not appear in Bundle World', async () => {
+  const env = database(); const call = client(env);
+  await call('/api/admin/products', 'POST', { ...product('single'), name: 'Business Card 01' });
+  await call('/api/admin/products', 'POST', product('bundle'));
+  assert.deepEqual((await call('/api/admin/products')).products.map(p => p.id).sort(), ['bundle', 'single']);
+  assert.deepEqual((await call('/api/products')).products.map(p => p.id), ['bundle']);
+  env.db.close();
 });
 
 test('renaming onto another product preserves both products', async () => {
