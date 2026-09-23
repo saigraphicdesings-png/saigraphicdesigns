@@ -1,14 +1,2364 @@
-:root{--blue:#1377bb;--blue-deep:#075891;--blue-soft:#e7f3fc;--accent:#16b98b;--orange:#f97616;--violet:#9333ea;--danger:#e83b52;--page:#f5f8fc;--surface:#fff;--surface-alt:#f8fbff;--text:#162235;--muted:#71809a;--line:#e5ebf3;--shadow:0 12px 32px rgba(31,62,96,.08);color-scheme:light}html[data-theme="dark"]{--page:#0c1422;--surface:#121e30;--surface-alt:#18263a;--text:#edf4ff;--muted:#9baac1;--line:#273751;--blue-soft:#182e45;--shadow:0 16px 36px rgba(0,0,0,.28);color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}.admin-header{position:fixed;z-index:10;inset:0 auto 0 0;width:238px;display:flex;flex-direction:column;align-items:stretch;padding:24px 14px 18px;color:#eaf5ff;background:linear-gradient(180deg,#1683d0,#09639f 58%,#064a7b);box-shadow:5px 0 22px rgba(8,60,100,.15)}.brand{display:flex;align-items:center;gap:10px;padding:0 10px 23px;color:#fff;font-size:15px;font-weight:900;line-height:1.06;text-decoration:none}.brand span{display:grid;place-items:center;width:39px;height:39px;border:1px solid rgba(255,255,255,.3);border-radius:12px;background:rgba(255,255,255,.16);font-weight:1000}.admin-nav{display:grid;gap:7px}.admin-nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:9px;color:#d9edff;font-size:13px;font-weight:750;text-decoration:none}.admin-nav a:hover,.admin-nav .nav-active{background:linear-gradient(90deg,rgba(75,158,255,.8),rgba(40,124,236,.88));color:#fff;box-shadow:0 6px 18px rgba(1,51,105,.18)}.header-actions{display:grid;gap:9px;margin-top:auto}.shop-link,.theme-toggle{display:flex;justify-content:center;align-items:center;gap:7px;padding:10px 12px;border:1px solid rgba(255,255,255,.25);border-radius:10px;background:rgba(255,255,255,.11);color:#fff;font:inherit;font-weight:800;text-decoration:none;cursor:pointer}.theme-toggle{width:100%}.theme-toggle:hover,.shop-link:hover{background:rgba(255,255,255,.2)}.admin-shell{width:min(1450px,calc(100% - 286px));margin:0 24px 55px 262px;padding-top:26px}.login-card{width:min(460px,100%);margin:9vh auto;padding:38px;border:1px solid var(--line);border-radius:24px;background:var(--surface);box-shadow:var(--shadow)}.admin-mark{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--blue);color:#fff}.login-card h1,.dashboard h1{margin:.2rem 0 .5rem;font-size:clamp(1.7rem,4vw,2.35rem)}.login-card p{color:var(--muted)}.eyebrow{margin:0 0 5px!important;color:var(--blue)!important;font-size:.72rem;font-weight:900;letter-spacing:.11em}label{display:grid;gap:7px;color:var(--text);font-weight:800}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:var(--surface-alt);color:var(--text);font:inherit;outline:0}input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(19,119,187,.16)}button{border:0;border-radius:9px;padding:11px 15px;font:inherit;font-weight:850;cursor:pointer}.login-card button,.primary{width:100%;margin-top:16px;background:linear-gradient(135deg,#1987d7,#0865a8);color:#fff;box-shadow:0 8px 18px rgba(19,119,187,.18)}.error,.form-message{min-height:22px;color:var(--danger);font-weight:700}.welcome-banner{position:relative;display:flex;justify-content:space-between;align-items:center;overflow:hidden;min-height:138px;margin-bottom:20px;padding:25px 30px;border-radius:20px;color:#fff;background:linear-gradient(115deg,#1488d7,#0964a6 70%,#075386);box-shadow:0 15px 34px rgba(14,106,174,.24)}.welcome-banner::after{content:"";position:absolute;right:-55px;bottom:-115px;width:280px;height:280px;border:35px solid rgba(255,255,255,.07);border-radius:50%}.welcome-banner .eyebrow{color:#d2eeff!important}.welcome-banner h2{margin:0;font-size:clamp(1.45rem,3vw,2rem)}.welcome-banner p:not(.eyebrow){margin:5px 0 0;color:#e1f3ff}.welcome-orb{position:relative;z-index:1;display:grid;place-items:center;width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.13);font-size:28px}.dashboard-top,.panel-title,.top-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.dashboard-top{margin:0 0 16px}.dashboard-top h1{font-size:1.4rem}.top-actions{flex-wrap:wrap}.secondary{background:var(--surface);border:1px solid var(--line);color:var(--text)}.secondary:hover{border-color:#88bde4;background:var(--blue-soft)}.secondary.danger{color:var(--danger)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 20px}.stats article,.panel{border:1px solid var(--line);border-radius:15px;background:var(--surface);box-shadow:var(--shadow)}.stats article{position:relative;overflow:hidden;padding:19px}.stats article:nth-child(1){border-top:3px solid var(--blue)}.stats article:nth-child(2){border-top:3px solid var(--accent)}.stats article:nth-child(3){border-top:3px solid var(--violet)}.stats strong{display:block;color:var(--text);font-size:1.8rem}.stats span{color:var(--muted);font-weight:700}.admin-grid{display:grid;grid-template-columns:minmax(330px,.85fr) minmax(440px,1.15fr);gap:20px;align-items:start}.panel{padding:23px}.panel h2{margin:0;font-size:1.1rem}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}.full,.check{grid-column:1/-1}.check{display:flex;align-items:center}.check input{width:18px;height:18px}.text-btn{padding:6px;background:transparent;color:var(--blue)}#productSearch{width:min(260px,50%)}.product-list{display:grid;gap:11px;margin-top:18px;max-height:750px;overflow:auto}.product-row{display:grid;grid-template-columns:68px 1fr auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--surface-alt)}.product-row img{width:68px;height:68px;object-fit:cover;border-radius:10px;background:var(--blue-soft)}.product-row h3{margin:0;font-size:1rem}.product-row p{margin:3px 0;color:var(--muted);font-size:.86rem}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#d8f8ed;color:#057255;font-size:.72rem;font-weight:900}.badge.hidden{background:#ffe1e6;color:#b81e3b}.row-actions{display:flex;flex-direction:column;gap:7px}.row-actions button{padding:7px 10px}.edit-btn{background:var(--blue-soft);color:var(--blue-deep)}.hide-btn{background:#fff0f1;color:#c52443}.delete-btn{background:#ffe1e6;color:#b81e3b}.import-btn{background:#e0f8f1;border-color:#a8ebda;color:#08785a}.import-btn:disabled{opacity:.6;cursor:wait}.empty{padding:40px;text-align:center;color:var(--muted)}select{appearance:auto}select[multiple]{min-height:142px;padding:7px}select[multiple] option{padding:9px 10px;border-radius:7px}label small{color:var(--muted);font-size:.76rem;font-weight:600;line-height:1.4}.products-column{display:grid;gap:20px;min-width:0}.link-panel{background:linear-gradient(145deg,var(--surface),var(--blue-soft))}.link-intro{color:var(--muted);font-size:.87rem}.link-panel label{margin:16px 0 7px}.copy-link-row{display:flex;gap:10px;align-items:stretch}.copy-link-row input{min-width:0;flex:1}.copy-link-row .primary{width:auto;flex-shrink:0;margin:0;padding:12px 20px}.copy-link-row button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}.link-panel .form-message{font-size:.85rem;margin-bottom:0}.delete-dialog{position:fixed;inset:0;margin:auto;width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;overflow:auto;border:1px solid var(--line);border-radius:26px;color:var(--text);background:var(--surface);box-shadow:0 28px 90px rgba(3,18,35,.36)}.delete-dialog::backdrop{background:rgba(5,20,40,.38);backdrop-filter:blur(7px)}.delete-dialog-content{padding:34px;text-align:center}.delete-dialog-icon{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 18px;border-radius:20px;background:#ffe5e9;color:var(--danger)}.delete-dialog h2{margin:8px 0 12px}.delete-dialog-actions{display:flex;gap:12px;margin-top:26px}.delete-dialog-actions button{flex:1}.glass-cancel{background:var(--surface-alt);color:var(--text)}.glass-delete{color:#fff;background:linear-gradient(135deg,#f05468,#db2445)}.mockup-generator{margin:0 0 20px;background:linear-gradient(145deg,var(--surface),var(--blue-soft))}.mockup-generator .eyebrow{margin:0 0 5px!important}.mockup-intro{max-width:850px;color:var(--muted);margin:10px 0 20px}.mockup-workspace{display:grid;grid-template-columns:minmax(250px,320px) 1fr;gap:24px;align-items:start}.mockup-controls{display:grid;gap:14px}.mockup-controls input[type=file]{padding:9px;background:var(--surface)}.mockup-controls .primary{margin-top:3px}.mockup-download{width:100%}.mockup-download:disabled{opacity:.45;cursor:not-allowed}.mockup-preview-wrap{position:relative;display:grid;place-items:center;min-height:360px;border:1px dashed #83bbe0;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 20% 10%,#f5fbff,#e1f1fb 55%,#c8e2f3)}html[data-theme="dark"] .mockup-preview-wrap{background:radial-gradient(circle at 20% 10%,#203d57,#14283b 55%,#101d2c)}#mockupCanvas{display:block;width:100%;height:auto;max-height:620px;object-fit:contain}.mockup-placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:7px;color:var(--muted);pointer-events:none}.mockup-placeholder strong{color:var(--blue-deep);font-size:1.1rem}html[data-theme="dark"] .mockup-placeholder strong{color:#85cdfd}.mockup-placeholder span{font-size:.85rem}.mockup-preview-wrap.ready .mockup-placeholder{display:none}@media(max-width:900px){.admin-header{position:sticky;inset:auto;width:100%;flex-direction:row;align-items:center;padding:12px 16px}.brand{padding:0;font-size:13px}.brand span{width:34px;height:34px}.admin-nav{display:none}.header-actions{display:flex;align-items:center;gap:8px;margin:0 0 0 auto}.shop-link,.theme-toggle{padding:8px 10px;font-size:12px}.theme-toggle b{display:none}.admin-shell{width:min(100% - 28px,900px);margin:0 auto 45px;padding-top:20px}.admin-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.dashboard-top{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.full,.check{grid-column:auto}.product-row{grid-template-columns:58px 1fr}.product-row img{width:58px;height:58px}.row-actions{grid-column:1/-1;flex-direction:row}.row-actions button{flex:1}.mockup-workspace{grid-template-columns:1fr}.mockup-preview-wrap{min-height:280px}}@media(max-width:480px){.shop-link{display:none}.welcome-banner{padding:20px}.welcome-orb{display:none}.copy-link-row{flex-direction:column}.copy-link-row .primary{width:100%}.delete-dialog-content{padding:28px 22px}.panel-title{align-items:flex-start}.top-actions{flex-wrap:wrap}}
-.site-mode-panel{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:-4px 0 20px;padding:22px 25px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(120deg,var(--surface),var(--blue-soft));box-shadow:var(--shadow)}.site-mode-copy h2{margin:0;font-size:1.15rem}.site-mode-copy p:not(.eyebrow){margin:5px 0 4px;color:var(--muted);font-weight:650}.site-mode-copy small{color:var(--muted)}.site-mode-actions{display:grid;grid-template-columns:auto auto;gap:9px;align-items:center;justify-items:end}.site-mode-status{grid-column:1/-1;padding:5px 10px;border-radius:999px;background:#dceeff;color:#075891;font-size:.72rem;font-weight:950;letter-spacing:.06em}.site-mode-panel[data-mode="sleep"]{background:linear-gradient(120deg,var(--surface),#eee6ff)}.site-mode-panel[data-mode="sleep"] .site-mode-status{background:#eadcff;color:#6d28d9}.site-mode-toggle,.site-mode-auto{min-height:42px;padding:0 14px;border-radius:12px;font-weight:900}.site-mode-toggle{min-width:170px;background:linear-gradient(135deg,#ffb000,#ef7f00);color:#fff;box-shadow:0 9px 18px rgba(239,127,0,.2)}.site-mode-panel[data-mode="sleep"] .site-mode-toggle{background:linear-gradient(135deg,#9838ef,#5f22c6);box-shadow:0 9px 18px rgba(95,34,198,.22)}.site-mode-toggle:disabled{opacity:.65;cursor:wait}.site-mode-auto{background:var(--surface);border:1px solid var(--line);color:var(--text)}@media(max-width:620px){.site-mode-panel{align-items:flex-start;flex-direction:column;padding:19px}.site-mode-actions{width:100%;grid-template-columns:1fr}.site-mode-status{justify-self:start}.site-mode-toggle,.site-mode-auto{width:100%;min-height:44px}.site-mode-auto{grid-column:1/-1}}
-/* Glossy liquid-glass refinement */
-body{min-height:100vh;background:radial-gradient(circle at 72% -8%,rgba(91,191,255,.25),transparent 29%),radial-gradient(circle at 8% 92%,rgba(100,223,197,.17),transparent 27%),var(--page)}html[data-theme="dark"] body{background:radial-gradient(circle at 72% -8%,rgba(37,123,214,.22),transparent 30%),radial-gradient(circle at 8% 92%,rgba(105,53,185,.17),transparent 27%),var(--page)}.admin-header{background:linear-gradient(180deg,rgba(25,139,221,.96),rgba(8,93,155,.93) 58%,rgba(4,66,111,.95));border-right:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px) saturate(145%)}.admin-header::before{content:"";position:absolute;inset:0 0 auto;height:155px;background:linear-gradient(130deg,rgba(255,255,255,.19),transparent 58%);pointer-events:none}.admin-header>*{position:relative}.brand span,.shop-link,.theme-toggle{box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 10px 22px rgba(2,44,80,.17)}.admin-nav a{border:1px solid transparent}.admin-nav a:hover,.admin-nav .nav-active{border-color:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.32),0 10px 21px rgba(1,43,95,.2)}.welcome-banner{isolation:isolate;border:1px solid rgba(255,255,255,.27);background:linear-gradient(120deg,rgba(25,151,230,.94),rgba(7,90,160,.9) 71%,rgba(5,64,118,.94));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),inset 0 -18px 45px rgba(4,48,96,.2),0 19px 42px rgba(13,103,174,.24);backdrop-filter:blur(20px) saturate(150%)}.welcome-banner::before{content:"";position:absolute;z-index:-1;top:-68px;left:17%;width:55%;height:145px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent);filter:blur(8px)}.welcome-orb{border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 2px rgba(255,255,255,.58),0 14px 28px rgba(4,39,91,.2);backdrop-filter:blur(16px)}.stats article,.panel,.site-mode-panel{border-color:rgba(255,255,255,.54);background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(246,251,255,.6));box-shadow:inset 0 1px 1px rgba(255,255,255,.85),0 15px 34px rgba(35,75,119,.1);backdrop-filter:blur(20px) saturate(135%)}html[data-theme="dark"] .stats article,html[data-theme="dark"] .panel,html[data-theme="dark"] .site-mode-panel{border-color:rgba(157,199,239,.16);background:linear-gradient(145deg,rgba(27,45,68,.79),rgba(17,32,51,.65));box-shadow:inset 0 1px 1px rgba(203,229,255,.1),0 18px 38px rgba(0,0,0,.25)}.stats article::after{content:"";position:absolute;inset:0 0 auto;height:48px;background:linear-gradient(180deg,rgba(255,255,255,.42),transparent);pointer-events:none}.panel{position:relative;overflow:hidden}.panel::before{content:"";position:absolute;top:-42px;right:-20px;width:150px;height:88px;border-radius:50%;background:rgba(255,255,255,.34);filter:blur(13px);pointer-events:none}.panel>*{position:relative}.product-row{border-color:rgba(148,190,224,.26);background:linear-gradient(135deg,rgba(255,255,255,.83),rgba(231,245,255,.56));box-shadow:inset 0 1px 1px rgba(255,255,255,.7)}html[data-theme="dark"] .product-row{background:linear-gradient(135deg,rgba(30,51,77,.8),rgba(22,38,60,.65));border-color:rgba(141,190,234,.16)}input,textarea,select{border-color:rgba(120,174,216,.3);background:rgba(255,255,255,.6);box-shadow:inset 0 1px 1px rgba(255,255,255,.72)}html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select{background:rgba(10,22,38,.42);box-shadow:inset 0 1px 1px rgba(180,221,255,.08)}.secondary,.site-mode-auto{background:rgba(255,255,255,.62);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 7px 16px rgba(26,65,108,.07);backdrop-filter:blur(12px)}html[data-theme="dark"] .secondary,html[data-theme="dark"] .site-mode-auto{background:rgba(32,52,78,.58)}.primary,.site-mode-toggle{position:relative;overflow:hidden}.primary::before,.site-mode-toggle::before{content:"";position:absolute;top:0;left:-25%;width:56%;height:100%;transform:skewX(-24deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);pointer-events:none}.primary:hover::before,.site-mode-toggle:hover::before{left:108%;transition:left .7s ease}.delete-dialog{border-color:rgba(255,255,255,.66);background:linear-gradient(145deg,rgba(255,255,255,.89),rgba(221,240,255,.73));box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 30px 92px rgba(3,27,58,.33);backdrop-filter:blur(30px) saturate(150%)}html[data-theme="dark"] .delete-dialog{background:linear-gradient(145deg,rgba(29,48,73,.94),rgba(15,29,48,.88));border-color:rgba(174,213,249,.16)}.mockup-preview-wrap{box-shadow:inset 0 1px 1px rgba(255,255,255,.74),0 12px 24px rgba(37,83,124,.1)}@media(max-width:900px){.admin-header::before{height:65px}.stats article,.panel,.site-mode-panel{backdrop-filter:blur(14px)}}
-/* Admin live payment signal */
-.site-mode-status{display:inline-flex;align-items:center;gap:7px}.site-mode-status::before{content:"";width:8px;height:8px;border-radius:50%;background:#94a3b8;box-shadow:0 0 0 3px rgba(148,163,184,.18)}.site-mode-panel[data-mode="work"] .site-mode-status::before{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.16),0 0 12px rgba(34,197,94,.86);animation:adminPaymentPulse 1.6s ease-in-out infinite}.site-mode-panel[data-mode="sleep"] .site-mode-status::before{background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15),0 0 11px rgba(239,68,68,.77)}@keyframes adminPaymentPulse{50%{transform:scale(.8);box-shadow:0 0 0 6px rgba(34,197,94,0),0 0 15px rgba(34,197,94,.9)}}
-/* Left sidebar management and quick actions */
-.nav-label{margin:13px 10px 3px;color:rgba(220,241,255,.67);font-size:.66rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.sidebar-session-actions{display:grid;gap:7px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.16)}.sidebar-btn{display:flex;align-items:center;gap:11px;width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:rgba(255,255,255,.08);color:#e6f4ff;font-size:13px;font-weight:800;text-align:left}.sidebar-btn:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.17)}.sidebar-btn.import-btn{background:linear-gradient(90deg,rgba(18,185,139,.25),rgba(79,158,255,.18));border-color:rgba(116,242,207,.26);color:#e8fff8}.sidebar-btn.sidebar-logout{color:#ffdfe4}.top-actions-note{color:var(--muted);font-size:.82rem;font-weight:700}@media(max-width:900px){.admin-header{flex-wrap:wrap}.sidebar-session-actions{order:3;width:100%;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;padding-top:6px}.sidebar-session-actions .nav-label{display:none}.sidebar-btn{justify-content:center;padding:9px 6px;font-size:12px}.sidebar-btn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top-actions-note{display:none}.dashboard-top{margin-bottom:0}}
-/* Editable payment schedule */
-.site-mode-panel{flex-wrap:wrap}.site-schedule-form{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr)) auto;gap:10px;align-items:end;width:100%;padding-top:16px;border-top:1px solid rgba(130,177,215,.25)}.site-schedule-form label{gap:5px;font-size:.76rem}.site-schedule-form input{padding:9px 10px}.site-schedule-save{min-height:40px;background:rgba(255,255,255,.72);border:1px solid rgba(119,179,220,.4);color:var(--blue-deep);font-weight:900;box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 7px 16px rgba(26,65,108,.07)}.site-schedule-save:hover{background:var(--blue-soft)}.site-schedule-form p{grid-column:1/-1;min-height:0;margin:0;color:var(--blue-deep);font-size:.78rem;font-weight:750}html[data-theme="dark"] .site-schedule-save{background:rgba(32,52,78,.58);color:#cfeaff;border-color:rgba(135,197,240,.25)}@media(max-width:620px){.site-schedule-form{grid-template-columns:1fr 1fr}.site-schedule-save{grid-column:1/-1;width:100%}}
-/* Shared navigation for every admin section */
-.admin-subpage .customers-wrap,.admin-subpage .pay-shell{width:min(1400px,calc(100% - 286px));max-width:none;margin:0 24px 70px 262px;padding-top:28px}.admin-subpage .analytics-shell{width:min(1400px,calc(100% - 286px));max-width:none;margin:0 24px 70px 262px;padding-top:34px}.admin-subpage .sidebar-btn{text-decoration:none}.admin-subpage .header-actions{margin-top:auto}@media(max-width:900px){.admin-subpage .customers-wrap,.admin-subpage .pay-shell,.admin-subpage .analytics-shell{width:min(100% - 28px,900px);margin:0 auto 45px;padding-top:20px}.admin-subpage .admin-header{position:sticky;inset:auto}}
-/* One high-attention homepage product */
-.key-product-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.72fr);gap:28px;align-items:center;margin:0 0 20px;border-left:4px solid #f59e0b;background:linear-gradient(135deg,var(--surface),#fff8e7)}html[data-theme="dark"] .key-product-panel{background:linear-gradient(135deg,var(--surface),#2b2418)}.key-product-panel h2{font-size:1.35rem}.key-product-panel p:not(.eyebrow){margin:8px 0 0;color:var(--muted)}.key-product-controls{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.key-product-controls .primary{width:auto;margin:0;white-space:nowrap}.key-product-controls .form-message{grid-column:1/-1;margin:0}.key-badge{margin-left:5px;background:#fff0bf;color:#9a5a00}@media(max-width:900px){.key-product-panel{grid-template-columns:1fr}.key-product-controls{grid-template-columns:1fr}.key-product-controls .primary{width:100%}}
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
+    const CART_KEY = "saiGraphicCart";
+    const WHATSAPP_NUMBER = "916381128781";
+
+
+    /* =====================================================
+       PRODUCT DATA
+    ===================================================== */
+
+    // The admin database is the source of truth, including an empty catalog.
+    let products = [];
+    let catalogStatus = "loading";
+
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const allProducts =
+        document.getElementById("allProducts");
+
+    const productModal =
+        document.getElementById("productModal");
+
+    const productModalClose =
+        document.getElementById("productModalClose");
+
+    const productModalOverlay =
+        document.getElementById("productModalOverlay");
+
+    const mainProductImage =
+        document.getElementById("mainProductImage");
+
+    const productThumbnails =
+        document.getElementById("productThumbnails");
+
+    const modalProductName =
+        document.getElementById("modalProductName");
+
+    const modalProductDescription =
+        document.getElementById("modalProductDescription");
+
+    const modalProductPrice =
+        document.getElementById("modalProductPrice");
+
+    const modalProductCategory =
+        document.getElementById("modalProductCategory");
+
+    const modalAddCart =
+        document.getElementById("modalAddCart");
+
+    const viewerPrev =
+        document.getElementById("viewerPrev");
+
+    const viewerNext =
+        document.getElementById("viewerNext");
+
+    const cartToggle =
+        document.getElementById("cartToggle");
+
+    const cartClose =
+        document.getElementById("cartClose");
+
+    const cartOverlay =
+        document.getElementById("cartOverlay");
+
+    const cartDrawer =
+        document.getElementById("cartDrawer");
+
+    const cartBadge =
+        document.getElementById("cartBadge");
+
+    const cartItemsList =
+        document.getElementById("cartItemsList");
+
+    const cartTotalVal =
+        document.getElementById("cartTotalVal");
+
+    const cartCheckout =
+        document.getElementById("cartCheckout");
+
+
+    /* =====================================================
+       FILTERS
+    ===================================================== */
+
+    const shopFilters =
+        document.getElementById("shopFilters");
+
+    const filterButtons =
+        shopFilters
+            ? shopFilters.querySelectorAll(".shop-filter")
+            : [];
+
+    let activeFilter = "all";
+
+
+    /* =====================================================
+       CART
+    ===================================================== */
+
+    let cart = [];
+
+    try {
+
+        const savedCart =
+            localStorage.getItem(CART_KEY);
+
+        if (savedCart) {
+
+            const parsedCart =
+                JSON.parse(savedCart);
+
+            if (Array.isArray(parsedCart)) {
+
+                const mergedItems = new Map();
+
+                parsedCart.forEach(item => {
+
+                    const key =
+                        String(
+                            item.name ||
+                            item.id ||
+                            ""
+                        ).trim().toLowerCase();
+
+                    if (!key) {
+                        return;
+                    }
+
+                    if (mergedItems.has(key)) {
+
+                        const existing =
+                            mergedItems.get(key);
+
+                        existing.qty =
+                            Math.max(
+                                Number(existing.qty) || 1,
+                                Number(item.qty) || 1
+                            );
+
+                    } else {
+
+                        mergedItems.set(
+                            key,
+                            {
+                                ...item,
+                                qty: Number(item.qty) || 1
+                            }
+                        );
+
+                    }
+
+                });
+
+                cart =
+                    Array.from(
+                        mergedItems.values()
+                    );
+
+                localStorage.setItem(
+                    CART_KEY,
+                    JSON.stringify(cart)
+                );
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load cart:",
+            error
+        );
+
+        cart = [];
+
+    }
+
+
+    /* =====================================================
+       CURRENT PRODUCT
+    ===================================================== */
+
+    let currentProduct = null;
+    let currentImageIndex = 0;
+
+
+    /* =====================================================
+       PRICE FORMAT
+    ===================================================== */
+
+    function formatPrice(price) {
+
+        const numericPrice =
+            Number(price);
+
+        if (
+            !Number.isFinite(numericPrice) ||
+            numericPrice === 0
+        ) {
+            return "FREE";
+        }
+
+        return (
+            "₹" +
+            numericPrice.toLocaleString("en-IN")
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       NORMALIZE FILTER VALUE
+    ===================================================== */
+
+    function normalizeValue(value) {
+
+        return String(value ?? "")
+            .trim()
+            .toLowerCase()
+            .replace(/[_\s]+/g, "-");
+
+    }
+
+
+    /* =====================================================
+       SAVE CART
+    ===================================================== */
+
+    function saveCart() {
+
+        try {
+
+            localStorage.setItem(
+                CART_KEY,
+                JSON.stringify(cart)
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Unable to save cart:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GET PRODUCT
+    ===================================================== */
+
+    function getProductById(id) {
+
+        return products.find(
+            product => product.id === id
+        );
+
+    }
+
+
+    /* =====================================================
+       FILTER LOGIC
+    ===================================================== */
+
+    function productMatchesFilter(product, filter) {
+
+        if (!product) {
+            return false;
+        }
+
+
+        if (!filter || filter === "all") {
+            return true;
+        }
+
+
+        /* PAID */
+
+        if (filter === "paid") {
+
+            return Number(product.price) > 0;
+
+        }
+
+
+        /* FREE */
+
+        if (filter === "free") {
+
+            return Number(product.price) === 0;
+
+        }
+
+
+        /* FORMAT FILTER */
+
+        if (
+            ["cdr", "psd", "png", "svg"]
+                .includes(filter)
+        ) {
+
+            const formats =
+                Array.isArray(product.formats)
+                    ? product.formats.map(
+                        normalizeValue
+                    )
+                    : [];
+
+            return formats.includes(filter);
+
+        }
+
+
+        /* DESIGN TYPE */
+
+        const productType =
+            normalizeValue(product.type);
+
+        return productType === filter;
+
+    }
+
+
+    /* =====================================================
+       GET FILTERED PRODUCTS
+    ===================================================== */
+
+    function getFilteredProducts() {
+
+        return products.filter(
+            product =>
+                productMatchesFilter(
+                    product,
+                    activeFilter
+                )
+        );
+
+    }
+
+
+    /* =====================================================
+       SETUP FILTERS
+    ===================================================== */
+
+    function setupFilters() {
+
+        if (!filterButtons.length) {
+            return;
+        }
+
+
+        filterButtons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    activeFilter =
+                        normalizeValue(
+                            this.dataset.filter
+                        );
+
+
+                    filterButtons.forEach(btn => {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                        btn.setAttribute(
+                            "aria-pressed",
+                            "false"
+                        );
+
+                    });
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+                    this.setAttribute(
+                        "aria-pressed",
+                        "true"
+                    );
+
+
+                    renderProducts();
+
+                }
+            );
+
+        });
+
+    }
+
+
+    /* =====================================================
+       RENDER PRODUCTS
+       (single flat grid — no category grouping; the
+       filter bar above controls what's shown, and each
+       card still displays its category as a small label)
+    ===================================================== */
+
+    function renderProducts() {
+
+        if (!allProducts) {
+            return;
+        }
+
+
+        /* CLEAR */
+
+        allProducts.innerHTML = "";
+
+        if (catalogStatus !== "ready") {
+            const status = document.createElement("div");
+            status.className = "shop-filter-empty";
+            status.setAttribute("role", "status");
+            status.textContent = catalogStatus === "loading"
+                ? "Loading bundles…"
+                : "Unable to load bundles. Please refresh to try again.";
+            allProducts.appendChild(status);
+            return;
+        }
+
+        const filteredProducts =
+            getFilteredProducts();
+
+
+        /* =================================================
+           NO RESULTS
+        ================================================= */
+
+        if (filteredProducts.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "shop-filter-empty";
+
+
+            empty.innerHTML = `
+
+                <div class="filter-empty-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    No bundles found
+                </h3>
+
+                <p>
+                    No bundles match the selected filter.
+                </p>
+
+            `;
+
+
+            allProducts.appendChild(empty);
+
+
+            return;
+
+        }
+
+
+        /* =================================================
+           CREATE PRODUCT CARDS
+        ================================================= */
+
+        filteredProducts.forEach(product => {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "shop-product";
+
+            card.dataset.id =
+                product.id;
+
+
+            const isFree =
+                Number(product.price) === 0;
+
+
+            const formats =
+                Array.isArray(product.formats)
+                    ? product.formats
+                    : [];
+
+
+            /* =================================================
+               PRODUCT CARD HTML
+            ================================================= */
+
+            card.innerHTML = `
+
+                <div class="product-preview">
+
+                   ${isFree ? `
+    <span class="free-ribbon" aria-label="Free">
+        <span class="free-ribbon-main">FREE</span>
+    </span>
+` : ""}
+
+                    <img
+                        src="${escapeHTML(
+                            product.images?.[0] || ""
+                        )}"
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
+                        loading="lazy">
+
+                </div>
+
+
+                <div class="product-info">
+
+
+                    <span class="product-category">
+                        ${escapeHTML(
+                            product.category
+                        )}
+                    </span>
+
+
+                    <h3>
+                        ${escapeHTML(
+                            product.name
+                        )}
+                    </h3>
+
+
+                    <p>
+                        ${escapeHTML(
+                            product.description
+                        )}
+                    </p>
+
+
+                    ${
+                        formats.length
+                            ? `
+                                <div class="product-formats">
+
+                                    ${formats
+                                        .map(
+                                            format => `
+                                                <span>
+                                                    ${escapeHTML(
+                                                        format.toUpperCase()
+                                                    )}
+                                                </span>
+                                            `
+                                        )
+                                        .join("")}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    <div class="product-bottom">
+
+
+                        <strong
+                            class="${
+                                isFree
+                                    ? "free-price"
+                                    : ""
+                            }">
+
+                            ${formatPrice(
+                                product.price
+                            )}
+
+                        </strong>
+
+
+                        <button
+                            type="button"
+                            class="add-product-btn">
+
+                            ${isFree ? "Get Free" : "Add to Cart"}
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+
+            allProducts.appendChild(card);
+
+
+            /* =================================================
+               IMAGE ERROR
+            ================================================= */
+
+            const productImage =
+                card.querySelector(
+                    ".product-preview img"
+                );
+
+
+            if (productImage) {
+
+                productImage.addEventListener(
+                    "error",
+                    function () {
+
+                        this.onerror = null;
+                        this.src = "Images/placeholder.svg";
+                        this.alt = product.name + " preview coming soon";
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               OPEN PRODUCT
+            ================================================= */
+
+            card.addEventListener(
+                "click",
+                function () {
+
+                    openProductModal(
+                        product
+                    );
+
+                }
+            );
+
+
+            /* =================================================
+               ADD TO CART
+            ================================================= */
+
+            const addButton =
+                card.querySelector(
+                    ".add-product-btn"
+                );
+
+
+            if (addButton) {
+
+                addButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        if (Number(product.price) === 0) {
+                            requestFreeProductWhatsApp(product, addButton);
+                        } else {
+                            addProductToCart(product);
+                        }
+
+                    }
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       OPEN PRODUCT MODAL
+    ===================================================== */
+
+    function openProductModal(product) {
+
+        if (!product || !productModal) {
+            return;
+        }
+
+
+        currentProduct =
+            product;
+
+        currentImageIndex =
+            0;
+
+
+        if (modalProductName) {
+
+            modalProductName.textContent =
+                product.name;
+
+        }
+
+
+        if (modalProductDescription) {
+
+            modalProductDescription.textContent =
+                product.description;
+
+        }
+
+
+        if (modalProductPrice) {
+
+            modalProductPrice.textContent =
+                formatPrice(
+                    product.price
+                );
+
+
+            modalProductPrice.classList.toggle(
+                "free-price",
+                Number(product.price) === 0
+            );
+
+        }
+
+
+        if (modalProductCategory) {
+
+            modalProductCategory.textContent =
+                product.category;
+
+        }
+
+
+        renderProductImages();
+
+
+        if (modalAddCart) {
+            modalAddCart.dataset.downloadReady = "";
+            modalAddCart.textContent =
+                Number(product.price) === 0
+                    ? "Get Free on WhatsApp"
+                    : "Add to Cart";
+        }
+
+
+        productModal.classList.add(
+            "active"
+        );
+
+
+        productModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =====================================================
+       PRODUCT IMAGES
+    ===================================================== */
+
+    function renderProductImages() {
+
+        if (
+            !currentProduct ||
+            !mainProductImage
+        ) {
+            return;
+        }
+
+
+        const images =
+            Array.isArray(
+                currentProduct.images
+            )
+                ? currentProduct.images
+                : [];
+
+
+        if (images.length === 0) {
+
+            mainProductImage.removeAttribute(
+                "src"
+            );
+
+
+            if (productThumbnails) {
+
+                productThumbnails.innerHTML =
+                    "";
+
+            }
+
+            return;
+
+        }
+
+
+        if (
+            currentImageIndex < 0 ||
+            currentImageIndex >= images.length
+        ) {
+
+            currentImageIndex =
+                0;
+
+        }
+
+
+        mainProductImage.src =
+            images[currentImageIndex];
+
+
+        mainProductImage.alt =
+            currentProduct.name +
+            " preview " +
+            (currentImageIndex + 1);
+
+
+        if (!productThumbnails) {
+            return;
+        }
+
+
+        productThumbnails.innerHTML =
+            "";
+
+
+        images.forEach(
+            function (image, index) {
+
+                const thumbnail =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                thumbnail.type =
+                    "button";
+
+
+                thumbnail.className =
+                    "product-thumbnail";
+
+
+                thumbnail.setAttribute(
+                    "aria-label",
+                    "View image " +
+                    (index + 1)
+                );
+
+
+                if (
+                    index ===
+                    currentImageIndex
+                ) {
+
+                    thumbnail.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                thumbnail.innerHTML = `
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="Preview ${index + 1}"
+                        loading="lazy">
+
+                `;
+
+
+                thumbnail.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        currentImageIndex =
+                            index;
+
+                        renderProductImages();
+
+                    }
+                );
+
+
+                productThumbnails.appendChild(
+                    thumbnail
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       NEXT IMAGE
+    ===================================================== */
+
+    function nextImage() {
+
+        if (
+            !currentProduct ||
+            !Array.isArray(
+                currentProduct.images
+            )
+        ) {
+            return;
+        }
+
+
+        const imageCount =
+            currentProduct.images.length;
+
+
+        if (imageCount <= 1) {
+            return;
+        }
+
+
+        currentImageIndex =
+            (
+                currentImageIndex + 1
+            ) % imageCount;
+
+
+        renderProductImages();
+
+    }
+
+
+    /* =====================================================
+       PREVIOUS IMAGE
+    ===================================================== */
+
+    function previousImage() {
+
+        if (
+            !currentProduct ||
+            !Array.isArray(
+                currentProduct.images
+            )
+        ) {
+            return;
+        }
+
+
+        const imageCount =
+            currentProduct.images.length;
+
+
+        if (imageCount <= 1) {
+            return;
+        }
+
+
+        currentImageIndex =
+            (
+                currentImageIndex -
+                1 +
+                imageCount
+            ) % imageCount;
+
+
+        renderProductImages();
+
+    }
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
+
+    function closeProductModal() {
+
+        if (!productModal) {
+            return;
+        }
+
+
+        productModal.classList.remove(
+            "active"
+        );
+
+
+        productModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        currentProduct =
+            null;
+
+        currentImageIndex =
+            0;
+
+
+        if (
+            !cartDrawer ||
+            !cartDrawer.classList.contains(
+                "active"
+            )
+        ) {
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       REQUEST FREE PRODUCT ON WHATSAPP
+    ===================================================== */
+
+    function requestFreeProductWhatsApp(product, actionButton) {
+
+        if (!product) {
+            return;
+        }
+
+        if (
+            product.downloadUrl &&
+            actionButton &&
+            actionButton.dataset.downloadReady === "true"
+        ) {
+            window.open(
+                product.downloadUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+            return;
+        }
+
+        const message =
+`Hello Sai Graphic Designs 👋
+
+✅ FREE DOWNLOAD:
+${product.downloadUrl || "Please send me the Google Drive download link."}
+
+Template: ${product.name}
+Category: ${product.category || "Design Template"}
+
+Thank you!`;
+
+        const whatsappURL =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(message);
+
+        if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
+
+        window.open(
+            whatsappURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        if (product.downloadUrl && actionButton) {
+            actionButton.dataset.downloadReady = "true";
+            actionButton.textContent = "Download File";
+            actionButton.setAttribute(
+                "aria-label",
+                "Download " + product.name
+            );
+        }
+
+    }
+
+
+    /* =====================================================
+       ADD PRODUCT TO CART
+    ===================================================== */
+
+    function addProductToCart(product) {
+
+        if (!product) {
+            return;
+        }
+
+
+        const existing =
+            cart.find(
+                item =>
+                    item.id === product.id
+            );
+
+
+        if (existing) {
+
+            existing.qty =
+                (Number(existing.qty) || 1) + 1;
+
+            saveCart();
+            updateCart();
+            openCart();
+
+            return;
+        }
+
+
+        cart.push({
+
+            id:
+                product.id,
+
+            name:
+                product.name,
+
+            price:
+                Number(product.price) || 0,
+
+            category:
+                product.category,
+
+            image:
+                Array.isArray(product.images) &&
+                product.images.length
+                    ? product.images[0]
+                    : "",
+
+            qty: 1
+
+        });
+
+
+        saveCart();
+        updateCart();
+
+        closeProductModal();
+        openCart();
+
+    }
+
+
+    /* =====================================================
+       CART MESSAGE
+    ===================================================== */
+
+    function showCartMessage(message) {
+
+        alert(message);
+
+    }
+
+
+    /* =====================================================
+       REMOVE FROM CART
+    ===================================================== */
+
+    function removeFromCart(id, cartIndex) {
+
+        const index =
+            Number(cartIndex);
+
+        /*
+         * Service items created on other pages may not have an id.
+         * Remove by their actual cart position first, with id as a
+         * compatibility fallback for normal Shop products.
+         */
+        if (
+            Number.isInteger(index) &&
+            index >= 0 &&
+            index < cart.length
+        ) {
+
+            cart.splice(index, 1);
+
+        } else {
+
+            cart =
+                cart.filter(
+                    item =>
+                        String(item.id || "") !==
+                        String(id || "")
+                );
+
+        }
+
+
+        saveCart();
+        updateCart();
+
+    }
+
+
+    /* =====================================================
+       CART TOTAL
+    ===================================================== */
+
+    function getCartTotal() {
+
+        return cart.reduce(
+            function (total, item) {
+
+                return total +
+                    (
+                        (Number(item.price) || 0) *
+                        (Number(item.qty) || 1)
+                    );
+
+            },
+            0
+        );
+
+    }
+
+
+    /* =====================================================
+       GROUP CART ITEMS
+    ===================================================== */
+
+    function groupCartItems() {
+
+        const groups = {};
+
+
+        cart.forEach(item => {
+
+            const category =
+                item.category ||
+                "Services";
+
+
+            if (!groups[category]) {
+
+                groups[category] = [];
+
+            }
+
+
+            groups[category].push(
+                item
+            );
+
+        });
+
+
+        return groups;
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    function updateCart() {
+
+        if (!cartItemsList) {
+            return;
+        }
+
+
+        cartItemsList.innerHTML =
+            "";
+
+
+        /* EMPTY CART */
+
+        if (cart.length === 0) {
+
+            cartItemsList.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <div class="empty-cart-icon">
+                        🛒
+                    </div>
+
+                    <h3>
+                        Your cart is empty
+                    </h3>
+
+                    <p>
+                        Add your favourite
+                        design templates
+                        to your cart.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            if (cartBadge) {
+                cartBadge.textContent = "0";
+            }
+
+
+            if (cartTotalVal) {
+                cartTotalVal.textContent = "₹0";
+            }
+
+
+            if (cartCheckout) {
+                cartCheckout.disabled = true;
+            }
+
+
+            return;
+
+        }
+
+
+        const groups =
+            groupCartItems();
+
+
+        Object.keys(groups)
+            .forEach(category => {
+
+
+                const title =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                title.className =
+                    "cart-category-title";
+
+
+                title.textContent =
+                    category;
+
+
+                cartItemsList.appendChild(
+                    title
+                );
+
+
+                groups[category]
+                    .forEach(item => {
+
+
+                        const cartIndex =
+                            cart.indexOf(item);
+
+
+                        const itemElement =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        itemElement.className =
+                            "cart-item";
+
+
+                        const isFree =
+                            Number(item.price) === 0;
+
+
+                        itemElement.innerHTML = `
+
+                            <div class="cart-item-image">
+
+                                <img
+                                    src="${escapeHTML(
+                                        item.image ||
+                                        "Images/favicon.png"
+                                    )}"
+                                    alt="${escapeHTML(
+                                        item.name
+                                    )}"
+                                    onerror="this.onerror=null;this.src='Images/placeholder.svg';">
+
+                            </div>
+
+
+                            <div class="cart-item-info">
+
+                                <div class="cart-item-name">
+
+                                    ${escapeHTML(
+                                        item.name
+                                    )}
+
+                                </div>
+
+
+                                <div
+                                    class="
+                                        cart-item-price
+                                        ${
+                                            isFree
+                                                ? "free-price"
+                                                : ""
+                                        }
+                                    ">
+
+                                    ${formatPrice(
+                                        (Number(item.price) || 0) *
+                                        (Number(item.qty) || 1)
+                                    )}
+
+                                </div>
+
+                                <div class="cart-quantity"
+                                     aria-label="Quantity controls">
+                                    <button type="button"
+                                            class="cart-qty-btn"
+                                            data-action="decrease"
+                                            data-cart-index="${cartIndex}"
+                                            aria-label="Decrease quantity">−</button>
+                                    <span class="cart-qty-value">${Number(item.qty) || 1}</span>
+                                    <button type="button"
+                                            class="cart-qty-btn"
+                                            data-action="increase"
+                                            data-cart-index="${cartIndex}"
+                                            aria-label="Increase quantity">+</button>
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="cart-remove"
+                                data-id="${escapeHTML(
+                                    item.id || ""
+                                )}"
+                                data-cart-index="${cartIndex}"
+                                aria-label="Remove ${escapeHTML(
+                                    item.name
+                                )}">
+
+                                ×
+
+                            </button>
+
+                        `;
+
+
+                        cartItemsList.appendChild(
+                            itemElement
+                        );
+
+                    });
+
+            });
+
+
+        /* CART BADGE */
+
+        if (cartBadge) {
+
+            cartBadge.textContent =
+                cart.reduce(
+                    (count, item) =>
+                        count + (Number(item.qty) || 1),
+                    0
+                );
+
+        }
+
+
+        /* CART TOTAL */
+
+        if (cartTotalVal) {
+
+            const total =
+                getCartTotal();
+
+
+            cartTotalVal.textContent =
+                total === 0
+                    ? "FREE"
+                    : formatPrice(total);
+
+        }
+
+
+        /* CHECKOUT */
+
+        if (cartCheckout) {
+
+            cartCheckout.disabled =
+                false;
+
+        }
+
+
+        /* QUANTITY BUTTONS */
+
+        cartItemsList
+            .querySelectorAll(".cart-qty-btn")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        const index =
+                            Number(this.dataset.cartIndex);
+
+                        if (
+                            !Number.isInteger(index) ||
+                            !cart[index]
+                        ) {
+                            return;
+                        }
+
+                        const currentQty =
+                            Number(cart[index].qty) || 1;
+
+                        cart[index].qty =
+                            this.dataset.action === "increase"
+                                ? currentQty + 1
+                                : Math.max(1, currentQty - 1);
+
+                        saveCart();
+                        updateCart();
+
+                    }
+                );
+
+            });
+
+
+        /* REMOVE BUTTONS */
+
+        cartItemsList
+            .querySelectorAll(
+                ".cart-remove"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        removeFromCart(
+                            this.dataset.id,
+                            this.dataset.cartIndex
+                        );
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* =====================================================
+       OPEN CART
+    ===================================================== */
+
+    function openCart() {
+
+        if (
+            !cartDrawer ||
+            !cartOverlay
+        ) {
+            return;
+        }
+
+
+        updateCart();
+
+
+        cartDrawer.classList.add(
+            "active"
+        );
+
+
+        cartOverlay.classList.add(
+            "active"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =====================================================
+       CLOSE CART
+    ===================================================== */
+
+    function closeCart() {
+
+        if (
+            !cartDrawer ||
+            !cartOverlay
+        ) {
+            return;
+        }
+
+
+        cartDrawer.classList.remove(
+            "active"
+        );
+
+
+        cartOverlay.classList.remove(
+            "active"
+        );
+
+
+        if (
+            !productModal ||
+            !productModal.classList.contains(
+                "active"
+            )
+        ) {
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       WHATSAPP CHECKOUT
+    ===================================================== */
+
+    function checkoutWhatsApp() {
+
+        if (
+            !cart ||
+            cart.length === 0
+        ) {
+            return;
+        }
+
+
+        const groups =
+            groupCartItems();
+
+
+        let message =
+`Hello Sai Graphic Designs 👋
+
+I would like to order the following design templates:
+
+`;
+
+
+        let itemNumber = 1;
+
+
+        Object.keys(groups)
+            .forEach(category => {
+
+                message +=
+`
+------------------------------
+${category.toUpperCase()}
+------------------------------
+
+`;
+
+
+                groups[category]
+                    .forEach(item => {
+
+                        message +=
+`${itemNumber}. ${item.name}
+Price: ${formatPrice(item.price)}
+
+`;
+
+                        itemNumber++;
+
+                    });
+
+            });
+
+
+        const total =
+            getCartTotal();
+
+
+        message +=
+`------------------------------
+ORDER SUMMARY
+------------------------------
+
+Total Items: ${cart.length}
+
+Estimated Total: ${
+    total === 0
+        ? "FREE"
+        : formatPrice(total)
+}
+
+Please contact me regarding:
+• Payment details
+• File delivery
+• Download/access details
+• Any other requirements
+
+Thank you! 😊`;
+
+
+        const whatsappURL =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(
+                message
+            );
+
+
+        if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
+
+
+        window.open(
+            whatsappURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
+
+
+    /* =====================================================
+       MODAL EVENTS
+    ===================================================== */
+
+    if (productModalClose) {
+
+        productModalClose.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
+
+
+    if (productModalOverlay) {
+
+        productModalOverlay.addEventListener(
+            "click",
+            closeProductModal
+        );
+
+    }
+
+
+    if (viewerNext) {
+
+        viewerNext.addEventListener(
+            "click",
+            nextImage
+        );
+
+    }
+
+
+    if (viewerPrev) {
+
+        viewerPrev.addEventListener(
+            "click",
+            previousImage
+        );
+
+    }
+
+
+    if (modalAddCart) {
+
+        modalAddCart.addEventListener(
+            "click",
+            function () {
+
+                if (!currentProduct) {
+                    return;
+                }
+
+
+                if (Number(currentProduct.price) === 0) {
+                    requestFreeProductWhatsApp(currentProduct, modalAddCart);
+                } else {
+                    addProductToCart(currentProduct);
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CART EVENTS
+    ===================================================== */
+
+    if (cartToggle) {
+
+        cartToggle.addEventListener(
+            "click",
+            openCart
+        );
+
+    }
+
+
+    if (cartClose) {
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    if (cartOverlay) {
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
+    }
+
+
+    if (cartCheckout) {
+
+        cartCheckout.addEventListener(
+            "click",
+            checkoutWhatsApp
+        );
+
+    }
+
+
+    /* =====================================================
+       KEYBOARD CONTROLS
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+
+            /* ESC */
+
+            if (event.key === "Escape") {
+
+
+                if (
+                    productModal &&
+                    productModal.classList.contains(
+                        "active"
+                    )
+                ) {
+
+                    closeProductModal();
+
+                }
+
+
+                if (
+                    cartDrawer &&
+                    cartDrawer.classList.contains(
+                        "active"
+                    )
+                ) {
+
+                    closeCart();
+
+                }
+
+            }
+
+
+            /* PRODUCT IMAGE NAVIGATION */
+
+            if (
+                productModal &&
+                productModal.classList.contains(
+                    "active"
+                )
+            ) {
+
+
+                if (
+                    event.key === "ArrowRight"
+                ) {
+
+                    event.preventDefault();
+
+                    nextImage();
+
+                }
+
+
+                if (
+                    event.key === "ArrowLeft"
+                ) {
+
+                    event.preventDefault();
+
+                    previousImage();
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       TOUCH / SWIPE
+    ===================================================== */
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+
+    if (mainProductImage) {
+
+
+        mainProductImage.addEventListener(
+            "touchstart",
+            function (event) {
+
+                if (
+                    event.touches &&
+                    event.touches.length
+                ) {
+
+                    touchStartX =
+                        event.touches[0].clientX;
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        mainProductImage.addEventListener(
+            "touchend",
+            function (event) {
+
+                if (
+                    event.changedTouches &&
+                    event.changedTouches.length
+                ) {
+
+                    touchEndX =
+                        event.changedTouches[0].clientX;
+
+                }
+
+
+                const difference =
+                    touchStartX -
+                    touchEndX;
+
+
+                /* SWIPE LEFT */
+
+                if (difference > 50) {
+
+                    nextImage();
+
+                }
+
+
+                /* SWIPE RIGHT */
+
+                if (difference < -50) {
+
+                    previousImage();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    let requestedProductOpened = false;
+    function openRequestedProduct() {
+        if (requestedProductOpened) return;
+        const id = new URLSearchParams(window.location.search).get("product");
+        if (!id) return;
+        const product = products.find(item => String(item.id) === id);
+        if (!product) return;
+        requestedProductOpened = true;
+        openProductModal(product);
+    }
+
+    let catalogRequest = 0;
+
+    async function loadManagedProducts() {
+        const requestId = ++catalogRequest;
+        try {
+            const response = await fetch("/api/products", {
+                cache: "no-store",
+                headers: { "Accept": "application/json" }
+            });
+            if (!response.ok) {
+                throw new Error("Product request failed: " + response.status);
+            }
+            const data = await response.json();
+            if (!Array.isArray(data.products)) {
+                throw new Error("Invalid product response.");
+            }
+            if (requestId !== catalogRequest) return;
+
+            products = data.products.slice().sort(function (first, second) {
+                return (Number(first.sort_order) || 0) -
+                    (Number(second.sort_order) || 0);
+            });
+            catalogStatus = "ready";
+        } catch (error) {
+            if (requestId !== catalogRequest) return;
+            products = [];
+            catalogStatus = "error";
+            console.warn("Unable to load the shop catalog.", error);
+        }
+        renderProducts();
+        if (catalogStatus === "ready") openRequestedProduct();
+    }
+
+    // Refresh after visiting the admin tab or restoring a cached shop page.
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") loadManagedProducts();
+    });
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) loadManagedProducts();
+    });
+
+    setupFilters();
+
+    renderProducts();
+
+    updateCart();
+
+    loadManagedProducts();
+
+
+    /* =====================================================
+       DEBUG
+    ===================================================== */
+
+    console.log(
+        "Sai Graphic Designs Shop loaded successfully."
+    );
+
+    console.log(
+        "Products:",
+        products.length
+    );
+
+    console.log(
+        "Active Filter:",
+        activeFilter
+    );
+
+
+    /* =====================================================
+       INTERACTIVE 3D PRODUCT PREVIEW
+       Enhances the existing product modal image viewer
+    ===================================================== */
+
+    if (mainProductImage) {
+
+        const previewFrame =
+            mainProductImage.closest(
+                ".main-product-image"
+            );
+
+        if (previewFrame) {
+
+            let previewDragging = false;
+            let previewStartX = 0;
+            let previewStartY = 0;
+            let previewRotateX = 0;
+            let previewRotateY = 0;
+
+            previewFrame.classList.add(
+                "interactive-3d-preview"
+            );
+
+            previewFrame.setAttribute(
+                "aria-label",
+                "Interactive 3D product preview. Move or drag to rotate."
+            );
+
+            function applyProduct3D() {
+
+                mainProductImage.style.transform =
+                    "rotateX(" +
+                    previewRotateX +
+                    "deg) rotateY(" +
+                    previewRotateY +
+                    "deg)";
+
+            }
+
+            function resetProduct3D() {
+
+                previewRotateX = 0;
+                previewRotateY = 0;
+
+                previewFrame.classList.remove(
+                    "is-dragging"
+                );
+
+                applyProduct3D();
+
+            }
+
+            previewFrame.addEventListener(
+                "pointerdown",
+                function (event) {
+
+                    previewDragging = true;
+                    previewStartX = event.clientX;
+                    previewStartY = event.clientY;
+
+                    previewFrame.classList.add(
+                        "is-dragging"
+                    );
+
+                    if (
+                        previewFrame.setPointerCapture
+                    ) {
+
+                        previewFrame.setPointerCapture(
+                            event.pointerId
+                        );
+
+                    }
+
+                }
+            );
+
+            previewFrame.addEventListener(
+                "pointermove",
+                function (event) {
+
+                    const rect =
+                        previewFrame.getBoundingClientRect();
+
+                    if (previewDragging) {
+
+                        previewRotateY +=
+                            (
+                                event.clientX -
+                                previewStartX
+                            ) * 0.32;
+
+                        previewRotateX -=
+                            (
+                                event.clientY -
+                                previewStartY
+                            ) * 0.24;
+
+                        previewRotateX =
+                            Math.max(
+                                -50,
+                                Math.min(
+                                    50,
+                                    previewRotateX
+                                )
+                            );
+
+                        previewStartX =
+                            event.clientX;
+
+                        previewStartY =
+                            event.clientY;
+
+                    } else {
+
+                        previewRotateY =
+                            (
+                                (
+                                    event.clientX -
+                                    rect.left
+                                ) /
+                                rect.width -
+                                0.5
+                            ) * 22;
+
+                        previewRotateX =
+                            -(
+                                (
+                                    event.clientY -
+                                    rect.top
+                                ) /
+                                rect.height -
+                                0.5
+                            ) * 16;
+
+                    }
+
+                    applyProduct3D();
+
+                }
+            );
+
+            function stopProduct3DDrag(
+                event
+            ) {
+
+                previewDragging = false;
+
+                previewFrame.classList.remove(
+                    "is-dragging"
+                );
+
+                if (
+                    event &&
+                    previewFrame.hasPointerCapture &&
+                    previewFrame.hasPointerCapture(
+                        event.pointerId
+                    )
+                ) {
+
+                    previewFrame.releasePointerCapture(
+                        event.pointerId
+                    );
+
+                }
+
+            }
+
+            previewFrame.addEventListener(
+                "pointerup",
+                stopProduct3DDrag
+            );
+
+            previewFrame.addEventListener(
+                "pointercancel",
+                stopProduct3DDrag
+            );
+
+            previewFrame.addEventListener(
+                "pointerleave",
+                function () {
+
+                    if (!previewDragging) {
+
+                        resetProduct3D();
+
+                    }
+
+                }
+            );
+
+            previewFrame.addEventListener(
+                "dblclick",
+                resetProduct3D
+            );
+
+            mainProductImage.addEventListener(
+                "load",
+                resetProduct3D
+            );
+
+            const modalObserver =
+                new MutationObserver(
+                    function () {
+
+                        if (
+                            productModal &&
+                            productModal.classList.contains(
+                                "active"
+                            )
+                        ) {
+
+                            resetProduct3D();
+
+                        }
+
+                    }
+                );
+
+            if (productModal) {
+
+                modalObserver.observe(
+                    productModal,
+                    {
+                        attributes: true,
+                        attributeFilter: [
+                            "class"
+                        ]
+                    }
+                );
+
+            }
+
+        }
+
+    }
+
+});
+
+.bundle-drop{display:block!important;padding:28px;border:2px dashed #4f9a7d;border-radius:16px;text-align:center;cursor:pointer;background:#f2faf6}.bundle-drop:focus-within,.bundle-drop.is-over{border-color:#087951;background:#dff8ec}.bundle-drop input{display:block;margin:12px auto 0;max-width:100%}.bundle-image-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}.bundle-image-list figure{margin:0;width:128px}.bundle-image-list img{width:128px;height:100px;object-fit:cover;border-radius:10px}.bundle-image-list button{display:block;margin-top:5px;width:100%;cursor:pointer}.bundle-upload>p{margin:8px 0;color:#5c706a}

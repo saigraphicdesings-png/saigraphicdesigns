@@ -445,8 +445,8 @@ document.addEventListener("DOMContentLoaded", function () {
             status.className = "shop-filter-empty";
             status.setAttribute("role", "status");
             status.textContent = catalogStatus === "loading"
-                ? "Loading designs…"
-                : "Unable to load designs. Please refresh to try again.";
+                ? "Loading bundles…"
+                : "Unable to load bundles. Please refresh to try again.";
             allProducts.appendChild(status);
             return;
         }
@@ -475,11 +475,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <h3>
-                    No designs found
+                    No bundles found
                 </h3>
 
                 <p>
-                    No products match the selected filter.
+                    No bundles match the selected filter.
                 </p>
 
             `;

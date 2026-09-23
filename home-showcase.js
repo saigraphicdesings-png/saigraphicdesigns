@@ -50,11 +50,11 @@
     img.alt = String(product.name); img.width = 600; img.height = 450;
     img.loading = "lazy"; img.decoding = "async";
     img.addEventListener("error", function () { img.src = "Images/placeholder.svg"; }, { once: true });
-    preview.append(img, element("span", "home-showcase-badge", Number(product.price) === 0 ? "Free design" : "Shop design"));
+    preview.append(img, element("span", "home-showcase-badge", Number(product.price) === 0 ? "Free bundle" : "Design bundle"));
     const body = element("div", "home-showcase-body");
     body.append(element("span", "home-showcase-kind", String(product.category || "Design template")), element("h3", "", String(product.name)));
     const formats = Array.isArray(product.formats) ? product.formats.map(String).join(" · ") : "";
-    body.append(element("p", "", formats || "Explore this design in our shop."));
+    body.append(element("p", "", formats || "Explore this bundle in Bundle World."));
     const bottom = element("div", "home-showcase-bottom");
     bottom.append(element("strong", "", Number(product.price) === 0 ? "Free" : currency.format(Number(product.price))), element("span", "", "View design ↗"));
     body.append(bottom); link.append(preview, body);
@@ -104,13 +104,13 @@
       grid.scrollLeft = 0;
       window.requestAnimationFrame(startCarousel);
       status.hidden = products.length > 0;
-      status.textContent = products.length ? "" : "New designs are on the way. Explore the shop for updates.";
+      status.textContent = products.length ? "" : "New bundles are on the way.";
     } catch (_) {
       if (current !== requestId) return;
       renderKeyProduct(null);
       grid.replaceChildren();
       status.hidden = false;
-      status.textContent = "We couldn't load the preview. Visit the shop to browse our designs.";
+      status.textContent = "We couldn't load the preview. Visit Bundle World to browse our bundles.";
     } finally {
       clearTimeout(timeout);
       if (current === requestId) grid.setAttribute("aria-busy", "false");

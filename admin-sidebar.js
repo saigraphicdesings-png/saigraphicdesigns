@@ -11,22 +11,22 @@
       <a class="brand" href="admin.html"><span>SG</span><b>Sai Graphic<br>Designs</b></a>
       <nav class="admin-nav" aria-label="Admin navigation">
         ${navItem("dashboard", "admin.html", "⌘", "Dashboard")}
-        ${navItem("products", "admin.html#productForm", "▣", "Products")}
+        ${navItem("products", "admin.html#productForm", "▣", "Bundles")}
         <p class="nav-label">Management</p>
         ${navItem("customers", "admin-customers.html", "♙", "Customers")}
         ${navItem("tasks", "admin-tasks.html", "✓", "Task Management")}
         ${navItem("payments", "admin-payments.html", "₹", "Payments")}
         ${navItem("analytics", "admin-analytics.html", "↗", "Analytics Report")}
-        ${navItem("tools", "admin.html#mockupTitle", "✦", "Design tools")}
+        
       </nav>
       <div class="sidebar-session-actions">
         <p class="nav-label">Quick actions</p>
-        <a class="sidebar-btn import-btn" href="admin.html#importBtn">⇩ <span>Import Existing Products</span></a>
+        <a class="sidebar-btn import-btn" href="admin.html#importBtn">⇩ <span>Import Existing Bundles</span></a>
         <button class="sidebar-btn" id="sharedRefreshBtn" type="button">↻ <span>Refresh</span></button>
         <button class="sidebar-btn sidebar-logout" id="sharedLogoutBtn" type="button">↗ <span>Log out</span></button>
       </div>
       <div class="header-actions">
-        <a class="shop-link" href="shop.html" target="_blank" rel="noopener">View Shop ↗</a>
+        <a class="shop-link" href="shop.html" target="_blank" rel="noopener">View Bundle World ↗</a>
         <button class="theme-toggle" id="sharedThemeToggle" type="button"><span aria-hidden="true">☾</span><b>Dark</b></button>
       </div>`;
     const root = document.documentElement;

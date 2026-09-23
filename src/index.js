@@ -32,6 +32,16 @@ function parseList(value) {
   }
 }
 
+const bundleImageSchema = `CREATE TABLE IF NOT EXISTS bundle_images (
+  id TEXT PRIMARY KEY,
+  mime TEXT NOT NULL,
+  data TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+function isBundle(product) {
+  return /\bbundles?\b/i.test(String(product.name || ""));
+}
+
 function normalize(row) {
   return {
     id: row.id,
@@ -593,6 +603,35 @@ function validateProduct(input) {
 async function handleAPI(request, env, url) {
   if (!env.DB) return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
 
+  if (url.pathname.startsWith("/api/bundle-images/") && request.method === "GET") {
+    const id = url.pathname.slice("/api/bundle-images/".length);
+    if (!/^[a-f0-9-]{36}$/.test(id)) return json({ error: "Invalid image ID." }, 400);
+    await env.DB.prepare(bundleImageSchema).run();
+    const image = await env.DB.prepare("SELECT mime, data FROM bundle_images WHERE id = ?").bind(id).first();
+    if (!image) return json({ error: "Image not found." }, 404);
+    const binary = atob(image.data);
+    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+    return new Response(bytes, { headers: { "content-type": image.mime, "cache-control": "public, max-age=31536000, immutable", "x-content-type-options": "nosniff" } });
+  }
+  if (url.pathname === "/api/admin/bundle-images" && request.method === "POST") {
+    if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+    const form = await request.formData();
+    const file = form.get("image");
+    if (!(file instanceof File) || file.size > 900000 || file.size < 1) return json({ error: "Choose an image smaller than 900 KB." }, 400);
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const png = bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71;
+    const jpeg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+    const webp = String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+    const mime = png ? "image/png" : jpeg ? "image/jpeg" : webp ? "image/webp" : "";
+    if (!mime) return json({ error: "Upload a PNG, JPG or WebP image." }, 400);
+    let binary = "";
+    for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+    const id = crypto.randomUUID();
+    await env.DB.prepare(bundleImageSchema).run();
+    await env.DB.prepare("INSERT INTO bundle_images (id, mime, data) VALUES (?, ?, ?)").bind(id, mime, btoa(binary)).run();
+    return json({ url: "/api/bundle-images/" + id });
+  }
+
   if (url.pathname.startsWith("/api/auth/")) return handleAuth(request, env, url);
 
   if (url.pathname === "/api/services" && request.method === "GET") {
@@ -605,7 +644,7 @@ async function handleAPI(request, env, url) {
   if (url.pathname === "/api/products" && request.method === "GET") {
     const visibleProducts = await listProducts(env, false);
     const hiddenResult = await env.DB.prepare("SELECT id FROM products WHERE active = 0").all();
-    return json({ products: visibleProducts, hiddenIds: (hiddenResult.results || []).map((row) => row.id) });
+    return json({ products: visibleProducts.filter(isBundle), hiddenIds: (hiddenResult.results || []).map((row) => row.id) });
   }
 
   if (url.pathname === "/api/product-click" && request.method === "POST") {
