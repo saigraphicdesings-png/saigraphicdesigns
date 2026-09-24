@@ -7,6 +7,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const CART_KEY = "saiGraphicCart";
     const WHATSAPP_NUMBER = "916381128781";
 
+    async function requestBundleWhatsApp(product) {
+        if (!product) return;
+        if (Number(product.price) === 0) {
+            requestFreeProductWhatsApp(product);
+            return;
+        }
+        try {
+            const response = await fetch('/api/payment/whatsapp-request', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId: product.id })
+            });
+            const data = await response.json();
+            if (response.status === 401) {
+                alert('Please log in to record your bundle request before contacting us on WhatsApp.');
+                window.location.href = '/account';
+                return;
+            }
+            if (!response.ok) throw new Error(data.error || 'Could not record your request.');
+            const message = `Hello Sai Graphic Designs, I would like to purchase ${data.product.name} (₹${data.product.price}).\nBundle ID: ${data.product.id}\nOrder reference: ${data.orderId}\nCustomer: ${data.customerName}\nPlease share payment details. My bundle will unlock in My Account after your approval.`;
+            if (window.SaiAnalytics) window.SaiAnalytics.trackEvent('whatsapp_click');
+            window.location.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+        } catch (error) {
+            alert(error.message || 'Could not record your bundle request. Please try again.');
+        }
+    }
+
 
     /* =====================================================
        PRODUCT DATA
@@ -547,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             type="button"
                             class="add-product-btn">
 
-                            ${isFree ? "Get Free" : "Add to Cart"}
+                            ${isFree ? "Get Free" : "Buy on WhatsApp"}
 
                         </button>
 
@@ -597,9 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "click",
                 function () {
 
-                    openProductModal(
-                        product
-                    );
+                    requestBundleWhatsApp(product);
 
                 }
             );
@@ -627,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (Number(product.price) === 0) {
                             requestFreeProductWhatsApp(product, addButton);
                         } else {
-                            addProductToCart(product);
+                            requestBundleWhatsApp(product);
                         }
 
                     }
@@ -735,7 +760,7 @@ document.addEventListener("DOMContentLoaded", function () {
             modalAddCart.textContent =
                 Number(product.price) === 0
                     ? "Get Free on WhatsApp"
-                    : "Add to Cart";
+                    : "Buy on WhatsApp";
         }
 
 
@@ -1792,7 +1817,7 @@ Thank you! 😊`;
                 if (Number(currentProduct.price) === 0) {
                     requestFreeProductWhatsApp(currentProduct, modalAddCart);
                 } else {
-                    addProductToCart(currentProduct);
+                    requestBundleWhatsApp(currentProduct);
                 }
 
             }

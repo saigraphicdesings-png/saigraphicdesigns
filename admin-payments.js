@@ -47,7 +47,7 @@
       confirmResolver=resolve;
       var rejecting=action==='reject';
       var restoring=action==='restore';
-      var isCart=kind==='cart';
+      var isCart=kind==='cart'||kind==='whatsapp';
       confirmIcon.textContent=rejecting?'×':'✓';
       confirmKicker.textContent=rejecting?'PAYMENT REVIEW & CUSTOMER NOTICE':(restoring?'PAYMENT RESTORE':'PAYMENT APPROVAL');
       confirmTitle.textContent=rejecting?'Reject & send Pay Again notice?':(restoring?'Approve rejected payment?':(isCart?'Approve cart payment?':'Approve payment?'));
@@ -87,7 +87,7 @@
     if(!rows.length){list.innerHTML='<div class="pay-empty">No payment submissions yet.</div>';return;}
 
     list.innerHTML=rows.map(function(item){
-      var isCart=item.kind==='cart';
+      var isCart=item.kind==='cart'||item.kind==='whatsapp';
       var actionKind=isCart?'cart':'single';
       var actions=item.status==='pending'
         ?'<div class="pay-row-actions"><button class="pay-approve" type="button" data-approve="'+esc(item.id)+'" data-kind="'+actionKind+'">Approve & Unlock</button><button class="pay-reject" type="button" data-reject="'+esc(item.id)+'" data-kind="'+actionKind+'">Reject & Notify</button></div>'
@@ -98,7 +98,7 @@
       var productBlock='';
       if(isCart){
         var cartItems=Array.isArray(item.items)?item.items:[];
-        productBlock='<div><strong>Cart Order · '+cartItems.length+' product'+(cartItems.length===1?'':'s')+'</strong><small>'+cartItems.map(function(p){return esc(p.productName)+(p.qty>1?' × '+p.qty:'');}).join(' · ')+'</small><small>Total '+money(item.amount)+' · Submitted '+esc(dateText(item.createdAt))+'</small></div>';
+        productBlock='<div><strong>'+(item.kind==='whatsapp'?'WhatsApp Bundle Request · ':'Cart Order · ')+cartItems.length+' product'+(cartItems.length===1?'':'s')+'</strong><small>'+cartItems.map(function(p){return esc(p.productName)+(p.qty>1?' × '+p.qty:'');}).join(' · ')+'</small><small>Total '+money(item.amount)+' · Submitted '+esc(dateText(item.createdAt))+'</small></div>';
       }else{
         productBlock='<div><strong>'+esc(item.productName)+'</strong><small>'+esc(item.productId)+' · '+money(item.amount)+'</small><small>Submitted '+esc(dateText(item.createdAt))+'</small></div>';
       }
@@ -106,7 +106,7 @@
       return '<article class="pay-row">'+
         productBlock+
         '<div><strong>'+esc(item.customerName)+'</strong><small>'+esc(item.customerEmail||'No email')+'</small><small>'+esc(item.customerPhone||'No phone')+'</small></div>'+
-        '<div><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span><strong class="pay-utr">'+esc(item.utr)+'</strong><small>'+(item.receivedAmount!=null&&item.status==='rejected'?'Received '+money(item.receivedAmount)+' · Balance '+money(Math.max(0,Number(item.amount)-Number(item.receivedAmount))):'')+'</small><small>'+(item.reviewedAt?'Reviewed '+esc(dateText(item.reviewedAt)):'Waiting for review')+'</small></div>'+actions+
+        '<div><span class="pay-badge '+esc(item.status)+'">'+esc(item.status)+'</span><strong class="pay-utr">'+esc(item.kind==='whatsapp'?'Order '+item.id.slice(0,8).toUpperCase():item.utr)+'</strong><small>'+(item.receivedAmount!=null&&item.status==='rejected'?'Received '+money(item.receivedAmount)+' · Balance '+money(Math.max(0,Number(item.amount)-Number(item.receivedAmount))):'')+'</small><small>'+(item.reviewedAt?'Reviewed '+esc(dateText(item.reviewedAt)):'Waiting for review')+'</small></div>'+actions+
       '</article>';
     }).join('');
   }
@@ -115,7 +115,7 @@
     list.innerHTML='<div class="pay-empty">Loading payments…</div>';
     var results=await Promise.all([api('/api/admin/payment-requests'),api('/api/admin/cart-payment-orders')]);
     var legacy=(results[0].requests||[]).map(function(item){return {...item,kind:'single'};});
-    var carts=(results[1].requests||[]).map(function(item){return {...item,kind:'cart'};});
+    var carts=(results[1].requests||[]).map(function(item){return {...item,kind:item.kind||'cart'};});
     var requests=legacy.concat(carts).sort(function(a,b){
       var rank=statusRank(a.status)-statusRank(b.status);if(rank)return rank;
       return String(b.createdAt||'').localeCompare(String(a.createdAt||''));

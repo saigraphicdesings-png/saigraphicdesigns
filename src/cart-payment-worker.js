@@ -358,6 +358,34 @@ async function paidDownloadFromCart(request, env, url) {
   return json({ success: true, productId: product.id, name: product.name, downloadUrl: product.download_url });
 }
 
+async function whatsappBundleRequest(request, env) {
+  await ensureCartPaymentSchema(env);
+  const customer = await currentCustomer(request, env);
+  if (!customer) return json({ error: "Please log in before requesting a bundle.", loginRequired: true }, 401);
+  let body;
+  try { body = await request.json(); } catch (_) { return json({ error: "Invalid request." }, 400); }
+  const productId = String(body?.productId || "").trim();
+  if (!validProductId(productId)) return json({ error: "Invalid bundle." }, 400);
+  const product = await env.DB.prepare("SELECT id, name, price FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(productId).first();
+  if (!product || Number(product.price) <= 0) return json({ error: "Paid bundle not found." }, 404);
+  if (await isUnlocked(env, customer.id, productId)) return json({ error: "This bundle is already unlocked in your account.", alreadyUnlocked: true }, 409);
+  const existing = await env.DB.prepare(`
+    SELECT o.id FROM cart_payment_orders o
+    JOIN cart_payment_order_items i ON i.order_id = o.id
+    WHERE o.customer_id = ? AND o.status = 'pending' AND i.product_id = ? AND o.utr LIKE 'WA-%'
+    ORDER BY o.created_at DESC LIMIT 1
+  `).bind(customer.id, productId).first();
+  if (existing) return json({ orderId: existing.id, status: "pending", product: { id: product.id, name: product.name, price: Number(product.price) }, customerName: customer.name, existing: true });
+  const orderId = crypto.randomUUID();
+  await env.DB.batch([
+    env.DB.prepare("INSERT INTO cart_payment_orders(id, customer_id, amount, utr, status) VALUES (?, ?, ?, ?, 'pending')")
+      .bind(orderId, customer.id, Number(product.price), "WA-" + orderId),
+    env.DB.prepare("INSERT INTO cart_payment_order_items(order_id, product_id, product_name, unit_price, qty, line_total) VALUES (?, ?, ?, ?, 1, ?)")
+      .bind(orderId, product.id, product.name, Number(product.price), Number(product.price))
+  ]);
+  return json({ orderId, status: "pending", product: { id: product.id, name: product.name, price: Number(product.price) }, customerName: customer.name }, 201);
+}
+
 async function adminCartOrders(request, env) {
   if (!isAdminAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
   await ensureCartPaymentSchema(env);
@@ -382,7 +410,7 @@ async function adminCartOrders(request, env) {
 
     requests.push({
       id: order.id,
-      kind: "cart",
+      kind: String(order.utr).startsWith("WA-") ? "whatsapp" : "cart",
       customerId: order.customer_id,
       customerName: order.customer_name || "Customer",
       customerEmail: order.customer_email || "",
@@ -435,7 +463,7 @@ async function customerOrders(request, env) {
     `).bind(order.id).all();
     return {
       id: order.id,
-      kind: "cart",
+      kind: String(order.utr).startsWith("WA-") ? "whatsapp" : "cart",
       amount: Number(order.amount) || 0,
       receivedAmount: order.received_amount == null ? null : Number(order.received_amount),
       utr: order.utr,
@@ -492,6 +520,7 @@ export default {
     try {
       if (url.pathname === "/api/payment/cart-quote" && request.method === "POST") return await cartQuote(request, env);
       if (url.pathname === "/api/payment/cart-request" && request.method === "POST") return await cartPaymentRequest(request, env);
+      if (url.pathname === "/api/payment/whatsapp-request" && request.method === "POST") return await whatsappBundleRequest(request, env);
       if (url.pathname === "/api/customer/orders" && request.method === "GET") return await customerOrders(request, env);
       if (url.pathname === "/api/admin/cart-payment-orders" && request.method === "GET") return await adminCartOrders(request, env);
       if (url.pathname.startsWith("/api/admin/cart-payment-orders/") && url.pathname.endsWith("/approve") && request.method === "POST") {
@@ -506,7 +535,7 @@ export default {
       }
     } catch (error) {
       console.error("Cart payment service error:", error);
-      if (url.pathname.startsWith("/api/payment/cart-")) return json({ error: error.message || "Unable to process cart payment." }, error.status || 500);
+      if (url.pathname.startsWith("/api/payment/cart-") || url.pathname === "/api/payment/whatsapp-request") return json({ error: error.message || "Unable to process bundle request." }, error.status || 500);
       if (url.pathname === "/api/customer/orders") return json({ error: error.message || "Unable to load your orders." }, error.status || 500);
       if (url.pathname.startsWith("/api/admin/cart-payment-orders")) return json({ error: error.message || "Unable to manage cart payments." }, error.status || 500);
     }
