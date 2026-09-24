@@ -27,12 +27,3 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/account-runtime" --no-audit --no-fund miniflare@4
           node scripts/test-email-accounts.mjs
           node scripts/test-analytics.mjs
-      - name: Diagnose live bundle pages
-        run: |
-          for path in /shop /shop?product=BC-02 /bundle/BC-02 /bundles/business-card-bundles /bundle-sitemap.xml; do
-            echo "CHECK $path"
-            curl -sS -L --max-time 20 -D /tmp/live-headers -o /tmp/live-body -w 'HTTP %{http_code} redirect=%{num_redirects} bytes=%{size_download}\n' "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev$path" || true
-            sed -n '1,12p' /tmp/live-headers
-            head -c 300 /tmp/live-body
-            echo
-          done
