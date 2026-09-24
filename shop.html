@@ -152,7 +152,7 @@
           href="style.css">
 
     <link rel="stylesheet"
-          href="shop.css?v=20260924-1">
+          href="shop.css?v=20260924-2">
 
 
     <link rel="stylesheet" href="cart-unified.css">
@@ -370,6 +370,9 @@
                  FILTER CARDS
             ================================================== -->
 
+            <label class="shop-catalog-search" for="bundleSearch">Search bundles
+                <input id="bundleSearch" type="search" placeholder="Search business cards, quantities or formats…" autocomplete="off">
+            </label>
             <div class="shop-filters"
                  id="shopFilters">
 
@@ -381,13 +384,16 @@
                 </button>
 
 
-                <!-- PAID -->
-                <button type="button" class="shop-filter" data-filter="paid" aria-pressed="false">
+                <!-- STANDARD -->
+                <button type="button" class="shop-filter" data-filter="standard" aria-pressed="false">
                     <span class="filter-icon">
                     </span>
-                    <span class="filter-label">Paid</span>
+                    <span class="filter-label">Standard</span>
                 </button>
 
+
+                <!-- PREMIUM -->
+                <button type="button" class="shop-filter" data-filter="premium" aria-pressed="false"><span class="filter-icon"></span><span class="filter-label">Premium</span></button>
 
                 <!-- FREE -->
                 <button type="button" class="shop-filter" data-filter="free" aria-pressed="false">
@@ -460,7 +466,7 @@
 
 
 <!-- =====================================================
-     PRODUCT PREVIEW MODAL
+     BUNDLE DETAILS
 ===================================================== -->
 
 <div
@@ -493,7 +499,7 @@
             type="button"
             class="product-modal-close"
             id="productModalClose"
-            aria-label="Close product preview">
+            aria-label="Close bundle details">
 
             ×
 
@@ -505,62 +511,7 @@
              PRODUCT IMAGE VIEWER
         ================================================== -->
 
-        <div class="product-viewer">
 
-
-            <!-- PREVIOUS -->
-
-            <button
-                type="button"
-                class="viewer-arrow viewer-prev"
-                id="viewerPrev"
-                aria-label="Previous image">
-
-                ‹
-
-            </button>
-
-
-
-            <!-- MAIN IMAGE -->
-
-            <div class="main-product-image">
-
-                <img
-                    id="mainProductImage"
-                    src=""
-                    alt="Product preview">
-
-            </div>
-
-
-
-            <!-- NEXT -->
-
-            <button
-                type="button"
-                class="viewer-arrow viewer-next"
-                id="viewerNext"
-                aria-label="Next image">
-
-                ›
-
-            </button>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             THUMBNAILS
-        ================================================== -->
-
-        <div
-            class="product-thumbnails"
-            id="productThumbnails">
-
-        </div>
 
 
 
@@ -876,7 +827,7 @@
      SHOP JAVASCRIPT
 ===================================================== -->
 
-<script src="shop.js?v=20260924-3"></script>
+<script src="shop.js?v=20260924-4"></script>
 <script src="payment-status.js" defer></script>
 
 
