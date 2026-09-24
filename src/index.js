@@ -246,7 +246,19 @@ async function addMissingColumns(env, table, definitions) {
   }
 }
 
+let businessCardBundleNameChecked = false;
 async function ensureProductHomepageColumn(env) {
+  // One-time cleanup of the published bundle title; keep its stable BC-1001 ID.
+  if (!businessCardBundleNameChecked) {
+    await env.DB.prepare(`
+      UPDATE products
+      SET name = 'Business Card Bundle',
+          article_title = CASE WHEN article_title = 'Business Card Bundle 1001' THEN 'Business Card Bundle' ELSE article_title END,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 'BC-1001' AND name = 'Business Card Bundle 1001'
+    `).run();
+    businessCardBundleNameChecked = true;
+  }
   const info = await env.DB.prepare("PRAGMA table_info(products)").all();
   const columns = new Set((info.results || []).map((column) => column.name));
   if (!columns.has("show_on_home")) {
