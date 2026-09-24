@@ -8,12 +8,12 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-      - name: Find exact product record
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@4.129.1 d1 execute sai-shop-products --remote --config wrangler.jsonc --command "SELECT id, name, price FROM products WHERE name = 'Business Card Bundle 1001'" --json
+      - name: Find exact public catalog record
+        run: |
+          curl --fail --silent --show-error --max-time 20 https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/api/products -o /tmp/catalog.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('/tmp/catalog.json'))
+          matches=[{'id':p.get('id'),'name':p.get('name'),'price':p.get('price')} for p in data.get('products',[]) if '1001' in str(p.get('name',''))]
+          print(json.dumps(matches,indent=2))
+          PY
