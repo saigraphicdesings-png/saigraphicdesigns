@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
             : [];
 
     let activePriceFilter = "all";
-    const bundleSearch = document.getElementById("bundleSearch");
     let activeFormatFilter = "";
 
 
@@ -296,21 +295,16 @@ document.addEventListener("DOMContentLoaded", function () {
         return products.filter(product => {
             if (!product) return false;
 
-            const tier = normalizeValue(product.tier) ||
-                (Number(product.price) === 0 ? "free" :
-                    Number(product.price) >= 499 ? "premium" : "standard");
-            const tierMatches = activePriceFilter === "all" ||
-                tier === activePriceFilter;
+            const priceMatches =
+                activePriceFilter === "all" ||
+                (activePriceFilter === "paid" && Number(product.price) > 0) ||
+                (activePriceFilter === "free" && Number(product.price) === 0);
+
             const formats = Array.isArray(product.formats)
                 ? product.formats.map(normalizeValue)
                 : [];
-            const query = normalizeValue(bundleSearch?.value || "");
-            const searchMatches = !query ||
-                [product.name, product.category, product.type,
-                 product.description, product.designCount, tier,
-                 ...formats].some(value => normalizeValue(value).includes(query));
 
-            return tierMatches && searchMatches &&
+            return priceMatches &&
                 (!activeFormatFilter || formats.includes(activeFormatFilter));
         });
 
@@ -331,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const filter = normalizeValue(this.dataset.filter);
 
-                if (["all", "standard", "premium", "free"].includes(filter)) {
+                if (["all", "paid", "free"].includes(filter)) {
                     activePriceFilter = filter;
                     if (filter === "all") activeFormatFilter = "";
                 } else if (["cdr", "psd"].includes(filter)) {
@@ -362,8 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
        filter bar above controls what's shown, and each
        card still displays its category as a small label)
     ===================================================== */
-
-    bundleSearch?.addEventListener("input", renderProducts);
 
     function renderProducts() {
 
@@ -496,7 +488,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             product.name
                         )}
                     </h3>
-                    <div class="bundle-meta"><span>${escapeHTML((product.tier || (isFree ? "free" : Number(product.price) >= 499 ? "premium" : "standard")).toUpperCase())}</span>${Number(product.designCount) > 0 ? '<span>' + Number(product.designCount).toLocaleString("en-IN") + '+ designs</span>' : ""}</div>
 
 
                     <p>
@@ -701,7 +692,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // Artwork gallery is disabled; customers see only the cover thumbnail.
+        renderProductImages();
 
 
         if (modalAddCart) {
