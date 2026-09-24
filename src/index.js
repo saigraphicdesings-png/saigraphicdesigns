@@ -51,6 +51,9 @@ function normalize(row) {
     type: row.type,
     formats: parseList(row.formats),
     description: row.description || "",
+    articleTitle: row.article_title || "",
+    articleContent: row.article_content || "",
+    articleFaqs: parseList(row.article_faqs).filter(item => item && typeof item.question === "string" && typeof item.answer === "string"),
     images: parseList(row.images),
     downloadUrl: row.download_url || "",
     active: Boolean(row.active),
@@ -255,6 +258,13 @@ async function ensureProductHomepageColumn(env) {
         ORDER BY sort_order ASC, created_at ASC, name ASC LIMIT 10
       )
     `).run();
+  }
+  for (const [column, definition] of Object.entries({
+    article_title: "TEXT NOT NULL DEFAULT ''",
+    article_content: "TEXT NOT NULL DEFAULT ''",
+    article_faqs: "TEXT NOT NULL DEFAULT '[]'"
+  })) {
+    if (!columns.has(column)) await env.DB.prepare("ALTER TABLE products ADD COLUMN " + column + " " + definition).run();
   }
   if (!columns.has("is_key_product")) {
     await env.DB.prepare("ALTER TABLE products ADD COLUMN is_key_product INTEGER NOT NULL DEFAULT 0 CHECK(is_key_product IN (0,1))").run();
@@ -581,6 +591,11 @@ function validateProduct(input) {
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
   if (!name || !category || !type) throw new Error("Name, category and type are required.");
   if (!images.length) throw new Error("Add at least one preview image.");
+  const articleTitle = String(input.articleTitle || "").trim();
+  const articleContent = String(input.articleContent || "").trim();
+  const articleFaqs = Array.isArray(input.articleFaqs) ? input.articleFaqs : [];
+  if (articleTitle.length > 180 || articleContent.length > 12000 || articleFaqs.length > 20) throw new Error("Product article is too long.");
+  if (articleFaqs.some(item => !item || !String(item.question || "").trim() || !String(item.answer || "").trim() || String(item.question).length > 250 || String(item.answer).length > 1000)) throw new Error("Each FAQ needs a question and answer of reasonable length.");
   const active = input.active === false ? 0 : 1;
   return {
     id,
@@ -591,6 +606,9 @@ function validateProduct(input) {
     type,
     formats: JSON.stringify(parseList(input.formats)),
     description: String(input.description || "").trim(),
+    articleTitle,
+    articleContent,
+    articleFaqs: JSON.stringify(articleFaqs.map(item => ({ question: String(item.question).trim(), answer: String(item.answer).trim() }))),
     images: JSON.stringify(images),
     downloadUrl: downloadUrl || null,
     active,
@@ -792,11 +810,11 @@ async function handleAPI(request, env, url) {
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
     await seedHomepageProductsIfEmpty(env);
@@ -841,21 +859,113 @@ async function handleAPI(request, env, url) {
       );
     }
     statements.push(env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
         name = excluded.name, price = excluded.price, category = excluded.category,
         type = excluded.type, formats = excluded.formats, description = excluded.description,
+        article_title = excluded.article_title, article_content = excluded.article_content, article_faqs = excluded.article_faqs,
         images = excluded.images, download_url = excluded.download_url, active = excluded.active,
         show_on_home = excluded.show_on_home,
         is_key_product = excluded.is_key_product,
         sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
     await env.DB.batch(statements);
-    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
+    return json({ success: true, product: normalize({ ...product, article_title: product.articleTitle, article_content: product.articleContent, article_faqs: product.articleFaqs, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
   }
 
   return json({ error: "Not found." }, 404);
+}
+
+
+function escapeProductHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+}
+
+function productArticleText(product) {
+  return String(product.articleContent || "").trim() || [product.description,
+    product.name + " is listed under " + product.category + " by Sai Graphic Designs, Madurai. Available file formats: " +
+    (product.formats.join(", ").toUpperCase() || "see product details") + ". Review the preview images and included formats before choosing this bundle."
+  ].filter(Boolean).join("\n\n");
+}
+
+function productArticleHTML(product) {
+  const title = product.articleTitle || ("About " + product.name);
+  const paragraphs = productArticleText(product).split(/\n\s*\n/).filter(Boolean)
+    .map(part => "<p>" + escapeProductHTML(part.trim()).replace(/\n/g, "<br>") + "</p>").join("");
+  const faqs = (product.articleFaqs || []).filter(item => item.question && item.answer);
+  return '<article class="product-article" id="modalProductArticle"' + (!paragraphs && !faqs.length ? " hidden" : "") + '>' +
+    '<h3 id="modalArticleTitle">' + escapeProductHTML(title) + '</h3>' +
+    '<div id="modalArticleContent">' + paragraphs + '</div>' +
+    '<section id="modalArticleFaqSection"' + (!faqs.length ? " hidden" : "") + '><h4>Frequently asked questions</h4>' +
+    '<div id="modalArticleFaqs">' + faqs.map(item => '<details><summary>' + escapeProductHTML(item.question) +
+      '</summary><p>' + escapeProductHTML(item.answer) + '</p></details>').join("") +
+    '</div></section></article>';
+}
+
+async function productShopPage(request, env, url) {
+  if (!env.DB) return env.ASSETS.fetch(request);
+  await ensureProductHomepageColumn(env);
+  const response = await env.ASSETS.fetch(request);
+  if (!response.ok) return response;
+  let html = await response.text();
+  const id = url.searchParams.get("product");
+  if (id && !/^[A-Za-z0-9_-]+$/.test(id)) return new Response("Product not found", { status: 404 });
+  let product;
+  if (id) {
+    const row = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(id).first();
+    if (!row || !isBundle(row)) return new Response("Product not found", { status: 404 });
+    product = normalize(row);
+  }
+  const rows = await env.DB.prepare("SELECT id, name FROM products WHERE active = 1 ORDER BY sort_order, name LIMIT 500").all();
+  const links = (rows.results || []).filter(isBundle).map(row =>
+    '<a href="/shop?product=' + encodeURIComponent(row.id) + '">' + escapeProductHTML(row.name) + '</a>').join(" ");
+  html = html.replace('</main>', '<nav class="product-index" aria-label="Bundle details"><h2>Explore bundle details</h2>' + links + '</nav></main>');
+  if (product) {
+    const canonical = new URL("/shop", url.origin);
+    canonical.searchParams.set("product", product.id);
+    const title = product.name + " | Bundle World, Madurai";
+    const description = (product.description || product.articleContent || product.name).replace(/\s+/g, " ").slice(0, 155);
+    const image = product.images[0] ? new URL(product.images[0], url.origin).href : new URL("/Images/logo.png", url.origin).href;
+    html = html.replace(/<title>[^<]*<\/title>/, "<title>" + escapeProductHTML(title) + "</title>");
+    html = html.replace(/(<meta name="description" content=")[^"]*(")/, "$1" + escapeProductHTML(description) + "$2");
+    html = html.replace(/(<link rel="canonical"\s+href=")[^"]*(")/, "$1" + escapeProductHTML(canonical.href) + "$2");
+    for (const [property, value] of Object.entries({
+      "og:type": "product", "og:title": title, "og:description": description,
+      "og:url": canonical.href, "og:image": image,
+      "twitter:title": title, "twitter:description": description
+    })) {
+      const attr = property.startsWith("og:") ? "property" : "name";
+      const pattern = new RegExp('(<meta ' + attr + '="' + property + '"\\s+content=")[^"]*(")');
+      html = html.replace(pattern, "$1" + escapeProductHTML(value) + "$2");
+    }
+    html = html.replace('<article class="product-article" id="modalProductArticle" hidden><h3 id="modalArticleTitle"></h3><div id="modalArticleContent"></div><section id="modalArticleFaqSection" hidden><h4>Frequently asked questions</h4><div id="modalArticleFaqs"></div></section></article>', productArticleHTML(product));
+    // Initial product details are included in the HTML for search and sharing previews.
+    const structured = {
+      "@context": "https://schema.org", "@type": "Product", name: product.name,
+      description, image: [image], sku: product.id, category: product.category,
+      offers: { "@type": "Offer", price: product.price, priceCurrency: "INR",
+        availability: "https://schema.org/InStock", url: canonical.href, seller: { "@type": "Organization", name: "Sai Graphic Designs" } }
+    };
+    const article = {
+      "@context": "https://schema.org", "@type": "Article", headline: product.articleTitle || ("About " + product.name),
+      articleBody: productArticleText(product), mainEntityOfPage: canonical.href,
+      publisher: { "@type": "Organization", name: "Sai Graphic Designs" }
+    };
+    const faq = product.articleFaqs.length ? {
+      "@context": "https://schema.org", "@type": "FAQPage",
+      mainEntity: product.articleFaqs.map(item => ({ "@type": "Question", name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer } }))
+    } : null;
+    html = html.replace("</head>", '<script type="application/ld+json">' +
+      JSON.stringify([structured, article, faq].filter(Boolean)).replace(/</g, "\\u003c") + '</script></head>');
+    html = html.replace('id="modalProductName">\n                </h2>', 'id="modalProductName">' + escapeProductHTML(product.name) + '</h2>');
+    html = html.replace('id="modalProductDescription">\n                </p>', 'id="modalProductDescription">' + escapeProductHTML(product.description) + '</p>');
+  }
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  headers.set("cache-control", "public, max-age=60");
+  return new Response(html, { status: response.status, headers });
 }
 
 export default {
@@ -868,6 +978,10 @@ export default {
         console.error("API error:", error);
         return json({ error: "The service is temporarily unavailable." }, 500);
       }
+    }
+    if (request.method === "GET" && (url.pathname === "/shop" || url.pathname === "/shop.html")) {
+      try { return await productShopPage(request, env, url); }
+      catch (error) { console.error("Product page error:", error); return env.ASSETS.fetch(request); }
     }
     return env.ASSETS.fetch(request);
   }
