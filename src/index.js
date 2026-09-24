@@ -47,9 +47,6 @@ function normalize(row) {
     id: row.id,
     name: row.name,
     price: Number(row.price) || 0,
-    tier: ["free", "standard", "premium"].includes(row.tier)
-      ? row.tier : (Number(row.price) === 0 ? "free" : Number(row.price) >= 499 ? "premium" : "standard"),
-    designCount: Number(row.design_count) || Number(String(row.name || "").match(/\b(\d{1,5})\s*\+/)?.[1]) || 0,
     category: row.category,
     type: row.type,
     formats: parseList(row.formats),
@@ -270,10 +267,6 @@ async function ensureProductHomepageColumn(env) {
       )
     `).run();
   }
-  await addMissingColumns(env, "products", {
-    tier: "TEXT",
-    design_count: "INTEGER NOT NULL DEFAULT 0"
-  });
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_home_sort ON products(show_on_home, active, sort_order, name)").run();
   await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_products_key ON products(is_key_product, active)").run();
   await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_products_one_key ON products(is_key_product) WHERE is_key_product = 1").run();
@@ -546,7 +539,6 @@ async function listProducts(env, includeHidden) {
   const result = await env.DB.prepare(query).all();
   const products = (result.results || []).map((row) => {
     const product = normalize(row);
-    if (!includeHidden) product.images = product.images.slice(0, 1);
     if (!includeHidden && product.price > 0) product.downloadUrl = "";
     return product;
   });
@@ -588,20 +580,13 @@ function validateProduct(input) {
   if (downloadUrl && !/^https?:\/\//i.test(downloadUrl)) throw new Error("Download URL must start with https:// or http://.");
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
   if (!name || !category || !type) throw new Error("Name, category and type are required.");
-  if (!images.length) throw new Error("Add at least one bundle thumbnail.");
-  const tier = ["free", "standard", "premium"].includes(input.tier)
-    ? input.tier : (price === 0 ? "free" : price >= 499 ? "premium" : "standard");
-  const designCount = Number(input.designCount ?? 0);
-  if (!Number.isSafeInteger(designCount) || designCount < 0) throw new Error("Design count must be a non-negative whole number.");
-  if ((tier === "free") !== (price === 0)) throw new Error("Free bundles must cost ₹0; paid bundles need a price above ₹0.");
+  if (!images.length) throw new Error("Add at least one preview image.");
   const active = input.active === false ? 0 : 1;
   return {
     id,
     originalId: String(input.originalId || id).trim(),
     name,
     price,
-    tier,
-    designCount,
     category,
     type,
     formats: JSON.stringify(parseList(input.formats)),
@@ -807,11 +792,11 @@ async function handleAPI(request, env, url) {
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (id, name, price, tier, design_count, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(product.id, product.name, product.price, product.tier, product.designCount, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
     await seedHomepageProductsIfEmpty(env);
@@ -856,18 +841,18 @@ async function handleAPI(request, env, url) {
       );
     }
     statements.push(env.DB.prepare(`
-      INSERT INTO products (id, name, price, tier, design_count, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
-        name = excluded.name, price = excluded.price, tier = excluded.tier, design_count = excluded.design_count, category = excluded.category,
+        name = excluded.name, price = excluded.price, category = excluded.category,
         type = excluded.type, formats = excluded.formats, description = excluded.description,
         images = excluded.images, download_url = excluded.download_url, active = excluded.active,
         show_on_home = excluded.show_on_home,
         is_key_product = excluded.is_key_product,
         sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
-    `).bind(product.id, product.name, product.price, product.tier, product.designCount, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
     await env.DB.batch(statements);
-    return json({ success: true, product: normalize({ ...product, design_count: product.designCount, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
+    return json({ success: true, product: normalize({ ...product, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
   }
 
   return json({ error: "Not found." }, 404);
