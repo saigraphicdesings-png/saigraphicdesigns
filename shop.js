@@ -2004,8 +2004,7 @@ Thank you! 😊`;
 
                 return Object.assign({}, product, {
                     images: [
-                        "Images/mega-business-card-1000-cdr-bundle.svg",
-                        ...(Array.isArray(product.images) ? product.images.slice(1) : [])
+                        "Images/mega-business-card-1000-cdr-bundle.svg"
                     ]
                 });
             }).sort(function (first, second) {
