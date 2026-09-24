@@ -5,7 +5,14 @@
   "main": "src/payment-proof-worker.js",
   "assets": {
     "directory": ".",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/shop",
+      "/shop.html",
+      "/bundle/*",
+      "/bundles/*",
+      "/bundle-sitemap.xml"
+    ]
   },
   "d1_databases": [
     {
@@ -27,6 +34,12 @@
       "persist": true
     }
   },
-  "triggers": { "crons": ["30 3,12 * * *"] },
-  "compatibility_flags": ["nodejs_compat"]
+  "triggers": {
+    "crons": [
+      "30 3,12 * * *"
+    ]
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
 }
