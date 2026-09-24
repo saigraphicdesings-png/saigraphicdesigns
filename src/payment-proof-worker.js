@@ -98,7 +98,8 @@ async function handleSiteMode(request, env, url) {
 }
 
 function isPaidPaymentRoute(url, request) {
-  return request.method === "POST" && url.pathname.startsWith("/api/payment/");
+  return request.method === "POST" && url.pathname.startsWith("/api/payment/")
+    && url.pathname !== "/api/payment/whatsapp-request";
 }
 
 function cleanUtr(value) {
