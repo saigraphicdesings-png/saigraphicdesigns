@@ -1998,7 +1998,17 @@ Thank you! 😊`;
             }
             if (requestId !== catalogRequest) return;
 
-            products = data.products.slice().sort(function (first, second) {
+            products = data.products.map(function (product) {
+                if (String(product.name || "").trim().toLowerCase() !==
+                    "mega cdr & psd bundle") return product;
+
+                return Object.assign({}, product, {
+                    images: [
+                        "Images/mega-business-card-1000-cdr-bundle.svg",
+                        ...(Array.isArray(product.images) ? product.images.slice(1) : [])
+                    ]
+                });
+            }).sort(function (first, second) {
                 return (Number(first.sort_order) || 0) -
                     (Number(second.sort_order) || 0);
             });
