@@ -720,6 +720,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        document.getElementById("modalArticleLink").href = "/bundle/" + encodeURIComponent(product.id);
+
         renderProductImages();
 
 
