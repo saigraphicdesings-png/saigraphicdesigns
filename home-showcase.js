@@ -54,7 +54,7 @@
     const body = element("div", "home-showcase-body");
     body.append(element("span", "home-showcase-kind", String(product.category || "Design template")), element("h3", "", String(product.name)));
     const formats = Array.isArray(product.formats) ? product.formats.map(String).join(" · ") : "";
-    body.append(element("p", "", formats || "Explore this bundle in Bundle World."));
+    body.append(element("p", "", (Number(product.itemCount) > 0 ? Number(product.itemCount).toLocaleString("en-IN") + " designs · " : "") + (formats || "Explore this bundle in Bundle World.")));
     const bottom = element("div", "home-showcase-bottom");
     bottom.append(element("strong", "", Number(product.price) === 0 ? "Free" : currency.format(Number(product.price))), element("span", "", "View design ↗"));
     body.append(bottom); link.append(preview, body);
@@ -111,8 +111,12 @@
       const activeProducts = data.products.filter(p => p && p.id && String(p.name || "").trim() && p.active !== false && p.active !== 0 && p.active !== "0");
       const featured = activeProducts.find(p => p.isKeyProduct === true) || null;
       renderKeyProduct(featured);
-      const products = activeProducts.filter(p => p.showOnHome === true && p.isKeyProduct !== true && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0)
-        .sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0)).slice(0, 10);
+      const products = activeProducts.filter(p => p.showOnHome === true && p.isKeyProduct !== true && Number.isFinite(Number(p.price)) && p.price !== null && p.price !== "" && Number(p.price) >= 0);
+      for (let index = products.length - 1; index > 0; index--) {
+        const swap = Math.floor(Math.random() * (index + 1));
+        [products[index], products[swap]] = [products[swap], products[index]];
+      }
+      products.length = Math.min(products.length, 10);
       stopCarousel();
       grid.replaceChildren(...products.map(productCard));
       grid.scrollLeft = 0;
