@@ -246,6 +246,7 @@ async function addMissingColumns(env, table, definitions) {
   }
 }
 
+let businessCardBundleNameChecked = false;
 async function ensureProductHomepageColumn(env) {
   const info = await env.DB.prepare("PRAGMA table_info(products)").all();
   const columns = new Set((info.results || []).map((column) => column.name));
@@ -265,6 +266,17 @@ async function ensureProductHomepageColumn(env) {
     article_faqs: "TEXT NOT NULL DEFAULT '[]'"
   })) {
     if (!columns.has(column)) await env.DB.prepare("ALTER TABLE products ADD COLUMN " + column + " " + definition).run();
+  }
+  // One-time cleanup of the published bundle title; keep its stable BC-1001 ID.
+  if (!businessCardBundleNameChecked) {
+    await env.DB.prepare(`
+      UPDATE products
+      SET name = 'Business Card Bundle',
+          article_title = CASE WHEN article_title = 'Business Card Bundle 1001' THEN 'Business Card Bundle' ELSE article_title END,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = 'BC-1001' AND name = 'Business Card Bundle 1001'
+    `).run();
+    businessCardBundleNameChecked = true;
   }
   if (!columns.has("is_key_product")) {
     await env.DB.prepare("ALTER TABLE products ADD COLUMN is_key_product INTEGER NOT NULL DEFAULT 0 CHECK(is_key_product IN (0,1))").run();
