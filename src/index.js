@@ -60,6 +60,7 @@ function normalize(row) {
     showOnHome: Boolean(row.show_on_home),
     isKeyProduct: Boolean(row.is_key_product),
     sort_order: Number(row.sort_order) || 0,
+    itemCount: Number(row.item_count) || 0,
     clicks: Number(row.clicks) || 0
   };
 }
@@ -263,7 +264,8 @@ async function ensureProductHomepageColumn(env) {
   for (const [column, definition] of Object.entries({
     article_title: "TEXT NOT NULL DEFAULT ''",
     article_content: "TEXT NOT NULL DEFAULT ''",
-    article_faqs: "TEXT NOT NULL DEFAULT '[]'"
+    article_faqs: "TEXT NOT NULL DEFAULT '[]'",
+    item_count: "INTEGER NOT NULL DEFAULT 0 CHECK(item_count >= 0)"
   })) {
     if (!columns.has(column)) await env.DB.prepare("ALTER TABLE products ADD COLUMN " + column + " " + definition).run();
   }
@@ -598,6 +600,8 @@ function validateProduct(input) {
   const images = parseList(input.images);
   const price = Number(input.price ?? 0);
   if (!Number.isFinite(price) || price < 0) throw new Error("Price must be a finite, non-negative number.");
+  const itemCount = Number(input.itemCount ?? 0);
+  if (!Number.isSafeInteger(itemCount) || itemCount < 0) throw new Error("Design count must be a non-negative whole number.");
   const downloadUrl = String(input.downloadUrl || "").trim();
   if (downloadUrl && !/^https?:\/\//i.test(downloadUrl)) throw new Error("Download URL must start with https:// or http://.");
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error("Product ID may contain only letters, numbers, hyphens and underscores.");
@@ -626,7 +630,8 @@ function validateProduct(input) {
     active,
     showOnHome: active && input.showOnHome === true ? 1 : 0,
     isKeyProduct: active && input.isKeyProduct === true ? 1 : 0,
-    sortOrder: Number.parseInt(input.sort_order, 10) || 0
+    sortOrder: Number.parseInt(input.sort_order, 10) || 0,
+    itemCount
   };
 }
 
@@ -822,11 +827,11 @@ async function handleAPI(request, env, url) {
     let imported;
     try { imported = inputs.map(validateProduct); } catch (error) { return json({ error: error.message }, 400); }
     const statements = imported.map((product) => env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
+      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, item_count, updated_at)
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP
       WHERE NOT EXISTS (SELECT 1 FROM deleted_products WHERE id = ?)
       ON CONFLICT(id) DO NOTHING
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.id));
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.itemCount, product.id));
     const results = await env.DB.batch(statements);
     const count = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
     await seedHomepageProductsIfEmpty(env);
@@ -871,8 +876,8 @@ async function handleAPI(request, env, url) {
       );
     }
     statements.push(env.DB.prepare(`
-      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      INSERT INTO products (id, name, price, category, type, formats, description, article_title, article_content, article_faqs, images, download_url, active, show_on_home, is_key_product, sort_order, item_count, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       ON CONFLICT(id) DO UPDATE SET
         name = excluded.name, price = excluded.price, category = excluded.category,
         type = excluded.type, formats = excluded.formats, description = excluded.description,
@@ -880,10 +885,10 @@ async function handleAPI(request, env, url) {
         images = excluded.images, download_url = excluded.download_url, active = excluded.active,
         show_on_home = excluded.show_on_home,
         is_key_product = excluded.is_key_product,
-        sort_order = excluded.sort_order, updated_at = CURRENT_TIMESTAMP
-    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder));
+        sort_order = excluded.sort_order, item_count = excluded.item_count, updated_at = CURRENT_TIMESTAMP
+    `).bind(product.id, product.name, product.price, product.category, product.type, product.formats, product.description, product.articleTitle, product.articleContent, product.articleFaqs, product.images, product.downloadUrl, product.active, product.showOnHome, product.isKeyProduct, product.sortOrder, product.itemCount));
     await env.DB.batch(statements);
-    return json({ success: true, product: normalize({ ...product, article_title: product.articleTitle, article_content: product.articleContent, article_faqs: product.articleFaqs, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder }) });
+    return json({ success: true, product: normalize({ ...product, article_title: product.articleTitle, article_content: product.articleContent, article_faqs: product.articleFaqs, download_url: product.downloadUrl, show_on_home: product.showOnHome, is_key_product: product.isKeyProduct, sort_order: product.sortOrder, item_count: product.itemCount }) });
   }
 
   return json({ error: "Not found." }, 404);
