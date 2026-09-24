@@ -2013,6 +2013,7 @@ Thank you! 😊`;
     let catalogRequest = 0;
 
     function renderBundleCategories() {
+        if (typeof document.getElementById !== "function") return;
         const nav = document.getElementById("bundleCategoryNav");
         if (!nav) return;
         const counts = new Map();
