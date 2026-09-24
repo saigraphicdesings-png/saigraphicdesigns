@@ -1,0 +1,21 @@
+name: Verify business card bundle title
+on:
+  push:
+    branches: [verify/bc-1001-title]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check published catalog title
+        run: |
+          curl --fail --silent --show-error --max-time 20 https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/api/products -o /tmp/catalog.json
+          python3 - <<'PY'
+          import json
+          products=json.load(open('/tmp/catalog.json')).get('products',[])
+          item=next((p for p in products if p.get('id')=='BC-1001'),None)
+          assert item is not None, 'BC-1001 was not returned by the published catalog'
+          print(item['id'], item['name'], item['price'])
+          assert item['name']=='Business Card Bundle', 'Published name still has 1001'
+          PY
