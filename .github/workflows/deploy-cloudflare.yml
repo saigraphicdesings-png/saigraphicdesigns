@@ -28,3 +28,10 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: "4.129.1"
           command: deploy --config wrangler.jsonc
+      - name: Verify published shop and bundle sitemap
+        run: |
+          base="https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev"
+          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/shop" -o /tmp/shop-live.html
+          grep -q 'Bundle World' /tmp/shop-live.html
+          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/bundle-sitemap.xml" -o /tmp/bundle-sitemap.xml
+          grep -q '<urlset' /tmp/bundle-sitemap.xml
