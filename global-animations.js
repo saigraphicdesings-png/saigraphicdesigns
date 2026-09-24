@@ -35,11 +35,11 @@
     customerSignedIn = Boolean(signedIn);
     accountLinks().forEach(function (link) {
       if (signedIn) {
-        link.href = '#logout';
-        link.setAttribute('aria-label', 'Logout');
-        link.dataset.saiLogout = 'true';
+        link.href = '/account';
+        link.setAttribute('aria-label', 'My Account');
+        delete link.dataset.saiLogout;
         var label = link.querySelector('.sai-account-label');
-        if (label && label.textContent !== 'Logout') label.textContent = 'Logout';
+        if (label && label.textContent !== 'My Account') label.textContent = 'My Account';
       } else {
         link.href = '/account';
         link.setAttribute('aria-label', 'Login or open My Account');
