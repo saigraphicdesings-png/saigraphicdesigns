@@ -2223,3 +2223,15 @@ footer {
 .product-index a:hover{text-decoration:underline}
 @media(max-width:600px){.product-modal-info>.product-article{padding-top:18px}}
 \n.product-modal-info>.full-article-link{order:4;flex:1 0 100%;margin:0}.full-article-link a{color:var(--shop-primary-dark);font-weight:800;text-decoration:underline}\n
+/* Compact bundle cards: long descriptions belong in the preview and article. */
+.shop-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.shop-product{display:flex;flex-direction:column;min-width:0}
+.shop-product .product-preview{flex:none}
+.shop-product .product-info{display:flex;flex-direction:column;flex:1;height:auto;min-width:0;padding:17px}
+.shop-product .product-info h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:2.8em;margin:7px 0 9px;line-height:1.4}
+.shop-product .product-card-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:0;max-height:3.2em;margin:0 0 13px;font-size:.8rem;line-height:1.6}
+.shop-product .product-formats{margin-bottom:12px}
+.shop-product .product-bottom{margin-top:auto;padding-top:13px;border-top:1px solid #edf1f1}
+@media(max-width:1150px){.shop-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.shop-grid{grid-template-columns:minmax(0,1fr)}}
