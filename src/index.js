@@ -954,7 +954,6 @@ async function productShopPage(request, env, url) {
       html = html.replace(pattern, "$1" + escapeProductHTML(value) + "$2");
     }
     html = html.replace('<article class="product-article" id="modalProductArticle" hidden><h3 id="modalArticleTitle"></h3><div id="modalArticleContent"></div><section id="modalArticleFaqSection" hidden><h4>Frequently asked questions</h4><div id="modalArticleFaqs"></div></section></article>', productArticleHTML(product));
-    html = html.replace('id="modalArticleLink" href="#"', 'id="modalArticleLink" href="' + escapeProductHTML(canonical.href) + '"');
     // Initial product details are included in the HTML for search and sharing previews.
     const structured = {
       "@context": "https://schema.org", "@type": "Product", name: product.name,
