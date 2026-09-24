@@ -2025,7 +2025,7 @@ Thank you! 😊`;
         nav.appendChild(heading);
         counts.forEach((count, category) => {
             const slug = String(category).toLowerCase().normalize("NFKD")
-                .replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
             const link = document.createElement("a");
             link.href = "/bundles/" + slug;
             link.textContent = category + " (" + count + ")";
