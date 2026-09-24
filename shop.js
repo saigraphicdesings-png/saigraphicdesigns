@@ -357,6 +357,14 @@ document.addEventListener("DOMContentLoaded", function () {
        card still displays its category as a small label)
     ===================================================== */
 
+    function cardExcerpt(value) {
+        const cleaned = String(value || "").replace(/^product description\s*:?\s*/i, "").replace(/\s+/g, " ").trim();
+        const firstSentence = cleaned.match(/^.*?[.!?](?=\s|$)/)?.[0] || cleaned;
+        if (firstSentence.length <= 92) return firstSentence;
+        const words = firstSentence.slice(0, 92).replace(/\s+\S*$/, "").trim();
+        return (words || firstSentence.slice(0, 92)) + "…";
+    }
+
     function renderProducts() {
 
         if (!allProducts) {
@@ -490,10 +498,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     </h3>
 
 
-                    <p>
-                        ${escapeHTML(
-                            product.description
-                        )}
+                    <p class="product-card-excerpt">
+                        ${escapeHTML(cardExcerpt(product.description))}
                     </p>
 
 
