@@ -448,9 +448,9 @@
 
     display: block;
 
-    object-fit: cover;
+    object-fit: contain;
 
-    transition: transform .45s ease;
+    
 
 }
 
@@ -458,7 +458,7 @@
 .shop-product:hover
 .product-preview img {
 
-    transform: scale(1.05);
+    transform: none;
 
 }
 
