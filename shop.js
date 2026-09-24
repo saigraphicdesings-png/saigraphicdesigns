@@ -2012,6 +2012,27 @@ Thank you! 😊`;
 
     let catalogRequest = 0;
 
+    function renderBundleCategories() {
+        const nav = document.getElementById("bundleCategoryNav");
+        if (!nav) return;
+        const counts = new Map();
+        products.forEach(product => counts.set(product.category, (counts.get(product.category) || 0) + 1));
+        nav.replaceChildren();
+        nav.hidden = counts.size === 0;
+        if (!counts.size) return;
+        const heading = document.createElement("h2");
+        heading.textContent = "Browse bundle categories";
+        nav.appendChild(heading);
+        counts.forEach((count, category) => {
+            const slug = String(category).toLowerCase().normalize("NFKD")
+                .replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+            const link = document.createElement("a");
+            link.href = "/bundles/" + slug;
+            link.textContent = category + " (" + count + ")";
+            nav.appendChild(link);
+        });
+    }
+
     async function loadManagedProducts() {
         const requestId = ++catalogRequest;
         try {
@@ -2049,6 +2070,7 @@ Thank you! 😊`;
             console.warn("Unable to load the shop catalog.", error);
         }
         renderProducts();
+        renderBundleCategories();
         if (catalogStatus === "ready") openRequestedProduct();
     }
 
