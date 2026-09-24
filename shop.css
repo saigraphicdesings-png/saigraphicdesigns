@@ -2222,3 +2222,4 @@ footer {
 .product-index a{padding:7px 12px;border-radius:20px;background:#f0fdf4;color:#166534;text-decoration:none;font-size:.88rem}
 .product-index a:hover{text-decoration:underline}
 @media(max-width:600px){.product-modal-info>.product-article{padding-top:18px}}
+\n.product-modal-info>.full-article-link{order:4;flex:1 0 100%;margin:0}.full-article-link a{color:var(--shop-primary-dark);font-weight:800;text-decoration:underline}\n
