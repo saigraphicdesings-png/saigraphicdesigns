@@ -551,6 +551,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p class="product-card-excerpt">
                         ${escapeHTML(cardExcerpt(product.description))}
                     </p>
+                    ${Number(product.itemCount) > 0 ? `<p class="bundle-design-count">${Number(product.itemCount).toLocaleString("en-IN")} designs included</p>` : ""}
 
 
                     ${
@@ -2058,10 +2059,14 @@ Thank you! 😊`;
                         "Images/mega-business-card-1000-cdr-bundle.svg"
                     ]
                 });
-            }).sort(function (first, second) {
-                return (Number(first.sort_order) || 0) -
-                    (Number(second.sort_order) || 0);
             });
+            // Shuffle each catalog load so bundles rotate on every visit.
+            for (let index = products.length - 1; index > 0; index--) {
+                const random = new Uint32Array(1);
+                crypto.getRandomValues(random);
+                const swap = random[0] % (index + 1);
+                [products[index], products[swap]] = [products[swap], products[index]];
+            }
             catalogStatus = "ready";
         } catch (error) {
             if (requestId !== catalogRequest) return;
