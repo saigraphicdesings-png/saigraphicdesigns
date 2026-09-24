@@ -4,3 +4,4 @@ Disallow: /admin
 Disallow: /admin-
 
 Sitemap: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/sitemap.xml
+Sitemap: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/bundle-sitemap.xml
