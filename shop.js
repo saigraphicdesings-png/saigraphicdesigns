@@ -692,6 +692,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+        const article = document.getElementById("modalProductArticle");
+        if (article) {
+            const content = String(product.articleContent || "").trim() || [product.description, product.name + " is listed under " + product.category + " by Sai Graphic Designs, Madurai. Available file formats: " + ((product.formats || []).join(", ").toUpperCase() || "see product details") + ". Review the preview images and included formats before choosing this bundle."].filter(Boolean).join("\n\n");
+            const faqs = Array.isArray(product.articleFaqs) ? product.articleFaqs.filter(item => item.question && item.answer) : [];
+            article.hidden = !content && !faqs.length;
+            document.getElementById("modalArticleTitle").textContent = product.articleTitle || ("About " + product.name);
+            const paragraphs = document.getElementById("modalArticleContent");
+            paragraphs.replaceChildren();
+            content.split(/\n\s*\n/).filter(Boolean).forEach(part => {
+                const p = document.createElement("p");
+                p.textContent = part.trim();
+                paragraphs.appendChild(p);
+            });
+            const faqSection = document.getElementById("modalArticleFaqSection");
+            faqSection.hidden = !faqs.length;
+            const faqList = document.getElementById("modalArticleFaqs");
+            faqList.replaceChildren();
+            faqs.forEach(item => {
+                const details = document.createElement("details");
+                const summary = document.createElement("summary");
+                summary.textContent = item.question;
+                const answer = document.createElement("p");
+                answer.textContent = item.answer;
+                details.append(summary, answer);
+                faqList.appendChild(details);
+            });
+        }
+
         renderProductImages();
 
 
