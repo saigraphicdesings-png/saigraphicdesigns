@@ -96,10 +96,8 @@
       ".product-popularity-rating{color:#252525;font-weight:800}" +
       ".product-popularity-hype{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:rgba(245,166,35,.12);color:#9a5b00;font-size:10px;font-weight:800;letter-spacing:.2px}" +
       ".product-popularity-rank{display:inline-flex;align-items:center;padding:3px 7px;border-radius:999px;background:rgba(17,24,39,.06);color:#4b5563;font-size:10px;font-weight:800}" +
-      ".product-preview::before{content:'SAI GRAPHIC DESIGNS';position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) rotate(-28deg);width:145%;text-align:center;color:rgba(255,255,255,.72);text-shadow:0 1px 5px rgba(0,0,0,.35);font-size:clamp(14px,1.35vw,20px);font-weight:900;letter-spacing:2px;white-space:nowrap;pointer-events:none;user-select:none}" +
       ".product-preview::after{z-index:6}" +
       ".main-product-image{position:relative}" +
-      ".shop-preview-watermark{position:absolute!important;left:50%!important;top:50%!important;z-index:99999!important;transform:translate(-50%,-50%) rotate(-28deg)!important;width:145%!important;text-align:center!important;color:rgba(255,255,255,.78)!important;text-shadow:0 2px 8px rgba(0,0,0,.58),0 0 2px rgba(0,0,0,.7)!important;font-size:clamp(24px,4vw,46px)!important;font-weight:900!important;letter-spacing:4px!important;white-space:nowrap!important;pointer-events:none!important;user-select:none!important;display:block!important;opacity:1!important;visibility:visible!important}" +
       ".shop-search-wrap{position:relative;max-width:620px;margin:18px auto 20px}" +
       ".shop-search-icon{position:absolute;left:17px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:17px;opacity:.65}" +
       ".shop-search-input{width:100%;height:52px;padding:0 48px 0 48px;border:1px solid #e2e6ea;border-radius:16px;background:rgba(255,255,255,.94);color:#111827;font:inherit;font-size:15px;font-weight:600;outline:none;box-shadow:0 8px 26px rgba(17,24,39,.055);transition:border-color .2s ease,box-shadow .2s ease}" +
@@ -119,30 +117,8 @@
       ".related-design-meta{padding:9px}" +
       ".related-design-name{display:block;overflow:hidden;color:#111827;font-size:12px;font-weight:800;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}" +
       ".related-design-category{display:block;margin-top:3px;overflow:hidden;color:#6b7280;font-size:10px;text-overflow:ellipsis;white-space:nowrap}" +
-      "@media(max-width:650px){.product-preview::before{font-size:12px;letter-spacing:1.2px}.shop-preview-watermark{font-size:22px!important;letter-spacing:2px!important}.shop-search-wrap{margin:14px 0 17px}.shop-search-input{height:48px;border-radius:14px}.related-designs{padding:16px 14px 22px}.related-designs-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}";
+      "@media(max-width:650px){.shop-search-wrap{margin:14px 0 17px}.shop-search-input{height:48px;border-radius:14px}.related-designs{padding:16px 14px 22px}.related-designs-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}";
     document.head.appendChild(style);
-  }
-
-  function ensurePreviewWatermark() {
-    var holder = document.querySelector(".main-product-image");
-    if (!holder) return;
-    var watermark = holder.querySelector(".shop-preview-watermark");
-    if (!watermark) {
-      watermark = document.createElement("div");
-      watermark.className = "shop-preview-watermark";
-      watermark.setAttribute("aria-hidden", "true");
-      watermark.textContent = "SAI GRAPHIC DESIGNS";
-      holder.appendChild(watermark);
-    }
-  }
-
-  function watchPreviewWatermark() {
-    var holder = document.querySelector(".main-product-image");
-    if (!holder || !window.MutationObserver) return;
-    ensurePreviewWatermark();
-    new MutationObserver(function () {
-      ensurePreviewWatermark();
-    }).observe(holder, { childList: true });
   }
 
   function ensureShopSearch() {
@@ -340,8 +316,6 @@
     if (!isShopPage()) return;
     addPopularityStyles();
     ensureShopSearch();
-    ensurePreviewWatermark();
-    watchPreviewWatermark();
     loadPopularity();
 
     var productsRoot = document.getElementById("allProducts");
