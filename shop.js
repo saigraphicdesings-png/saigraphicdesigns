@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ? shopFilters.querySelectorAll(".shop-filter")
             : [];
 
-    let activeFilter = "all";
+    let activePriceFilter = "all";
+    let activeFormatFilter = "";
 
 
     /* =====================================================
@@ -289,78 +290,23 @@ document.addEventListener("DOMContentLoaded", function () {
        FILTER LOGIC
     ===================================================== */
 
-    function productMatchesFilter(product, filter) {
-
-        if (!product) {
-            return false;
-        }
-
-
-        if (!filter || filter === "all") {
-            return true;
-        }
-
-
-        /* PAID */
-
-        if (filter === "paid") {
-
-            return Number(product.price) > 0;
-
-        }
-
-
-        /* FREE */
-
-        if (filter === "free") {
-
-            return Number(product.price) === 0;
-
-        }
-
-
-        /* FORMAT FILTER */
-
-        if (
-            ["cdr", "psd", "png", "svg"]
-                .includes(filter)
-        ) {
-
-            const formats =
-                Array.isArray(product.formats)
-                    ? product.formats.map(
-                        normalizeValue
-                    )
-                    : [];
-
-            return formats.includes(filter);
-
-        }
-
-
-        /* DESIGN TYPE */
-
-        const productType =
-            normalizeValue(product.type);
-
-        return productType === filter;
-
-    }
-
-
-    /* =====================================================
-       GET FILTERED PRODUCTS
-    ===================================================== */
-
     function getFilteredProducts() {
 
-        return products.filter(
-            product =>
-                productMatchesFilter(
-                    product,
-                    activeFilter
-                )
-        );
+        return products.filter(product => {
+            if (!product) return false;
+
+            const priceMatches =
+                activePriceFilter === "all" ||
+                (activePriceFilter === "paid" && Number(product.price) > 0) ||
+                (activePriceFilter === "free" && Number(product.price) === 0);
+
+            const formats = Array.isArray(product.formats)
+                ? product.formats.map(normalizeValue)
+                : [];
+
+            return priceMatches &&
+                (!activeFormatFilter || formats.includes(activeFormatFilter));
+        });
 
     }
 
@@ -371,51 +317,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function setupFilters() {
 
-        if (!filterButtons.length) {
-            return;
-        }
-
+        if (!filterButtons.length) return;
 
         filterButtons.forEach(button => {
 
-            button.addEventListener(
-                "click",
-                function () {
+            button.addEventListener("click", function () {
 
-                    activeFilter =
-                        normalizeValue(
-                            this.dataset.filter
-                        );
+                const filter = normalizeValue(this.dataset.filter);
 
-
-                    filterButtons.forEach(btn => {
-
-                        btn.classList.remove(
-                            "active"
-                        );
-
-                        btn.setAttribute(
-                            "aria-pressed",
-                            "false"
-                        );
-
-                    });
-
-
-                    this.classList.add(
-                        "active"
-                    );
-
-                    this.setAttribute(
-                        "aria-pressed",
-                        "true"
-                    );
-
-
-                    renderProducts();
-
+                if (["all", "paid", "free"].includes(filter)) {
+                    activePriceFilter = filter;
+                    if (filter === "all") activeFormatFilter = "";
+                } else if (["cdr", "psd"].includes(filter)) {
+                    activeFormatFilter =
+                        activeFormatFilter === filter ? "" : filter;
                 }
-            );
+
+                filterButtons.forEach(btn => {
+                    const value = normalizeValue(btn.dataset.filter);
+                    const selected = value === activePriceFilter ||
+                        (value === activeFormatFilter && !!activeFormatFilter);
+                    btn.classList.toggle("active", selected);
+                    btn.setAttribute("aria-pressed", String(selected));
+                });
+
+                renderProducts();
+
+            });
 
         });
 
@@ -2117,7 +2045,7 @@ Thank you! 😊`;
 
     console.log(
         "Active Filter:",
-        activeFilter
+        { price: activePriceFilter, format: activeFormatFilter }
     );
 
 
