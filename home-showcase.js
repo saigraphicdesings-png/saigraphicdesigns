@@ -60,6 +60,20 @@
     body.append(bottom); link.append(preview, body);
     return link;
   }
+  function conciseDescription(value) {
+    const cleaned = String(value || "").replace(/^product description\s*:?\s*/i, "").replace(/\s+/g, " ").trim();
+    const firstSentence = cleaned.match(/^.*?[.!?](?=\s|$)/)?.[0] || cleaned;
+    if (firstSentence.length <= 145) return firstSentence;
+    const words = firstSentence.slice(0, 145).replace(/\s+\S*$/, "").trim();
+    return (words || firstSentence.slice(0, 145)) + "…";
+  }
+  function priceLabel(value) {
+    if (Number(value) === 0) return "Free";
+    const numeric = Number(value);
+    return Number.isInteger(numeric)
+      ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(numeric)
+      : currency.format(numeric);
+  }
   function renderKeyProduct(product) {
     if (!product) { keyProduct.hidden = true; keyProduct.replaceChildren(); return; }
     const link = element("a", "home-key-product-link");
@@ -74,13 +88,13 @@
     visual.append(img, element("span", "home-key-product-ribbon", "★ Featured bundle"));
     const content = element("div", "home-key-product-content");
     content.append(element("span", "home-key-product-label", "KEY PRODUCT · BEST VALUE"), element("h3", "", String(product.name)));
-    const description = String(product.description || "").trim();
-    content.append(element("p", "", description || "Get a powerful collection of editable design files in one value-packed bundle."));
+    const description = conciseDescription(product.description);
+    content.append(element("p", "home-key-product-summary", description || "Explore the editable files and previews included in this bundle."));
     const formats = Array.isArray(product.formats) ? product.formats.map(value => String(value).toUpperCase()).join(" + ") : "";
     const features = element("div", "home-key-product-features");
-    features.append(element("span", "", formats || "Editable files"), element("span", "", "Instant digital access"), element("span", "", "Commercial-ready designs"));
+    features.append(element("span", "", formats || "Editable files"), element("span", "", "Explore the previews"));
     const action = element("div", "home-key-product-action");
-    action.append(element("strong", "", Number(product.price) === 0 ? "Free" : currency.format(Number(product.price))), element("span", "", "View this bundle →"));
+    action.append(element("strong", "", priceLabel(product.price)), element("span", "", "View this bundle →"));
     content.append(features, action); link.append(visual, content); keyProduct.replaceChildren(link); keyProduct.hidden = false;
   }
   async function loadProducts() {
