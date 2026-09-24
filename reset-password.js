@@ -24,8 +24,18 @@
   });
 
   if(token.length<32){
-    submit.disabled=true;
-    setMessage("This password reset link is invalid. Please request a new reset email.","error");
+    view.hidden=true;
+    const requestPanel=$("resetRequest");
+    requestPanel.hidden=false;
+    const email=String(sessionStorage.getItem("saiResetEmail")||"").trim();
+    $("resetRequestEmail").textContent=email?"Account email: "+email:"Enter your account email on the login page first.";
+    const whatsapp=$("resetWhatsApp");
+    if(!email){
+      whatsapp.hidden=true;
+    }else{
+      const text="Hello Sai Graphic Designs, I need a password reset link for my account ("+email+"). Please verify my request and send me a secure one-time link.";
+      whatsapp.href="https://wa.me/916381128781?text="+encodeURIComponent(text);
+    }
   }
 
   const newPassword=$("newPassword"),confirmPassword=$("confirmPassword");
@@ -72,6 +82,7 @@
 
       view.style.display="none";
       success.classList.add("is-visible");
+      sessionStorage.removeItem("saiResetEmail");
       history.replaceState({},document.title,location.pathname);
     }catch(error){
       setMessage(error.message||"Unable to reset your password.","error");
