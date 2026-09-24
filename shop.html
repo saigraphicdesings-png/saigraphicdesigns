@@ -14,7 +14,7 @@
 
     <title>Bundle World | 100% Editable CDR &amp; PSD Design Bundles</title>
 
-    <meta name="description" content="Explore 100% editable design bundles at Bundle World. See each bundle’s included CDR or PSD file formats and review the bundle details before choosing.">
+    <meta name="description" content="Explore 100% editable design bundles at Bundle World. See each bundle’s included CDR or PSD file formats and preview the designs before choosing.">
 
     <meta name="keywords"
           content="design bundles Tamil Nadu, business card bundles, letter head bundles, flyer bundles, brochure bundles, social media bundles, SVG bundles, PNG bundles, branding bundles">
@@ -152,7 +152,7 @@
           href="style.css">
 
     <link rel="stylesheet"
-          href="shop.css?v=20260924-2">
+          href="shop.css?v=20260924-1">
 
 
     <link rel="stylesheet" href="cart-unified.css">
@@ -335,7 +335,7 @@
 
             Explore ready-to-edit design bundles for business cards and more.
             Open a bundle to check whether it includes CDR, PSD, or both,
-            review the bundle details, and choose the files you need.
+            preview the designs, and choose the files you need.
 
         </p>
 
@@ -370,9 +370,6 @@
                  FILTER CARDS
             ================================================== -->
 
-            <label class="shop-catalog-search" for="bundleSearch">Search bundles
-                <input id="bundleSearch" type="search" placeholder="Search business cards, quantities or formats…" autocomplete="off">
-            </label>
             <div class="shop-filters"
                  id="shopFilters">
 
@@ -384,16 +381,13 @@
                 </button>
 
 
-                <!-- STANDARD -->
-                <button type="button" class="shop-filter" data-filter="standard" aria-pressed="false">
+                <!-- PAID -->
+                <button type="button" class="shop-filter" data-filter="paid" aria-pressed="false">
                     <span class="filter-icon">
                     </span>
-                    <span class="filter-label">Standard</span>
+                    <span class="filter-label">Paid</span>
                 </button>
 
-
-                <!-- PREMIUM -->
-                <button type="button" class="shop-filter" data-filter="premium" aria-pressed="false"><span class="filter-icon"></span><span class="filter-label">Premium</span></button>
 
                 <!-- FREE -->
                 <button type="button" class="shop-filter" data-filter="free" aria-pressed="false">
@@ -466,7 +460,7 @@
 
 
 <!-- =====================================================
-     BUNDLE DETAILS
+     PRODUCT PREVIEW MODAL
 ===================================================== -->
 
 <div
@@ -499,7 +493,7 @@
             type="button"
             class="product-modal-close"
             id="productModalClose"
-            aria-label="Close bundle details">
+            aria-label="Close product preview">
 
             ×
 
@@ -511,7 +505,62 @@
              PRODUCT IMAGE VIEWER
         ================================================== -->
 
+        <div class="product-viewer">
 
+
+            <!-- PREVIOUS -->
+
+            <button
+                type="button"
+                class="viewer-arrow viewer-prev"
+                id="viewerPrev"
+                aria-label="Previous image">
+
+                ‹
+
+            </button>
+
+
+
+            <!-- MAIN IMAGE -->
+
+            <div class="main-product-image">
+
+                <img
+                    id="mainProductImage"
+                    src=""
+                    alt="Product preview">
+
+            </div>
+
+
+
+            <!-- NEXT -->
+
+            <button
+                type="button"
+                class="viewer-arrow viewer-next"
+                id="viewerNext"
+                aria-label="Next image">
+
+                ›
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             THUMBNAILS
+        ================================================== -->
+
+        <div
+            class="product-thumbnails"
+            id="productThumbnails">
+
+        </div>
 
 
 
@@ -827,7 +876,7 @@
      SHOP JAVASCRIPT
 ===================================================== -->
 
-<script src="shop.js?v=20260924-4"></script>
+<script src="shop.js?v=20260924-3"></script>
 <script src="payment-status.js" defer></script>
 
 
