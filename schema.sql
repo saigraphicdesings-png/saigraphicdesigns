@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS products (
   show_on_home INTEGER NOT NULL DEFAULT 0 CHECK (show_on_home IN (0, 1)),
   is_key_product INTEGER NOT NULL DEFAULT 0 CHECK (is_key_product IN (0, 1)),
   sort_order INTEGER NOT NULL DEFAULT 0,
+  item_count INTEGER NOT NULL DEFAULT 0 CHECK(item_count >= 0),
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
