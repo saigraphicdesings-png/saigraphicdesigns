@@ -177,7 +177,7 @@
     unlockFreeTemplate(id, button);
   }
 
-  document.addEventListener('click', shopFreeAccessCapture, true);
+  // Bundle World handles both free and paid access after checking the session server side.
   document.addEventListener('click', logoutCustomer);
   loadStyle("sai-10-10.css?v=20260919-real-menu-icon");
   loadScript("global-animations-core.js?v=20260915-2");

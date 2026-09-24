@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function requestBundleWhatsApp(product) {
         if (!product) return;
         if (Number(product.price) === 0) {
-            requestFreeProductWhatsApp(product);
+            await requestFreeDownload(product);
             return;
         }
         try {
@@ -21,8 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
             if (response.status === 401) {
-                alert('Please log in to record your bundle request before contacting us on WhatsApp.');
-                window.location.href = '/account';
+                requireBundleLogin(product, 'buy');
                 return;
             }
             if (!response.ok) throw new Error(data.error || 'Could not record your request.');
@@ -34,6 +33,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+
+    function requireBundleLogin(product, action) {
+        sessionStorage.setItem('saiPendingBundle', JSON.stringify({ id: String(product.id), action }));
+        window.location.href = '/account';
+    }
+
+    async function requestFreeDownload(product) {
+        if (!product) return;
+        try {
+            const response = await fetch('/api/free-download?id=' + encodeURIComponent(product.id), {
+                credentials: 'same-origin', cache: 'no-store'
+            });
+            const data = await response.json();
+            if (response.status === 401) {
+                requireBundleLogin(product, 'free');
+                return;
+            }
+            if (!response.ok || !data.downloadUrl) throw new Error(data.error || 'Download link is unavailable.');
+            if (window.SaiAnalytics) window.SaiAnalytics.trackEvent('free_download_link');
+            window.location.href = data.downloadUrl;
+        } catch (error) {
+            alert(error.message || 'Unable to open the free bundle. Please try again.');
+        }
+    }
 
     /* =====================================================
        PRODUCT DATA
@@ -650,7 +673,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.stopPropagation();
 
                         if (Number(product.price) === 0) {
-                            requestFreeProductWhatsApp(product, addButton);
+                            requestFreeDownload(product);
                         } else {
                             requestBundleWhatsApp(product);
                         }
@@ -759,7 +782,7 @@ document.addEventListener("DOMContentLoaded", function () {
             modalAddCart.dataset.downloadReady = "";
             modalAddCart.textContent =
                 Number(product.price) === 0
-                    ? "Get Free on WhatsApp"
+                    ? "Download Free"
                     : "Buy on WhatsApp";
         }
 
@@ -1036,66 +1059,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.style.overflow =
                 "";
 
-        }
-
-    }
-
-
-    /* =====================================================
-       REQUEST FREE PRODUCT ON WHATSAPP
-    ===================================================== */
-
-    function requestFreeProductWhatsApp(product, actionButton) {
-
-        if (!product) {
-            return;
-        }
-
-        if (
-            product.downloadUrl &&
-            actionButton &&
-            actionButton.dataset.downloadReady === "true"
-        ) {
-            window.open(
-                product.downloadUrl,
-                "_blank",
-                "noopener,noreferrer"
-            );
-            return;
-        }
-
-        const message =
-`Hello Sai Graphic Designs 👋
-
-✅ FREE DOWNLOAD:
-${product.downloadUrl || "Please send me the Google Drive download link."}
-
-Template: ${product.name}
-Category: ${product.category || "Design Template"}
-
-Thank you!`;
-
-        const whatsappURL =
-            "https://wa.me/" +
-            WHATSAPP_NUMBER +
-            "?text=" +
-            encodeURIComponent(message);
-
-        if (window.SaiAnalytics) window.SaiAnalytics.trackEvent("whatsapp_click");
-
-        window.open(
-            whatsappURL,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-        if (product.downloadUrl && actionButton) {
-            actionButton.dataset.downloadReady = "true";
-            actionButton.textContent = "Download File";
-            actionButton.setAttribute(
-                "aria-label",
-                "Download " + product.name
-            );
         }
 
     }
@@ -1815,7 +1778,7 @@ Thank you! 😊`;
 
 
                 if (Number(currentProduct.price) === 0) {
-                    requestFreeProductWhatsApp(currentProduct, modalAddCart);
+                    requestFreeDownload(currentProduct);
                 } else {
                     requestBundleWhatsApp(currentProduct);
                 }
@@ -2037,7 +2000,13 @@ Thank you! 😊`;
         const product = products.find(item => String(item.id) === id);
         if (!product) return;
         requestedProductOpened = true;
-        openProductModal(product);
+        const action = new URLSearchParams(window.location.search).get('action');
+        if (action === 'buy') requestBundleWhatsApp(product);
+        else if (action === 'free') requestFreeDownload(product);
+        else openProductModal(product);
+        if (action === 'buy' || action === 'free') {
+            history.replaceState({}, document.title, '/shop?product=' + encodeURIComponent(product.id));
+        }
     }
 
     let catalogRequest = 0;

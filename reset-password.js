@@ -28,12 +28,23 @@
     setMessage("This password reset link is invalid. Please request a new reset email.","error");
   }
 
+  const newPassword=$("newPassword"),confirmPassword=$("confirmPassword");
+  function validateConfirmation(){
+    const mismatched=Boolean(confirmPassword.value&&newPassword.value!==confirmPassword.value);
+    confirmPassword.setCustomValidity(mismatched?"Passwords do not match.":"");
+    confirmPassword.setAttribute("aria-invalid",mismatched?"true":"false");
+    if(mismatched)setMessage("New password and confirm password do not match.","error");
+    else if(message.classList.contains("error"))setMessage("");
+  }
+  newPassword.addEventListener("input",validateConfirmation);
+  confirmPassword.addEventListener("input",validateConfirmation);
+
   form.addEventListener("submit",async event=>{
     event.preventDefault();
     if(token.length<32)return;
 
-    const password=$("newPassword").value;
-    const confirm=$("confirmPassword").value;
+    const password=newPassword.value;
+    const confirm=confirmPassword.value;
 
     if(password.length<8){
       setMessage("Password must be at least 8 characters.","error");
@@ -53,7 +64,7 @@
         method:"POST",
         credentials:"same-origin",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({token,password})
+        body:JSON.stringify({token,password,confirmPassword:confirm})
       });
       let data={};
       try{data=await response.json()}catch{}

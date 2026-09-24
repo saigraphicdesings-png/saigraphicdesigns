@@ -561,7 +561,7 @@ async function listProducts(env, includeHidden) {
   const result = await env.DB.prepare(query).all();
   const products = (result.results || []).map((row) => {
     const product = normalize(row);
-    if (!includeHidden && product.price > 0) product.downloadUrl = "";
+    if (!includeHidden) product.downloadUrl = "";
     return product;
   });
 

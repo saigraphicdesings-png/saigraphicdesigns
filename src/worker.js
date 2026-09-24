@@ -415,10 +415,6 @@ async function forgotPassword(request, env) {
 
   if (recent) return json({ success: true, message: genericMessage });
 
-  await env.DB.prepare("UPDATE customer_password_reset_tokens SET used_at = CURRENT_TIMESTAMP WHERE customer_id = ? AND used_at IS NULL")
-    .bind(customer.id)
-    .run();
-
   const rawToken = randomToken(32);
   const tokenHash = await hashText(rawToken);
 
@@ -438,6 +434,11 @@ async function forgotPassword(request, env) {
     return json({ error: "Unable to send the reset email right now. Please try again shortly." }, 502);
   }
 
+  // Keep a previously delivered link usable if email delivery fails.
+  await env.DB.prepare("UPDATE customer_password_reset_tokens SET used_at = CURRENT_TIMESTAMP WHERE customer_id = ? AND token_hash <> ? AND used_at IS NULL")
+    .bind(customer.id, tokenHash)
+    .run();
+
   return json({ success: true, message: genericMessage });
 }
 
@@ -453,12 +454,16 @@ async function resetPassword(request, env) {
 
   const token = String(input.token || "").trim();
   const password = String(input.password || "");
+  const confirmPassword = String(input.confirmPassword || "");
 
   if (token.length < 32 || token.length > 200) {
     return json({ error: "This password reset link is invalid." }, 400);
   }
   if (password.length < 8) {
     return json({ error: "Password must be at least 8 characters." }, 400);
+  }
+  if (password !== confirmPassword) {
+    return json({ error: "New password and confirm password do not match." }, 400);
   }
 
   const tokenHash = await hashText(token);
