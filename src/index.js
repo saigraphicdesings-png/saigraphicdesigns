@@ -1042,7 +1042,7 @@ async function cdrLandingPage(request, env, url) {
   ).all();
   // Use the stored file formats rather than assuming every design bundle contains a CDR file.
   const products = (result.results || []).filter(row =>
-    isBundle(row) && parseList(row.formats).some(format => /\\bcdr\\b/i.test(String(format))) &&
+    isBundle(row) && parseList(row.formats).some(format => /\bcdr\b/i.test(String(format))) &&
     (!freeOnly || Number(row.price) === 0)
   );
   const page = Number(url.searchParams.get("page") || 1);
@@ -1084,7 +1084,8 @@ async function cdrLandingPage(request, env, url) {
     mainEntity: { "@type": "ItemList", itemListElement: products.slice((page - 1) * 24, page * 24)
       .map((row, index) => ({ "@type": "ListItem", position: (page - 1) * 24 + index + 1,
         name: row.name, url: url.origin + "/bundle/" + encodeURIComponent(row.id) })) } };
-  return new Response(bundlePageHTML({ title: heading + " | Bundle World", description, canonical, body, jsonLD }), {
+  const html = bundlePageHTML({ title: heading + " | Bundle World", description, canonical, body, jsonLD });
+  return new Response(products.length ? html : html.replace('content="index,follow"', 'content="noindex,follow"'), {
     headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=60" }
   });
 }
@@ -1095,10 +1096,12 @@ async function bundlePages(request, env, url) {
   const path = url.pathname;
   const origin = url.origin;
   if (path === "/bundle-sitemap.xml") {
-    const data = await env.DB.prepare("SELECT id, name, category, updated_at FROM products WHERE active = 1 ORDER BY category, name").all();
+    const data = await env.DB.prepare("SELECT id, name, category, formats, price, updated_at FROM products WHERE active = 1 ORDER BY category, name").all();
     const rows = (data.results || []).filter(isBundle);
     const cats = [...new Set(rows.map(row => row.category))];
-    const entries = [{ loc: origin + "/cdr-bundles" }, { loc: origin + "/free-cdr-files" }]
+    const cdrRows = rows.filter(row => parseList(row.formats).some(format => /\bcdr\b/i.test(String(format))));
+    const entries = (cdrRows.length ? [{ loc: origin + "/cdr-bundles" }] : [])
+      .concat(cdrRows.some(row => Number(row.price) === 0) ? [{ loc: origin + "/free-cdr-files" }] : [])
       .concat(cats.map(category => ({ loc: origin + "/bundles/" + categorySlug(category) })))
       .concat(rows.map(row => ({ loc: origin + "/bundle/" + encodeURIComponent(row.id), lastmod: row.updated_at })));
     const xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
