@@ -1033,6 +1033,62 @@ function bundlePageHTML({ title, description, canonical, body, jsonLD, image }) 
     '<main class="wrap">' + body + '</main><footer>Sai Graphic Designs · Madurai, Tamil Nadu</footer></body></html>';
 }
 
+async function cdrLandingPage(request, env, url) {
+  if (!env.DB) return new Response("Store is temporarily unavailable", { status: 503 });
+  await ensureProductHomepageColumn(env);
+  const freeOnly = url.pathname === "/free-cdr-files";
+  const result = await env.DB.prepare(
+    "SELECT id, name, description, images, price, formats, category FROM products WHERE active = 1 ORDER BY sort_order, name"
+  ).all();
+  // Use the stored file formats rather than assuming every design bundle contains a CDR file.
+  const products = (result.results || []).filter(row =>
+    isBundle(row) && parseList(row.formats).some(format => /\\bcdr\\b/i.test(String(format))) &&
+    (!freeOnly || Number(row.price) === 0)
+  );
+  const page = Number(url.searchParams.get("page") || 1);
+  const totalPages = Math.max(1, Math.ceil(products.length / 24));
+  if (!Number.isInteger(page) || page < 1 || page > totalPages)
+    return new Response("Page not found", { status: 404 });
+  const base = freeOnly ? "/free-cdr-files" : "/cdr-bundles";
+  const canonical = url.origin + base + (page > 1 ? "?page=" + page : "");
+  const heading = freeOnly ? "Free CDR Files and Editable Design Bundles" : "CDR Design Bundles and Editable Templates";
+  const description = freeOnly
+    ? "Browse free CDR design bundles at Bundle World. Check each template's preview and included formats before downloading."
+    : "Explore editable CDR file bundles for graphic design and printing at Bundle World. See previews, formats and prices for each bundle.";
+  const cards = products.slice((page - 1) * 24, page * 24).map(row => {
+    const image = new URL(parseList(row.images)[0] || "Images/logo.png", url.origin).href;
+    const link = "/bundle/" + encodeURIComponent(row.id);
+    return '<article class="tile"><a href="' + link + '"><img loading="lazy" src="' +
+      escapeProductHTML(image) + '" alt="' + escapeProductHTML(row.name) +
+      ' preview"></a><div><h2><a href="' + link + '">' + escapeProductHTML(row.name) +
+      '</a></h2><p>' + escapeProductHTML(String(row.description || "").slice(0,170)) +
+      '</p><strong>' + (Number(row.price) === 0 ? "FREE" : "₹" + escapeProductHTML(row.price)) +
+      '</strong><p><a href="' + link + '">View bundle details</a></p></div></article>';
+  }).join("");
+  const pager = totalPages > 1 ? '<nav class="pager" aria-label="CDR bundle pages">' +
+    (page > 1 ? '<a href="' + base + (page - 1 > 1 ? "?page=" + (page - 1) : "") + '">← Previous</a>' : "") +
+    '<span>Page ' + page + ' of ' + totalPages + '</span>' +
+    (page < totalPages ? '<a href="' + base + '?page=' + (page + 1) + '">Next →</a>' : "") + '</nav>' : "";
+  const body = '<p class="crumb"><a href="/shop.html">Bundle World</a> / ' +
+    escapeProductHTML(freeOnly ? "Free CDR files" : "CDR bundles") + '</p>' +
+    '<span class="eyebrow">Bundle World · Sai Graphic Designs</span><h1>' +
+    escapeProductHTML(heading) + '</h1><p>' + escapeProductHTML(description) +
+    '</p><p>CDR is the editable CorelDRAW file format. Browse the listed bundles, read the individual file details and choose a design that fits your project. Downloads require an account.</p>' +
+    (freeOnly ? '<p>Looking for more choices? <a href="/cdr-bundles">Browse all CDR bundles</a>.</p>' :
+      '<p>Need a free design? <a href="/free-cdr-files">Browse free CDR files</a>.</p>') +
+    (products.length ? '<div class="grid">' + cards + '</div>' + pager :
+      '<p>There are currently no matching bundles. <a href="/shop.html">Browse Bundle World</a> for other formats.</p>');
+  const jsonLD = { "@context": "https://schema.org", "@type": "CollectionPage",
+    name: heading, description, url: canonical, inLanguage: "en-IN",
+    isPartOf: { "@type": "WebSite", name: "Bundle World", url: url.origin + "/shop.html" },
+    mainEntity: { "@type": "ItemList", itemListElement: products.slice((page - 1) * 24, page * 24)
+      .map((row, index) => ({ "@type": "ListItem", position: (page - 1) * 24 + index + 1,
+        name: row.name, url: url.origin + "/bundle/" + encodeURIComponent(row.id) })) } };
+  return new Response(bundlePageHTML({ title: heading + " | Bundle World", description, canonical, body, jsonLD }), {
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=60" }
+  });
+}
+
 async function bundlePages(request, env, url) {
   if (!env.DB) return new Response("Store is temporarily unavailable", { status: 503 });
   await ensureProductHomepageColumn(env);
@@ -1042,7 +1098,8 @@ async function bundlePages(request, env, url) {
     const data = await env.DB.prepare("SELECT id, name, category, updated_at FROM products WHERE active = 1 ORDER BY category, name").all();
     const rows = (data.results || []).filter(isBundle);
     const cats = [...new Set(rows.map(row => row.category))];
-    const entries = cats.map(category => ({ loc: origin + "/bundles/" + categorySlug(category) }))
+    const entries = [{ loc: origin + "/cdr-bundles" }, { loc: origin + "/free-cdr-files" }]
+      .concat(cats.map(category => ({ loc: origin + "/bundles/" + categorySlug(category) })))
       .concat(rows.map(row => ({ loc: origin + "/bundle/" + encodeURIComponent(row.id), lastmod: row.updated_at })));
     const xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
       entries.map(item => '<url><loc>' + escapeProductHTML(item.loc) + '</loc>' +
@@ -1163,6 +1220,10 @@ export default {
         console.error("API error:", error);
         return json({ error: "The service is temporarily unavailable." }, 500);
       }
+    }
+    if (request.method === "GET" && (url.pathname === "/cdr-bundles" || url.pathname === "/free-cdr-files")) {
+      try { return await cdrLandingPage(request, env, url); }
+      catch (error) { console.error("CDR landing page error:", error); return new Response("Page temporarily unavailable", { status: 503 }); }
     }
     if (request.method === "GET" && (url.pathname.startsWith("/bundle/") || url.pathname.startsWith("/bundles/") || url.pathname === "/bundle-sitemap.xml")) {
       try { return await bundlePages(request, env, url); }
