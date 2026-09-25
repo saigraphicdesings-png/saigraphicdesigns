@@ -35,3 +35,7 @@ jobs:
           grep -q 'Bundle World' /tmp/shop-live.html
           curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/bundle-sitemap.xml" -o /tmp/bundle-sitemap.xml
           grep -q '<urlset' /tmp/bundle-sitemap.xml
+          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/cdr-bundles" -o /tmp/cdr-bundles-live.html
+          grep -q 'CorelDRAW (CDR) Design Bundles' /tmp/cdr-bundles-live.html
+          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/free-cdr-files" -o /tmp/free-cdr-live.html
+          grep -q 'Free CorelDRAW (CDR) Files' /tmp/free-cdr-live.html
