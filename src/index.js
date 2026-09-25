@@ -1051,10 +1051,10 @@ async function cdrLandingPage(request, env, url) {
     return new Response("Page not found", { status: 404 });
   const base = freeOnly ? "/free-cdr-files" : "/cdr-bundles";
   const canonical = url.origin + base + (page > 1 ? "?page=" + page : "");
-  const heading = freeOnly ? "Free CDR Files and Editable Design Bundles" : "CDR Design Bundles and Editable Templates";
+  const heading = freeOnly ? "Free CorelDRAW (CDR) Files and Design Bundles" : "CorelDRAW (CDR) Design Bundles and Templates";
   const description = freeOnly
-    ? "Browse free CDR design bundles at Bundle World. Check each template's preview and included formats before downloading."
-    : "Explore editable CDR file bundles for graphic design and printing at Bundle World. See previews, formats and prices for each bundle.";
+    ? "Browse free CorelDRAW (CDR) design bundles at Bundle World. Check each template's preview and included formats before downloading."
+    : "Explore editable CorelDRAW (CDR) file bundles for graphic design and printing at Bundle World. See previews, formats and prices for each bundle.";
   const cards = products.slice((page - 1) * 24, page * 24).map(row => {
     const image = new URL(parseList(row.images)[0] || "Images/logo.png", url.origin).href;
     const link = "/bundle/" + encodeURIComponent(row.id);
@@ -1073,7 +1073,7 @@ async function cdrLandingPage(request, env, url) {
     escapeProductHTML(freeOnly ? "Free CDR files" : "CDR bundles") + '</p>' +
     '<span class="eyebrow">Bundle World · Sai Graphic Designs</span><h1>' +
     escapeProductHTML(heading) + '</h1><p>' + escapeProductHTML(description) +
-    '</p><p>CDR is the editable CorelDRAW file format. Browse the listed bundles, read the individual file details and choose a design that fits your project. Downloads require an account.</p>' +
+    '</p><p>CDR is the editable file format used by CorelDRAW. Browse the listed bundles, read the individual file details and choose a design that fits your project. Downloads require an account.</p>' +
     (freeOnly ? '<p>Looking for more choices? <a href="/cdr-bundles">Browse all CDR bundles</a>.</p>' :
       '<p>Need a free design? <a href="/free-cdr-files">Browse free CDR files</a>.</p>') +
     (products.length ? '<div class="grid">' + cards + '</div>' + pager :
