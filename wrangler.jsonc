@@ -9,7 +9,9 @@
     "run_worker_first": [
       "/bundle/*",
       "/bundles/*",
-      "/bundle-sitemap.xml"
+      "/bundle-sitemap.xml",
+      "/cdr-bundles",
+      "/free-cdr-files"
     ]
   },
   "d1_databases": [

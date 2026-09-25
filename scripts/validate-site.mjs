@@ -5,7 +5,7 @@ const root = process.cwd();
 const ignoredSchemes = /^(?:https?:|mailto:|tel:|upi:|#|data:|javascript:)/i;
 // This navigation URL is handled by src/worker.js, not a static file.
 // Keep this list explicit so unknown API links still fail validation.
-const workerRoutes = new Set(["/api/auth/google/start", "/account", "/reset-password", "/shop", "/bundles", "/bundle/", "/bundles/"]);
+const workerRoutes = new Set(["/api/auth/google/start", "/account", "/reset-password", "/shop", "/bundles", "/bundle/", "/bundles/", "/cdr-bundles", "/free-cdr-files"]);
 const files = [];
 
 async function walk(dir) {

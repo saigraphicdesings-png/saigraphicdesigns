@@ -11,6 +11,7 @@ function shop(fetch) {
     const events = {};
     const context = vm.createContext({
         products: [], catalogStatus: 'loading', fetch,
+        crypto: { getRandomValues(array) { array[0] = 1; return array; } },
         renderProducts() {}, openRequestedProduct() {}, console: { warn() {} },
         document: { visibilityState: 'visible', addEventListener(name, fn) { events[name] = fn; } },
         window: { addEventListener(name, fn) { events[name] = fn; } }
