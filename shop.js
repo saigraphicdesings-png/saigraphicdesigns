@@ -176,8 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const key =
                         String(
-                            item.name ||
                             item.id ||
+                            item.name ||
                             ""
                         ).trim().toLowerCase();
 
@@ -185,26 +185,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
-                    if (mergedItems.has(key)) {
+                    if (!mergedItems.has(key)) {
 
-                        const existing =
-                            mergedItems.get(key);
-
-                        existing.qty =
-                            Math.max(
-                                Number(existing.qty) || 1,
-                                Number(item.qty) || 1
-                            );
-
-                    } else {
-
-                        mergedItems.set(
-                            key,
-                            {
-                                ...item,
-                                qty: Number(item.qty) || 1
-                            }
-                        );
+                        const { qty, ...singleItem } = item;
+                        mergedItems.set(key, singleItem);
 
                     }
 
@@ -1085,11 +1069,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (existing) {
 
-            existing.qty =
-                (Number(existing.qty) || 1) + 1;
-
-            saveCart();
-            updateCart();
+            closeProductModal();
             openCart();
 
             return;
@@ -1114,9 +1094,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 Array.isArray(product.images) &&
                 product.images.length
                     ? product.images[0]
-                    : "",
-
-            qty: 1
+                    : ""
 
         });
 
@@ -1191,10 +1169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             function (total, item) {
 
                 return total +
-                    (
-                        (Number(item.price) || 0) *
-                        (Number(item.qty) || 1)
-                    );
+                    (Number(item.price) || 0);
 
             },
             0
@@ -1388,25 +1363,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     ">
 
                                     ${formatPrice(
-                                        (Number(item.price) || 0) *
-                                        (Number(item.qty) || 1)
+                                        Number(item.price) || 0
                                     )}
 
-                                </div>
-
-                                <div class="cart-quantity"
-                                     aria-label="Quantity controls">
-                                    <button type="button"
-                                            class="cart-qty-btn"
-                                            data-action="decrease"
-                                            data-cart-index="${cartIndex}"
-                                            aria-label="Decrease quantity">−</button>
-                                    <span class="cart-qty-value">${Number(item.qty) || 1}</span>
-                                    <button type="button"
-                                            class="cart-qty-btn"
-                                            data-action="increase"
-                                            data-cart-index="${cartIndex}"
-                                            aria-label="Increase quantity">+</button>
                                 </div>
 
                             </div>
@@ -1444,11 +1403,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartBadge) {
 
             cartBadge.textContent =
-                cart.reduce(
-                    (count, item) =>
-                        count + (Number(item.qty) || 1),
-                    0
-                );
+                cart.length;
 
         }
 
@@ -1477,46 +1432,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 false;
 
         }
-
-
-        /* QUANTITY BUTTONS */
-
-        cartItemsList
-            .querySelectorAll(".cart-qty-btn")
-            .forEach(button => {
-
-                button.addEventListener(
-                    "click",
-                    function (event) {
-
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                        const index =
-                            Number(this.dataset.cartIndex);
-
-                        if (
-                            !Number.isInteger(index) ||
-                            !cart[index]
-                        ) {
-                            return;
-                        }
-
-                        const currentQty =
-                            Number(cart[index].qty) || 1;
-
-                        cart[index].qty =
-                            this.dataset.action === "increase"
-                                ? currentQty + 1
-                                : Math.max(1, currentQty - 1);
-
-                        saveCart();
-                        updateCart();
-
-                    }
-                );
-
-            });
 
 
         /* REMOVE BUTTONS */
