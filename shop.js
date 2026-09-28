@@ -399,6 +399,23 @@ document.addEventListener("DOMContentLoaded", function () {
         return (words || firstSentence.slice(0, 92)) + "…";
     }
 
+    function displayName(product) {
+        return product.displayName || product.name || "Design bundle";
+    }
+
+    function productDescription(product) {
+        const description = String(product.description || "");
+        const count = Number(product.itemCount) || 0;
+        if (!count) return description;
+        // The structured count is shown on the card; keep old copy consistent with it.
+        return description.replace(/\b(\d+)(\s*\+?.{0,32}?\b(?:designs?|templates?)\b)/i,
+            (match, number, rest) => Number(number) === count ? match : count + rest);
+    }
+
+    function productCardExcerpt(product) {
+        return cardExcerpt(productDescription(product));
+    }
+
     function renderProducts() {
 
         if (!allProducts) {
@@ -477,6 +494,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             card.dataset.id =
                 product.id;
+            card.tabIndex = 0;
+            card.setAttribute("aria-label", "Preview " + displayName(product));
 
 
             const isFree =
@@ -527,13 +546,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <h3>
                         ${escapeHTML(
-                            product.name
+                            displayName(product)
                         )}
                     </h3>
 
 
                     <p class="product-card-excerpt">
-                        ${escapeHTML(cardExcerpt(product.description))}
+                        ${escapeHTML(productCardExcerpt(product))}
                     </p>
                     ${Number(product.itemCount) > 0 ? `<p class="bundle-design-count">${Number(product.itemCount).toLocaleString("en-IN")} designs included</p>` : ""}
 
@@ -582,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             type="button"
                             class="add-product-btn">
 
-                            ${isFree ? "Get Free" : "Buy on WhatsApp"}
+                            ${isFree ? "Preview free bundle" : "Preview bundle"}
 
                         </button>
 
@@ -628,14 +647,15 @@ document.addEventListener("DOMContentLoaded", function () {
                OPEN PRODUCT
             ================================================= */
 
-            card.addEventListener(
-                "click",
-                function () {
-
-                    requestBundleWhatsApp(product);
-
+            card.addEventListener("click", function () {
+                openProductModal(product);
+            });
+            card.addEventListener("keydown", function (event) {
+                if (event.target === card && (event.key === "Enter" || event.key === " ")) {
+                    event.preventDefault();
+                    openProductModal(product);
                 }
-            );
+            });
 
 
             /* =================================================
@@ -657,11 +677,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.preventDefault();
                         event.stopPropagation();
 
-                        if (Number(product.price) === 0) {
-                            requestFreeDownload(product);
-                        } else {
-                            requestBundleWhatsApp(product);
-                        }
+                        openProductModal(product);
 
                     }
                 );
@@ -694,7 +710,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modalProductName) {
 
             modalProductName.textContent =
-                product.name;
+                displayName(product);
 
         }
 
@@ -702,7 +718,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modalProductDescription) {
 
             modalProductDescription.textContent =
-                product.description;
+                productDescription(product);
 
         }
 
@@ -730,6 +746,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+
+        const facts = document.getElementById("modalBundleFacts");
+        if (facts) {
+            const count = Number(product.itemCount) || 0;
+            const formats = (product.formats || []).map(value => String(value).toUpperCase()).join(", ");
+            facts.textContent = [
+                count ? count.toLocaleString("en-IN") + " designs included" : "",
+                formats ? "Files: " + formats : ""
+            ].filter(Boolean).join(" · ");
+            facts.hidden = !facts.textContent;
+        }
+        const purchaseNote = document.getElementById("modalPurchaseNote");
+        if (purchaseNote) {
+            purchaseNote.textContent = Number(product.price) === 0
+                ? "Sign in to access the free download."
+                : "Sign in to request this bundle. Your files unlock in My Account after payment approval.";
+        }
 
         const article = document.getElementById("modalProductArticle");
         if (article) {
@@ -1953,13 +1986,28 @@ Thank you! 😊`;
                     ]
                 });
             });
-            // Shuffle each catalog load so bundles rotate on every visit.
-            for (let index = products.length - 1; index > 0; index--) {
-                const random = new Uint32Array(1);
-                crypto.getRandomValues(random);
-                const swap = random[0] % (index + 1);
-                [products[index], products[swap]] = [products[swap], products[index]];
-            }
+            // Keep curated products first and preserve the admin/API order.
+            products.sort((a, b) =>
+                Number(Boolean(b.isKeyProduct)) - Number(Boolean(a.isKeyProduct)) ||
+                Number(Boolean(b.showOnHome)) - Number(Boolean(a.showOnHome))
+            );
+            const byName = new Map();
+            products.forEach(product => {
+                const key = String(product.name || "").trim().toLowerCase();
+                if (key) byName.set(key, (byName.get(key) || 0) + 1);
+            });
+            products.forEach(product => {
+                const key = String(product.name || "").trim().toLowerCase();
+                if (!key || (byName.get(key) || 0) <= 1) return;
+                const count = Number(product.itemCount) || 0;
+                const peers = products.filter(other =>
+                    String(other.name || "").trim().toLowerCase() === key &&
+                    Number(other.itemCount || 0) === count
+                );
+                const suffix = count ? count.toLocaleString("en-IN") + " designs" : "design set";
+                product.displayName = product.name + " — " + suffix +
+                    (peers.length > 1 ? " · " + formatPrice(product.price) : "");
+            });
             catalogStatus = "ready";
         } catch (error) {
             if (requestId !== catalogRequest) return;

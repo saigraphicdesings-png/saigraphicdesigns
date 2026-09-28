@@ -2231,3 +2231,15 @@ footer {
 @media(max-width:1150px){.shop-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:900px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.shop-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Let visitors reach the first bundle row without crossing a tall intro. */
+.shop-hero{padding:48px 20px 34px}
+.shop-hero .section-tag{margin-bottom:10px}
+.shop-hero .section-title{margin-bottom:10px}
+.shop-hero p{line-height:1.5;max-width:780px}
+.shop-section{padding:26px 20px 70px}
+.shop-container .cdr-discovery{margin:34px auto 0;padding:18px 22px}
+.shop-product:focus-visible{outline:3px solid #087a58;outline-offset:3px}
+.modal-bundle-facts{font-weight:750;color:#173b30;line-height:1.6;margin:14px 0 8px}
+.modal-purchase-note{border-left:3px solid #10b981;background:#f0faf5;padding:10px 13px;border-radius:0 8px 8px 0;color:#34584b;line-height:1.55}
+@media(max-width:640px){.shop-hero{padding:38px 16px 30px!important}.shop-section{padding:22px 16px 58px}.shop-container .cdr-discovery{margin-top:24px}}

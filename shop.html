@@ -152,7 +152,7 @@
           href="style.css">
 
     <link rel="stylesheet"
-          href="shop.css?v=20260924-no-categories">
+          href="shop.css?v=20260928-shop-flow">
 
 
     <link rel="stylesheet" href="cart-unified.css">
@@ -334,9 +334,7 @@
 
         <p>
 
-            Explore ready-to-edit design bundles for business cards and more.
-            Open a bundle to check whether it includes CDR, PSD, or both,
-            preview the designs, and choose the files you need. Browse free CorelDRAW (CDR) files and premium design bundles by format.
+            Preview editable design bundles, check the included files and price, then choose a free or paid download.
 
         </p>
 
@@ -435,18 +433,18 @@
 
     <div class="shop-container">
 
+        <div
+            class="shop-grid"
+            id="allProducts">
+
+        </div>
+
         <nav class="cdr-discovery" aria-label="Browse CDR templates">
             <h2>Find CorelDRAW (CDR) files</h2>
             <p>Explore editable CorelDRAW design templates for print and digital projects. Each product lists its included file formats so you can choose the right bundle.</p>
             <a href="/cdr-bundles">Browse CorelDRAW (CDR) bundles</a>
             <a href="/free-cdr-files">Browse free CDR files</a>
         </nav>
-
-        <div
-            class="shop-grid"
-            id="allProducts">
-
-        </div>
 
     </div>
 
@@ -604,6 +602,8 @@
                 <p
                     id="modalProductDescription">
                 </p>
+                <p class="modal-bundle-facts" id="modalBundleFacts"></p>
+                <p class="modal-purchase-note" id="modalPurchaseNote"></p>
 
 
             </div>
@@ -884,7 +884,7 @@
      SHOP JAVASCRIPT
 ===================================================== -->
 
-<script src="shop.js?v=20260928-single-item-cart"></script>
+<script src="shop.js?v=20260928-preview-first"></script>
 <script src="payment-status.js" defer></script>
 
 
