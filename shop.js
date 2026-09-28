@@ -25,7 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
             if (!response.ok) throw new Error(data.error || 'Could not record your request.');
-            const message = `Hello Sai Graphic Designs, I would like to purchase ${data.product.name} (₹${data.product.price}).\nBundle ID: ${data.product.id}\nOrder reference: ${data.orderId}\nCustomer: ${data.customerName}\nPlease share payment details. My bundle will unlock in My Account after your approval.`;
+            const message = `Hello Sai Graphic Designs 👋
+
+I would like your help ordering this editable design bundle.
+
+*Bundle:* ${data.product.name}
+*Price:* ${formatPrice(data.product.price)}
+*Bundle ID:* ${data.product.id}
+*Order reference:* ${data.orderId}
+*My name:* ${data.customerName}
+
+Please share the payment details and let me know when I can access the files in My Account. Thank you!`;
             if (window.SaiAnalytics) window.SaiAnalytics.trackEvent('whatsapp_click');
             window.location.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
         } catch (error) {
