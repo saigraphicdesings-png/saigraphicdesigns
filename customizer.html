@@ -1887,11 +1887,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (existing) {
 
-            existing.qty =
-                (Number(existing.qty) || 1) + 1;
-
-            saveCart();
-            updateCart();
             openCart();
 
             return;
@@ -1906,9 +1901,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedServiceData.price
             ),
 
-            category: "Services",
-
-            qty: 1
+            category: "Services"
 
         });
 
@@ -1944,8 +1937,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const key =
                     String(
-                        item.name ||
-                            item.id ||
+                        item.id ||
+                            item.name ||
                         ""
                     ).trim().toLowerCase();
 
@@ -1953,30 +1946,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                if (mergedItems.has(key)) {
+                if (!mergedItems.has(key)) {
 
-                    const existing =
-                        mergedItems.get(key);
-
-                    existing.qty =
-                        Math.max(
-                                Number(existing.qty) || 1,
-                                Number(item.qty) || 1
-                            );
-
-                } else {
-
-                    mergedItems.set(
-                        key,
-                        Object.assign(
-                            {},
-                            item,
-                            {
-                                qty:
-                                    Number(item.qty) || 1
-                            }
-                        )
-                    );
+                    const { qty, ...singleItem } = item;
+                    mergedItems.set(key, singleItem);
 
                 }
 
@@ -2040,11 +2013,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cart.forEach(function (item, index) {
 
-            const qty =
-                Number(item.qty) || 1;
-
             total +=
-                Number(item.price) * qty;
+                Number(item.price) || 0;
 
 
             const itemElement =
@@ -2065,24 +2035,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="cart-item-price">
                         ${formatPrice(
-                            Number(item.price) * qty
+                            Number(item.price) || 0
                         )}
                     </div>
 
-                    <div class="cart-quantity"
-                         aria-label="Quantity controls">
-                        <button type="button"
-                                class="cart-qty-btn"
-                                data-action="decrease"
-                                data-index="${index}"
-                                aria-label="Decrease quantity">−</button>
-                        <span class="cart-qty-value">${qty}</span>
-                        <button type="button"
-                                class="cart-qty-btn"
-                                data-action="increase"
-                                data-index="${index}"
-                                aria-label="Increase quantity">+</button>
-                    </div>
 
                 </div>
 
@@ -2105,13 +2061,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         cartBadge.textContent =
-            cart.reduce(
-                function (count, item) {
-                    return count +
-                        (Number(item.qty) || 1);
-                },
-                0
-            );
+            cart.length;
 
 
         cartTotalVal.textContent =
@@ -2120,38 +2070,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cartCheckout.disabled =
             false;
-
-
-        document
-            .querySelectorAll(".cart-qty-btn")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const index =
-                            Number(this.dataset.index);
-
-                        if (!cart[index]) {
-                            return;
-                        }
-
-                        const currentQty =
-                            Number(cart[index].qty) || 1;
-
-                        cart[index].qty =
-                            this.dataset.action === "increase"
-                                ? currentQty + 1
-                                : Math.max(1, currentQty - 1);
-
-                        saveCart();
-                        updateCart();
-
-                    }
-                );
-
-            });
 
 
         document
