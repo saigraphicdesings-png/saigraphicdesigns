@@ -2242,4 +2242,6 @@ footer {
 .shop-product:focus-visible{outline:3px solid #087a58;outline-offset:3px}
 .modal-bundle-facts{font-weight:750;color:#173b30;line-height:1.6;margin:14px 0 8px}
 .modal-purchase-note{border-left:3px solid #10b981;background:#f0faf5;padding:10px 13px;border-radius:0 8px 8px 0;color:#34584b;line-height:1.55}
+/* Sparse view counts distract from the preview and do not represent reviews. */
+.shop-product .product-popularity{display:none!important}
 @media(max-width:640px){.shop-hero{padding:38px 16px 30px!important}.shop-section{padding:22px 16px 58px}.shop-container .cdr-discovery{margin-top:24px}}

@@ -404,12 +404,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function productDescription(product) {
-        const description = String(product.description || "");
+        const description = productCopy(product, product.description);
         const count = Number(product.itemCount) || 0;
         if (!count) return description;
         // The structured count is shown on the card; keep old copy consistent with it.
         return description.replace(/\b(\d+)(\s*\+?.{0,32}?\b(?:designs?|templates?)\b)/i,
             (match, number, rest) => Number(number) === count ? match : count + rest);
+    }
+
+    function productCopy(product, value) {
+        const copy = String(value || "");
+        // This catalog entry still contains its older price in editorial copy.
+        return String(product.id) === "BC-1001" && Number(product.price) === 500
+            ? copy.replace(/₹\s*499\b/g, "₹500")
+            : copy;
     }
 
     function productCardExcerpt(product) {
@@ -766,7 +774,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const article = document.getElementById("modalProductArticle");
         if (article) {
-            const content = String(product.articleContent || "").trim() || [product.description, product.name + " is listed under " + product.category + " by Sai Graphic Designs, Madurai. Available file formats: " + ((product.formats || []).join(", ").toUpperCase() || "see product details") + ". Review the preview images and included formats before choosing this bundle."].filter(Boolean).join("\n\n");
+            const content = productCopy(product, product.articleContent).trim() || [product.description, product.name + " is listed under " + product.category + " by Sai Graphic Designs, Madurai. Available file formats: " + ((product.formats || []).join(", ").toUpperCase() || "see product details") + ". Review the preview images and included formats before choosing this bundle."].filter(Boolean).join("\n\n");
             const faqs = Array.isArray(product.articleFaqs) ? product.articleFaqs.filter(item => item.question && item.answer) : [];
             article.hidden = !content && !faqs.length;
             document.getElementById("modalArticleTitle").textContent = product.articleTitle || ("About " + product.name);
@@ -786,7 +794,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const summary = document.createElement("summary");
                 summary.textContent = item.question;
                 const answer = document.createElement("p");
-                answer.textContent = item.answer;
+                answer.textContent = productCopy(product, item.answer);
                 details.append(summary, answer);
                 faqList.appendChild(details);
             });
