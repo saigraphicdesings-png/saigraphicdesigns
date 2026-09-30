@@ -38,3 +38,18 @@
 .home-key-product-action{padding-top:18px;border-top:1px solid #e6efec}
 @media(max-width:760px){.home-key-product-link{grid-template-columns:1fr}.home-key-product-visual{min-height:250px;max-height:none;padding:20px}.home-key-product-visual img{max-height:340px}.home-key-product-ribbon{top:30px;left:30px}}
 @media(max-width:540px){.home-key-product-visual{min-height:220px;padding:15px}.home-key-product-visual img{max-height:300px}.home-key-product-content{padding:24px}.home-key-product-ribbon{top:23px;left:23px}}
+
+/* Match the shop's bold FREE ribbon on homepage product previews. */
+.home-showcase-image .home-free-ribbon,
+.home-key-product-visual .home-free-ribbon {
+  position:absolute; inset:0 0 auto; z-index:10;
+  display:flex; align-items:center; justify-content:center;
+  width:100%; padding:10px 12px; box-sizing:border-box;
+  background:#facc15; color:#111827; border-radius:0;
+  font-size:18px; line-height:1.2; font-weight:900; letter-spacing:2px;
+  box-shadow:0 3px 10px rgba(17,24,39,.18); pointer-events:none;
+}
+@media(max-width:650px) {
+  .home-showcase-image .home-free-ribbon,
+  .home-key-product-visual .home-free-ribbon { padding:8px 10px; font-size:16px; }
+}
