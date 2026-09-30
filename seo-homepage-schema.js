@@ -8,7 +8,7 @@
   // This does not change the visible hero image or layout.
   const HERO_IMAGE = SITE_URL + "Images/logo.png";
   const LOGO_IMAGE = SITE_URL + "Images/logo.png";
-  const PAGE_TITLE = "Sai Graphic Designs | Designing & Printing Agency in Madurai";
+  const PAGE_TITLE = "Sai Graphic Designs | Designing Agency";
   const PAGE_DESCRIPTION = "Sai Graphic Designs is a designing and printing agency in Madurai offering logo design, branding, social media creatives, packaging, print services and ready-to-use design templates for businesses and individuals.";
 
   document.title = PAGE_TITLE;
