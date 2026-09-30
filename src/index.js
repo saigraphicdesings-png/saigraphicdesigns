@@ -1029,7 +1029,7 @@ function bundlePageHTML({ title, description, canonical, body, jsonLD, image }) 
     'footer{text-align:center;padding:30px;color:#5b6879}@media(max-width:760px){.article-layout{grid-template-columns:1fr}.wrap{margin-top:20px}.side{order:2}}' +
     '</style><script type="application/ld+json">' + safePageJSON(jsonLD) + '</script></head><body>' +
     '<header class="top"><a class="brand" href="/">Sai Graphic Designs · Bundle World</a><nav aria-label="Main navigation">' +
-    '<a href="/shop">All bundles</a><a href="/contact.html">Contact</a></nav></header>' +
+    '<a href="/shop">All bundles</a><a href="/learn.html">Learning</a><a href="/contact.html">Contact</a></nav></header>' +
     '<main class="wrap">' + body + '</main><footer>Sai Graphic Designs · Madurai, Tamil Nadu</footer></body></html>';
 }
 
@@ -1142,9 +1142,9 @@ async function bundlePages(request, env, url) {
       '<h2>Included file details</h2><table class="specs"><tbody><tr><th>Category</th><td>' + escapeProductHTML(product.category) +
       '</td></tr><tr><th>Editable formats</th><td>' + escapeProductHTML(product.formats.join(", ").toUpperCase() || "See product preview") +
       '</td></tr><tr><th>Price</th><td>' + (product.price === 0 ? "Free" : "₹" + escapeProductHTML(product.price)) +
-      '</td></tr></tbody></table>' + faqHTML +
+      '</td></tr><tr><th>Design count</th><td>' + (product.itemCount > 0 ? escapeProductHTML(product.itemCount) + ' designs' : 'See listing or ask before ordering') + '</td></tr></tbody></table><h2>Ordering and file access</h2><p>Bundle World is the editable design bundle shop from Sai Graphic Designs. Sign in to open free downloads or request paid bundles on WhatsApp. Paid files become available in My Account after approval. Check software compatibility and usage permissions before ordering.</p><p><a href="/bundle-world-help.html">Read the ordering guide</a> · <a href="/cdr-vs-psd.html">Compare CDR and PSD</a></p>' + faqHTML +
       '<p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) + '">' +
-      (product.price === 0 ? "View free bundle" : "Preview and add to cart") + '</a></p></article>' +
+      (product.price === 0 ? "View free bundle" : "Request this bundle on WhatsApp") + '</a></p></article>' +
       '<aside class="side"><span class="eyebrow">Bundle World</span><h2>' + escapeProductHTML(product.name) +
       '</h2><p class="price">' + (product.price === 0 ? "FREE" : "₹" + escapeProductHTML(product.price)) +
       '</p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) +
