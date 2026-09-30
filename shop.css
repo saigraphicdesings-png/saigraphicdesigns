@@ -2245,3 +2245,22 @@ footer {
 /* Sparse view counts distract from the preview and do not represent reviews. */
 .shop-product .product-popularity{display:none!important}
 @media(max-width:640px){.shop-hero{padding:38px 16px 30px!important}.shop-section{padding:22px 16px 58px}.shop-container .cdr-discovery{margin-top:24px}}
+
+/* Prominent top ribbon for every zero-price bundle. */
+.shop-product .product-preview .free-ribbon {
+  position:absolute; inset:0 0 auto; z-index:10;
+  display:flex; align-items:center; justify-content:center;
+  width:100%; min-width:0; padding:10px 12px; box-sizing:border-box;
+  border:0; border-radius:0; background:#facc15; color:#111827;
+  box-shadow:0 3px 10px rgba(17,24,39,.18); transform:none;
+  pointer-events:none;
+}
+.shop-product .free-ribbon .free-ribbon-main {
+  display:block; color:#111827; font-size:18px; line-height:1.2;
+  font-weight:900; letter-spacing:2px;
+}
+.shop-product:hover .product-preview .free-ribbon { transform:none; }
+@media(max-width:650px) {
+  .shop-product .product-preview .free-ribbon { padding:8px 10px; }
+  .shop-product .free-ribbon .free-ribbon-main { font-size:16px; }
+}
