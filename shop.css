@@ -2264,3 +2264,29 @@ footer {
   .shop-product .product-preview .free-ribbon { padding:8px 10px; }
   .shop-product .free-ribbon .free-ribbon-main { font-size:16px; }
 }
+
+/* Red folded corner ribbon, matching the supplied reference. */
+.shop-product .product-preview .free-ribbon {
+  inset:auto; top:25px; left:-43px; width:170px; min-width:0;
+  padding:10px 0; border:1px solid #ef3828; border-radius:0;
+  background:linear-gradient(180deg,#d51b0b 0%,#f05c4b 42%,#cf1607 100%);
+  color:#fff; font-size:20px; line-height:1.2; font-weight:900;
+  letter-spacing:2px; text-align:center; transform:rotate(-45deg);
+  box-shadow:0 5px 8px rgba(0,0,0,.25); overflow:visible;
+}
+.shop-product .product-preview .free-ribbon::before,
+.shop-product .product-preview .free-ribbon::after {
+  content:""; position:absolute; top:100%; width:0; height:0;
+  border-top:8px solid #8f170c;
+}
+.shop-product .product-preview .free-ribbon::before {
+  left:-1px; border-left:8px solid transparent;
+}
+.shop-product .product-preview .free-ribbon::after {
+  right:-1px; border-right:8px solid transparent;
+}
+
+.shop-product .free-ribbon .free-ribbon-main {
+  color:#fff; font-size:20px; line-height:1.2; font-weight:900; letter-spacing:2px;
+}
+.shop-product:hover .product-preview .free-ribbon { transform:rotate(-45deg); }
