@@ -635,8 +635,41 @@ function validateProduct(input) {
   };
 }
 
+export function validateDesignExamples(input) {
+  if (!Array.isArray(input) || input.length > 30) throw new Error("Use up to 30 design examples.");
+  return input.map(item => {
+    const name = String(item?.name || "").trim();
+    const image = String(item?.image || "").trim();
+    if (!name || name.length > 100) throw new Error("Each example needs a name of up to 100 characters.");
+    if (!image || image.length > 2000 || /[\\\x00-\x20]/.test(image) || image.startsWith("//")) throw new Error("Use a valid image path or HTTPS URL.");
+    const parsed = new URL(image, "https://example.com");
+    if (parsed.protocol !== "https:") throw new Error("Use a local image path or HTTPS URL.");
+    return { name, image };
+  });
+}
+
+const defaultDesignExamples = [{"name": "Signature visiting cards", "image": "Images/services-ai/visiting-card-design.webp"}, {"name": "Modern business cards", "image": "Images/Shop/business-card-06/1.jpg"}, {"name": "Professional visiting cards", "image": "Images/Shop/business-card-05/1.jpg"}, {"name": "Colourful business cards", "image": "Images/Shop/business-card-03/1.jpg"}, {"name": "Creative visiting cards", "image": "Images/Shop/business-card-02/1.jpg"}];
+async function designExamplesAPI(request, env, url) {
+  const admin = url.pathname === "/api/admin/design-examples";
+  if (admin && !isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+  if (request.method !== "GET" && !(admin && request.method === "PUT")) return json({ error: "Method not allowed." }, 405);
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS homepage_design_examples (id INTEGER PRIMARY KEY, content TEXT NOT NULL)").run();
+  if (request.method === "PUT") {
+    if (Number(request.headers.get("content-length")) > 100000) return json({ error: "Request too large." }, 413);
+    let examples;
+    try { examples = validateDesignExamples((await request.json()).examples); }
+    catch (error) { return json({ error: error.message }, 400); }
+    await env.DB.prepare("INSERT INTO homepage_design_examples (id, content) VALUES (1, ?) ON CONFLICT(id) DO UPDATE SET content = excluded.content").bind(JSON.stringify(examples)).run();
+    return json({ examples });
+  }
+  const row = await env.DB.prepare("SELECT content FROM homepage_design_examples WHERE id = 1").first();
+  return json({ examples: row ? JSON.parse(row.content) : defaultDesignExamples });
+}
+
 async function handleAPI(request, env, url) {
   if (!env.DB) return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
+
+  if (["/api/design-examples", "/api/admin/design-examples"].includes(url.pathname)) return designExamplesAPI(request, env, url);
 
   if (url.pathname.startsWith("/api/bundle-images/") && request.method === "GET") {
     const id = url.pathname.slice("/api/bundle-images/".length);
