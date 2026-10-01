@@ -4,3 +4,5 @@
 
 /* Keep the modal centered even when the site's global reset clears dialog margins. */
 #visiting-shelf-dialog{position:fixed;inset:0;margin:auto!important;transform:none;box-sizing:border-box;max-height:90vh;max-height:90dvh;overflow:auto}
+
+.design-detail-art{display:flex;flex-direction:column;gap:20px;min-width:0}#visiting-shelf-extra[hidden]{display:none}

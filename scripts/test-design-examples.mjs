@@ -9,7 +9,8 @@ test('homepage examples require admin writes and preserve an intentionally empty
  assert.equal((await (await call('/api/design-examples')).json()).examples.length,5);
  assert.equal((await call('/api/admin/design-examples','PUT',{examples:[]})).status,401);
  assert.equal((await call('/api/admin/design-examples','PUT',{examples:[{name:'Unsafe',image:'javascript:alert(1)'}]},true)).status,400);
- const examples=[{name:'My visiting card',image:'/Images/Shop/business-card-02/1.jpg',description:'Editable business card design.'}];
+ assert.equal((await call('/api/admin/design-examples','PUT',{examples:[{name:'Unsafe extra',image:'/safe.jpg',detailImage:'javascript:alert(1)'}]},true)).status,400);
+ const examples=[{name:'My visiting card',image:'/Images/Shop/business-card-02/1.jpg',description:'Editable business card design.',detailImage:'/Images/Shop/business-card-02/2.jpg'}];
  assert.equal((await call('/api/admin/design-examples','PUT',{examples},true)).status,200);
  assert.deepEqual((await (await call('/api/design-examples')).json()).examples,examples);
  assert.equal((await call('/api/admin/design-examples','PUT',{examples:[]},true)).status,200);
