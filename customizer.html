@@ -191,6 +191,49 @@
             font-weight: 700;
             font-size: .9rem;
             margin-bottom: 1rem;
+            line-height: 1.35;
+        }
+
+        .service-price .service-price-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+
+        .service-price .service-original {
+            color: #7b8794;
+            text-decoration: line-through;
+            font-size: .82rem;
+            font-weight: 600;
+        }
+
+        .service-price .service-offer {
+            color: #0f2a3c;
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        .service-price .service-discount {
+            display: block;
+            width: fit-content;
+            margin: .35rem auto 0;
+            padding: .22rem .5rem;
+            border-radius: 999px;
+            background: #e6b86c;
+            color: #0f2a3c;
+            font-size: .7rem;
+            font-weight: 900;
+            letter-spacing: .01em;
+        }
+
+        .service-price .service-unit {
+            display: block;
+            margin-top: .22rem;
+            color: #087a58;
+            font-size: .76rem;
+            font-weight: 800;
         }
 
         /* =========================
@@ -1702,6 +1745,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function renderServicePrice(element, service) {
+        const offer = Number(service.price || 0);
+        const original = Number(service.originalPrice || offer);
+        const unit = service.priceUnit ? " / " + String(service.priceUnit) : "";
+
+        if (service.priceUnit === "custom") {
+            element.innerHTML = '<span class="service-price-offer-only">Custom quote</span>';
+            return;
+        }
+
+        const discount = original > offer && original > 0
+            ? Math.round(((original - offer) / original) * 100)
+            : 0;
+
+        if (discount > 0) {
+            element.innerHTML =
+                '<span class="service-price-main">' +
+                    '<span class="service-original">' + formatPrice(original) + '</span>' +
+                    '<span class="service-offer">Starting ' + formatPrice(offer) + '</span>' +
+                '</span>' +
+                '<span class="service-discount">' + discount + '% OFF</span>' +
+                (unit ? '<span class="service-unit">' + unit + '</span>' : '');
+        } else {
+            element.innerHTML =
+                '<span class="service-price-main">' +
+                    '<span class="service-offer">Starting ' + formatPrice(offer) + '</span>' +
+                '</span>' +
+                (unit ? '<span class="service-unit">' + unit + '</span>' : '');
+        }
+    }
+
+
     function saveCart() {
 
         localStorage.setItem(
@@ -1731,6 +1806,9 @@ document.addEventListener("DOMContentLoaded", function () {
             price: Number(
                 option.dataset.price
             ),
+
+            originalPrice: Number(option.dataset.originalPrice || option.dataset.price || 0),
+            priceUnit: option.dataset.priceUnit || "",
 
             icon: option.dataset.icon,
 
@@ -1825,12 +1903,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.dataset.service = name;
                 option.hidden = false;
                 option.dataset.price = String(Number(service.price) || 0);
+                option.dataset.originalPrice = String(Number(service.originalPrice || service.price) || 0);
+                option.dataset.priceUnit = String(service.priceUnit || "");
                 option.dataset.description = String(service.description || "");
                 option.dataset.icon = String(service.icon || "✦");
                 option.querySelector(".service-name").textContent = name;
-                option.querySelector(".service-price").textContent = service.priceUnit === "custom"
-                    ? "Custom quote" : "Starting ₹" + Number(service.price || 0).toLocaleString("en-IN")
-                    + (service.priceUnit ? " / " + service.priceUnit : "");
+                renderServicePrice(option.querySelector(".service-price"), service);
                 const visual = option.querySelector(".service-icon");
                 if (service.image) {
                     const image = document.createElement("img");
