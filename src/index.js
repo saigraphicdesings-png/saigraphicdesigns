@@ -644,7 +644,9 @@ export function validateDesignExamples(input) {
     if (!image || image.length > 2000 || /[\\\x00-\x20]/.test(image) || image.startsWith("//")) throw new Error("Use a valid image path or HTTPS URL.");
     const parsed = new URL(image, "https://example.com");
     if (parsed.protocol !== "https:") throw new Error("Use a local image path or HTTPS URL.");
-    return { name, image };
+    const description = String(item?.description || "").trim();
+    if (description.length > 3000) throw new Error("Descriptions must be 3000 characters or fewer.");
+    return { name, image, description };
   });
 }
 
