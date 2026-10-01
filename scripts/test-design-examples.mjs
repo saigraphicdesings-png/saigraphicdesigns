@@ -17,3 +17,16 @@ test('homepage examples require admin writes and preserve an intentionally empty
  assert.deepEqual((await (await call('/api/design-examples')).json()).examples,[]);
  db.close();
 });
+test('about clients permit admin changes and preserve names, logos and removals', async()=>{
+ const db=new DatabaseSync(':memory:');
+ const env={ADMIN_TOKEN:'test-admin',DB:{prepare(sql){let args=[];return {bind(...values){args=values;return this},async run(){return db.prepare(sql).run(...args)},async first(){return db.prepare(sql).get(...args)}}}}};
+ const call=(path,method='GET',clients,auth=false)=>worker.fetch(new Request('https://test.local'+path,{method,headers:auth?{Authorization:'Bearer test-admin'}:{},...(clients?{body:JSON.stringify({clients})}:{})}),env);
+ assert.deepEqual((await (await call('/api/clients')).json()).clients,[]);
+ assert.equal((await call('/api/admin/clients','PUT',[],false)).status,401);
+ assert.equal((await call('/api/admin/clients','PUT',[{name:'Unsafe',image:'javascript:alert(1)'}],true)).status,400);
+ const clients=Array.from({length:50},(_,i)=>({name:'Client '+i,image:'/logo.png'}));
+ assert.equal((await call('/api/admin/clients','PUT',clients,true)).status,200);
+ assert.deepEqual((await (await call('/api/clients')).json()).clients,clients);
+ assert.equal((await call('/api/admin/clients','PUT',[],true)).status,200);
+ assert.deepEqual((await (await call('/api/clients')).json()).clients,[]);db.close();
+});

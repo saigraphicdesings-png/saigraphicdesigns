@@ -670,8 +670,28 @@ async function designExamplesAPI(request, env, url) {
   return json({ examples: row ? JSON.parse(row.content) : defaultDesignExamples });
 }
 
+export function validateClients(input) {
+  if(!Array.isArray(input)||input.length>200)throw new Error("Use up to 200 clients.");
+  return input.map(item=>{const {name,image}=validateDesignExamples([item])[0];return {name,image};});
+}
+async function clientsAPI(request,env,url){
+  const admin=url.pathname==='/api/admin/clients';
+  if(admin&&!isAuthorized(request,env))return json({error:'Unauthorized.'},401);
+  if(request.method!=='GET'&&!(admin&&request.method==='PUT'))return json({error:'Method not allowed.'},405);
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS about_clients (id INTEGER PRIMARY KEY, content TEXT NOT NULL)').run();
+  if(request.method==='PUT'){
+    let clients;try{clients=validateClients((await request.json()).clients);}catch(error){return json({error:error.message},400);}
+    await env.DB.prepare('INSERT INTO about_clients (id, content) VALUES (1, ?) ON CONFLICT(id) DO UPDATE SET content = excluded.content').bind(JSON.stringify(clients)).run();
+    return json({clients});
+  }
+  const row=await env.DB.prepare('SELECT content FROM about_clients WHERE id = 1').first();
+  return json({clients:row?JSON.parse(row.content):[]});
+}
+
 async function handleAPI(request, env, url) {
   if (!env.DB) return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
+
+  if (["/api/clients","/api/admin/clients"].includes(url.pathname)) return clientsAPI(request,env,url);
 
   if (["/api/design-examples", "/api/admin/design-examples"].includes(url.pathname)) return designExamplesAPI(request, env, url);
 
