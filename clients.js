@@ -4,7 +4,7 @@
   const response=await fetch('/api/clients',{cache:'no-store'});if(!response.ok)return;
   const {clients}=await response.json();if(!Array.isArray(clients)||!clients.length)return;
   const strip=section.querySelector('.clients-strip'),track=section.querySelector('.clients-track');
-  const cards=clients.map(client=>{const card=document.createElement('div');card.className='client-card';const logo=document.createElement('img');logo.src=client.image;logo.alt=client.name+' logo';logo.loading='lazy';const name=document.createElement('span');name.textContent=client.name;card.append(logo,name);track.append(card);return card});
+  const cards=clients.map(client=>{const card=document.createElement('div');card.className='client-card';const logo=document.createElement('img');logo.src=client.image;logo.alt='Client logo';logo.loading='lazy';card.append(logo);track.append(card);return card});
   section.hidden=false;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');if(reduced.matches||cards.length<2)return;
   // Repeat enough copies to cover a wide viewport and loop seamlessly.

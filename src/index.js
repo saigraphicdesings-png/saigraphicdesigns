@@ -672,7 +672,7 @@ async function designExamplesAPI(request, env, url) {
 
 export function validateClients(input) {
   if(!Array.isArray(input)||input.length>200)throw new Error("Use up to 200 clients.");
-  return input.map(item=>{const {name,image}=validateDesignExamples([item])[0];return {name,image};});
+  return input.map((item,index)=>{const {image}=validateDesignExamples([{...item,name:"Client "+(index+1)}])[0];return {image};});
 }
 async function clientsAPI(request,env,url){
   const admin=url.pathname==='/api/admin/clients';
