@@ -137,7 +137,8 @@ const serviceSchema = `CREATE TABLE IF NOT EXISTS services (
   featured INTEGER NOT NULL DEFAULT 1 CHECK(featured IN (0,1)),
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  original_price REAL NOT NULL DEFAULT 0
 )`;
 
 const defaultServices = [
@@ -193,17 +194,20 @@ function validateService(input) {
   const category = String(input.category || 'Other').trim().slice(0,80) || 'Other';
   const description = String(input.description || '').trim().slice(0,500);
   const price = Number(input.price ?? 0);
+  const originalPrice = Number(input.originalPrice ?? price);
   const priceUnit = String(input.priceUnit || '').trim().slice(0,40);
   const image = String(input.image || '').trim().slice(0,500);
   const icon = String(input.icon || '✦').trim().slice(0,20) || '✦';
   const link = String(input.link || 'customizer.html').trim().slice(0,500) || 'customizer.html';
   if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error('Service ID may contain only letters, numbers, hyphens and underscores.');
   if (!name) throw new Error('Service name is required.');
-  if (!Number.isFinite(price) || price < 0) throw new Error('Price must be a finite, non-negative number.');
+  if (!Number.isFinite(price) || price < 0) throw new Error('Offer price must be a finite, non-negative number.');
+  if (!Number.isFinite(originalPrice) || originalPrice < 0) throw new Error('Original price must be a finite, non-negative number.');
+  if (originalPrice > 0 && price > originalPrice) throw new Error('Offer price cannot be higher than the original price.');
   if (image && !/^(https?:\/\/|[A-Za-z0-9_./-])/.test(image)) throw new Error('Invalid service image path.');
   return {
     id, originalId: String(input.originalId || id).trim(), name, slug: id.toLowerCase(),
-    category, description, price, priceUnit, image, icon, link,
+    category, description, price, originalPrice, priceUnit, image, icon, link,
     active: input.active === false ? 0 : 1, featured: input.featured === false ? 0 : 1,
     sortOrder: Number.parseInt(input.sort_order,10) || 0
   };
@@ -816,10 +820,10 @@ async function handleAPI(request, env, url) {
       if (conflict) return json({ error: "Another service already uses this ID." }, 409);
       await env.DB.prepare("DELETE FROM services WHERE id = ?").bind(service.originalId).run();
     }
-    await env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order,updated_at)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
-      ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,category=excluded.category,description=excluded.description,price=excluded.price,price_unit=excluded.price_unit,image=excluded.image,icon=excluded.icon,link=excluded.link,active=excluded.active,featured=excluded.featured,sort_order=excluded.sort_order,updated_at=CURRENT_TIMESTAMP`
-    ).bind(service.id,service.name,service.slug,service.category,service.description,service.price,service.priceUnit,service.image,service.icon,service.link,service.active,service.featured,service.sortOrder).run();
+    await env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,original_price,price_unit,image,icon,link,active,featured,sort_order,updated_at)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,category=excluded.category,description=excluded.description,price=excluded.price,original_price=excluded.original_price,price_unit=excluded.price_unit,image=excluded.image,icon=excluded.icon,link=excluded.link,active=excluded.active,featured=excluded.featured,sort_order=excluded.sort_order,updated_at=CURRENT_TIMESTAMP`
+    ).bind(service.id,service.name,service.slug,service.category,service.description,service.price,service.originalPrice,service.priceUnit,service.image,service.icon,service.link,service.active,service.featured,service.sortOrder).run();
     const saved = await env.DB.prepare("SELECT * FROM services WHERE id = ? LIMIT 1").bind(service.id).first();
     return json({ success: true, service: normalizeService(saved) });
   }
