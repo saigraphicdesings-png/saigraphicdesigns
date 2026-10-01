@@ -170,6 +170,8 @@ const defaultServices = [
 async function ensureServiceTable(env) {
   await env.DB.prepare(serviceSchema).run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS service_migrations (id TEXT PRIMARY KEY)").run();
+  await addMissingColumns(env, "services", { original_price: "REAL NOT NULL DEFAULT 0" });
+  await env.DB.prepare("UPDATE services SET original_price = price WHERE original_price IS NULL OR original_price = 0").run();
   const seeded = await env.DB.prepare("SELECT id FROM service_migrations WHERE id = 'full-service-catalog' LIMIT 1").first();
   if (!seeded) {
     const statements = defaultServices.map((s) => env.DB.prepare(`INSERT OR IGNORE INTO services (id,name,slug,category,description,price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
@@ -181,7 +183,7 @@ async function ensureServiceTable(env) {
 function normalizeService(row) {
   return {
     id: row.id, name: row.name, slug: row.slug, category: row.category || 'Other',
-    description: row.description || '', price: Number(row.price) || 0, priceUnit: row.price_unit || '',
+    description: row.description || '', price: Number(row.price) || 0, originalPrice: Number(row.original_price) || Number(row.price) || 0, priceUnit: row.price_unit || '',
     image: row.image || '', icon: row.icon || '✦', link: row.link || 'customizer.html',
     active: Boolean(row.active), featured: Boolean(row.featured), sortOrder: Number(row.sort_order) || 0,
     createdAt: row.created_at, updatedAt: row.updated_at
