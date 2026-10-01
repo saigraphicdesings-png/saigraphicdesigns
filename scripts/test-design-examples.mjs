@@ -30,3 +30,12 @@ test('about clients permit admin changes and preserve names, logos and removals'
  assert.equal((await call('/api/admin/clients','PUT',[],true)).status,200);
  assert.deepEqual((await (await call('/api/clients')).json()).clients,[]);db.close();
 });
+test('reviews authenticate writes, validate ratings, and allow edits and removal',async()=>{
+ const db=new DatabaseSync(':memory:');const env={ADMIN_TOKEN:'test-admin',DB:{prepare(sql){let args=[];return{bind(...values){args=values;return this},async run(){return db.prepare(sql).run(...args)},async first(){return db.prepare(sql).get(...args)}}}}};
+ const call=(method='GET',reviews,auth=false)=>worker.fetch(new Request('https://test.local/api/'+(method==='PUT'?'admin/':'')+'reviews',{method,headers:auth?{Authorization:'Bearer test-admin'}:{},...(reviews?{body:JSON.stringify({reviews})}:{})}),env);
+ const reviews=[{name:'Test Client',business:'Studio',text:'Helpful design service.',image:'',rating:5}];
+ assert.equal((await call('PUT',reviews)).status,401);assert.equal((await call('PUT',[{...reviews[0],rating:6}],true)).status,400);assert.equal((await call('PUT',[{...reviews[0],image:'javascript:alert(1)'}],true)).status,400);
+ assert.equal((await call('PUT',reviews,true)).status,200);assert.deepEqual((await(await call()).json()).reviews,reviews);
+ reviews[0].text='Updated client feedback.';await call('PUT',reviews,true);assert.deepEqual((await(await call()).json()).reviews,reviews);
+ await call('PUT',[],true);assert.deepEqual((await(await call()).json()).reviews,[]);db.close();
+});

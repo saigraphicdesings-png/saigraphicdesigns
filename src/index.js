@@ -688,8 +688,34 @@ async function clientsAPI(request,env,url){
   return json({clients:row?JSON.parse(row.content):[]});
 }
 
+export function validateReviews(input){
+  if(!Array.isArray(input)||input.length>100)throw new Error('Use up to 100 reviews.');
+  return input.map(item=>{
+    const name=String(item?.name||'').trim(),business=String(item?.business||'').trim(),text=String(item?.text||'').trim(),image=String(item?.image||'').trim(),rating=Number(item?.rating);
+    if(!name||name.length>100)throw new Error('Each review needs a client name of up to 100 characters.');
+    if(business.length>150||!text||text.length>2000)throw new Error('Enter a review up to 2000 characters and a business name up to 150 characters.');
+    if(!Number.isInteger(rating)||rating<1||rating>5)throw new Error('Choose a rating from 1 to 5.');
+    if(image)validateDesignExamples([{name,image}]);
+    return {name,business,text,image,rating};
+  });
+}
+async function reviewsAPI(request,env,url){
+  const admin=url.pathname==='/api/admin/reviews';
+  if(admin&&!isAuthorized(request,env))return json({error:'Unauthorized.'},401);
+  if(request.method!=='GET'&&!(admin&&request.method==='PUT'))return json({error:'Method not allowed.'},405);
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS homepage_reviews (id INTEGER PRIMARY KEY, content TEXT NOT NULL)').run();
+  if(request.method==='PUT'){
+    let reviews;try{reviews=validateReviews((await request.json()).reviews);}catch(error){return json({error:error.message},400);}
+    await env.DB.prepare('INSERT INTO homepage_reviews (id, content) VALUES (1, ?) ON CONFLICT(id) DO UPDATE SET content = excluded.content').bind(JSON.stringify(reviews)).run();
+    return json({reviews});
+  }
+  const row=await env.DB.prepare('SELECT content FROM homepage_reviews WHERE id = 1').first();return json({reviews:row?JSON.parse(row.content):[]});
+}
+
 async function handleAPI(request, env, url) {
   if (!env.DB) return json({ error: "D1 database is not connected yet.", setupRequired: true, products: [] }, 503);
+
+  if (["/api/reviews","/api/admin/reviews"].includes(url.pathname)) return reviewsAPI(request,env,url);
 
   if (["/api/clients","/api/admin/clients"].includes(url.pathname)) return clientsAPI(request,env,url);
 
