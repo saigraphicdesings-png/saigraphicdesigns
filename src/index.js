@@ -174,7 +174,7 @@ async function ensureServiceTable(env) {
   await env.DB.prepare("UPDATE services SET original_price = price WHERE original_price IS NULL OR original_price = 0").run();
   const seeded = await env.DB.prepare("SELECT id FROM service_migrations WHERE id = 'full-service-catalog' LIMIT 1").first();
   if (!seeded) {
-    const statements = defaultServices.map((s) => env.DB.prepare(`INSERT OR IGNORE INTO services (id,name,slug,category,description,price,original_price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
+    const statements = defaultServices.map((s) => env.DB.prepare(`INSERT OR IGNORE INTO services (id,name,slug,category,description,price,original_price,price_unit,image,icon,link,active,featured,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(s[0],s[1],s[0],s[2],s[3],s[4],s[4],s[5],s[6],s[7],s[8],s[9],s[10],s[11]));
     statements.push(env.DB.prepare("INSERT OR IGNORE INTO service_migrations (id) VALUES ('full-service-catalog')"));
     await env.DB.batch(statements);
   }
