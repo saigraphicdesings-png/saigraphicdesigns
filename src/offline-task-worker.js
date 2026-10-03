@@ -1,3 +1,4 @@
+import { calendarEvents } from "../calendar-events.js";
 import { listTaskBots, taskBotCredentials, saveTaskBot } from "./task-team-bots.js";
 import { taskTelegramWebhookSecret } from "./admin-mobile-notify.js";
 function json(data, status = 200) {
@@ -58,6 +59,20 @@ export async function handleTaskApi(request, env, url, authorized) {
   if(url.pathname === "/api/admin/tasks/test-notification" && request.method === "POST") {
     try { const input=await request.json().catch(()=>({})), bot=input.notificationBot||"primary"; if(bot==="primary") await configureTelegramWebhook(env, url.origin); const sent=await telegram(env, ["🧪 Sai Graphic Designs — Test Poster Reminder","", "Poster: Sample Poster", "Date: Tomorrow", "Customer: Test Customer", "Task: Poster Schedule Test", "", "This is a test notification from Task Management."].join("\n"),bot); const chat=sent?.result?.chat||{}; return json({success:true, recipient:String(chat.title||chat.username||chat.first_name||"Telegram chat").slice(0,80)}); }
     catch(error) { return json({error:String(error?.message||"Could not send Telegram test notification.").slice(0,180)},503); }
+  }
+  if(url.pathname === "/api/admin/tasks/holiday-notifications") {
+    try {
+      if(request.method === "GET") return json({notificationBot:await holidayNotificationBot(env)});
+      if(request.method === "POST") {
+        const input=await body(request),bot=input.notificationBot;
+        if(!["none","primary","team1","team2"].includes(bot)) return json({error:"Choose a valid event notification team."},400);
+        if(bot!=="none") { if(bot==="primary"&&!env.TASK_TELEGRAM_BOT_TOKEN) return json({error:"The main task bot is not configured."},400); await taskBotCredentials(env,bot); }
+        await ensureHolidayNotifications(env);
+        await env.DB.prepare("INSERT INTO calendar_notification_settings(id,notification_bot) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET notification_bot=excluded.notification_bot").bind(bot).run();
+        return json({notificationBot:bot});
+      }
+      return json({error:"Method not allowed."},405);
+    } catch(error) { return json({error:error.message||"Could not save event notifications."},error.status||400); }
   }
   const match=url.pathname.match(/^\/api\/admin\/tasks(?:\/([a-z0-9-]+))?$/);
   if(!match) return json({error:"Not found."},404);
@@ -137,4 +152,34 @@ export async function sendTaskDueReminders(env) {
     }
   }
   return {sent};
+}
+async function ensureHolidayNotifications(env) {
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS calendar_notification_settings (id INTEGER PRIMARY KEY CHECK(id=1), notification_bot TEXT NOT NULL DEFAULT 'none')").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS calendar_notification_deliveries (event_date TEXT NOT NULL, slot TEXT NOT NULL, bot TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending', PRIMARY KEY(event_date,slot,bot))").run();
+}
+async function holidayNotificationBot(env) {
+  await ensureHolidayNotifications(env);
+  return (await env.DB.prepare("SELECT notification_bot FROM calendar_notification_settings WHERE id=1").first())?.notification_bot || 'none';
+}
+export async function sendHolidayReminders(env, now=new Date()) {
+  if(!env.DB) return {sent:0};
+  const hour=indiaHour(now);
+  if(hour!==9 && hour!==18) return {sent:0};
+  const bot=await holidayNotificationBot(env);
+  if(bot==='none') return {sent:0};
+  const today=indiaDate(now),tomorrow=new Date(today+'T12:00:00Z');tomorrow.setUTCDate(tomorrow.getUTCDate()+1);
+  const date=tomorrow.toISOString().slice(0,10),events=calendarEvents.filter(event=>event.date===date);
+  if(!events.length) return {sent:0};
+  const slot=hour===9?'morning':'evening';
+  // Claim this delivery atomically so overlapping scheduler calls cannot duplicate it.
+  const claim=await env.DB.prepare("INSERT OR IGNORE INTO calendar_notification_deliveries(event_date,slot,bot) VALUES(?,?,?)").bind(date,slot,bot).run();
+  if(!claim.meta?.changes) return {sent:0};
+  try {
+    await telegram(env,[`📅 Tamil Nadu — ${hour===9?'9 AM':'6 PM'} Holiday & Festival Reminder`,'',`Tomorrow: ${date}`,...events.flatMap(event=>['',event.label,event.tamil,event.kind==='Holiday'?'TN government holiday':'Regional festival']), '', 'Plan your festival posters and team work in advance.'].join('\n'),bot);
+    await env.DB.prepare("UPDATE calendar_notification_deliveries SET status='sent' WHERE event_date=? AND slot=? AND bot=?").bind(date,slot,bot).run();
+    return {sent:1};
+  } catch(error) {
+    await env.DB.prepare("DELETE FROM calendar_notification_deliveries WHERE event_date=? AND slot=? AND bot=? AND status='pending'").bind(date,slot,bot).run();
+    throw error;
+  }
 }
