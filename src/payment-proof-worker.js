@@ -1,7 +1,7 @@
 import baseWorker from "./telegram-webhook-worker.js";
 import cartWorker from "./cart-payment-worker.js";
 import { notifyPendingPayment } from "./admin-mobile-notify.js";
-import { handleTaskApi, sendTaskDueReminders } from "./offline-task-worker.js";
+import { handleTaskApi, sendTaskDueReminders, sendHolidayReminders } from "./offline-task-worker.js";
 
 let cachedGeminiModel = "";
 let cachedGeminiModelUntil = 0;
@@ -509,7 +509,10 @@ export default {
     return baseWorker.fetch(request, env, ctx);
   },
   async scheduled(event, env, ctx) {
-    const job = sendTaskDueReminders(env).catch((error) => console.error("Offline task reminder job error:", error));
+    const job = Promise.all([
+      sendTaskDueReminders(env).catch((error) => console.error("Offline task reminder job error:", error)),
+      sendHolidayReminders(env,new Date(event.scheduledTime || Date.now())).catch((error) => console.error("Calendar event reminder job error:", error))
+    ]);
     if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(job);
     else await job;
   }
