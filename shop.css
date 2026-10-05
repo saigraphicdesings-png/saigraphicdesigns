@@ -2290,3 +2290,16 @@ footer {
   color:#fff; font-size:20px; line-height:1.2; font-weight:900; letter-spacing:2px;
 }
 .shop-product:hover .product-preview .free-ribbon { transform:rotate(-45deg); }
+
+/* Preserve the complete supplied Bundle World logo on every screen size. */
+.bundle-world-brand {
+    margin: 0 auto 20px;
+    width: min(100%, 640px);
+    line-height: 0;
+}
+.bundle-world-logo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
