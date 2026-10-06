@@ -7,8 +7,10 @@ function safeURL(value, fallback) {
 const price = value => Number(value) === 0 ? 'Free' : '₹' + Number(value).toLocaleString('en-IN');
 export function offerPriceHTML(item) {
   const label = price(item.price);
-  if (!item.promotionApplied) return esc(label);
-  return '<span class="offer-price"><del class="offer-original">' + esc(price(item.originalPrice)) + '</del><span>' + esc(label) + '</span><small class="offer-badge">50% OFF</small></span>';
+  const original = Number(item.originalPrice);
+  const discount = original > Number(item.price) && Number(item.price) > 0 ? Math.round((1 - Number(item.price) / original) * 100) : 0;
+  if (!discount) return esc(label);
+  return '<span class="offer-price"><del class="offer-original">' + esc(price(item.originalPrice)) + '</del><span>' + esc(label) + '</span><small class="offer-badge">' + discount + '% OFF</small></span>';
 }
 export function bundleCard(product, home = false) {
   const href = '/bundle/' + encodeURIComponent(product.id);

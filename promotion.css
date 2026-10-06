@@ -1,1 +1,13 @@
 .catalog-offer-banner{max-width:1140px;margin:20px auto;padding:16px 22px;border:1px solid #9fdbc1;border-radius:16px;background:#eaf8ef;color:#124c35;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.catalog-offer-banner[hidden]{display:none}.catalog-offer-banner strong{font-size:1.12rem}.catalog-offer-banner span{font-size:.9rem}.offer-price{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}.offer-original{color:#697b73;font-size:.85em;text-decoration:line-through;font-weight:500}.offer-badge{background:#dcf5e6;color:#12633f;border-radius:20px;padding:4px 8px;font-size:.7rem;font-weight:800}.promotion-panel{margin:22px 0}.promotion-panel .promotion-heading{display:flex;justify-content:space-between;gap:16px;align-items:center}.promotion-panel .promotion-heading h2{margin:0 0 8px}.promotion-panel form{margin-top:20px}.promotion-panel .promotion-toggle{display:flex;align-items:center;gap:10px;margin:14px 0}.promotion-panel .promotion-toggle input{width:20px;height:20px}.promotion-panel .promotion-save{margin-top:14px}.promotion-status{border-radius:20px;padding:8px 14px;background:#ecf2ef;font-weight:800;font-size:.85rem;white-space:nowrap}.promotion-status[data-status=active]{background:#dcf5e6;color:#12633f}.promotion-panel .promotion-copy{line-height:1.6;color:var(--muted,#64748b)}@media(max-width:700px){.catalog-offer-banner{margin:14px 18px}.promotion-panel .promotion-heading{align-items:flex-start;flex-direction:column}}
+
+/* Match the service price display on homepage bundles and shop cards. */
+.offer-price{gap:7px 10px;line-height:1.45;vertical-align:middle}
+.offer-price>.offer-original{color:#7b8794;font-size:.86em;font-weight:600}
+.offer-price>span{font-size:1.12em;font-weight:900;color:#0f2a3c}
+.offer-price>.offer-badge{background:#e6b86c;color:#0f2a3c;padding:.24rem .52rem;font-size:.72rem;line-height:1.35;white-space:nowrap}
+.home-key-product-action>.offer-price{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:10px 14px}
+.home-key-product-action>.offer-price>span{display:inline;color:#0f2a3c;background:none;padding:0;min-height:0;border-radius:0;box-shadow:none;font-size:1em}
+.home-key-product-action>.offer-price>.offer-original{font-size:.65em}
+.home-key-product-action>.offer-price>.offer-badge{font-size:.76rem}
+.home-showcase-bottom>.offer-price{justify-content:flex-start}
+@media(max-width:540px){.home-key-product-action>.offer-price>span{width:auto}.shop-product .offer-price{gap:6px 8px}}

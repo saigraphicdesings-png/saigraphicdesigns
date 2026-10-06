@@ -75,7 +75,9 @@ Please share the payment details and let me know when I can access the files in 
     // The admin database is the source of truth, including an empty catalog.
     function offerPriceHTML(product) {
         const offer = formatPrice(product.price);
-        return product.promotionApplied ? '<span class="offer-price"><del class="offer-original">' + formatPrice(product.originalPrice) + '</del><span>' + offer + '</span><small class="offer-badge">50% OFF</small></span>' : offer;
+        const original = Number(product.originalPrice);
+        const discount = original > Number(product.price) && Number(product.price) > 0 ? Math.round((1 - Number(product.price) / original) * 100) : 0;
+        return discount ? '<span class="offer-price"><del class="offer-original">' + formatPrice(product.originalPrice) + '</del><span>' + offer + '</span><small class="offer-badge">' + discount + '% OFF</small></span>' : offer;
     }
     let products = [];
     let catalogStatus = "loading";

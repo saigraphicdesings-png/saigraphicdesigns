@@ -43,9 +43,11 @@
   }
   function priceNode(product) {
     const node = element("strong", "offer-price");
-    if (product.promotionApplied) node.append(element("del", "offer-original", priceLabel(product.originalPrice)));
+    const original = Number(product.originalPrice);
+    const discount = original > Number(product.price) && Number(product.price) > 0 ? Math.round((1 - Number(product.price) / original) * 100) : 0;
+    if (discount) node.append(element("del", "offer-original", priceLabel(original)));
     node.append(element("span", "", priceLabel(product.price)));
-    if (product.promotionApplied) node.append(element("small", "offer-badge", "50% OFF"));
+    if (discount) node.append(element("small", "offer-badge", discount + "% OFF"));
     return node;
   }
   function productCard(product) {
