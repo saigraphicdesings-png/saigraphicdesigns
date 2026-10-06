@@ -2044,7 +2044,14 @@ Thank you! 😊`;
         if (event.persisted) loadManagedProducts();
     });
 
-    window.addEventListener("sai-promotion-change", loadManagedProducts);
+    window.addEventListener("sai-promotion-change", async function () {
+        await loadManagedProducts();
+        if (!currentProduct || catalogStatus !== "ready") return;
+        const updated = products.find(product => product.id === currentProduct.id);
+        if (!updated) { closeProductModal(); return; }
+        currentProduct = updated;
+        if (modalProductPrice) modalProductPrice.innerHTML = offerPriceHTML(updated);
+    });
 
     setupFilters();
 
