@@ -73,6 +73,10 @@ Please share the payment details and let me know when I can access the files in 
     ===================================================== */
 
     // The admin database is the source of truth, including an empty catalog.
+    function offerPriceHTML(product) {
+        const offer = formatPrice(product.price);
+        return product.promotionApplied ? '<span class="offer-price"><del class="offer-original">' + formatPrice(product.originalPrice) + '</del><span>' + offer + '</span><small class="offer-badge">50% OFF</small></span>' : offer;
+    }
     let products = [];
     let catalogStatus = "loading";
 
@@ -608,9 +612,7 @@ Please share the payment details and let me know when I can access the files in 
                                     : ""
                             }">
 
-                            ${formatPrice(
-                                product.price
-                            )}
+                            ${offerPriceHTML(product)}
 
                         </strong>
 
@@ -743,10 +745,7 @@ Please share the payment details and let me know when I can access the files in 
 
         if (modalProductPrice) {
 
-            modalProductPrice.textContent =
-                formatPrice(
-                    product.price
-                );
+            modalProductPrice.innerHTML = offerPriceHTML(product);
 
 
             modalProductPrice.classList.toggle(
@@ -2044,6 +2043,8 @@ Thank you! 😊`;
     window.addEventListener("pageshow", function (event) {
         if (event.persisted) loadManagedProducts();
     });
+
+    window.addEventListener("sai-promotion-change", loadManagedProducts);
 
     setupFilters();
 

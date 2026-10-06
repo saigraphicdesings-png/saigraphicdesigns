@@ -1,4 +1,5 @@
-import { bundleCard, serviceCard, fillGrid, hideStatus, catalogResponse } from "./catalog-html.js";
+import { getPromotion, applyPromotion, promotionAPI } from "./promotions.js";
+import { bundleCard, serviceCard, fillGrid, hideStatus, catalogResponse, offerPriceHTML } from "./catalog-html.js";
 function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -568,8 +569,9 @@ async function listProducts(env, includeHidden) {
   }
 
   const result = await env.DB.prepare(query).all();
+  const promotion = includeHidden ? null : await getPromotion(env);
   const products = (result.results || []).map((row) => {
-    const product = normalize(row);
+    const product = applyPromotion(normalize(row), promotion);
     if (!includeHidden) product.downloadUrl = "";
     return product;
   });
@@ -762,7 +764,8 @@ async function handleAPI(request, env, url) {
   if (url.pathname === "/api/services" && request.method === "GET") {
     await ensureServiceTable(env);
     const result = await env.DB.prepare("SELECT * FROM services ORDER BY sort_order ASC, name ASC").all();
-    return json({ services: (result.results || []).filter(row => row.active).map(normalizeService),
+    const promotion = await getPromotion(env);
+    return json({ services: (result.results || []).filter(row => row.active).map(row => applyPromotion(normalizeService(row), promotion, "services")),
       hiddenNames: (result.results || []).filter(row => !row.active).map(row => row.name) });
   }
 
@@ -1018,7 +1021,8 @@ async function homepageCatalog(request, env) {
   try {
     await ensureServiceTable(env);
     const result = await env.DB.prepare("SELECT * FROM services WHERE active = 1 ORDER BY sort_order, name").all();
-    const services = (result.results || []).map(normalizeService);
+    const promotion = await getPromotion(env);
+    const services = (result.results || []).map(row => applyPromotion(normalizeService(row), promotion, "services"));
     const featured = services.filter(service => service.featured);
     html = fillGrid(html, "homeServicesGrid", (featured.length ? featured : services).slice(0, 8).map(serviceCard).join(""));
     html = hideStatus(html, "homeServicesStatus");
@@ -1042,16 +1046,17 @@ async function productShopPage(request, env, url) {
   const response = await env.ASSETS.fetch(new Request(assetURL, request));
   if (!response.ok) return response;
   let html = await response.text();
+  const promotion = await getPromotion(env);
   const id = url.searchParams.get("product");
   if (id && !/^[A-Za-z0-9_-]+$/.test(id)) return new Response("Product not found", { status: 404 });
   let product;
   if (id) {
     const row = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(id).first();
     if (!row || !isBundle(row)) return new Response("Product not found", { status: 404 });
-    product = normalize(row);
+    product = applyPromotion(normalize(row), promotion);
   }
   const rows = await env.DB.prepare("SELECT * FROM products WHERE active = 1 ORDER BY sort_order, name LIMIT 1000").all();
-  const published = (rows.results || []).filter(isBundle).map(normalize);
+  const published = (rows.results || []).filter(isBundle).map(row => applyPromotion(normalize(row), promotion));
   html = fillGrid(html, "allProducts", published.map(item => bundleCard(item)).join(""));
   const counts = new Map();
   (rows.results || []).filter(isBundle).forEach(row => counts.set(row.category, (counts.get(row.category) || 0) + 1));
@@ -1081,7 +1086,7 @@ async function productShopPage(request, env, url) {
     const structured = {
       "@context": "https://schema.org", "@type": "Product", name: product.name,
       description, image: [image], sku: product.id, category: product.category,
-      offers: { "@type": "Offer", price: product.price, priceCurrency: "INR",
+      offers: { "@type": "Offer", price: product.price, priceCurrency: "INR", ...(product.promotionApplied ? {priceValidUntil: product.promotionEndDate} : {}),
         availability: "https://schema.org/InStock", url: canonical.href, seller: { "@type": "Organization", name: "Sai Graphic Designs" } }
     };
     const article = {
@@ -1125,7 +1130,7 @@ function bundlePageHTML({ title, description, canonical, body, jsonLD, image }) 
     '<meta property="og:description" content="' + escapedDescription + '">' +
     '<meta property="og:url" content="' + escapedCanonical + '">' + imageMeta +
     '<meta name="twitter:card" content="summary_large_image">' +
-    '<link rel="icon" href="/Images/favicon.png"><style>' +
+    '<link rel="icon" href="/Images/favicon.png"><link rel="stylesheet" href="/promotion.css"><style>' +
     ':root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#17212f;background:#f6f8fc}' +
     '*{box-sizing:border-box}body{margin:0}a{color:#087a58}img{max-width:100%}' +
     '.top{background:#101e30;color:white;padding:14px max(5vw,20px);display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}' +
@@ -1149,6 +1154,7 @@ function bundlePageHTML({ title, description, canonical, body, jsonLD, image }) 
 }
 
 async function cdrLandingPage(request, env, url) {
+  const promotion = await getPromotion(env);
   if (!env.DB) return new Response("Store is temporarily unavailable", { status: 503 });
   await ensureProductHomepageColumn(env);
   const freeOnly = url.pathname === "/free-cdr-files";
@@ -1170,14 +1176,15 @@ async function cdrLandingPage(request, env, url) {
   const description = freeOnly
     ? "Browse free CorelDRAW (CDR) design bundles at Bundle World. Check each template's preview and included formats before downloading."
     : "Explore editable CorelDRAW (CDR) file bundles for graphic design and printing at Bundle World. See previews, formats and prices for each bundle.";
-  const cards = products.slice((page - 1) * 24, page * 24).map(row => {
+  const cards = products.slice((page - 1) * 24, page * 24).map(raw => {
+    const row = applyPromotion(raw, promotion);
     const image = new URL(parseList(row.images)[0] || "Images/logo.png", url.origin).href;
     const link = "/bundle/" + encodeURIComponent(row.id);
     return '<article class="tile"><a href="' + link + '"><img loading="lazy" src="' +
       escapeProductHTML(image) + '" alt="' + escapeProductHTML(row.name) +
       ' preview"></a><div><h2><a href="' + link + '">' + escapeProductHTML(row.name) +
       '</a></h2><p>' + escapeProductHTML(String(row.description || "").slice(0,170)) +
-      '</p><strong>' + (Number(row.price) === 0 ? "FREE" : "₹" + escapeProductHTML(row.price)) +
+      '</p><strong>' + offerPriceHTML(row) +
       '</strong><p><a href="' + link + '">View bundle details</a></p></div></article>';
   }).join("");
   const pager = totalPages > 1 ? '<nav class="pager" aria-label="CDR bundle pages">' +
@@ -1201,11 +1208,12 @@ async function cdrLandingPage(request, env, url) {
         name: row.name, url: url.origin + "/bundle/" + encodeURIComponent(row.id) })) } };
   const html = bundlePageHTML({ title: heading + " | Bundle World", description, canonical, body, jsonLD });
   return new Response(products.length ? html : html.replace('content="index,follow"', 'content="noindex,follow"'), {
-    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=60" }
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }
   });
 }
 
 async function bundlePages(request, env, url) {
+  const promotion = await getPromotion(env);
   if (!env.DB) return new Response("Store is temporarily unavailable", { status: 503 });
   await ensureProductHomepageColumn(env);
   const path = url.pathname;
@@ -1229,7 +1237,7 @@ async function bundlePages(request, env, url) {
     if (!/^[A-Za-z0-9_-]+$/.test(id)) return new Response("Bundle not found", { status: 404 });
     const row = await env.DB.prepare("SELECT * FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(id).first();
     if (!row || !isBundle(row)) return new Response("Bundle not found", { status: 404 });
-    const product = normalize(row);
+    const product = applyPromotion(normalize(row), promotion);
     const canonical = origin + "/bundle/" + encodeURIComponent(product.id);
     const categoryURL = "/bundles/" + categorySlug(product.category);
     const image = product.images[0] ? new URL(product.images[0], origin).href : origin + "/Images/logo.png";
@@ -1256,18 +1264,18 @@ async function bundlePages(request, env, url) {
       '<p>' + escapeProductHTML(product.description) + '</p><h2>About this bundle</h2>' + paragraphs +
       '<h2>Included file details</h2><table class="specs"><tbody><tr><th>Category</th><td>' + escapeProductHTML(product.category) +
       '</td></tr><tr><th>Editable formats</th><td>' + escapeProductHTML(product.formats.join(", ").toUpperCase() || "See product preview") +
-      '</td></tr><tr><th>Price</th><td>' + (product.price === 0 ? "Free" : "₹" + escapeProductHTML(product.price)) +
+      '</td></tr><tr><th>Price</th><td>' + offerPriceHTML(product) +
       '</td></tr><tr><th>Design count</th><td>' + (product.itemCount > 0 ? escapeProductHTML(product.itemCount) + ' designs' : 'See listing or ask before ordering') + '</td></tr></tbody></table><h2>Ordering and file access</h2><p>Bundle World is the editable design bundle shop from Sai Graphic Designs. Sign in to open free downloads or request paid bundles on WhatsApp. Paid files become available in My Account after approval. Check software compatibility and usage permissions before ordering.</p><p><a href="/bundle-world-help.html">Read the ordering guide</a> · <a href="/cdr-vs-psd.html">Compare CDR and PSD</a></p>' + faqHTML +
       '<p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) + '">' +
       (product.price === 0 ? "View free bundle" : "Request this bundle on WhatsApp") + '</a></p></article>' +
       '<aside class="side"><span class="eyebrow">Bundle World</span><h2>' + escapeProductHTML(product.name) +
-      '</h2><p class="price">' + (product.price === 0 ? "FREE" : "₹" + escapeProductHTML(product.price)) +
+      '</h2><p class="price">' + offerPriceHTML(product) +
       '</p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) +
       '">View product preview</a><p>Browse more designs in this category:</p><a href="' +
       categoryURL + '">' + escapeProductHTML(product.category) + '</a></aside></div>' + relatedHTML;
     const productLD = { "@context": "https://schema.org", "@type": "Product", name: product.name,
       description, image: [image], sku: product.id, category: product.category,
-      offers: { "@type": "Offer", price: product.price, priceCurrency: "INR",
+      offers: { "@type": "Offer", price: product.price, priceCurrency: "INR", ...(product.promotionApplied ? {priceValidUntil: product.promotionEndDate} : {}),
         availability: "https://schema.org/InStock", url: canonical,
         seller: { "@type": "Organization", name: "Sai Graphic Designs" } } };
     const articleLD = { "@context": "https://schema.org", "@type": "Article", headline: title,
@@ -1283,7 +1291,7 @@ async function bundlePages(request, env, url) {
         acceptedAnswer: { "@type": "Answer", text: item.answer } })) } : null;
     return new Response(bundlePageHTML({ title: title + " | Bundle World", description, canonical, body,
       jsonLD: [productLD, articleLD, breadcrumbLD, faqLD].filter(Boolean), image }), {
-      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=60" } });
+      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
   if (path.startsWith("/bundles/")) {
     const slug = decodeURIComponent(path.slice("/bundles/".length));
@@ -1298,14 +1306,15 @@ async function bundlePages(request, env, url) {
     const totalPages = Math.max(1, Math.ceil(products.length / 7));
     if (!Number.isInteger(page) || page < 1 || page > totalPages) return new Response("Page not found", { status: 404 });
     const canonical = origin + "/bundles/" + slug + (page > 1 ? "?page=" + page : "");
-    const cards = products.slice((page-1)*7, page*7).map(row => {
+    const cards = products.slice((page-1)*7, page*7).map(raw => {
+      const row = applyPromotion(raw, promotion);
       const preview = new URL(parseList(row.images)[0] || "Images/logo.png", origin).href;
       return '<article class="tile"><a href="/bundle/' + encodeURIComponent(row.id) +
         '"><img loading="lazy" src="' + escapeProductHTML(preview) + '" alt="' + escapeProductHTML(row.name) +
         ' preview"></a><div><span class="eyebrow">' + escapeProductHTML(category) + '</span><h2><a href="/bundle/' +
         encodeURIComponent(row.id) + '">' + escapeProductHTML(row.name) + '</a></h2><p>' +
         escapeProductHTML(row.description).slice(0,180) + '</p><strong>' +
-        (Number(row.price) === 0 ? "FREE" : "₹" + escapeProductHTML(row.price)) +
+        offerPriceHTML(row) +
         '</strong><p><a href="/bundle/' + encodeURIComponent(row.id) + '">Read article →</a></p></div></article>';
     }).join("");
     const pager = '<nav class="pager" aria-label="Category pages">' +
@@ -1323,7 +1332,7 @@ async function bundlePages(request, env, url) {
         ({ "@type": "ListItem", position: (page-1)*7+index+1, url: origin + "/bundle/" + encodeURIComponent(row.id), name: row.name })) } };
     return new Response(bundlePageHTML({ title: category + " | Bundle World", description: "Explore " + category +
       " from Sai Graphic Designs, Madurai. View previews, file formats and bundle details.", canonical, body, jsonLD: collection }), {
-      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=60" } });
+      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
   }
   return new Response("Not found", { status: 404 });
 }
@@ -1331,6 +1340,10 @@ async function bundlePages(request, env, url) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (["/api/promotion", "/api/admin/promotion"].includes(url.pathname)) {
+      try { return await promotionAPI(request, env); }
+      catch (error) { console.error("Promotion API error:", error); return json({error:"Promotion settings are temporarily unavailable."},500); }
+    }
     if (url.pathname.startsWith("/api/")) {
       try {
         return await handleAPI(request, env, url);

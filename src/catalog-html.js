@@ -5,6 +5,11 @@ function safeURL(value, fallback) {
   catch { return esc(fallback); }
 }
 const price = value => Number(value) === 0 ? 'Free' : '₹' + Number(value).toLocaleString('en-IN');
+export function offerPriceHTML(item) {
+  const label = price(item.price);
+  if (!item.promotionApplied) return esc(label);
+  return '<span class="offer-price"><del class="offer-original">' + esc(price(item.originalPrice)) + '</del><span>' + esc(label) + '</span><small class="offer-badge">50% OFF</small></span>';
+}
 export function bundleCard(product, home = false) {
   const href = '/bundle/' + encodeURIComponent(product.id);
   const formats = (product.formats || []).map(esc).join(' · ');
@@ -14,10 +19,10 @@ export function bundleCard(product, home = false) {
     '<img src="' + safeURL(product.images?.[0], '/Images/placeholder.svg') + '" alt="' + esc(product.name) + '" width="600" height="600" loading="lazy" decoding="async"></div>' +
     '<div class="' + (home ? 'home-showcase-body' : 'product-info') + '"><span class="product-category">' + esc(product.category) + '</span>' +
     '<h3>' + esc(product.name) + '</h3><p>' + (product.itemCount > 0 ? esc(product.itemCount) + ' designs · ' : '') + formats + '</p>' +
-    '<div class="home-showcase-bottom"><strong>' + price(product.price) + '</strong><span>View bundle ↗</span></div></div></a>';
+    '<div class="home-showcase-bottom"><strong>' + offerPriceHTML(product) + '</strong><span>View bundle ↗</span></div></div></a>';
 }
 export function serviceCard(service) {
-  const label = service.priceUnit === 'custom' ? 'Custom quote' : 'From ' + price(service.price) + (service.priceUnit ? ' / ' + esc(service.priceUnit) : '');
+  const label = service.priceUnit === 'custom' ? 'Custom quote' : 'From ' + offerPriceHTML(service) + (service.priceUnit ? ' / ' + esc(service.priceUnit) : '');
   return '<a class="home-showcase-card" href="' + safeURL(service.link, '/customizer.html') + '"><div class="home-showcase-image">' +
     (service.image ? '<img src="' + safeURL(service.image, '/Images/placeholder.svg') + '" alt="' + esc(service.name) + ' example" width="600" height="600" loading="lazy" decoding="async">' : '') +
     '</div><div class="home-showcase-body"><span class="home-showcase-kind">' + esc(service.category) + '</span><h3>' + esc(service.name) + '</h3><p>' + esc(service.description) + '</p><div class="home-showcase-bottom"><strong>' + label + '</strong><span>Explore ↗</span></div></div></a>';

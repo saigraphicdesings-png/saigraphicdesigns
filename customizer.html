@@ -825,7 +825,7 @@
     <link rel="stylesheet" href="site-polish.css">
     <link rel="stylesheet" href="mobile-fixes.css">
     <script src="/analytics.js" defer></script>
-</head>
+<link rel="stylesheet" href="promotion.css?v=20261006"><script src="promotion-ui.js?v=20261006" defer></script></head>
 
 <body>
 
@@ -925,6 +925,7 @@
     </div>
 
 </header>
+<aside id="catalogOfferBanner" class="catalog-offer-banner" aria-label="Current offer" hidden></aside>
 
 
 <section class="service-page-header">
@@ -1924,8 +1925,17 @@ document.addEventListener("DOMContentLoaded", function () {
             const selected = document.querySelector(".service-option.active:not([hidden])")
                 || document.querySelector(".service-option:not([hidden])");
             if (selected) selectService(selected);
+            const byName = new Map(data.services.map(service => [service.name, service]));
+            cart = cart.map(item => {
+                const service = byName.get(item.name);
+                return service ? {...item, price: service.price, originalPrice: service.originalPrice} : item;
+            });
+            saveCart();
+            updateCart();
         } catch (_) { /* Keep the original service cards when the API is unavailable. */ }
     }
+    window.addEventListener("sai-promotion-change", loadManagedServices);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadManagedServices(); });
     loadManagedServices();
 
     function openCart() {

@@ -23,7 +23,7 @@ jobs:
 
       - name: Verify catalog rendering and site links
         run: |
-          node --test scripts/test-catalog-html.mjs scripts/test-shop-catalog.mjs
+          node --test scripts/test-promotions.mjs scripts/test-catalog-html.mjs scripts/test-shop-catalog.mjs
           node scripts/validate-site.mjs
 
       - name: Deploy with Wrangler

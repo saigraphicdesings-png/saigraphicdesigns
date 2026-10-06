@@ -8,6 +8,7 @@ const { Miniflare } = require("miniflare");
 const mf = new Miniflare({
   modules: [
     { type: "ESModule", path: "worker.js", contents: (await readFile("src/worker.js", "utf8")).replace('from "node:crypto"', 'from "./capped-crypto.js"') },
+    { type: "ESModule", path: "promotions.js", contents: await readFile("src/promotions.js", "utf8") },
     { type: "ESModule", path: "catalog-html.js", contents: await readFile("src/catalog-html.js", "utf8") },
     { type: "ESModule", path: "index.js", contents: await readFile("src/index.js", "utf8") },
     { type: "ESModule", path: "capped-crypto.js", contents: `

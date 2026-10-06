@@ -41,6 +41,13 @@
       return value && ["http:", "https:"].includes(url.protocol) ? url.href : "Images/placeholder.svg";
     } catch (_) { return "Images/placeholder.svg"; }
   }
+  function priceNode(product) {
+    const node = element("strong", "offer-price");
+    if (product.promotionApplied) node.append(element("del", "offer-original", priceLabel(product.originalPrice)));
+    node.append(element("span", "", priceLabel(product.price)));
+    if (product.promotionApplied) node.append(element("small", "offer-badge", "50% OFF"));
+    return node;
+  }
   function productCard(product) {
     const link = element("a", "home-showcase-card");
     link.href = "/bundle/" + encodeURIComponent(product.id);
@@ -56,7 +63,7 @@
     const formats = Array.isArray(product.formats) ? product.formats.map(String).join(" · ") : "";
     body.append(element("p", "", (Number(product.itemCount) > 0 ? Number(product.itemCount).toLocaleString("en-IN") + " designs · " : "") + (formats || "Explore this bundle in Bundle World.")));
     const bottom = element("div", "home-showcase-bottom");
-    bottom.append(element("strong", "", Number(product.price) === 0 ? "Free" : currency.format(Number(product.price))), element("span", "", "View design ↗"));
+    bottom.append(priceNode(product), element("span", "", "View design ↗"));
     body.append(bottom); link.append(preview, body);
     return link;
   }
@@ -94,7 +101,7 @@
     const features = element("div", "home-key-product-features");
     features.append(element("span", "", formats || "Editable files"), element("span", "", "Explore the previews"));
     const action = element("div", "home-key-product-action");
-    action.append(element("strong", "", priceLabel(product.price)), element("span", "", "View this bundle →"));
+    action.append(priceNode(product), element("span", "", "View this bundle →"));
     content.append(features, action); link.append(visual, content); keyProduct.replaceChildren(link); keyProduct.hidden = false;
   }
   async function loadProducts() {
@@ -140,6 +147,7 @@
   grid.addEventListener("focusout", event => { if (!grid.contains(event.relatedTarget)) startCarousel(); });
   grid.addEventListener("touchstart", stopCarousel, { passive: true });
   grid.addEventListener("touchend", startCarousel, { passive: true });
+  window.addEventListener("sai-promotion-change", loadProducts);
   loadProducts();
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadProducts(); else stopCarousel(); });
   window.addEventListener("pageshow", event => { if (event.persisted) loadProducts(); });

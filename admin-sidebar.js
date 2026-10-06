@@ -12,6 +12,8 @@
       <nav class="admin-nav" aria-label="Admin navigation">
         ${navItem("dashboard", "admin.html", "⌘", "Dashboard")}
         ${navItem("products", "admin.html#productForm", "▣", "Bundles")}
+        ${navItem("services", "admin-services.html", "✦", "Services")}
+        ${navItem("offers", "admin.html#promotionPanel", "%", "Common Offer")}
         <p class="nav-label">Management</p>
         ${navItem("customers", "admin-customers.html", "♙", "Customers")}
         ${navItem("tasks", "admin-tasks.html", "✓", "Task Management")}

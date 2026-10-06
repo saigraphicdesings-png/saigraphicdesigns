@@ -1,3 +1,4 @@
+import { getPromotion, applyPromotion } from "./promotions.js";
 import baseWorker from "./analytics-worker.js";
 
 function json(data, status = 200, extraHeaders = {}) {
@@ -126,12 +127,13 @@ async function getPaymentSettings(env) {
 }
 
 async function getPaidProduct(env, productId) {
-  return env.DB.prepare(`
+  const product = await env.DB.prepare(`
     SELECT id, name, price, download_url
     FROM products
     WHERE id = ? AND active = 1 AND price > 0
     LIMIT 1
   `).bind(productId).first();
+  return product ? applyPromotion(product, await getPromotion(env)) : null;
 }
 
 async function paymentConfig(env) {

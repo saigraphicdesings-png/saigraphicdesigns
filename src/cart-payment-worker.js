@@ -1,3 +1,4 @@
+import { getPromotion, applyPromotion } from "./promotions.js";
 import baseWorker from "./payment-configured-worker.js";
 
 function json(data, status = 200) {
@@ -225,6 +226,7 @@ async function matchingRejectedCredit(env, customerId, payableItems) {
 
 async function buildCartQuote(env, customer, rawItems) {
   await ensureCartPaymentSchema(env);
+  const promotion = await getPromotion(env);
   const requested = normalizeCartItems(rawItems);
   const items = [];
 
@@ -240,7 +242,7 @@ async function buildCartQuote(env, customer, rawItems) {
     if (!product.download_url) throw errorWithStatus(`${product.name} does not have a Drive delivery link yet.`, 409);
 
     const unlocked = await isUnlocked(env, customer.id, product.id);
-    const unitPrice = Number(product.price) || 0;
+    const unitPrice = applyPromotion(product, promotion).price;
     items.push({
       id: product.id,
       name: product.name,
@@ -366,16 +368,17 @@ async function whatsappBundleRequest(request, env) {
   try { body = await request.json(); } catch (_) { return json({ error: "Invalid request." }, 400); }
   const productId = String(body?.productId || "").trim();
   if (!validProductId(productId)) return json({ error: "Invalid bundle." }, 400);
-  const product = await env.DB.prepare("SELECT id, name, price FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(productId).first();
+  const row = await env.DB.prepare("SELECT id, name, price FROM products WHERE id = ? AND active = 1 LIMIT 1").bind(productId).first();
+  const product = row ? applyPromotion(row, await getPromotion(env)) : null;
   if (!product || Number(product.price) <= 0) return json({ error: "Paid bundle not found." }, 404);
   if (await isUnlocked(env, customer.id, productId)) return json({ error: "This bundle is already unlocked in your account.", alreadyUnlocked: true }, 409);
   const existing = await env.DB.prepare(`
-    SELECT o.id FROM cart_payment_orders o
+    SELECT o.id, i.unit_price FROM cart_payment_orders o
     JOIN cart_payment_order_items i ON i.order_id = o.id
     WHERE o.customer_id = ? AND o.status = 'pending' AND i.product_id = ? AND o.utr LIKE 'WA-%'
     ORDER BY o.created_at DESC LIMIT 1
   `).bind(customer.id, productId).first();
-  if (existing) return json({ orderId: existing.id, status: "pending", product: { id: product.id, name: product.name, price: Number(product.price) }, customerName: customer.name, existing: true });
+  if (existing) return json({ orderId: existing.id, status: "pending", product: { id: product.id, name: product.name, price: Number(existing.unit_price) }, customerName: customer.name, existing: true });
   const orderId = crypto.randomUUID();
   await env.DB.batch([
     env.DB.prepare("INSERT INTO cart_payment_orders(id, customer_id, amount, utr, status) VALUES (?, ?, ?, ?, 'pending')")

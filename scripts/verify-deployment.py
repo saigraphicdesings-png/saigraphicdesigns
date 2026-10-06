@@ -8,6 +8,8 @@ from pathlib import Path
 base = "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev"
 version = os.environ.get("GITHUB_SHA", "catalog-check")
 checks = [
+    ("/api/promotion", '"promotion"', False),
+    ("/admin", 'id="promotionPanel"', False),
     ("/shop", 'id="allProducts"', True),
     ("/", 'id="homeServicesGrid"', True),
     ("/bundle-sitemap.xml", "<urlset", False),
