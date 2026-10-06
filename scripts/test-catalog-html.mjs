@@ -16,8 +16,8 @@ test('published bundles and services appear without JavaScript; hidden rows and 
   async function add(p){const r=await worker.fetch(new Request('https://test.local/api/admin/products',{method:'POST',headers:{Authorization:'Bearer test-admin'},body:JSON.stringify(p)}),{DB,ADMIN_TOKEN:'test-admin'});assert.equal(r.status,200,await r.text());}
   try {
     await add(product);await add({...product,id:'hidden-bundle',name:'Hidden Bundle',active:false});
-    const env={DB,ASSETS:{async fetch(request){const path=new URL(request.url).pathname;return new Response(await readFile(new URL(path==='/shop.html'?'../shop.html':'../index.html',import.meta.url),'utf8'),{headers:{'content-type':'text/html','etag':'static-tag'}});}}};
-    for(const path of ['/','/shop.html']){
+    const env={DB,ASSETS:{async fetch(request){const path=new URL(request.url).pathname;return new Response(await readFile(new URL(path==='/shop'?'../shop.html':'../index.html',import.meta.url),'utf8'),{headers:{'content-type':'text/html','etag':'static-tag'}});}}};
+    for(const path of ['/','/shop','/shop.html']){
       const response=await worker.fetch(new Request('https://test.local'+path),env);
       assert.equal(response.headers.get('x-catalog-rendered'),'1');assert.equal(response.headers.get('etag'),null);
       const html=await response.text();assert.match(html,/href="\/bundle\/public-bundle"/);assert.match(html,/Current Bundle/);assert.match(html,/₹250/);assert.doesNotMatch(html,/Hidden Bundle|secret\.zip/);

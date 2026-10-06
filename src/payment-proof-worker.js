@@ -468,9 +468,9 @@ async function cartProofRequest(request, env, ctx) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if ((url.pathname === "/shop" || url.pathname === "/shop/") && request.method === "GET") {
-      url.pathname = "/shop.html";
-      return Response.redirect(url.toString(), 302);
+    if (url.pathname === "/shop/" && request.method === "GET") {
+      url.pathname = "/shop";
+      return Response.redirect(url.toString(), 308);
     }
     const modeResponse = await handleSiteMode(request, env, url);
     if (modeResponse) return modeResponse;

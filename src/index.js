@@ -1035,7 +1035,11 @@ async function homepageCatalog(request, env) {
 async function productShopPage(request, env, url) {
   if (!env.DB) return env.ASSETS.fetch(request);
   await ensureProductHomepageColumn(env);
-  const response = await env.ASSETS.fetch(request);
+  // The asset service canonicalizes .html to extensionless URLs. Fetch the
+  // clean asset path internally so the public shop never redirects in a loop.
+  const assetURL = new URL(request.url);
+  assetURL.pathname = "/shop";
+  const response = await env.ASSETS.fetch(new Request(assetURL, request));
   if (!response.ok) return response;
   let html = await response.text();
   const id = url.searchParams.get("product");

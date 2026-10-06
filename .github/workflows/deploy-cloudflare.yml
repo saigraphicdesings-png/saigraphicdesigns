@@ -34,17 +34,4 @@ jobs:
           wranglerVersion: "4.129.1"
           command: deploy --config wrangler.jsonc
       - name: Verify published shop and bundle sitemap
-        run: |
-          base="https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev"
-          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/shop" -o /tmp/shop-live.html
-          grep -q 'Bundle World' /tmp/shop-live.html
-          grep -q 'id="allProducts"' /tmp/shop-live.html
-          curl --fail --silent --show-error --location --max-time 20 -D /tmp/home-headers.txt "$base/" -o /tmp/home-live.html
-          grep -qi 'x-catalog-rendered: 1' /tmp/home-headers.txt
-          grep -q 'id="homeServicesGrid"' /tmp/home-live.html
-          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/bundle-sitemap.xml" -o /tmp/bundle-sitemap.xml
-          grep -q '<urlset' /tmp/bundle-sitemap.xml
-          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/cdr-bundles" -o /tmp/cdr-bundles-live.html
-          grep -q 'CorelDRAW (CDR) Design Bundles' /tmp/cdr-bundles-live.html
-          curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/free-cdr-files" -o /tmp/free-cdr-live.html
-          grep -q 'Free CorelDRAW (CDR) Files' /tmp/free-cdr-live.html
+        run: python scripts/verify-deployment.py
