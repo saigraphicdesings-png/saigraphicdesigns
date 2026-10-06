@@ -1,7 +1,9 @@
 """Check the newly published catalogue, allowing time for edge propagation."""
 import os
 import time
-import urllib.request
+import subprocess
+import tempfile
+from pathlib import Path
 
 base = "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev"
 version = os.environ.get("GITHUB_SHA", "catalog-check")
@@ -15,11 +17,15 @@ checks = [
 for path, marker, rendered in checks:
     for attempt in range(6):
         try:
-            with urllib.request.urlopen(base + path + "?deployment=" + version, timeout=20) as response:
-                html = response.read().decode("utf-8")
+            with tempfile.TemporaryDirectory() as directory:
+                headers, body = Path(directory) / "headers", Path(directory) / "body"
+                subprocess.run(["curl", "--fail", "--silent", "--show-error", "--location",
+                    "--max-redirs", "5", "--max-time", "20", "--dump-header", str(headers),
+                    "--output", str(body), base + path + "?deployment=" + version], check=True)
+                html = body.read_text()
                 assert marker in html, "Expected page content is missing"
                 if rendered:
-                    assert response.headers.get("x-catalog-rendered") == "1", "Catalogue renderer did not run"
+                    assert "x-catalog-rendered: 1" in headers.read_text().lower(), "Catalogue renderer did not run"
             print("Verified", path)
             break
         except Exception as error:
