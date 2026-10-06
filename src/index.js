@@ -1,3 +1,4 @@
+import { bundleCard, serviceCard, fillGrid, hideStatus, catalogResponse } from "./catalog-html.js";
 function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -1009,6 +1010,28 @@ function productArticleHTML(product) {
     '</div></section></article>';
 }
 
+async function homepageCatalog(request, env) {
+  const response = await env.ASSETS.fetch(request);
+  if (!response.ok || !env.DB) return response;
+  let html = await response.text();
+  // Independent queries allow services to remain available if the shop is unavailable.
+  try {
+    await ensureServiceTable(env);
+    const result = await env.DB.prepare("SELECT * FROM services WHERE active = 1 ORDER BY sort_order, name").all();
+    const services = (result.results || []).map(normalizeService);
+    const featured = services.filter(service => service.featured);
+    html = fillGrid(html, "homeServicesGrid", (featured.length ? featured : services).slice(0, 8).map(serviceCard).join(""));
+    html = hideStatus(html, "homeServicesStatus");
+  } catch (error) { console.error("Homepage services error:", error); }
+  try {
+    const products = (await listProducts(env, false)).filter(isBundle);
+    const shown = products.filter(product => product.showOnHome || product.isKeyProduct).slice(0, 10);
+    html = fillGrid(html, "homeShopProducts", shown.map(product => bundleCard(product, true)).join(""));
+    html = hideStatus(html, "homeShopStatus");
+  } catch (error) { console.error("Homepage bundles error:", error); }
+  return catalogResponse(html, response);
+}
+
 async function productShopPage(request, env, url) {
   if (!env.DB) return env.ASSETS.fetch(request);
   await ensureProductHomepageColumn(env);
@@ -1023,7 +1046,9 @@ async function productShopPage(request, env, url) {
     if (!row || !isBundle(row)) return new Response("Product not found", { status: 404 });
     product = normalize(row);
   }
-  const rows = await env.DB.prepare("SELECT category, name FROM products WHERE active = 1 ORDER BY category, name LIMIT 1000").all();
+  const rows = await env.DB.prepare("SELECT * FROM products WHERE active = 1 ORDER BY sort_order, name LIMIT 1000").all();
+  const published = (rows.results || []).filter(isBundle).map(normalize);
+  html = fillGrid(html, "allProducts", published.map(item => bundleCard(item)).join(""));
   const counts = new Map();
   (rows.results || []).filter(isBundle).forEach(row => counts.set(row.category, (counts.get(row.category) || 0) + 1));
   const links = [...counts].map(([category, count]) =>
@@ -1070,10 +1095,7 @@ async function productShopPage(request, env, url) {
     html = html.replace('id="modalProductName">\n                </h2>', 'id="modalProductName">' + escapeProductHTML(product.name) + '</h2>');
     html = html.replace('id="modalProductDescription">\n                </p>', 'id="modalProductDescription">' + escapeProductHTML(product.description) + '</p>');
   }
-  const headers = new Headers(response.headers);
-  headers.delete("content-length");
-  headers.set("cache-control", "public, max-age=60");
-  return new Response(html, { status: response.status, headers });
+  return catalogResponse(html, response);
 }
 
 
@@ -1312,6 +1334,9 @@ export default {
         console.error("API error:", error);
         return json({ error: "The service is temporarily unavailable." }, 500);
       }
+    }
+    if (request.method === "GET" && ["/", "/index", "/index.html"].includes(url.pathname)) {
+      return homepageCatalog(request, env);
     }
     if (request.method === "GET" && (url.pathname === "/cdr-bundles" || url.pathname === "/free-cdr-files")) {
       try { return await cdrLandingPage(request, env, url); }

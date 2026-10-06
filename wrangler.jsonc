@@ -7,6 +7,12 @@
     "directory": ".",
     "binding": "ASSETS",
     "run_worker_first": [
+      "/",
+      "/index",
+      "/index.html",
+      "/shop",
+      "/shop/",
+      "/shop.html",
       "/bundle/*",
       "/bundles/*",
       "/bundle-sitemap.xml",

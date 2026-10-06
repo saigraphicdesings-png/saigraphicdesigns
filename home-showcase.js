@@ -43,7 +43,7 @@
   }
   function productCard(product) {
     const link = element("a", "home-showcase-card");
-    link.href = "shop.html?product=" + encodeURIComponent(product.id);
+    link.href = "/bundle/" + encodeURIComponent(product.id);
     const preview = element("div", "home-showcase-image");
     const img = document.createElement("img");
     img.src = imageUrl(Array.isArray(product.images) ? product.images[0] : "");
@@ -77,7 +77,7 @@
   function renderKeyProduct(product) {
     if (!product) { keyProduct.hidden = true; keyProduct.replaceChildren(); return; }
     const link = element("a", "home-key-product-link");
-    link.href = "shop.html?product=" + encodeURIComponent(product.id);
+    link.href = "/bundle/" + encodeURIComponent(product.id);
     link.setAttribute("aria-label", "View key product: " + String(product.name));
     const visual = element("div", "home-key-product-visual");
     const img = document.createElement("img");

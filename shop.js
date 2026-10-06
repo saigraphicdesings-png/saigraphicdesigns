@@ -2047,7 +2047,8 @@ Thank you! 😊`;
 
     setupFilters();
 
-    renderProducts();
+    // Keep server-rendered bundle links visible until the current catalog arrives.
+    if (!allProducts?.querySelector("a.shop-product")) renderProducts();
 
     updateCart();
 

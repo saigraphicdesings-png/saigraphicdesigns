@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: 24
 
+      - name: Verify catalog rendering and site links
+        run: |
+          node --test scripts/test-catalog-html.mjs scripts/test-shop-catalog.mjs
+          node scripts/validate-site.mjs
+
       - name: Deploy with Wrangler
         uses: cloudflare/wrangler-action@v4
         with:
@@ -33,6 +38,10 @@ jobs:
           base="https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev"
           curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/shop" -o /tmp/shop-live.html
           grep -q 'Bundle World' /tmp/shop-live.html
+          grep -q 'id="allProducts"' /tmp/shop-live.html
+          curl --fail --silent --show-error --location --max-time 20 -D /tmp/home-headers.txt "$base/" -o /tmp/home-live.html
+          grep -qi 'x-catalog-rendered: 1' /tmp/home-headers.txt
+          grep -q 'id="homeServicesGrid"' /tmp/home-live.html
           curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/bundle-sitemap.xml" -o /tmp/bundle-sitemap.xml
           grep -q '<urlset' /tmp/bundle-sitemap.xml
           curl --fail --silent --show-error --location --max-redirs 5 --max-time 20 "$base/cdr-bundles" -o /tmp/cdr-bundles-live.html
