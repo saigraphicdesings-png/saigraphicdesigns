@@ -36,8 +36,7 @@
       if (!response.ok) throw new Error('Unavailable');
       const data = await response.json();
       if (current !== generation || !dialog.open) return;
-      const service = data.services.find(s => s.id === card.dataset.serviceId || s.name.toLowerCase() === title.textContent.trim().toLowerCase());
-      if (!service) { render([]); return; }
+      const service = data.services.find(s => s.id === card.dataset.serviceId || s.name.toLowerCase() === title.textContent.trim().toLowerCase()) || {name: title.textContent, description: description.textContent, works: []};
       title.textContent = service.name; description.textContent = service.description || ''; updateContact();
       let works = service.works || [];
       if (!works.length && /^(visiting card|business card)/i.test(service.name)) {
