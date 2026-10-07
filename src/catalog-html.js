@@ -25,9 +25,9 @@ export function bundleCard(product, home = false) {
 }
 export function serviceCard(service) {
   const label = service.priceUnit === 'custom' ? 'Custom quote' : 'From ' + offerPriceHTML(service) + (service.priceUnit ? ' / ' + esc(service.priceUnit) : '');
-  return '<a class="home-showcase-card" href="' + safeURL(service.link, '/customizer.html') + '"><div class="home-showcase-image">' +
+  return '<a class="home-showcase-card" data-service-id="' + esc(service.id) + '" href="' + safeURL(service.link, '/customizer.html') + '"><div class="home-showcase-image">' +
     (service.image ? '<img src="' + safeURL(service.image, '/Images/placeholder.svg') + '" alt="' + esc(service.name) + ' example" width="600" height="600" loading="lazy" decoding="async">' : '') +
-    '</div><div class="home-showcase-body"><span class="home-showcase-kind">' + esc(service.category) + '</span><h3>' + esc(service.name) + '</h3><p>' + esc(service.description) + '</p><div class="home-showcase-bottom"><strong>' + label + '</strong><span>Explore ↗</span></div></div></a>';
+    '</div><div class="home-showcase-body"><span class="home-showcase-kind">' + esc(service.category) + '</span><h3>' + esc(service.name) + '</h3><p>' + esc(service.description) + '</p><div class="home-showcase-bottom"><strong>' + label + '</strong><span>View our works ↗</span></div></div></a>';
 }
 export function fillGrid(html, id, cards) {
   const pattern = new RegExp('(<div\\b[^>]*\\bid="' + id + '"[^>]*>)[\\s\\S]*?(</div>)');

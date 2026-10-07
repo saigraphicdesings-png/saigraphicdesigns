@@ -19,11 +19,12 @@
 <label class="full">Description<textarea id="serviceDescription" rows="4" required placeholder="Short customer-facing description"></textarea></label>
 <label>Image path / URL<input id="serviceImage" placeholder="Images/services-ai/logo-design.webp"></label>
 <label>Icon<input id="serviceIcon" placeholder="✦"></label>
+<label class="full">Our works — image paths or HTTPS URLs (one per line)<textarea id="serviceWorks" rows="5" placeholder="/api/bundle-images/example.webp"></textarea><small>These images appear in this service’s gallery popup.</small></label><label class="full">Upload work images<input id="serviceWorkUpload" type="file" accept="image/png,image/jpeg,image/webp" multiple><small>Upload images, then Save Service to publish the gallery.</small></label>
 <label class="full">Website link<input id="serviceLink" placeholder="customizer.html#service-logo-design"></label>
 <label class="check"><input id="serviceActive" type="checkbox" checked> Active — show on website</label>
 <label class="check"><input id="serviceFeatured" type="checkbox"> Featured — show in the homepage services section</label>
 </div><button class="primary" type="submit" id="saveBtn">Save Service</button><p class="form-message" id="formMessage" role="status"></p></form></section>
 <section class="panel"><div class="panel-title"><h2>Live Services</h2><input id="serviceSearch" type="search" placeholder="Search services…"></div><div class="service-stats"><span><b id="totalCount">0</b> Total</span><span><b id="activeCount">0</b> Active</span><span><b id="featuredCount">0</b> Featured</span></div><div id="serviceList" class="service-list"></div></section>
 </div></section></main>
-<script src="admin-services.js" defer></script>
+<script src="admin-services.js?v=20261007" defer></script>
 </body></html>

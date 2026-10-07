@@ -172,7 +172,7 @@ const defaultServices = [
 async function ensureServiceTable(env) {
   await env.DB.prepare(serviceSchema).run();
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS service_migrations (id TEXT PRIMARY KEY)").run();
-  await addMissingColumns(env, "services", { original_price: "REAL NOT NULL DEFAULT 0" });
+  await addMissingColumns(env, "services", { original_price: "REAL NOT NULL DEFAULT 0", works: "TEXT NOT NULL DEFAULT '[]'" });
   await env.DB.prepare("UPDATE services SET original_price = price WHERE original_price IS NULL OR original_price = 0").run();
   const seeded = await env.DB.prepare("SELECT id FROM service_migrations WHERE id = 'full-service-catalog' LIMIT 1").first();
   if (!seeded) {
@@ -186,7 +186,7 @@ function normalizeService(row) {
   return {
     id: row.id, name: row.name, slug: row.slug, category: row.category || 'Other',
     description: row.description || '', price: Number(row.price) || 0, originalPrice: Number(row.original_price) || Number(row.price) || 0, priceUnit: row.price_unit || '',
-    image: row.image || '', icon: row.icon || '✦', link: row.link || 'customizer.html',
+    works: JSON.parse(row.works || '[]'), image: row.image || '', icon: row.icon || '✦', link: row.link || 'customizer.html',
     active: Boolean(row.active), featured: Boolean(row.featured), sortOrder: Number(row.sort_order) || 0,
     createdAt: row.created_at, updatedAt: row.updated_at
   };
@@ -212,6 +212,7 @@ function validateService(input) {
   return {
     id, originalId: String(input.originalId || id).trim(), name, slug: id.toLowerCase(),
     category, description, price, originalPrice, priceUnit, image, icon, link,
+    works: validateDesignExamples(input.works || []),
     active: input.active === false ? 0 : 1, featured: input.featured === false ? 0 : 1,
     sortOrder: Number.parseInt(input.sort_order,10) || 0
   };
@@ -826,10 +827,10 @@ async function handleAPI(request, env, url) {
       if (conflict) return json({ error: "Another service already uses this ID." }, 409);
       await env.DB.prepare("DELETE FROM services WHERE id = ?").bind(service.originalId).run();
     }
-    await env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,original_price,price_unit,image,icon,link,active,featured,sort_order,updated_at)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
-      ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,category=excluded.category,description=excluded.description,price=excluded.price,original_price=excluded.original_price,price_unit=excluded.price_unit,image=excluded.image,icon=excluded.icon,link=excluded.link,active=excluded.active,featured=excluded.featured,sort_order=excluded.sort_order,updated_at=CURRENT_TIMESTAMP`
-    ).bind(service.id,service.name,service.slug,service.category,service.description,service.price,service.originalPrice,service.priceUnit,service.image,service.icon,service.link,service.active,service.featured,service.sortOrder).run();
+    await env.DB.prepare(`INSERT INTO services (id,name,slug,category,description,price,original_price,price_unit,image,icon,link,active,featured,sort_order,works,updated_at)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
+      ON CONFLICT(id) DO UPDATE SET name=excluded.name,slug=excluded.slug,category=excluded.category,description=excluded.description,price=excluded.price,original_price=excluded.original_price,price_unit=excluded.price_unit,image=excluded.image,icon=excluded.icon,link=excluded.link,active=excluded.active,featured=excluded.featured,sort_order=excluded.sort_order,works=excluded.works,updated_at=CURRENT_TIMESTAMP`
+    ).bind(service.id,service.name,service.slug,service.category,service.description,service.price,service.originalPrice,service.priceUnit,service.image,service.icon,service.link,service.active,service.featured,service.sortOrder,JSON.stringify(service.works)).run();
     const saved = await env.DB.prepare("SELECT * FROM services WHERE id = ? LIMIT 1").bind(service.id).first();
     return json({ success: true, service: normalizeService(saved) });
   }

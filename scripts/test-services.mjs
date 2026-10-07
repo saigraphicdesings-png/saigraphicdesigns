@@ -39,10 +39,12 @@ test('admin adds a service and edits its public price', async () => {
   try {
     const service = { id: 'manual-design', name: 'Manual Design', category: 'Print Design',
       description: 'A manually added service.', image: 'Images/services-ai/logo-design.webp',
-      price: 250, active: true, featured: true };
+      price: 250, active: true, featured: true, works: [{name: 'Client artwork', image: 'Images/portfolio-logo.webp'}] };
     assert.equal((await call('/api/admin/services', 'POST', service, false)).status, 401);
     assert.equal((await call('/api/admin/services', 'POST', service)).status, 200);
     assert.equal((await call('/api/admin/services')).services.length, 24);
+    assert.deepEqual((await call('/api/services')).services.find(s => s.id === service.id).works, service.works.map(w => ({...w, description: '', detailImage: ''})));
+    assert.equal((await call('/api/admin/services', 'POST', {...service, works: [{name: 'Unsafe', image: 'javascript:alert(1)'}]})).status, 400);
     assert.equal((await call('/api/services')).services.find(s => s.id === service.id)?.price, 250);
     assert.equal((await call('/api/admin/services', 'POST', { ...service, price: 500 })).status, 200);
     assert.equal((await call('/api/services')).services.find(s => s.id === service.id)?.price, 500);
