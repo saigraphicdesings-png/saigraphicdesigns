@@ -1865,11 +1865,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 const option = existing.get(String(name).trim().toLowerCase());
                 if (option) option.hidden = true;
             }
+            const matchedOptions = new Set();
             let extraGrid;
             for (const service of data.services) {
                 if (!service || !service.id || !service.name) continue;
                 const name = String(service.name);
-                let option = existing.get(name.trim().toLowerCase());
+                const linkedId = String(service.link || "").split("#")[1];
+                const linkedOption = linkedId ? document.getElementById(linkedId) : null;
+                let option = Array.from(serviceOptions()).find(item => item.dataset.serviceId === String(service.id))
+                    || (linkedOption?.matches(".service-option") && !matchedOptions.has(linkedOption) ? linkedOption : null)
+                    || existing.get(name.trim().toLowerCase());
                 if (!option) {
                     if (!extraGrid) {
                         const category = document.createElement("div");
@@ -1901,6 +1906,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     existing.set(name.trim().toLowerCase(), option);
                 }
                 option.id ||= "service-" + String(service.id).replace(/[^A-Za-z0-9_-]/g, "");
+                matchedOptions.add(option);
+                option.dataset.serviceId = String(service.id);
                 option.dataset.service = name;
                 option.hidden = false;
                 option.dataset.price = String(Number(service.price) || 0);
@@ -1922,6 +1929,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     visual.textContent = String(service.icon || "✦");
                 }
             }
+            serviceOptions().forEach(option => { option.hidden = !matchedOptions.has(option); });
             const selected = document.querySelector(".service-option.active:not([hidden])")
                 || document.querySelector(".service-option:not([hidden])");
             if (selected) selectService(selected);
