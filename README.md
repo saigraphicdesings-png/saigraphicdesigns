@@ -45,3 +45,11 @@ Phone: +91 63811 28781
 Email: saigraphicdesings@gmail.com
 
 All brand assets and portfolio work remain the property of their respective owners.
+
+## Offline Billing Book
+
+Open **Admin → Billing** (`admin-billing.html`) after admin login. The first online visit caches the billing page for offline use in the existing authenticated tab/session. The book stores customers, services, invoices, drafts, receipts and cash entries in IndexedDB on the current browser/device. It does not sync to D1 or other devices. Export backups from App Settings regularly; restore merges by record ID and keeps existing records. Clearing browser data removes this book.
+
+Invoices use integer paise, item quantities, discounts and optional payments. No GST is charged. Invoice payment receipts affect cash and customer balances; moving an invoice to the recycle bin also moves its linked receipts. Restoring the invoice recovers those linked receipts. Draft invoices do not affect balances.
+
+Browser integration verification: install Playwright and its Chromium browser, then run `node scripts/test-billing.mjs`. Optionally set `BILLING_CHROMIUM_PATH` to an installed Chromium executable. The test covers totals, payment limits, recycle recovery, draft handling, cash balance, backup deduplication, offline reload and saving, and mobile overflow.

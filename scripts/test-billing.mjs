@@ -1,0 +1,32 @@
+import { createRequire } from 'node:module';
+const { chromium } = createRequire(import.meta.url)('playwright');
+import { createServer } from 'node:http';
+import { readFile } from 'node:fs/promises';
+import { resolve, extname } from 'node:path';
+import assert from 'node:assert/strict';
+const root=resolve('.');
+const server=createServer(async(req,res)=>{try{const path=resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!path.startsWith(root+'/'))throw new Error();const data=await readFile(path);res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css'})[extname(path)]||'application/octet-stream');res.end(data);}catch{res.statusCode=404;res.end();}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const origin='http://127.0.0.1:'+server.address().port;
+const browser=await chromium.launch({headless:true, ...(process.env.BILLING_CHROMIUM_PATH ? {executablePath:process.env.BILLING_CHROMIUM_PATH,args:['--no-sandbox']} : {})});
+const context=await browser.newContext({acceptDownloads:true});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+async function button(label){await page.getByRole('button',{name:label,exact:true}).click();if(label==='Save'){await page.waitForFunction(()=>!document.getElementById('save').disabled);}}
+async function db(){return page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('sai-billing-book',1);r.onsuccess=()=>{const t=r.result.transaction('book').objectStore('book').get('data');t.onsuccess=()=>resolve(t.result);t.onerror=()=>reject(t.error);};}));}
+try{
+ await page.goto(origin+'/admin-billing.html');assert(await page.locator('#locked').isVisible());
+ await page.evaluate(()=>sessionStorage.setItem('saiShopAdminToken','test-admin'));await page.reload();await page.locator('#app').waitFor({state:'visible'});
+ await page.waitForFunction(()=>navigator.serviceWorker.controller!==null);
+ await button('Ledger Book');await button('+ Customer');await page.getByLabel('Customer name').fill('Test Customer');await page.getByLabel('Mobile',{exact:true}).fill('9344672676');await button('Save');
+ await button('Product Catalog');await button('+ Product / Service');await page.getByLabel('Product / service name').fill('Visiting Card Design');await page.getByLabel('Rate (₹)',{exact:true}).fill('500');await button('Save');
+ await button('Invoices');await button('+ Invoice');await page.getByLabel('Select customer').selectOption({label:'Test Customer 9344672676'});await page.getByLabel('Add from catalog').selectOption({label:'Visiting Card Design — ₹500.00'});await page.getByLabel('Qty',{exact:true}).fill('2');await page.getByLabel('Discount (₹)').fill('100');await page.getByLabel('Payment received now (₹)').fill('300');await button('Save');
+ let book=await db();assert.equal(book.invoices.length,1);assert.equal(book.invoices[0].items[0].qty,2);assert.equal(book.invoices[0].discount,10000);assert.equal(book.payments[0].amount,30000);assert((await page.locator('#content').innerText()).includes('Due ₹600.00'));
+ await button('Receive Payment');await page.getByLabel('Amount (₹)',{exact:true}).fill('601');await button('Save');await page.waitForFunction(()=>document.getElementById('formError').textContent.includes('exceeds'));await page.getByLabel('Amount (₹)',{exact:true}).fill('600');await button('Save');assert((await page.locator('#content').innerText()).includes('Due ₹0.00'));
+ await button('View / Print');assert((await page.locator('#editor').innerText()).includes('Total: ₹900.00'));await button('Close');
+ page.on('dialog',d=>d.accept());await button('Move to Bin');book=await db();assert(book.invoices[0].deleted);assert(book.payments.every(p=>p.deleted));await button('Recycle Bin');await page.getByRole('button',{name:'Restore',exact:true}).first().click();book=await db();assert(!book.invoices[0].deleted);assert(book.payments.every(p=>!p.deleted));
+ await button('Draft Invoices');await button('+ Draft');await page.getByLabel('Product / service',{exact:true}).fill('Logo Design');await page.getByLabel('Rate (₹)',{exact:true}).fill('1200');await button('Save');book=await db();assert.equal(book.invoices.filter(i=>i.status==='draft').length,1);
+ await button('Cash Book');await button('+ Cash Entry');await page.getByLabel('Entry type').selectOption('expense');await page.getByLabel('Description').fill('Paper purchase');await page.getByLabel('Amount (₹)',{exact:true}).fill('100');await button('Save');assert((await page.locator('#stats').innerText()).includes('₹800.00'));
+ await button('App Settings');const downloadPromise=page.waitForEvent('download');await button('Export Backup');const download=await downloadPromise;const backupPath=await download.path();await page.locator('#restoreFile').setInputFiles(backupPath);await page.waitForFunction(()=>document.getElementById('message').textContent.includes('merged'));book=await db();assert.equal(book.invoices.length,2);assert.equal(book.payments.length,2);
+ await context.setOffline(true);await page.reload();await page.locator('#app').waitFor({state:'visible'});assert((await page.locator('#connection').innerText()).includes('Offline'));await button('Ledger Book');await button('+ Customer');await page.getByLabel('Customer name').fill('Offline Customer');await button('Save');assert.equal((await db()).customers.length,2);
+ await page.setViewportSize({width:390,height:844});await button('Overview');await page.screenshot({path:'/workspace/scratch/7757427dc5c8/billing-mobile.png',fullPage:true});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ assert.deepEqual(errors,[]);console.log('Billing passed: invoice calculations, payment limits, recycle recovery, drafts, cash balance, backup deduplication, offline reload and entries, mobile layout.');
+}finally{await browser.close();server.close();}
