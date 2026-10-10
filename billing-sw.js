@@ -1,6 +1,6 @@
 // Cache only the billing shell. Never cache admin API responses or intercept other pages.
-const CACHE = 'sai-billing-shell-v3';
-const FILES = ['/admin-billing.html','/admin-billing.js','/billing-sync-core.js','/admin-billing.css','/admin.css','/admin-liquid-glass.css','/admin-sidebar.js','/vendor/billing/html2canvas.min.js','/vendor/billing/jspdf.umd.min.js'];
+const CACHE = 'sai-billing-shell-v4';
+const FILES = ['/admin-billing.html','/admin-billing.js','/billing-sync-core.js','/Images/home-logo.webp','/admin-billing.css','/admin.css','/admin-liquid-glass.css','/admin-sidebar.js','/vendor/billing/html2canvas.min.js','/vendor/billing/jspdf.umd.min.js'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(Promise.all([self.clients.claim(),caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('sai-billing-shell-')&&k!==CACHE).map(k=>caches.delete(k))))])));
 self.addEventListener('fetch', event => {
