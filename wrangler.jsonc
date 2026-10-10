@@ -7,6 +7,7 @@
     "directory": ".",
     "binding": "ASSETS",
     "run_worker_first": [
+      "/api/admin/billing",
       "/",
       "/index",
       "/index.html",
@@ -49,3 +50,4 @@
     "nodejs_compat"
   ]
 }
+

@@ -1,3 +1,4 @@
+import { billingAPI } from "./billing-sync-worker.js";
 import { getPromotion, applyPromotion, promotionAPI } from "./promotions.js";
 import { bundleCard, serviceCard, fillGrid, hideStatus, catalogResponse, offerPriceHTML } from "./catalog-html.js";
 function json(data, status = 200, extraHeaders = {}) {
@@ -1344,6 +1345,11 @@ export default {
     if (["/api/promotion", "/api/admin/promotion"].includes(url.pathname)) {
       try { return await promotionAPI(request, env); }
       catch (error) { console.error("Promotion API error:", error); return json({error:"Promotion settings are temporarily unavailable."},500); }
+    }
+    if (url.pathname === "/api/admin/billing") {
+      if (!isAuthorized(request, env)) return json({error:"Admin login required."},401);
+      try { return await billingAPI(request,env); }
+      catch (error) { return json({error:"Billing sync temporarily unavailable. Local records are retained."},503); }
     }
     if (url.pathname.startsWith("/api/")) {
       try {
