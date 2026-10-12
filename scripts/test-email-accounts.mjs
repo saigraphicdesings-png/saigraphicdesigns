@@ -9,10 +9,11 @@ const mf = new Miniflare({
   modules: [
     { type: "ESModule", path: "worker.js", contents: (await readFile("src/worker.js", "utf8")).replace('from "node:crypto"', 'from "./capped-crypto.js"') },
     { type: "ESModule", path: "promotions.js", contents: await readFile("src/promotions.js", "utf8") },
-    { type: "ESModule", path: "catalog-html.js", contents: await readFile("src/catalog-html.js", "utf8") },
+    { type: "ESModule", path: "catalog-html.js", contents: (await readFile("src/catalog-html.js", "utf8")).replace("../catalog-presentation.mjs", "./catalog-presentation.mjs") },
     { type: "ESModule", path: "billing-sync-worker.js", contents: (await readFile("src/billing-sync-worker.js", "utf8")).replace("../billing-sync-core.js", "./billing-sync-core.js") },
+    { type: "ESModule", path: "catalog-presentation.mjs", contents: await readFile("catalog-presentation.mjs", "utf8") },
     { type: "ESModule", path: "billing-sync-core.js", contents: await readFile("billing-sync-core.js", "utf8") },
-    { type: "ESModule", path: "index.js", contents: await readFile("src/index.js", "utf8") },
+    { type: "ESModule", path: "index.js", contents: (await readFile("src/index.js", "utf8")).replace("../catalog-presentation.mjs", "./catalog-presentation.mjs") },
     { type: "ESModule", path: "capped-crypto.js", contents: `
       import { pbkdf2 as nativePbkdf2 } from "node:crypto";
       export function pbkdf2(password, salt, iterations, length, digest, callback) {
