@@ -12,8 +12,8 @@
     indicator.classList.toggle("is-online", online);
     indicator.classList.toggle("is-offline", !online);
     label.textContent = online
-      ? "Payment Online — accepting paid orders now"
-      : "Payment Offline right now — available " + hours;
+      ? "WhatsApp orders open — files unlock after payment approval"
+      : "Paid order requests closed — available " + hours;
   }
 
   async function refreshStatus() {
@@ -25,7 +25,7 @@
     } catch (_) {
       indicator.classList.remove("is-online");
       indicator.classList.add("is-offline");
-      label.textContent = "Payment status unavailable — please try again shortly";
+      label.textContent = "Order availability unknown — please try again shortly";
     }
   }
 

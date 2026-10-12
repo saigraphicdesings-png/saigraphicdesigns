@@ -1,3 +1,4 @@
+import {bundleName} from "../catalog-presentation.mjs";
 // Public catalogue HTML uses current published rows; never includes download links.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function safeURL(value, fallback) {
@@ -18,9 +19,9 @@ export function bundleCard(product, home = false) {
   return '<a class="' + (home ? 'home-showcase-card' : 'shop-product') + '" href="' + href + '">' +
     '<div class="' + (home ? 'home-showcase-image' : 'product-preview') + '">' +
     (Number(product.price) === 0 ? '<span class="' + (home ? 'home-free-ribbon' : 'free-ribbon') + '">FREE</span>' : '') +
-    '<img src="' + safeURL(product.images?.[0], '/Images/placeholder.svg') + '" alt="' + esc(product.name) + '" width="600" height="600" loading="lazy" decoding="async"></div>' +
+    '<img src="' + safeURL(product.images?.[0], '/Images/placeholder.svg') + '" alt="' + esc(bundleName(product)) + '" width="600" height="600" loading="lazy" decoding="async"></div>' +
     '<div class="' + (home ? 'home-showcase-body' : 'product-info') + '"><span class="product-category">' + esc(product.category) + '</span>' +
-    '<h3>' + esc(product.name) + '</h3><p>' + (product.itemCount > 0 ? esc(product.itemCount) + ' designs · ' : '') + formats + '</p>' +
+    '<h3>' + esc(bundleName(product)) + '</h3><p>' + (product.itemCount > 0 ? esc(product.itemCount) + ' designs · ' : '') + formats + '</p>' +
     '<div class="home-showcase-bottom"><strong>' + offerPriceHTML(product) + '</strong><span>View bundle ↗</span></div></div></a>';
 }
 export function serviceCard(service) {

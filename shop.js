@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    const {bundleName,bundleCopy,currentPrice,purchaseInstructions}=await import("/catalog-presentation.mjs");
+    let previewTrigger=null;
 
     /* =====================================================
        SETTINGS
@@ -416,7 +418,7 @@ Please share the payment details and let me know when I can access the files in 
     }
 
     function displayName(product) {
-        return product.displayName || product.name || "Design bundle";
+        return bundleName(product);
     }
 
     function productDescription(product) {
@@ -429,11 +431,7 @@ Please share the payment details and let me know when I can access the files in 
     }
 
     function productCopy(product, value) {
-        const copy = String(value || "");
-        // This catalog entry still contains its older price in editorial copy.
-        return String(product.id) === "BC-1001" && Number(product.price) === 500
-            ? copy.replace(/₹\s*499\b/g, "₹500")
-            : copy;
+        return bundleCopy(product,value);
     }
 
     function productCardExcerpt(product) {
@@ -722,6 +720,7 @@ Please share the payment details and let me know when I can access the files in 
         }
 
 
+        previewTrigger=document.activeElement;
         currentProduct =
             product;
 
@@ -778,9 +777,7 @@ Please share the payment details and let me know when I can access the files in 
         }
         const purchaseNote = document.getElementById("modalPurchaseNote");
         if (purchaseNote) {
-            purchaseNote.textContent = Number(product.price) === 0
-                ? "Sign in to access the free download."
-                : "Sign in to request this bundle. Your files unlock in My Account after payment approval.";
+            purchaseNote.textContent = purchaseInstructions(product);
         }
 
         const article = document.getElementById("modalProductArticle");
@@ -812,6 +809,11 @@ Please share the payment details and let me know when I can access the files in 
         }
 
 
+        document.getElementById('modalCurrentPrice').textContent='Current price: '+currentPrice(product);
+        document.getElementById('modalArtworkNote').textContent='Promotional artwork may show an earlier price. The current price above applies to your order. Preview images show the uploaded artwork; confirm included templates, software version, fonts and licence with us before buying.';
+        const requirements=document.getElementById('modalFileRequirements');
+        const formats=(product.formats||[]).map(f=>String(f).toUpperCase());
+        requirements.textContent='Files: '+formats.join(', ')+'. '+(formats.includes('CDR')?'CDR files require CorelDRAW. ':'')+(formats.includes('PSD')?'PSD files require Photoshop or compatible software. ':'')+'Use the listed formats; software versions and font requirements must be confirmed for this bundle.';
         renderProductImages();
 
 
@@ -819,8 +821,8 @@ Please share the payment details and let me know when I can access the files in 
             modalAddCart.dataset.downloadReady = "";
             modalAddCart.textContent =
                 Number(product.price) === 0
-                    ? "Download Free"
-                    : "Buy on WhatsApp";
+                    ? "Get Free Files — Login Required"
+                    : "Request Order on WhatsApp";
         }
 
 
@@ -835,8 +837,11 @@ Please share the payment details and let me know when I can access the files in 
         );
 
 
-        document.body.style.overflow =
-            "hidden";
+        document.body.style.overflow = "hidden";
+        document.querySelector('header').inert=true;
+        document.querySelector('.shop-hero').inert=true;
+        document.querySelector('main').inert=true;
+        productModalClose.focus();
 
     }
 
@@ -863,6 +868,8 @@ Please share the payment details and let me know when I can access the files in 
                 : [];
 
 
+        viewerPrev.hidden=images.length<2;
+        viewerNext.hidden=images.length<2;
         if (images.length === 0) {
 
             mainProductImage.removeAttribute(
@@ -1079,6 +1086,10 @@ Please share the payment details and let me know when I can access the files in 
         );
 
 
+        document.querySelector('header').inert=false;
+        document.querySelector('.shop-hero').inert=false;
+        document.querySelector('main').inert=false;
+        if(previewTrigger?.isConnected)previewTrigger.focus();
         currentProduct =
             null;
 
@@ -1810,6 +1821,12 @@ Thank you! 😊`;
         function (event) {
 
 
+            if(event.key==='Tab' && productModal?.classList.contains('active')) {
+                const controls=[...productModal.querySelectorAll('button,a[href],input,select,textarea,summary,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);
+                const first=controls[0],last=controls.at(-1);
+                if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+                else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+            }
             /* ESC */
 
             if (event.key === "Escape") {
