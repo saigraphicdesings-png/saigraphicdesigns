@@ -1,10 +1,10 @@
 (() => {
   const run = () => {
-    if (location.pathname.endsWith("/admin.html") || location.pathname.endsWith("admin.html")) return;
+    if (/\/admin(?:\.html)?\/?$/.test(location.pathname)) return;
     const header = document.querySelector(".admin-header");
     if (!header) return;
-    const file = location.pathname.split("/").pop() || "";
-    const active = file === "admin-billing.html" ? "billing" : file === "admin-customers.html" ? "customers" : file === "admin-payments.html" ? "payments" : file === "admin-analytics.html" ? "analytics" : file === "admin-tasks.html" ? "tasks" : "";
+    const file = (location.pathname.split("/").pop() || "").replace(/\.html$/, "") + ".html";
+    const active = file === "admin-services.html" ? "services" : file === "admin-blog.html" ? "blog" : file === "admin-billing.html" ? "billing" : file === "admin-customers.html" ? "customers" : file === "admin-payments.html" ? "payments" : file === "admin-analytics.html" ? "analytics" : file === "admin-tasks.html" ? "tasks" : "";
     const navItem = (key, href, icon, label) => `<a class="${active === key ? "nav-active" : ""}" href="${href}">${icon} <span>${label}</span></a>`;
     document.body.classList.add("admin-subpage");
     header.innerHTML = `
@@ -13,6 +13,7 @@
         ${navItem("dashboard", "admin.html", "⌘", "Dashboard")}
         ${navItem("products", "admin.html#productForm", "▣", "Bundles")}
         ${navItem("services", "admin-services.html", "✦", "Services")}
+        ${navItem("blog", "admin-blog.html", "✎", "Blog Editor")}
         ${navItem("offers", "admin.html#promotionPanel", "%", "Common Offer")}
         <p class="nav-label">Management</p>
         ${navItem("customers", "admin-customers.html", "♙", "Customers")}
