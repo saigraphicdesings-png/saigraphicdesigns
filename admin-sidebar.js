@@ -11,6 +11,9 @@
       <a class="brand" href="admin.html"><span>SG</span><b>Sai Graphic<br>Designs</b></a>
       <nav class="admin-nav" aria-label="Admin navigation">
         ${navItem("dashboard", "admin.html", "⌘", "Dashboard")}
+        ${navItem("reviews", "admin.html#reviewsPanel", "★", "Client Reviews")}
+        ${navItem("clients", "admin.html#clientsPanel", "◈", "Clients")}
+        ${navItem("examples", "admin.html#designExamples", "✦", "Design Examples")}
         ${navItem("products", "admin.html#productForm", "▣", "Bundles")}
         ${navItem("services", "admin-services.html", "✦", "Services")}
         ${navItem("blog", "admin-blog.html", "✎", "Blog Editor")}
