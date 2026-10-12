@@ -1,6 +1,18 @@
 export const groups = ['customers','catalog','invoices','payments','cash'];
 const total = i => i.items.reduce((sum,x)=>sum+Math.round(x.qty*x.rate),0)-i.discount;
 const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+export function replaceInvoice(book, expected, value) {
+  const current = book.invoices.find(row => row.id === value.id);
+  if (!expected || !current || current.deleted || JSON.stringify(current) !== JSON.stringify(expected)) throw new Error('This invoice changed on another device or tab. Close and reopen it before editing.');
+  if (current.status === 'issued' && value.status !== 'issued') throw new Error('An issued invoice must stay issued.');
+  if (value.id !== expected.id || value.number !== expected.number || value.createdAt !== expected.createdAt) throw new Error('Invoice identity cannot be changed.');
+  const receipts = book.payments.filter(row => row.invoiceId === current.id);
+  if (receipts.filter(row => !row.deleted).reduce((sum,row) => sum+row.amount,0) > total(value)) throw new Error('Invoice total cannot be less than the amount already paid.');
+  Object.assign(current, value);
+  // Keep receipts associated with the invoice when its customer is corrected.
+  for (const receipt of receipts) receipt.customerId = value.customerId;
+  validateBackup({format:'sai-billing-backup',book});
+}
 // Keep only removed IDs so an offline device cannot resurrect erased record contents.
 export function purgeRecord(book, group, id) {
   if (!groups.includes(group)) throw new Error('Invalid record type.');
