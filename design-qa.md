@@ -23,3 +23,6 @@ P1: rendered visual fidelity and primary interactions have not been verified bec
 No source/implementation visual comparison was possible. No passed claim is made.
 
 final result: blocked
+
+## User-authorized deployment update
+The user subsequently requested liquid glass with this reference theme and explicitly instructed deployment. The reference palette/layout now has translucent panels, blur, highlight borders, glossy colourful metric cards and a navy glass shell. Deployment without the blocked screenshot comparison is authorized. Visual QA remains blocked; deployment does not imply visual verification.
