@@ -23,7 +23,7 @@ jobs:
 
       - name: Verify catalog rendering and site links
         run: |
-          node --test scripts/test-invoice-edit.mjs scripts/test-billing-purge.mjs scripts/test-quotation-sales.mjs scripts/test-shop-presentation.mjs scripts/test-billing-sync.mjs scripts/test-promotions.mjs scripts/test-catalog-html.mjs scripts/test-shop-catalog.mjs
+          node --test scripts/test-bundle-categories.mjs scripts/test-invoice-edit.mjs scripts/test-billing-purge.mjs scripts/test-quotation-sales.mjs scripts/test-shop-presentation.mjs scripts/test-billing-sync.mjs scripts/test-promotions.mjs scripts/test-catalog-html.mjs scripts/test-shop-catalog.mjs
           node scripts/test-quotations.mjs
           node scripts/validate-site.mjs
 
@@ -36,4 +36,5 @@ jobs:
           command: deploy --config wrangler.jsonc
       - name: Verify published shop and bundle sitemap
         run: python scripts/verify-deployment.py
+
 

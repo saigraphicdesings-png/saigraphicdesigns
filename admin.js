@@ -425,7 +425,24 @@ async function api(path,options={}){const response=await fetch(path,{...options,
 function showDashboard(){loginCard.hidden=true;dashboard.hidden=false;$("adminSessionActions").hidden=false;loadProducts();window.dispatchEvent(new Event("sai-admin-open"))}
 function logout(){token="";sessionStorage.removeItem(tokenKey);dashboard.hidden=true;$("adminSessionActions").hidden=true;loginCard.hidden=false;$("adminToken").value="";loginError.textContent=""}
 loginForm.addEventListener("submit",async e=>{e.preventDefault();token=$("adminToken").value.trim();loginError.textContent="";try{await api("/api/admin/products");sessionStorage.setItem(tokenKey,token);showDashboard()}catch(err){loginError.textContent=err.message}})
-async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];render();updateLinkProducts();updateKeyProductControl()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
+async function loadProducts(){list.innerHTML='<p class="empty">Loading products…</p>';try{const data=await api("/api/admin/products");products=data.products||[];await loadCategories();render();updateLinkProducts();updateKeyProductControl()}catch(err){list.innerHTML='<p class="empty">'+escapeHTML(err.message)+'</p>'}}
+let categories=[];
+const categoryPanel=document.createElement('section');categoryPanel.className='panel';categoryPanel.id='bundleCategoriesPanel';
+categoryPanel.innerHTML='<h2>Bundle Categories</h2><p>Add or rename your categories. Renaming updates every product in that category. Only unused categories can be removed.</p><div class="form-grid"><label>Category name<input id="categoryName" maxlength="80" placeholder="e.g. Wedding Bundles"></label></div><button type="button" class="primary" id="addCategory">Add category</button><p id="categoryMessage" role="status" aria-live="polite"></p><div id="categoryList"></div>';
+document.querySelector('.products-column').append(categoryPanel);
+function categoryOptions(selected){const select=$('productCategory');select.replaceChildren(new Option('Select category',''));select.options[0].disabled=true;categories.forEach(c=>select.add(new Option(c.name,c.name)));if(selected&&!categories.some(c=>c.name===selected))select.add(new Option(selected,selected));select.value=selected||'';}
+async function loadCategories(){try{const data=await api('/api/admin/bundle-categories');categories=data.categories||[];categoryOptions($('productCategory').value);$('categoryList').innerHTML=categories.map((c,i)=>'<div class="category-row"><label>Category<input aria-label="Rename category" data-category-name="'+i+'" maxlength="80" value="'+escapeHTML(c.name)+'"></label><small>'+Number(c.productCount||0)+' products</small><button type="button" class="text-btn" data-category-rename="'+i+'">Rename</button><button type="button" class="text-btn" data-category-remove="'+i+'" '+(c.productCount?'disabled':'')+'>Remove</button></div>').join('');}catch(error){$('categoryMessage').textContent=error.message;}}
+let categoryBusy=false;
+async function changeCategory(body,method='POST'){
+ if(categoryBusy)return;categoryBusy=true;const status=$('categoryMessage');status.textContent='Saving category…';categoryPanel.querySelectorAll('button').forEach(b=>b.disabled=true);
+ const selected=$('productCategory').value;
+ try{await api('/api/admin/bundle-categories',{method,body:JSON.stringify(body)});if(body.originalName===selected)categoryOptions(body.name);await loadProducts();$('categoryName').value='';status.textContent=method==='DELETE'?'Category removed.':body.originalName?'Category renamed and products updated.':'Category added.';}
+ catch(error){status.textContent=error.message;await loadCategories();}
+ finally{categoryBusy=false;$('addCategory').disabled=false;}
+}
+$('addCategory').addEventListener('click',()=>changeCategory({name:$('categoryName').value}));
+$('categoryName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('addCategory').click();}});
+$('categoryList').addEventListener('click',e=>{const rename=e.target.closest('[data-category-rename]'),remove=e.target.closest('[data-category-remove]');if(rename){const i=Number(rename.dataset.categoryRename);changeCategory({originalName:categories[i].name,name:categoryPanel.querySelector('[data-category-name="'+i+'"]').value});}if(remove){const i=Number(remove.dataset.categoryRemove);changeCategory({name:categories[i].name},'DELETE');}});
 function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function money(v){return Number(v)===0?"FREE":"₹"+Number(v).toLocaleString("en-IN")}
 function isBundle(p){return /\bbundles?\b/i.test(String(p.name||""))}
@@ -557,3 +574,4 @@ $("copyProductLink").addEventListener("click", async () => {
 });
 if(token)showDashboard();
 })();
+

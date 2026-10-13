@@ -1,5 +1,6 @@
 import {bundleName,bundleCopy,purchaseInstructions} from "../catalog-presentation.mjs";
 import { billingAPI } from "./billing-sync-worker.js";
+import { categoryAPI } from "./bundle-categories.js";
 import { getPromotion, applyPromotion, promotionAPI } from "./promotions.js";
 import { bundleCard, serviceCard, fillGrid, hideStatus, catalogResponse, offerPriceHTML } from "./catalog-html.js";
 function json(data, status = 200, extraHeaders = {}) {
@@ -812,6 +813,7 @@ async function handleAPI(request, env, url) {
 
   if (!url.pathname.startsWith("/api/admin/")) return json({ error: "Not found." }, 404);
   if (!isAuthorized(request, env)) return json({ error: "Unauthorized." }, 401);
+  if (url.pathname === "/api/admin/bundle-categories") return categoryAPI(request, env);
   if (url.pathname.startsWith("/api/admin/products")) await ensureProductHomepageColumn(env);
 
   if (url.pathname === "/api/admin/services" && request.method === "GET") {
@@ -1378,3 +1380,4 @@ export default {
     return env.ASSETS.fetch(request);
   }
 };
+
