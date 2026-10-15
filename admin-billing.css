@@ -67,3 +67,6 @@
 @media print{#printArea{padding:0!important}.invoice-paper{-webkit-print-color-adjust:exact;print-color-adjust:exact}.inv-table tr,.inv-meta,.inv-account,.inv-totals,.inv-footer{break-inside:avoid}.inv-table thead{display:table-header-group}.inv-table tfoot{display:table-row-group}}
 @page{size:A4;margin:10mm}
 @media print{#printArea .invoice-paper{min-height:277mm}#printArea .inv-table th,#printArea .inv-table td{padding:11px 9px;text-align:right}#printArea .inv-table th:first-child,#printArea .inv-table td:first-child{text-align:center}#printArea .inv-table th:nth-child(2),#printArea .inv-table td:nth-child(2),#printArea .inv-table th:nth-child(4),#printArea .inv-table td:nth-child(4),#printArea .inv-table tfoot td{text-align:left}}
+
+
+.signature-pad{display:block;width:100%;height:auto;aspect-ratio:32/9;background:#fff;border:1px solid #a9afc2;border-radius:10px;touch-action:none;cursor:crosshair}.stamp-preview{display:block;max-width:200px;max-height:140px;object-fit:contain;background:#fff;margin:12px 0}.inv-signature{width:210px;flex-shrink:0}.inv-marks{display:flex;align-items:center;justify-content:center;gap:8px;min-height:90px;padding:6px 0}.inv-marks img{object-fit:contain;max-width:100px;max-height:85px}.inv-marks .inv-autograph{max-height:60px}.inv-signature>p:first-child{color:#292c32;font-weight:bold;margin-bottom:4px}
