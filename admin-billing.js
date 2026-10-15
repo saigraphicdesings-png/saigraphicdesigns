@@ -93,7 +93,7 @@
   function downloadFile(file){const url=URL.createObjectURL(file),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}
   function invoiceShareMessage(i){
     const quotation=i.status==='quotation',label=quotation?'Quotation':'Bill';
-    return 'Hello '+i.customer.name+',\n\n'+label+' from '+book.settings.name+'\n'+label+' Number: '+i.number+'\n'+label+' Amount: '+money(total(i))+(quotation?'':'\nAmount Paid: '+money(paid(i))+'\nBalance Due: '+money(total(i)-paid(i)))+'\n\nThank you for choosing '+book.settings.name+'! We appreciate your support.\n\nPlease share your experience with a Google review:\nhttps://maps.app.goo.gl/E7ymCPreoUNmoLLh7';
+    return 'Hello '+i.customer.name+',\n\n'+label+' from '+book.settings.name+'\n'+label+' Number: '+i.number+'\n'+label+' Amount: '+money(total(i))+(quotation?'':'\nAmount Paid: '+money(paid(i))+'\nBalance Due: '+money(total(i)-paid(i)))+'\n\nThank you for choosing '+book.settings.name+'! We appreciate your support.\n\nPlease share your experience with a Google review:\nhttps://g.page/r/CUJMmmok_JaaEAE/review';
   }
   async function shareInvoice(iid,mode){
     const buttons=[...$('fields').querySelectorAll('[data-action]')];buttons.forEach(b=>b.disabled=true);
