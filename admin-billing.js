@@ -91,13 +91,17 @@
     }finally{host.remove();}
   }
   function downloadFile(file){const url=URL.createObjectURL(file),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}
+  function invoiceShareMessage(i){
+    const quotation=i.status==='quotation',label=quotation?'Quotation':'Bill';
+    return 'Hello '+i.customer.name+',\n\n'+label+' from '+book.settings.name+'\n'+label+' Number: '+i.number+'\n'+label+' Amount: '+money(total(i))+(quotation?'':'\nAmount Paid: '+money(paid(i))+'\nBalance Due: '+money(total(i)-paid(i)))+'\n\nThank you for choosing '+book.settings.name+'! We appreciate your support.\n\nPlease share your experience with a Google review:\nhttps://maps.app.goo.gl/E7ymCPreoUNmoLLh7';
+  }
   async function shareInvoice(iid,mode){
     const buttons=[...$('fields').querySelectorAll('[data-action]')];buttons.forEach(b=>b.disabled=true);
     try{const file=await invoiceFile(iid),i=book.invoices.find(x=>x.id===iid);
       if(mode==='downloadInvoice'){downloadFile(file);message((i.status==='quotation'?'Quotation':'Invoice')+' PDF downloaded.');return;}
-      if(mode==='shareInvoice'&&navigator.canShare?.({files:[file]})&&navigator.share){try{await navigator.share({files:[file],title:i.number,text:(i.status==='quotation'?'Quotation':'Invoice')+' from '+book.settings.name});return;}catch(e){if(e.name==='AbortError')return;}}
+      if(mode==='shareInvoice'&&navigator.canShare?.({files:[file]})&&navigator.share){try{await navigator.share({files:[file],title:i.number,text:invoiceShareMessage(i)});return;}catch(e){if(e.name==='AbortError')return;}}
       downloadFile(file);
-      if(mode==='whatsappInvoice'){let phone=String(i.customer.phone||'').replace(/\D/g,'');if(phone.length===10)phone='91'+phone;if(phone.length<7||phone.length>15)phone='';const text='Hello '+i.customer.name+',\n'+(i.status==='quotation'?'Quotation':'Invoice')+' '+i.number+' from '+book.settings.name+'\nTotal: '+money(total(i))+(i.status==='quotation'?'':'\nPaid: '+money(paid(i))+'\nBalance: '+money(total(i)-paid(i)));const link=document.createElement('a');link.href='https://wa.me/'+phone+'?text='+encodeURIComponent(text);link.target='_blank';link.rel='noopener noreferrer';link.click();message('PDF downloaded. Attach this file in the WhatsApp chat.');}
+      if(mode==='whatsappInvoice'){let phone=String(i.customer.phone||'').replace(/\D/g,'');if(phone.length===10)phone='91'+phone;if(phone.length<7||phone.length>15)phone='';const text=invoiceShareMessage(i);const link=document.createElement('a');link.href='https://wa.me/'+phone+'?text='+encodeURIComponent(text);link.target='_blank';link.rel='noopener noreferrer';link.click();message('PDF downloaded. Attach this file in the WhatsApp chat.');}
       else message('File sharing is unavailable in this browser. PDF downloaded; attach it in WhatsApp.');
     }finally{buttons.forEach(b=>b.disabled=false);}
   }
