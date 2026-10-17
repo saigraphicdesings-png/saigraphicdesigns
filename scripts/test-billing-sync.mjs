@@ -8,7 +8,7 @@ test('billing route denies unauthenticated requests before accessing DB',async()
   const response=await worker.fetch(new Request('https://billing.test/api/admin/billing'),{ADMIN_TOKEN:'expected-token'});
   assert.equal(response.status,401);
 });
-const blank=()=>({version:1,customers:[],catalog:[],invoices:[],payments:[],cash:[],settings:{name:'Sai',phone:'',address:'',note:''}});
+const blank=()=>({version:1,customers:[],catalog:[],invoices:[],purchaseOrders:[],payments:[],cash:[],settings:{name:'Sai',phone:'',address:'',note:''}});
 const customer=id=>({id,name:id,phone:'',address:''});
 function database(){const sql=new DatabaseSync(':memory:');return {prepare(query){let values=[];return {bind(...args){values=args;return this;},async run(){const r=sql.prepare(query).run(...values);return {meta:{changes:Number(r.changes)}};},async all(){return {results:sql.prepare(query).all(...values)};}};},async batch(statements){sql.exec('BEGIN');try{const result=[];for(const s of statements)result.push(await s.run());sql.exec('COMMIT');return result;}catch(e){sql.exec('ROLLBACK');throw e;}}};}
 const request=(method,body)=>new Request('https://billing.test/api/admin/billing',{method,...(body?{body:JSON.stringify(body)}:{})});
@@ -46,3 +46,4 @@ test('malformed, invalid, oversized and cross-origin writes retain the previous 
   const oversized=new Request('https://billing.test/api/admin/billing',{method:'PUT',body:'x'.repeat(20000001)});assert.equal((await billingAPI(oversized,env)).status,413);
   assert.equal((await (await billingAPI(request('GET'),env)).json()).revision,1);
 });
+
