@@ -87,5 +87,6 @@ export function validateBackup(data){const b=data.book;if(data.format!=='sai-bil
       if(!text(o.number)||!o.number||!poStatuses.includes(o.status)||!/^\d{4}-\d{2}-\d{2}$/.test(o.date)||!text(o.deliveryDate)||(o.deliveryDate&&!/^\d{4}-\d{2}-\d{2}$/.test(o.deliveryDate))||!text(o.createdAt)||!text(o.updatedAt)||!text(o.note)||!text(o.supplier?.name)||!o.supplier.name.trim()||!text(o.supplier.phone)||!text(o.supplier.address)||!Number.isSafeInteger(o.discount)||o.discount<0||!Array.isArray(o.items)||!o.items.length||o.items.length>500)throw new Error('Invalid purchase order.');
       for(const x of o.items)if(!text(x.name)||!x.name.trim()||!text(x.unit)||!x.unit.trim()||!Number.isFinite(x.qty)||x.qty<=0||x.qty>1e6||!Number.isSafeInteger(x.rate)||x.rate<0||x.rate>1e11)throw new Error('Invalid purchase order item.');
       if(!Number.isSafeInteger(total(o))||total(o)<0)throw new Error('Invalid purchase order total.');
+      if(o.advancePaid!==undefined&&(!Number.isSafeInteger(o.advancePaid)||o.advancePaid<0||o.advancePaid>total(o)))throw new Error('Advance Paid must be between zero and the total amount.');
     }
   }

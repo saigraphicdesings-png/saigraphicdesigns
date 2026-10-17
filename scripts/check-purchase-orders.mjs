@@ -13,8 +13,11 @@ const order={id:'po-1',number:'PO-1',supplier:{name:'<Supplier>',phone:'123',add
 const book=t.blank();book.purchaseOrders.push(order);t.setBook(book);
 assert.equal(t.total(order),25000);
 assert.equal(t.validateBackup({format:'sai-billing-backup',book}).purchaseOrders.length,1);
+order.advancePaid=10000;
+assert.equal(t.validateBackup({format:'sai-billing-backup',book}).purchaseOrders[0].advancePaid,10000);
+for(const advancePaid of [-1,25001,1.5,'100',null]){const bad=structuredClone(book);bad.purchaseOrders[0].advancePaid=advancePaid;assert.throws(()=>t.validateBackup({format:'sai-billing-backup',book:bad}));}
 const html=t.invoiceHtml(t.documentRecord('po-1'));
-assert.match(html,/PURCHASE ORDER/);assert.match(html,/&lt;Supplier&gt;/);assert.doesNotMatch(html,/CUSTOMER ACCOUNT|Amount Paid|BILL TO:/);
+assert.match(html,/PURCHASE ORDER/);assert.match(html,/TOTAL AMOUNT:/);assert.match(html,/Advance Paid:/);assert.match(html,/₹100.00/);assert.match(html,/₹150.00/);assert.match(html,/&lt;Supplier&gt;/);assert.doesNotMatch(html,/CUSTOMER ACCOUNT|Amount Paid|BILL TO:/);
 t.setTab('purchaseOrders');t.render();assert.match(element('content').innerHTML,/PO-1/);
 element('search').value='missing';t.render();assert.doesNotMatch(element('content').innerHTML,/PO-1/);
 element('search').value='';order.deleted=true;t.render();assert.doesNotMatch(element('content').innerHTML,/PO-1/);t.setTab('bin');t.render();assert.match(element('content').innerHTML,/restore:purchaseOrders/);
