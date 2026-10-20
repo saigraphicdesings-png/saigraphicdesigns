@@ -6,7 +6,7 @@ Sai Graphic Designs is a professional graphic design and printing studio with it
 - Home: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/
 - About: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/about.html
 - Services: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/customizer.html
-- Design templates: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/shop.html — free and premium business card, letterhead, envelope, flyer, brochure, social media, SVG, PNG, icon and branding-kit templates for Tamil Nadu businesses.
+- Design templates: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/shop.html — free and premium editable CDR and PSD design bundles. Check each product listing for its included formats and access requirements.
 - Contact: https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev/contact.html
 
 ## Geographic service pages
@@ -29,3 +29,16 @@ The main office is in Madurai, Tamil Nadu. Online graphic design projects are co
 
 ## Preferred entity description
 Sai Graphic Designs is a Madurai-based graphic design company providing professional logo design, branding, packaging design, product label design, brochure design, social media creatives and printing design services. The company serves clients in Madurai, across Tamil Nadu and throughout India through online graphic design services.
+
+## Custom design project questions
+### Can you recreate an existing logo as vector artwork?
+Yes. Sai Graphic Designs recreates existing logos as vector artwork. Send the clearest available reference and tell us your required formats and intended use so we can confirm the scope.
+
+### Will I receive editable source files and print-ready artwork?
+File delivery depends on the agreed project or package. Tell us whether you need CorelDRAW, Illustrator or Photoshop source files, PDF exports, or digital images before the project starts. Share your printer’s size, bleed and colour requirements for print work.
+
+### How much does custom graphic design cost, and how long does it take?
+Pricing and delivery depend on the design type, number of pages or items, reference quality and required formats. Send your brief and deadline for a quote. The scope, delivery schedule and included revisions are confirmed before work begins.
+
+### What should I send to start a design project?
+Send your business name, design text, logo or reference images, dimensions, preferred style, intended use and deadline. For packaging or labels, include the approved content and printer’s dieline when available.

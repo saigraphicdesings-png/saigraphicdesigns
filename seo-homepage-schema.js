@@ -8,8 +8,8 @@
   // This does not change the visible hero image or layout.
   const HERO_IMAGE = SITE_URL + "Images/logo.png";
   const LOGO_IMAGE = SITE_URL + "Images/logo.png";
-  const PAGE_TITLE = "Sai Graphic Designs | Designing Agency";
-  const PAGE_DESCRIPTION = "Sai Graphic Designs is a designing and printing agency in Madurai offering logo design, branding, social media creatives, packaging, print services and ready-to-use design templates for businesses and individuals.";
+  const PAGE_TITLE = "Graphic Designer in Madurai | Logo & Print Design | Sai Graphic Designs";
+  const PAGE_DESCRIPTION = "Sai Graphic Designs in Madurai creates logos, vector logo recreations, business cards, brochures, packaging and product labels for print and digital use.";
 
   document.title = PAGE_TITLE;
 
@@ -62,6 +62,9 @@
 
   // Replace legacy/duplicate JSON-LD with one authoritative entity graph.
   const oldSchemas = document.querySelectorAll('script[type="application/ld+json"]');
+  const visibleFaqSchema = Array.from(oldSchemas).map(function (node) {
+    try { return JSON.parse(node.textContent); } catch (_) { return null; }
+  }).find(function (value) { return value && value["@type"] === "FAQPage"; });
   oldSchemas.forEach(function (node) { node.remove(); });
 
   const schema = {
@@ -138,18 +141,11 @@
           {"@type": "Country", "name": "India"}
         ],
         "url": SITE_URL
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {"@type":"Question","name":"What does Sai Graphic Designs offer?","acceptedAnswer":{"@type":"Answer","text":"Sai Graphic Designs is a designing and printing agency with a template shop, offering branding, logo design, social media creatives, packaging, print materials and ready-to-use design templates."}},
-          {"@type":"Question","name":"Does Sai Graphic Designs provide printing services?","acceptedAnswer":{"@type":"Answer","text":"Yes. Sai Graphic Designs provides professional printing solutions along with design services, helping customers move from design to finished print materials."}},
-          {"@type":"Question","name":"Can I buy design templates from Sai Graphic Designs?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Sai Graphic Designs template shop offers ready-to-use design templates for business cards, social media, brochures, packaging and other creative needs."}},
-          {"@type":"Question","name":"Where is Sai Graphic Designs based?","acceptedAnswer":{"@type":"Answer","text":"Sai Graphic Designs is based in Madurai, Tamil Nadu, and also provides online design services for customers across India."}}
-        ]
       }
     ]
   };
+
+  if (visibleFaqSchema) schema["@graph"].push(visibleFaqSchema);
 
   const script = document.createElement("script");
   script.type = "application/ld+json";
