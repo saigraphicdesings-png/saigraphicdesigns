@@ -35,7 +35,7 @@ try {
   const billingHeaders={Authorization:"Bearer test-admin","Content-Type":"application/json"};
   const initialBook=await (await mf.dispatchFetch(billingURL,{headers:billingHeaders})).json();
   assert.equal(initialBook.revision,0);
-  const billingBook={version:1,customers:[],catalog:[],invoices:[],payments:[],cash:[],settings:{name:"Sai",phone:"",address:"",note:""}};
+  const billingBook={version:1,customers:[],catalog:[],invoices:[],payments:[],cash:[],purchaseOrders:[],settings:{name:"Sai",phone:"",address:"",note:""}};
   const savedBook=await mf.dispatchFetch(billingURL,{method:"PUT",headers:billingHeaders,body:JSON.stringify({revision:0,book:billingBook})});
   assert.equal(savedBook.status,200,await savedBook.clone().text());
   assert.deepEqual((await (await mf.dispatchFetch(billingURL,{headers:billingHeaders})).json()).book,billingBook);
