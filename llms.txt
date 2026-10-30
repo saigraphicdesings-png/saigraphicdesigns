@@ -4,16 +4,16 @@ Sai Graphic Designs is a professional graphic design and printing studio with it
 
 ## Main website
 - Home: https://saigraphicdesings.com/
-- About: https://saigraphicdesings.com/about.html
-- Services: https://saigraphicdesings.com/customizer.html
-- Design templates: https://saigraphicdesings.com/shop.html — free and premium editable CDR and PSD design bundles. Check each product listing for its included formats and access requirements.
-- Contact: https://saigraphicdesings.com/contact.html
+- About: https://saigraphicdesings.com/about
+- Services: https://saigraphicdesings.com/customizer
+- Design templates: https://saigraphicdesings.com/shop — free and premium editable CDR and PSD design bundles. Check each product listing for its included formats and access requirements.
+- Contact: https://saigraphicdesings.com/contact
 
 ## Geographic service pages
-- Graphic Designer in Madurai: https://saigraphicdesings.com/graphic-designer-madurai.html
-- Graphic Design Company in Tamil Nadu: https://saigraphicdesings.com/graphic-design-company-tamil-nadu.html
-- Graphic Design Services in India: https://saigraphicdesings.com/graphic-design-services-india.html
-- Graphic Design Services in Kerala: https://saigraphicdesings.com/graphic-design-services-kerala.html
+- Graphic Designer in Madurai: https://saigraphicdesings.com/graphic-designer-madurai
+- Graphic Design Company in Tamil Nadu: https://saigraphicdesings.com/graphic-design-company-tamil-nadu
+- Graphic Design Services in India: https://saigraphicdesings.com/graphic-design-services-india
+- Graphic Design Services in Kerala: https://saigraphicdesings.com/graphic-design-services-kerala
 
 ## Core services
 Sai Graphic Designs provides logo design, logo recreation, brand identity and professional branding, visiting card and business card design, brochure and flyer design, catalogue and company profile design, packaging design, product label design, pouch and bottle label design, agriculture product packaging and label design, social media poster design, Instagram and Facebook creatives, YouTube thumbnails and banners, promotional banner design, printing design and print-ready artwork.
@@ -44,6 +44,6 @@ Pricing and delivery depend on the design type, number of pages or items, refere
 Send your business name, design text, logo or reference images, dimensions, preferred style, intended use and deadline. For packaging or labels, include the approved content and printer’s dieline when available.
 
 ## Custom service pages
-- Logo Recreation & Vector Tracing in Madurai: https://saigraphicdesings.com/logo-recreation-madurai.html
-- Business Card & Visiting Card Design in Madurai: https://saigraphicdesings.com/business-card-design-madurai.html
-- Bifold & Trifold Brochure Design in Madurai: https://saigraphicdesings.com/brochure-design-madurai.html
+- Logo Recreation & Vector Tracing in Madurai: https://saigraphicdesings.com/logo-recreation-madurai
+- Business Card & Visiting Card Design in Madurai: https://saigraphicdesings.com/business-card-design-madurai
+- Bifold & Trifold Brochure Design in Madurai: https://saigraphicdesings.com/brochure-design-madurai

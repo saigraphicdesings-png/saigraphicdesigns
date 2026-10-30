@@ -24,7 +24,7 @@ export function enhanceHome(html) {
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${TITLE.replace(/&/g,"&amp;")}</title>`)
     .replace(/(<meta\b[^>]*(?:name=["'](?:description|twitter:description)["']|property=["']og:description["'])[^>]*content=["'])[^"']*(["'][^>]*>)/gi, "$1"+DESCRIPTION+"$2")
     .replace(/(<meta\b[^>]*(?:name=["']twitter:title["']|property=["']og:title["'])[^>]*content=["'])[^"']*(["'][^>]*>)/gi, "$1"+TITLE.replace(/&/g,"&amp;")+"$2");
-  html = html.replace(/<h1 class="hero-title">[\s\S]*?<\/h1>/, '<h1 class="hero-title">Graphic Design<span>&amp; Printing in Madurai</span></h1>');
+  html = html.replace(/<h1 class="hero-title">[\s\S]*?<\/h1>/, '<h1 class="hero-title">Graphic Design <span>&amp; Printing in Madurai</span></h1>');
   if (!html.includes('id="studio-at-a-glance"')) html = html.replace(/(<section\b[^>]*class="[^"]*hero[^"]*"[^>]*>[\s\S]*?<\/section>)/i, "$1"+INTRO);
   return html.replace(/<\/head>/i, `<script id="sai-search-entity" type="application/ld+json">${schema}</script></head>`);
 }
@@ -44,6 +44,7 @@ export function withSearchVisibility(base) {
       const type = response.headers.get("content-type") || "";
       if (!(type.includes("text/html") || type.includes("xml") || ["/robots.txt","/llms.txt"].includes(url.pathname))) return response;
       let text = (await response.text()).split(LEGACY).join(SITE);
+      text = text.replace(/https:\/\/saigraphicdesings\.com\/([a-z0-9-]+)\.html/g, (_, name) => SITE + (name === "index" ? "/" : "/" + name));
       if (url.pathname === "/sitemap.xml") text = text.replace(/(<loc>https:\/\/saigraphicdesings\.com\/<\/loc><lastmod>)[^<]+/, "$1"+"2026-10-30");
       if (type.includes("text/html") && HOME_PATHS.has(url.pathname) && response.status === 200) text = enhanceHome(text);
       const headers = new Headers(response.headers);
