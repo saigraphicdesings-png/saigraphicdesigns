@@ -2,24 +2,11 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "saigraphicdesigns",
   "compatibility_date": "2026-09-08",
-  "main": "src/payment-proof-worker.js",
+  "main": "src/search-worker.js",
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    "run_worker_first": [
-      "/api/admin/billing",
-      "/",
-      "/index",
-      "/index.html",
-      "/shop",
-      "/shop/",
-      "/shop.html",
-      "/bundle/*",
-      "/bundles/*",
-      "/bundle-sitemap.xml",
-      "/cdr-bundles",
-      "/free-cdr-files"
-    ]
+    "run_worker_first": true
   },
   "d1_databases": [
     {
@@ -50,4 +37,3 @@
     "nodejs_compat"
   ]
 }
-
