@@ -38,6 +38,9 @@ export function withSearchVisibility(base) {
     ...base,
     async fetch(request, env, ctx) {
       const url = new URL(request.url);
+      if (["GET", "HEAD"].includes(request.method) && url.origin === SITE && ["/online-graphic-designer-usa", "/online-graphic-designer-usa.html", "/online-graphic-designer-usa/"].includes(url.pathname)) {
+        return new Response(null, {status:301, headers:{Location:SITE+"/best-graphic-designer-usa"+url.search}});
+      }
       if (["GET","HEAD"].includes(request.method) && url.origin === LEGACY && !url.pathname.startsWith("/api/")) {
         return new Response(null,{status:301,headers:{Location:SITE+url.pathname+url.search}});
       }
