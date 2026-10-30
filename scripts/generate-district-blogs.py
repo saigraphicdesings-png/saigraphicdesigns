@@ -59,3 +59,7 @@ p=ROOT/'sitemap.xml';s=p.read_text();extra=''.join(f'  <url><loc>{BASE}/{path}</
 p=ROOT/'llms.txt';s=p.read_text();marker='## Tamil Nadu district blog articles';addition=f'''\n{marker}\n- Statewide selection guide: {BASE}/{state}\n- Directory of all 38 district articles: {BASE}/{hub}\n- District guides contain illustrative design briefs, proofing checkpoints and FAQs. They describe online service from the Madurai studio, not separate district offices or verified rankings.\n''';
 if marker not in s:p.write_text(s+addition)
 print(f'Generated {len(files)} pages: 38 district articles, statewide article and directory.')
+
+# Keep regenerated district pages consistent with the shared blog presentation.
+import subprocess, sys
+subprocess.run([sys.executable, str(ROOT / "scripts/decorate-blog-pages.py")], check=True)

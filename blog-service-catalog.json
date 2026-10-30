@@ -1,0 +1,14 @@
+[
+{"id":"logo-design","name":"Logo Design","description":"Create a clear brand mark for your business and agree on the final vector and web files.","image":"Images/services-ai/logo-design.webp","link":"logo-design-madurai.html"},
+{"id":"logo-recreation","name":"Logo Recreation","description":"Recreate an existing logo reference as scalable artwork for print and digital use.","image":"Images/services-ai/logo-recreation.webp","link":"logo-recreation-madurai.html"},
+{"id":"brand-identity","name":"Brand Identity","description":"Coordinate typography, colors and supporting brand assets across your business materials.","image":"Images/services-ai/brand-identity.webp","link":"customizer.html#service-brand-identity"},
+{"id":"visiting-card","name":"Business Card Design","description":"Prepare a professional card layout using your approved details and printer specifications.","image":"Images/services-ai/visiting-card-design.webp","link":"business-card-design-madurai.html"},
+{"id":"brochure","name":"Brochure Design","description":"Present your services or product range through clear, organized brochure layouts.","image":"Images/services-ai/brochure-design.webp","link":"brochure-design-madurai.html"},
+{"id":"packaging","name":"Packaging Design","description":"Build carton, pouch or label artwork around your approved copy and supplier dieline.","image":"Images/services-ai/packaging-design.webp","link":"packaging-design-madurai.html"},
+{"id":"social-media","name":"Social Media Graphics","description":"Create branded promotional posts and campaign graphics for your selected platforms.","image":"Images/services-ai/social-media-poster.webp","link":"customizer.html#service-social-media"},
+{"id":"letterhead","name":"Letterhead Design","description":"Coordinate your business correspondence with a practical branded letterhead layout.","image":"Images/services-ai/letterhead-design.webp","link":"customizer.html#service-letterhead-design"},
+{"id":"flyer","name":"Flyer Design","description":"Give one campaign a clear message with a focused print or digital flyer.","image":"Images/services-ai/flyer-design.webp","link":"customizer.html#service-flyer-design"},
+{"id":"standee","name":"Standee Design","description":"Make your event or shop message readable at the intended viewing distance.","image":"Images/services-ai/standee-design.webp","link":"customizer.html#service-standee-design"},
+{"id":"label","name":"Product Label Design","description":"Arrange product identity and approved information clearly on your actual label size.","image":"Images/services-ai/label-design.webp","link":"customizer.html#service-label-design"},
+{"id":"video-editing","name":"Video Editing","description":"Discuss promotional edits, reels and the output formats needed for your campaign.","image":"Images/services-ai/video-editing.webp","link":"customizer.html#service-video-editing"}
+]
