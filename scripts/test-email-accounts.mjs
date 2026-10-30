@@ -8,6 +8,7 @@ const { Miniflare } = require("miniflare");
 const mf = new Miniflare({
   modules: [
     { type: "ESModule", path: "worker.js", contents: (await readFile("src/worker.js", "utf8")).replace('from "node:crypto"', 'from "./capped-crypto.js"') },
+    { type: "ESModule", path: "bundle-categories.js", contents: await readFile("src/bundle-categories.js", "utf8") },
     { type: "ESModule", path: "promotions.js", contents: await readFile("src/promotions.js", "utf8") },
     { type: "ESModule", path: "catalog-html.js", contents: (await readFile("src/catalog-html.js", "utf8")).replace("../catalog-presentation.mjs", "./catalog-presentation.mjs") },
     { type: "ESModule", path: "billing-sync-worker.js", contents: (await readFile("src/billing-sync-worker.js", "utf8")).replace("../billing-sync-core.js", "./billing-sync-core.js") },
@@ -34,7 +35,7 @@ try {
   const billingHeaders={Authorization:"Bearer test-admin","Content-Type":"application/json"};
   const initialBook=await (await mf.dispatchFetch(billingURL,{headers:billingHeaders})).json();
   assert.equal(initialBook.revision,0);
-  const billingBook={version:1,customers:[],catalog:[],invoices:[],payments:[],cash:[],settings:{name:"Sai",phone:"",address:"",note:""}};
+  const billingBook={version:1,customers:[],catalog:[],invoices:[],payments:[],cash:[],purchaseOrders:[],settings:{name:"Sai",phone:"",address:"",note:""}};
   const savedBook=await mf.dispatchFetch(billingURL,{method:"PUT",headers:billingHeaders,body:JSON.stringify({revision:0,book:billingBook})});
   assert.equal(savedBook.status,200,await savedBook.clone().text());
   assert.deepEqual((await (await mf.dispatchFetch(billingURL,{headers:billingHeaders})).json()).book,billingBook);

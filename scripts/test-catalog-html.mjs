@@ -36,5 +36,5 @@ test('catalog HTML escapes stored text and rejects executable image/link URLs',(
 });
 test('Cloudflare sends homepage and shop through their dynamic renderers',async()=>{
   const config=JSON.parse(await readFile(new URL('../wrangler.jsonc',import.meta.url),'utf8'));
-  for(const route of ['/','/index.html','/shop','/shop.html'])assert.ok(config.assets.run_worker_first.includes(route));
+  for(const route of ['/','/index.html','/shop','/shop.html'])assert.ok(config.assets.run_worker_first === true || (Array.isArray(config.assets.run_worker_first) && config.assets.run_worker_first.includes(route)));
 });
