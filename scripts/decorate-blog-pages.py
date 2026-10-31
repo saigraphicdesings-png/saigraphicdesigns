@@ -22,7 +22,7 @@ def service_block(seed):
  return '<!-- blog-services:start --><section class="blog-featured-services" aria-labelledby="blog-services-title"><h2 id="blog-services-title">Explore our design services</h2><p class="blog-services-intro">Planning your next project? Explore these services from Sai Graphic Designs and share your brief for a tailored quote.</p><div class="blog-services-grid">'+cards+'</div><p class="blog-service-note">Visuals are design concepts. Scope, revisions, delivery dates and final files are confirmed in your quotation.</p></section><!-- blog-services:end -->'
 def cover():return f'<!-- blog-cover:start --><figure class="blog-cover"><img src="{COVER}" alt="{ALT}" width="1600" height="900" fetchpriority="high" decoding="async"><figcaption>Branding and print design concept · Sai Graphic Designs</figcaption></figure><!-- blog-cover:end -->'
 def decorate(path):
- s=path.read_text();is_blog=bool(re.search(r'"@type"\s*:\s*"(?:Article|BlogPosting)"',s)) or path.name=='best-graphic-designer-usa.html'
+ s=path.read_text();is_blog=bool(re.search(r'"@type"\s*:\s*"(?:Article|BlogPosting)"',s)) or path.name=='graphic-designer-in-usa.html'
  if not is_blog:return False
  s=re.sub(r'<!-- blog-cover:start -->[\s\S]*?<!-- blog-cover:end -->','',s)
  s=re.sub(r'<!-- blog-services:start -->[\s\S]*?<!-- blog-services:end -->','',s)

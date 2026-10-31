@@ -39,8 +39,15 @@ export function withSearchVisibility(base) {
     ...base,
     async fetch(request, env, ctx) {
       const url = new URL(request.url);
+      // Keep previously shared and indexed article links working after the URL move.
+      const oldArticle = url.pathname.match(/^\/best-graphic-designer-([a-z-]+?)(?:\.html|\/)?$/);
+      const migratedLocations = new Set(["ariyalur", "chengalpattu", "chennai", "coimbatore", "cuddalore", "dharmapuri", "dindigul", "erode", "kallakurichi", "kancheepuram", "kanniyakumari", "karur", "krishnagiri", "madurai", "mayiladuthurai", "nagapattinam", "namakkal", "nilgiris", "perambalur", "pudukkottai", "ramanathapuram", "ranipet", "salem", "sivaganga", "tamilnadu", "tenkasi", "thanjavur", "theni", "thoothukudi", "tiruchirappalli", "tirunelveli", "tirupathur", "tiruppur", "tiruvallur", "tiruvannamalai", "tiruvarur", "usa", "vellore", "viluppuram", "virudhunagar"]);
+      if (["GET", "HEAD"].includes(request.method) && oldArticle && migratedLocations.has(oldArticle[1])) {
+        return new Response(null, {status:301, headers:{Location:SITE+"/graphic-designer-in-"+oldArticle[1]+url.search}});
+      }
+
       if (["GET", "HEAD"].includes(request.method) && url.origin === SITE && ["/online-graphic-designer-usa", "/online-graphic-designer-usa.html", "/online-graphic-designer-usa/"].includes(url.pathname)) {
-        return new Response(null, {status:301, headers:{Location:SITE+"/best-graphic-designer-usa"+url.search}});
+        return new Response(null, {status:301, headers:{Location:SITE+"/graphic-designer-in-usa"+url.search}});
       }
       if (["GET","HEAD"].includes(request.method) && url.origin === LEGACY && !url.pathname.startsWith("/api/")) {
         return new Response(null,{status:301,headers:{Location:SITE+url.pathname+url.search}});
