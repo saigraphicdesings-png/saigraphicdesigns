@@ -54,6 +54,10 @@ export function withSearchVisibility(base) {
       text = text.replace(/https:\/\/saigraphicdesings\.com\/([a-z0-9-]+)\.html/g, (_, name) => SITE + (name === "index" ? "/" : "/" + name));
       if (url.pathname === "/sitemap.xml") text = text.replace(/(<loc>https:\/\/saigraphicdesings\.com\/<\/loc><lastmod>)[^<]+/, "$1"+"2026-10-30");
       if (type.includes("text/html") && HOME_PATHS.has(url.pathname) && response.status === 200) text = enhanceHome(text);
+      if (type.includes("text/html")) {
+        text = text.replace(/<link\b[^>]*\brel=["'](?:icon|shortcut icon|apple-touch-icon)["'][^>]*>/gi, "");
+        text = text.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></head>');
+      }
       const headers = new Headers(response.headers);
       headers.delete("content-length"); headers.delete("etag");
       return new Response(text,{status:response.status,statusText:response.statusText,headers});
