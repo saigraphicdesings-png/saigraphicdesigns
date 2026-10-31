@@ -4,6 +4,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {createHash,createHmac} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import worker,{signatureValid,settle} from '../src/razorpay-worker.js';
+import cartWorker from '../src/cart-payment-worker.js';
 test('signature rejects tampering',async()=>{
  const sig=createHmac('sha256','secret').update('order_1|pay_1').digest('hex');
  assert(await signatureValid('order_1','pay_1',sig,'secret'));
@@ -48,6 +49,20 @@ test('database prices, ownership, capture, retries and idempotence',async()=>{
   assert.equal((await call('verify',payload)).status,200);
   assert.equal((await call('verify',payload)).status,200);
   assert.equal(db.prepare('SELECT status FROM cart_payment_orders').get().status,'approved');
+  const ownedStatus=await cartWorker.fetch(new Request('https://test.local/api/payment/status?productId=bundle',{
+    headers:{cookie:'sai_customer_session=buyer'}
+  }),env);
+  const owned=await ownedStatus.json();
+  assert.equal(owned.downloadReady,true);
+  assert(!JSON.stringify(owned).includes('files.invalid'));
+  const download=await cartWorker.fetch(new Request('https://test.local/api/paid-download?productId=bundle',{
+    headers:{cookie:'sai_customer_session=buyer'}
+  }),env);
+  assert.equal((await download.json()).downloadUrl,'https://files.invalid/private');
+  const unownedStatus=await cartWorker.fetch(new Request('https://test.local/api/payment/status?productId=bundle',{
+    headers:{cookie:'sai_customer_session=other'}
+  }),env);
+  assert.equal((await unownedStatus.json()).downloadReady,false);
   assert.equal((await call('order',{items:[{id:'bundle'}]})).data.alreadyUnlocked,true);
  } finally {globalThis.fetch=original;db.close();}
 });

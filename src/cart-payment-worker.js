@@ -538,6 +538,14 @@ export default {
         const response = await paidDownloadFromCart(request, env, url);
         if (response) return response;
       }
+      if (url.pathname === "/api/payment/status" && request.method === "GET") {
+        await ensureCartPaymentSchema(env);
+        const customer = await currentCustomer(request, env);
+        const productId = String(url.searchParams.get("productId") || "").trim();
+        if (customer && validProductId(productId) && await hasCartApproval(env, customer.id, productId)) {
+          return json({ downloadReady: true, payment: { status: 'approved' } });
+        }
+      }
     } catch (error) {
       console.error("Cart payment service error:", error);
       if (url.pathname.startsWith("/api/payment/cart-") || url.pathname === "/api/payment/whatsapp-request") return json({ error: error.message || "Unable to process bundle request." }, error.status || 500);

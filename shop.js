@@ -54,6 +54,42 @@ document.addEventListener("DOMContentLoaded", async function () {
         return payForBundles([{id:product.id,qty:1}],product);
     }
 
+    async function refreshPurchaseButton(product) {
+        if (!modalAddCart || Number(product.price) === 0) return;
+        modalAddCart.disabled = true;
+        modalAddCart.textContent = 'Checking purchase…';
+        try {
+            const response = await fetch('/api/payment/status?productId=' + encodeURIComponent(product.id), {
+                credentials: 'same-origin', cache: 'no-store'
+            });
+            const data = await response.json();
+            if (currentProduct?.id !== product.id) return;
+            if (!response.ok && response.status !== 401) throw new Error('Unable to check purchase');
+            modalAddCart.dataset.downloadReady = data.downloadReady ? 'true' : '';
+            modalAddCart.textContent = data.downloadReady ? 'Download Files' : 'Pay Now — Secure Checkout';
+            modalAddCart.disabled = false;
+        } catch (_) {
+            if (currentProduct?.id !== product.id) return;
+            modalAddCart.textContent = 'Check purchase again';
+            modalAddCart.dataset.downloadReady = 'retry';
+            modalAddCart.disabled = false;
+        }
+    }
+
+    async function downloadPurchasedBundle(product) {
+        modalAddCart.disabled = true;
+        try {
+            const response = await fetch('/api/paid-download?productId=' + encodeURIComponent(product.id), {
+                credentials: 'same-origin', cache: 'no-store'
+            });
+            const data = await response.json();
+            if (response.status === 401) return requireBundleLogin(product, 'buy');
+            if (!response.ok || !data.downloadUrl) throw new Error(data.error || 'Download unavailable.');
+            window.location.href = data.downloadUrl;
+        } catch (error) { alert(error.message); }
+        finally { if (currentProduct?.id === product.id) modalAddCart.disabled = false; }
+    }
+
 
     function requireBundleLogin(product, action) {
         sessionStorage.setItem('saiPendingBundle', JSON.stringify({ id: String(product.id), action }));
@@ -828,10 +864,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (modalAddCart) {
             modalAddCart.dataset.downloadReady = "";
+            modalAddCart.disabled = false;
             modalAddCart.textContent =
                 Number(product.price) === 0
                     ? "Get Free Files — Login Required"
                     : "Pay Now — Secure Checkout";
+            refreshPurchaseButton(product);
         }
 
 
@@ -1765,6 +1803,15 @@ Thank you! 😊`;
             function () {
 
                 if (!currentProduct) {
+                    return;
+                }
+
+                if (modalAddCart.dataset.downloadReady === 'true') {
+                    downloadPurchasedBundle(currentProduct);
+                    return;
+                }
+                if (modalAddCart.dataset.downloadReady === 'retry') {
+                    refreshPurchaseButton(currentProduct);
                     return;
                 }
 
