@@ -1,0 +1,13 @@
+/* Keep learning/article CSS from changing the shared site chrome. */
+.site-header{display:block;padding:0;color:var(--dark);font-family:Arial,sans-serif}
+.site-header a{text-decoration:none}
+.site-header .main-nav{align-items:center}
+.site-header .main-nav .nav-link{color:var(--dark-muted)}
+.site-header .main-nav .nav-link.active{color:var(--primary)}
+.site-footer{text-align:left;line-height:1.6;font-family:Arial,sans-serif}
+.site-footer p{font-size:inherit;line-height:1.6;margin:0}
+.site-footer li{margin:0;line-height:1.6}
+.site-footer a{text-decoration:none}
+.site-footer .footer-links{padding:0;margin:0}
+.site-footer .footer-contact{font-style:normal}
+@media(max-width:900px){.site-header .main-nav{flex-wrap:nowrap}.site-footer .footer-bottom{gap:16px}}

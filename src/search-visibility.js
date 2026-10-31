@@ -1,3 +1,4 @@
+import { applyBlogShell } from "./blog-shell.js";
 const SITE = "https://saigraphicdesings.com";
 const LEGACY = "https://saigraphicdesigns.sai-graphic-designspagesdev.workers.dev";
 const TITLE = "Sai Graphic Designs | Graphic Designer in Tamil Nadu";
@@ -58,6 +59,7 @@ export function withSearchVisibility(base) {
         text = text.replace(/<link\b[^>]*\brel=["'](?:icon|shortcut icon|apple-touch-icon)["'][^>]*>/gi, "");
         text = text.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></head>');
       }
+      if (type.includes("text/html")) text = applyBlogShell(text, url.pathname);
       const headers = new Headers(response.headers);
       headers.delete("content-length"); headers.delete("etag");
       return new Response(text,{status:response.status,statusText:response.statusText,headers});
