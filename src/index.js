@@ -1270,9 +1270,9 @@ async function bundlePages(request, env, url) {
       '<h2>Included file details</h2><table class="specs"><tbody><tr><th>Category</th><td>' + escapeProductHTML(product.category) +
       '</td></tr><tr><th>Editable formats</th><td>' + escapeProductHTML(product.formats.join(", ").toUpperCase() || "See product preview") +
       '</td></tr><tr><th>Price</th><td>' + offerPriceHTML(product) +
-      '</td></tr><tr><th>Design count</th><td>' + (product.itemCount > 0 ? escapeProductHTML(product.itemCount) + ' designs' : 'See listing or ask before ordering') + '</td></tr></tbody></table><h2>Ordering and file access</h2><p>Bundle World is the editable design bundle shop from Sai Graphic Designs. Sign in to open free downloads or request paid bundles on WhatsApp. Paid files become available in My Account after approval. Check software compatibility and usage permissions before ordering.</p><p><a href="/bundle-world-help.html">Read the ordering guide</a> · <a href="/cdr-vs-psd.html">Compare CDR and PSD</a></p>' + faqHTML +
+      '</td></tr><tr><th>Design count</th><td>' + (product.itemCount > 0 ? escapeProductHTML(product.itemCount) + ' designs' : 'See listing or ask before ordering') + '</td></tr></tbody></table><h2>Ordering and file access</h2><p>Bundle World is the editable design bundle shop from Sai Graphic Designs. Sign in to open free downloads or pay securely for paid bundles with Razorpay. Paid files become available in My Account after payment verification. Check software compatibility and usage permissions before ordering.</p><p><a href="/bundle-world-help.html">Read the ordering guide</a> · <a href="/cdr-vs-psd.html">Compare CDR and PSD</a></p>' + faqHTML +
       '<p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) + '">' +
-      (product.price === 0 ? "View free bundle" : "Request this bundle on WhatsApp") + '</a></p></article>' +
+      (product.price === 0 ? "View free bundle" : "Buy this bundle") + '</a></p></article>' +
       '<aside class="side"><span class="eyebrow">Bundle World</span><h2>' + escapeProductHTML(bundleName(product)) +
       '</h2><p class="price">' + offerPriceHTML(product) +
       '</p><a class="action" href="/shop?product=' + encodeURIComponent(product.id) +

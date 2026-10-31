@@ -16,5 +16,5 @@ export function bundleCopy(product, value) {
 export function purchaseInstructions(product) {
   return Number(product.price) === 0
     ? 'Free download — login required. Sign in, then access this bundle through My Account. No payment is required.'
-    : 'Login → request your order on WhatsApp → confirm payment with Sai Graphic Designs → access files in My Account after approval. Ask on WhatsApp for the expected approval time before paying.';
+    : 'Login → pay securely with Razorpay → access files in My Account after payment verification. For help, contact us on WhatsApp.';
 }

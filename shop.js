@@ -9,40 +9,49 @@ document.addEventListener("DOMContentLoaded", async function () {
     const CART_KEY = "saiGraphicCart";
     const WHATSAPP_NUMBER = "916381128781";
 
+    let paymentBusy = false;
+    let checkoutScript;
+    async function payForBundles(items, product) {
+        if (paymentBusy) return;
+        paymentBusy = true;
+        try {
+            checkoutScript ||= new Promise((resolve,reject)=>{
+                if (window.Razorpay) return resolve();
+                const script=document.createElement('script');
+                script.src='https://checkout.razorpay.com/v1/checkout.js';
+                script.onload=resolve;
+                script.onerror=()=>{checkoutScript=null;reject(new Error('Payment form could not load. Please try again.'));};
+                document.head.appendChild(script);
+            });
+            await checkoutScript;
+            const response=await fetch('/api/razorpay/order',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});
+            const data=await response.json();
+            if(response.status===401){requireBundleLogin(product || items[0],'buy');return;}
+            if(!response.ok) throw new Error(data.error || 'Unable to start payment.');
+            if(data.alreadyUnlocked){window.location.href='/account';return;}
+            const checkout=new window.Razorpay({key:data.key,order_id:data.orderId,amount:data.amount,currency:data.currency,
+                name:'Bundle World',description:'Editable design bundles',prefill:data.prefill,
+                modal:{ondismiss:()=>{paymentBusy=false;}},
+                handler:async result=>{
+                    try {
+                        const verified=await fetch('/api/razorpay/verify',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(result)});
+                        const status=await verified.json();
+                        if(!verified.ok) throw new Error(status.error || 'Verification pending.');
+                        window.location.href='/account';
+                    } catch(error) {
+                        alert(error.message+' If money was deducted, do not pay again. Open My Account to refresh payment status.');
+                        window.location.href='/account';
+                    } finally {paymentBusy=false;}
+                }
+            });
+            checkout.on('payment.failed',event=>{paymentBusy=false;alert(event.error?.description || 'Payment failed. You may retry.');});
+            checkout.open();
+        } catch(error){paymentBusy=false;alert(error.message || 'Unable to start payment.');}
+    }
     async function requestBundleWhatsApp(product) {
         if (!product) return;
-        if (Number(product.price) === 0) {
-            await requestFreeDownload(product);
-            return;
-        }
-        try {
-            const response = await fetch('/api/payment/whatsapp-request', {
-                method: 'POST', credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ productId: product.id })
-            });
-            const data = await response.json();
-            if (response.status === 401) {
-                requireBundleLogin(product, 'buy');
-                return;
-            }
-            if (!response.ok) throw new Error(data.error || 'Could not record your request.');
-            const message = `Hello Sai Graphic Designs 👋
-
-I would like your help ordering this editable design bundle.
-
-*Bundle:* ${data.product.name}
-*Price:* ${formatPrice(data.product.price)}
-*Bundle ID:* ${data.product.id}
-*Order reference:* ${data.orderId}
-*My name:* ${data.customerName}
-
-Please share the payment details and let me know when I can access the files in My Account. Thank you!`;
-            if (window.SaiAnalytics) window.SaiAnalytics.trackEvent('whatsapp_click');
-            window.location.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
-        } catch (error) {
-            alert(error.message || 'Could not record your bundle request. Please try again.');
-        }
+        if (Number(product.price) === 0) return requestFreeDownload(product);
+        return payForBundles([{id:product.id,qty:1}],product);
     }
 
 
@@ -822,7 +831,7 @@ Please share the payment details and let me know when I can access the files in 
             modalAddCart.textContent =
                 Number(product.price) === 0
                     ? "Get Free Files — Login Required"
-                    : "Request Order on WhatsApp";
+                    : "Pay Now — Secure Checkout";
         }
 
 
@@ -1602,6 +1611,10 @@ Please share the payment details and let me know when I can access the files in 
     ===================================================== */
 
     function checkoutWhatsApp() {
+        if (cart && cart.length && cart.every(item => products.some(p => p.id === item.id && Number(p.price) > 0))) {
+            return payForBundles(cart.map(item=>({id:item.id,qty:1})),cart[0]);
+        }
+
 
         if (
             !cart ||

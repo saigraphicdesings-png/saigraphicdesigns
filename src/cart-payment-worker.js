@@ -517,6 +517,8 @@ async function reviewCartOrder(request, env, url, status) {
   return json({ success: true, id, status, receivedAmount });
 }
 
+export { currentCustomer, ensureCartPaymentSchema, buildCartQuote };
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
