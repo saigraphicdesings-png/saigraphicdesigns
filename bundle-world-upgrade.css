@@ -155,3 +155,25 @@
  .shop-grid > .shop-product {transition:none;}
  .shop-grid > .shop-product:hover {transform:none;}
 }
+/* Mobile polish: compact rounded chips rather than stretched oval controls */
+.bundle-quick-search {gap:8px 9px !important;}
+.bundle-quick-search button {
+  display:inline-flex !important;
+  flex:0 0 auto !important;
+  width:auto !important;
+  min-width:0 !important;
+  min-height:36px !important;
+  justify-content:center;
+  align-items:center;
+  padding:8px 14px !important;
+  border-radius:12px !important;
+  font-size:12px !important;
+  line-height:1.25 !important;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+@media(max-width:620px){
+ .bundle-quick-search {gap:8px !important; margin-bottom:16px;}
+ .bundle-quick-search button {padding:8px 12px !important; min-height:34px !important; border-radius:11px !important; font-size:12px !important;}
+ .bundle-quick-search > span {flex:0 0 100%; text-align:center; margin-bottom:2px;}
+}
