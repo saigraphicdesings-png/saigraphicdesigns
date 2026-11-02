@@ -149,12 +149,21 @@
   }
   async function shareInvoice(iid,mode){
     const buttons=[...$('fields').querySelectorAll('[data-action]')];buttons.forEach(b=>b.disabled=true);
-    try{const file=await invoiceFile(iid),i=book.invoices.find(x=>x.id===iid);
-      if(mode==='downloadInvoice'){downloadFile(file);message((i.status==='quotation'?'Quotation':'Invoice')+' PDF downloaded.');return;}
-      if(mode==='shareInvoice'&&navigator.canShare?.({files:[file]})&&navigator.share){try{await navigator.share({files:[file],title:i.number,text:invoiceShareMessage(i)});return;}catch(e){if(e.name==='AbortError')return;}}
+    try{
+      const file=await invoiceFile(iid),i=book.invoices.find(x=>x.id===iid);
+      if(mode==='downloadInvoice'){downloadFile(file);message('PDF downloaded.');return;}
+      const text=invoiceShareMessage(i);
+      // WhatsApp text links cannot attach files. Use the native share sheet for PDF attachments.
+      if(navigator.share&&navigator.canShare?.({files:[file]})){
+        try{await navigator.share({files:[file],title:i.number,text});message('PDF sent to your selected sharing app.');return;}
+        catch(e){if(e.name==='AbortError')return;}
+      }
       downloadFile(file);
-      if(mode==='whatsappInvoice'){let phone=String(i.customer.phone||'').replace(/\D/g,'');if(phone.length===10)phone='91'+phone;if(phone.length<7||phone.length>15)phone='';const text=invoiceShareMessage(i);const link=document.createElement('a');link.href='https://wa.me/'+phone+'?text='+encodeURIComponent(text);link.target='_blank';link.rel='noopener noreferrer';link.click();message('PDF downloaded. Attach this file in the WhatsApp chat.');}
-      else message('File sharing is unavailable in this browser. PDF downloaded; attach it in WhatsApp.');
+      message('PDF downloaded. Attach it from Files/Documents in WhatsApp. WhatsApp links cannot attach PDFs automatically.');
+      const note=document.createElement('textarea');note.value=text;note.readOnly=true;note.rows=9;note.style.width='100%';note.style.marginTop='12px';
+      $('fields').append(note);
+      const copy=document.createElement('button');copy.type='button';copy.textContent='Copy share message';copy.onclick=async()=>{try{await navigator.clipboard.writeText(text);message('Share message copied.');}catch{note.select();message('Select and copy the message.');}};
+      $('fields').append(copy);
     }finally{buttons.forEach(b=>b.disabled=false);}
   }
   function branding(){
