@@ -82,6 +82,15 @@ export function withSearchVisibility(base) {
           'We work remotely with clients in ' + locationName + ' on logo design, brand identity, business cards, brochures, packaging, product labels and social media creatives. ' +
           'Discuss the scope, revisions, editable files and printing requirements before placing an order. ' +
           'We do not claim a physical branch in ' + locationName + '.</p>' +
+          '<h3>Explore portfolio previews</h3>' +
+          '<p>These are visual portfolio previews for evaluating styles and deliverables; they are not presented as verified client case studies or projects completed in ' + locationName + '.</p>' +
+          '<div class="freelance-portfolio-previews" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin:22px 0">' +
+          '<figure><img src="/Images/portfolio-logo.webp" alt="Logo design portfolio preview by Sai Graphic Designs" width="600" height="450" loading="lazy" style="width:100%;height:auto;border-radius:10px"><figcaption>Logo and identity design</figcaption></figure>' +
+          '<figure><img src="/Images/portfolio-cards.webp" alt="Business card design portfolio preview by Sai Graphic Designs" width="600" height="450" loading="lazy" style="width:100%;height:auto;border-radius:10px"><figcaption>Business card layouts</figcaption></figure>' +
+          '<figure><img src="/Images/portfolio-brochure.webp" alt="Brochure design portfolio preview by Sai Graphic Designs" width="600" height="450" loading="lazy" style="width:100%;height:auto;border-radius:10px"><figcaption>Brochure layouts</figcaption></figure>' +
+          '<figure><img src="/Images/portfolio-social.webp" alt="Social media creative portfolio preview by Sai Graphic Designs" width="600" height="450" loading="lazy" style="width:100%;height:auto;border-radius:10px"><figcaption>Social media creatives</figcaption></figure>' +
+          '</div>' +
+          '<p>For a ' + locationName + ' project, send your brief, preferred language, print dimensions, reference style and deadline. We can then confirm the design scope and share relevant work samples.</p>' +
           '<p><a href="/contact">Contact our freelance graphic designer for a project quote</a></p></section>';
         if (!text.includes('id="freelance-design-service"')) {
           text = text.replace(/<\/article>/i, freelanceSection + '</article>');
