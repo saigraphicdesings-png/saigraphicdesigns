@@ -91,7 +91,7 @@ export function withSearchVisibility(base) {
           '<figure><img src="/Images/portfolio-social.webp" alt="Social media creative portfolio preview by Sai Graphic Designs" width="600" height="450" loading="lazy" style="width:100%;height:auto;border-radius:10px"><figcaption>Social media creatives</figcaption></figure>' +
           '</div>' +
           '<p>For a ' + locationName + ' project, send your brief, preferred language, print dimensions, reference style and deadline. We can then confirm the design scope and share relevant work samples.</p>' +
-          '<p><a href="/contact">Contact our freelance graphic designer for a project quote</a></p></section>';
+          '<p><a href="/contact.html">Contact our freelance graphic designer for a project quote</a></p></section>';
         if (!text.includes('id="freelance-design-service"')) {
           text = text.replace(/<\/article>/i, freelanceSection + '</article>');
         }
