@@ -66,6 +66,27 @@ export function withSearchVisibility(base) {
         text = text.replace(/<link\b[^>]*\brel=["'](?:icon|shortcut icon|apple-touch-icon)["'][^>]*>/gi, "");
         text = text.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></head>');
       }
+      // Clarify remote freelance availability on every city guide without
+      // implying a physical studio in that city.
+      const cityMatch = url.pathname.match(/^\/graphic-designer-in-([a-z-]+)(?:\.html)?\/?$/);
+      if (type.includes("text/html") && response.status === 200 && cityMatch) {
+        const citySlug = cityMatch[1];
+        const locationName = citySlug === "tamilnadu" ? "Tamil Nadu" :
+          citySlug === "usa" ? "USA" : citySlug.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+        const freelanceDescription = "Sai Graphic Designs is a Madurai-based freelance graphic design studio serving " +
+          locationName + " online, with logo design, branding, brochures, business cards and packaging design.";
+        text = text.replace(/(<meta\s+name="description"\s+content=")[^"]*(")/i, (_, start, end) => start + freelanceDescription + end);
+        const freelanceSection = '<section id="freelance-design-service" aria-labelledby="freelance-service-title">' +
+          '<h2 id="freelance-service-title">Freelance Graphic Designer for ' + locationName + '</h2>' +
+          '<p>Sai Graphic Designs is an independent freelance graphic design studio based in Madurai, Tamil Nadu. ' +
+          'We work remotely with clients in ' + locationName + ' on logo design, brand identity, business cards, brochures, packaging, product labels and social media creatives. ' +
+          'Discuss the scope, revisions, editable files and printing requirements before placing an order. ' +
+          'We do not claim a physical branch in ' + locationName + '.</p>' +
+          '<p><a href="/contact">Contact our freelance graphic designer for a project quote</a></p></section>';
+        if (!text.includes('id="freelance-design-service"')) {
+          text = text.replace(/<\/article>/i, freelanceSection + '</article>');
+        }
+      }
       if (type.includes("text/html")) text = applyBlogShell(text, url.pathname);
       const headers = new Headers(response.headers);
       headers.delete("content-length"); headers.delete("etag");
