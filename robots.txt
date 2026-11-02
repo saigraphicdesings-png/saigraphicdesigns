@@ -5,3 +5,4 @@ Disallow: /admin-
 
 Sitemap: https://saigraphicdesings.com/sitemap.xml
 Sitemap: https://saigraphicdesings.com/bundle-sitemap.xml
+Sitemap: https://saigraphicdesings.com/blog-sitemap.xml
