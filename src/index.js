@@ -1349,6 +1349,36 @@ export default {
       try { return await promotionAPI(request, env); }
       catch (error) { console.error("Promotion API error:", error); return json({error:"Promotion settings are temporarily unavailable."},500); }
     }
+    if (url.pathname === "/api/admin/billing-document" && request.method === "POST") {
+      if (!isAuthorized(request, env)) return json({error:"Admin login required."},401);
+      try {
+        const body = await request.json();
+        const doc = body.document;
+        if (!doc || !["quotation","invoice"].includes(doc.type) || typeof doc.number !== "string" || !doc.number.trim() || !Array.isArray(doc.items) || doc.items.length > 100) return json({error:"Invalid document."},400);
+        const text = x => String(x ?? "").slice(0,2000);
+        const clean = {type:doc.type,number:text(doc.number),date:text(doc.date),customer:text(doc.customer),business:text(doc.business),address:text(doc.address),phone:text(doc.phone),note:text(doc.note),items:doc.items.map(x=>({name:text(x.name),qty:Number(x.qty)||0,unit:text(x.unit),rate:Number(x.rate)||0,amount:Number(x.amount)||0})),subtotal:Number(doc.subtotal)||0,discount:Number(doc.discount)||0,total:Number(doc.total)||0,paid:Number(doc.paid)||0,balance:Number(doc.balance)||0};
+        if ([clean.subtotal,clean.discount,clean.total,clean.paid,clean.balance].some(x=>!Number.isSafeInteger(x)||x<0)) return json({error:"Invalid amounts."},400);
+        await env.DB.prepare("CREATE TABLE IF NOT EXISTS public_billing_documents (token TEXT PRIMARY KEY, document_id TEXT NOT NULL UNIQUE, payload TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
+        const documentId = text(body.documentId);
+        if (!/^[a-zA-Z0-9_-]{8,100}$/.test(documentId)) return json({error:"Invalid document reference."},400);
+        const existing = await env.DB.prepare("SELECT token FROM public_billing_documents WHERE document_id=?").bind(documentId).first();
+        const token = existing?.token || crypto.randomUUID().replace(/-/g,"")+crypto.randomUUID().replace(/-/g,"");
+        await env.DB.prepare("INSERT INTO public_billing_documents(token,document_id,payload) VALUES(?,?,?) ON CONFLICT(document_id) DO UPDATE SET payload=excluded.payload,updated_at=CURRENT_TIMESTAMP").bind(token,documentId,JSON.stringify(clean)).run();
+        return json({url:"https://saigraphicdesings.com/billing-document/"+token});
+      } catch(e) { console.error("Billing document publishing failed",e); return json({error:"Could not publish billing document."},500); }
+    }
+    if (url.pathname.startsWith("/billing-document/") && request.method === "GET") {
+      const token=url.pathname.slice("/billing-document/".length);
+      if (!/^[a-f0-9]{64}$/.test(token)) return new Response("Document not found",{status:404});
+      try {
+        const row=await env.DB.prepare("SELECT payload FROM public_billing_documents WHERE token=?").bind(token).first();
+        if(!row)return new Response("Document not found",{status:404});
+        const d=JSON.parse(row.payload),e=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+        const money=x=>"₹"+(Number(x)/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+        const html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>'+e(d.type==="quotation"?"Quotation":"Invoice")+' '+e(d.number)+'</title><style>body{font:16px system-ui,sans-serif;background:#f3f5f8;color:#142238;margin:0;padding:24px}main{max-width:800px;margin:auto;background:white;padding:32px;border-radius:16px;box-shadow:0 3px 20px #0001}h1{margin-bottom:0}small{color:#607086}table{border-collapse:collapse;width:100%;margin:24px 0}td,th{padding:12px;border-bottom:1px solid #dbe0e7;text-align:left}th{background:#edf2f8}.total{text-align:right;font-weight:bold;font-size:22px}.review{margin-top:28px}a{color:#1557ba}@media(max-width:600px){body{padding:8px}main{padding:16px}table{font-size:12px}td,th{padding:6px}}</style></head><body><main><h1>'+e(d.business)+'</h1><small>'+e(d.address)+' · '+e(d.phone)+'</small><h2>'+e(d.type.toUpperCase())+' '+e(d.number)+'</h2><p>Date: '+e(d.date)+'</p><p>Prepared for: <strong>'+e(d.customer)+'</strong></p><table><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+d.items.map(x=>'<tr><td>'+e(x.name)+'</td><td>'+e(x.qty)+' '+e(x.unit)+'</td><td>'+money(x.rate)+'</td><td>'+money(x.amount)+'</td></tr>').join('')+'</tbody></table><p>Subtotal: '+money(d.subtotal)+'</p><p>Discount: '+money(d.discount)+'</p><p class="total">Total: '+money(d.total)+'</p>'+(d.type==="invoice"?'<p>Paid: '+money(d.paid)+' · Balance due: '+money(d.balance)+'</p>':'')+'<p>'+e(d.note)+'</p><p class="review">Thank you for your business. <a href="https://g.page/r/CUJMmmok_JaaEAE/review" rel="noopener noreferrer">Review Sai Graphic Designs on Google</a></p><small>Shared document copy. Contact the business to confirm the latest payment status.</small></main></body></html>';
+        return new Response(html,{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"}});
+      }catch(e){return new Response("Document unavailable",{status:503});}
+    }
     if (url.pathname === "/api/admin/billing") {
       if (!isAuthorized(request, env)) return json({error:"Admin login required."},401);
       try { return await billingAPI(request,env); }
