@@ -1399,6 +1399,23 @@ export default {
       try { return await cdrLandingPage(request, env, url); }
       catch (error) { console.error("CDR landing page error:", error); return new Response("Page temporarily unavailable", { status: 503 }); }
     }
+    if (request.method === "GET" && url.pathname === "/blog-sitemap.xml") {
+      try {
+        if (!env.DB) return new Response("Blog sitemap unavailable", { status: 503 });
+        await ensureBlogTable(env);
+        const data = await env.DB.prepare("SELECT slug FROM blog_posts WHERE published = 1 ORDER BY slug LIMIT 10000").all();
+        const entries = (data.results || []).filter(row => row.slug).map(row =>
+          "<url><loc>https://saigraphicdesings.com/blog-post.html?slug=" + encodeURIComponent(row.slug) + "</loc></url>"
+        );
+        const xml = '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
+          entries.join("") + '</urlset>';
+        return new Response(xml, { headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=300" } });
+      } catch (error) {
+        console.error("Blog sitemap error:", error);
+        return new Response("Blog sitemap unavailable", { status: 503 });
+      }
+    }
     if (request.method === "GET" && (url.pathname.startsWith("/bundle/") || url.pathname.startsWith("/bundles/") || url.pathname === "/bundle-sitemap.xml")) {
       try { return await bundlePages(request, env, url); }
       catch (error) { console.error("Bundle page error:", error); return new Response("Page temporarily unavailable", { status: 503 }); }
