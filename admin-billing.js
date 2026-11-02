@@ -102,7 +102,6 @@
   function receive(cid,iid){const i=book.invoices.find(x=>x.id===iid);show('Receive Payment',`<p>${esc(i?i.number+' • '+i.customer.name:customer(cid).name)}</p>`+field('amount','Amount (₹)',i?Math.max(0,total(i)-paid(i))/100:'','number')+field('date','Payment date',today(),'date')+method()+field('note','Notes','','text',false),async f=>{const amount=cents(f.get('amount'));if(!amount)throw new Error('Enter an amount greater than zero.');const date=dateValue(f.get('date'));await update(b=>{if(iid){const bill=b.invoices.find(x=>x.id===iid&&!x.deleted&&x.status==='issued');if(!bill)throw new Error('Invoice unavailable.');const payments=b.payments.filter(p=>!p.deleted&&p.invoiceId===iid).reduce((s,p)=>s+p.amount,0);if(amount>total(bill)-payments)throw new Error('Payment exceeds the invoice balance.');}else if(!b.customers.some(c=>c.id===cid&&!c.deleted))throw new Error('Customer unavailable.');b.payments.push({id:id(),customerId:cid,invoiceId:iid||'',amount,date,method:f.get('method'),note:f.get('note').trim()});});});}
   function cashEntry(){show('Cash Book Entry',select('type','Entry type',option('income','Income')+option('expense','Expense'))+field('note','Description')+field('amount','Amount (₹)','','number')+field('date','Date',today(),'date')+method(),async f=>{const amount=cents(f.get('amount'));if(!amount)throw new Error('Amount must be greater than zero.');const date=dateValue(f.get('date'));await update(b=>b.cash.push({id:id(),type:f.get('type'),amount,date,method:f.get('method'),note:f.get('note').trim()}));});}
   function ledger(cid){const c=customer(cid),rows=[...activeInvoices().filter(i=>i.customerId===cid).map(i=>({date:i.date,text:i.number,amount:total(i)})),...activePayments().filter(p=>p.customerId===cid).map(p=>({date:p.date,text:'Payment • '+p.method+(p.note?' • '+p.note:''),amount:-p.amount,id:p.id}))].sort((a,b)=>a.date.localeCompare(b.date));let running=0;show(c.name+' — Ledger',`<p>${esc(c.phone)} • Balance: <strong>${money(balance(cid))}</strong></p>`+rows.map(r=>{running+=r.amount;return `<div class="ledger-line"><b>${esc(r.date)} • ${esc(r.text)}</b><p>${r.amount<0?'Received':'Billed'}: ${money(Math.abs(r.amount))} • Balance: ${money(running)}</p>${r.id?action('delete:payments','Move Payment to Bin',r.id):''}</div>`;}).join(''),null);}
-  const REVIEW_URL='https://g.page/r/CUJMmmok_JaaEAE/review';
   async function publishedDocument(i){
     if(!i || i.supplier) return null;
     const items=i.items.map(x=>({name:x.name,qty:x.qty,unit:x.unit,rate:x.rate,amount:Math.round(x.qty*x.rate)}));
@@ -123,6 +122,7 @@
     return invoiceHtml(i,makeQr(url),url);
   }
   function invoiceHtml(i,qrImage='',qrUrl=''){
+    const REVIEW_URL='https://g.page/r/CUJMmmok_JaaEAE/review';
     if(i.supplier)return purchaseOrderHtml(i);
     const quotation=i.status==='quotation',label=quotation?'Quotation':'Invoice';
     const s=book.settings,receipts=activePayments().filter(p=>p.invoiceId===i.id),methods=[...new Set(receipts.map(p=>p.method))].join(', ')||'Not recorded';
