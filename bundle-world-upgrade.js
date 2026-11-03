@@ -23,7 +23,8 @@
       if (Array.isArray(stored)) favourites = new Set(stored.map(String));
     } catch (_) {}
     let activeCategory = "";
-    let activeQuery = "";
+    let activeQuery = new URLSearchParams(location.search).get("q")?.slice(0, 100) || "";
+    search.value = activeQuery;
     let activeSort = "featured";
     let onlyFavourites = false;
     let currentId = "";
