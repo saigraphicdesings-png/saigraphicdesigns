@@ -62,6 +62,12 @@ export function withSearchVisibility(base) {
       text = text.replace(/https:\/\/saigraphicdesings\.com\/([a-z0-9-]+)\.html/g, (_, name) => SITE + (name === "index" ? "/" : "/" + name));
       if (url.pathname === "/sitemap.xml") text = text.replace(/(<loc>https:\/\/saigraphicdesings\.com\/<\/loc><lastmod>)[^<]+/, "$1"+"2026-10-30");
       if (type.includes("text/html") && HOME_PATHS.has(url.pathname) && response.status === 200) text = enhanceHome(text);
+      if (type.includes("text/html") && response.status === 200) {
+        // Google chooses a site name from consistent signals across the site.
+        // Keep the brand name stable on homepage, articles and city guides.
+        text = text.replace(/<meta\b[^>]*\bproperty=["']og:site_name["'][^>]*>/gi, "");
+        text = text.replace(/<\/head>/i, '<meta property="og:site_name" content="Sai Graphic Designs"></head>');
+      }
       if (type.includes("text/html")) {
         text = text.replace(/<link\b[^>]*\brel=["'](?:icon|shortcut icon|apple-touch-icon)["'][^>]*>/gi, "");
         text = text.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></head>');
