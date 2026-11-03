@@ -61,7 +61,7 @@
       const j = Math.floor(Math.random() * (i + 1));
       [images[i], images[j]] = [images[j], images[i]];
     }
-    const slides = images.slice(0, 5);
+    const slides = images.slice(0, 10);
     if (!slides.length) return;
 
     const stylesheet = document.createElement('link');
@@ -110,7 +110,7 @@
         const card = cards[index];
         track.scrollTo({
           left: track.scrollLeft + card.getBoundingClientRect().left - track.getBoundingClientRect().left - (track.clientWidth - card.offsetWidth) / 2,
-          behavior: reducedMotion.matches ? 'instant' : 'smooth'
+          behavior: reducedMotion.matches || position >= slides.length || position < 0 ? 'instant' : 'smooth'
         });
       }
     }
