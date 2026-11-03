@@ -71,6 +71,10 @@
 
     const gallery = document.createElement('section');
     gallery.className = 'visiting-shelf';
+    const sizing = document.createElement('style');
+    sizing.textContent = '.visiting-shelf.blog-design-shelf .visiting-shelf-card{width:clamp(260px,70%,460px)} .visiting-shelf.blog-design-shelf .visiting-shelf-stage{padding-top:18px} .visiting-shelf.blog-design-shelf .visiting-shelf-track{min-height:0}';
+    document.head.append(sizing);
+    gallery.classList.add('blog-design-shelf');
     gallery.setAttribute('aria-labelledby', 'blog-portfolio-title');
     gallery.innerHTML = '<div class="visiting-shelf-heading"><div><span class="section-tag">DESIGN EXAMPLES</span><h2 id="blog-portfolio-title">Designs made<br>to stand out.</h2></div><p>Explore portfolio previews from Sai Graphic Designs.</p></div><div class="visiting-shelf-stage"><div class="visiting-shelf-track" role="group" aria-label="Portfolio designs"></div></div><div class="visiting-shelf-toolbar"><div><span class="blog-portfolio-count"></span><h3></h3></div><div class="visiting-shelf-controls"><button type="button">Previous</button><button type="button">Pause</button><button type="button">Next</button></div></div>';
     const track = gallery.querySelector('.visiting-shelf-track');
