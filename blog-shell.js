@@ -85,7 +85,15 @@
       toggle.textContent = playing ? 'Pause' : 'Play';
     }
     show(0);
-    article.append(gallery);
+    const portfolio = article.querySelector('#freelance-design-service');
+    const previews = portfolio?.querySelector('.freelance-portfolio-previews');
+    if (previews) {
+      gallery.querySelector('h2').remove();
+      previews.replaceWith(gallery);
+    } else {
+      gallery.querySelector('h2').textContent = 'Explore portfolio previews';
+      article.append(gallery);
+    }
     if (slides.length > 1) {
       toggle.parentElement.hidden = false;
       previous.onclick = () => { setPlaying(false); show(-1); };
