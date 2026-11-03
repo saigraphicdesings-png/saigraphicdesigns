@@ -41,3 +41,59 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') { setOpen(false); button.focus(); } });
   window.addEventListener('resize', () => { if (window.innerWidth > 900) setOpen(false); });
 })();
+(async () => {
+  const article = document.querySelector('main article, article');
+  const post = location.pathname.replace(/\/$/, '').replace(/\.html$/, '');
+  if (!article || ['/blog', '/tamil-nadu-district-design-blogs'].includes(post)) return;
+
+  try {
+    const response = await fetch('/api/design-examples', { signal: AbortSignal.timeout(10000) });
+    if (!response.ok) return;
+    const { examples } = await response.json();
+    const pool = new Map();
+    for (const item of examples) {
+      if (item.blogPortfolio !== true || !item.image) continue;
+      const url = new URL(item.image, location.origin);
+      if (url.protocol === 'https:' || url.origin === location.origin) pool.set(url.href, item.name);
+    }
+    const images = [...pool];
+    for (let i = images.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [images[i], images[j]] = [images[j], images[i]];
+    }
+    const slides = images.slice(0, 5);
+    if (!slides.length) return;
+
+    const gallery = document.createElement('section');
+    gallery.className = 'blog-portfolio';
+    gallery.innerHTML = '<h2>Design Portfolio</h2><figure><img loading="lazy" decoding="async"><figcaption></figcaption></figure><div hidden><button type="button">Previous</button> <button type="button">Pause</button> <button type="button">Next</button></div>';
+    const image = gallery.querySelector('img');
+    const caption = gallery.querySelector('figcaption');
+    const [previous, toggle, next] = gallery.querySelectorAll('button');
+    let index = 0;
+    let timer;
+    function show(offset) {
+      index = (index + offset + slides.length) % slides.length;
+      const [src, name] = slides[index];
+      image.src = src;
+      image.alt = name || 'Sai Graphic Designs portfolio example';
+      caption.textContent = name || '';
+    }
+    function setPlaying(playing) {
+      clearInterval(timer);
+      timer = playing ? setInterval(() => show(1), 5000) : undefined;
+      toggle.textContent = playing ? 'Pause' : 'Play';
+    }
+    show(0);
+    article.append(gallery);
+    if (slides.length > 1) {
+      toggle.parentElement.hidden = false;
+      previous.onclick = () => { setPlaying(false); show(-1); };
+      next.onclick = () => { setPlaying(false); show(1); };
+      toggle.onclick = () => setPlaying(timer === undefined);
+      setPlaying(!matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+  } catch {
+    // A gallery request failure should leave the article readable.
+  }
+})();

@@ -661,7 +661,7 @@ export function validateDesignExamples(input) {
     if (description.length > 3000) throw new Error("Descriptions must be 3000 characters or fewer.");
     const detailImage = String(item?.detailImage || "").trim();
     if (detailImage && (detailImage.length > 2000 || /[\\\x00-\x20]/.test(detailImage) || detailImage.startsWith("//") || new URL(detailImage, "https://example.com").protocol !== "https:")) throw new Error("Use a valid extra image path or HTTPS URL.");
-    return { name, image, description, detailImage };
+    return { name, image, description, detailImage, ...(item.blogPortfolio === true ? { blogPortfolio: true } : {}) };
   });
 }
 

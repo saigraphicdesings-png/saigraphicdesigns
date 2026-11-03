@@ -40,6 +40,13 @@
         file.addEventListener('change',async()=>{const image=file.files[0];if(!image)return;pending++;save.disabled=true;message.textContent='Uploading…';try{const form=new FormData();form.append('image',await prepareImage(image));const response=await fetch('/api/admin/bundle-images',{method:'POST',headers:headers(),body:form});const data=await response.json();if(!response.ok)throw new Error(data.error||'Upload failed');if(!data.url)throw new Error('Upload did not return an image URL.');item[key]=data.url;render();notify('Image uploaded. Save examples to publish.');}catch(error){notify(error.message);}finally{pending--;save.disabled=!ready||pending>0;}});
       }
       uploadField('image','Upload main image');
+      const blogLabel = document.createElement('label');
+      const blogOption = document.createElement('input');
+      blogOption.type = 'checkbox';
+      blogOption.checked = item.blogPortfolio === true;
+      blogOption.addEventListener('change', () => { item.blogPortfolio = blogOption.checked; });
+      blogLabel.append(blogOption, ' Include main image in blog portfolio slideshows');
+      row.append(blogLabel);
       field('Extra image path or HTTPS URL (popup only)', 'detailImage');
       uploadField('detailImage','Upload extra image (popup only)');
       if(item.detailImage){const extra=document.createElement('img');extra.src=item.detailImage;extra.alt='Extra image preview';extra.style.cssText=preview.style.cssText;const remove=document.createElement('button');remove.type='button';remove.textContent='Remove extra image';remove.addEventListener('click',()=>{if(pending)return;item.detailImage='';render();});row.append(extra,remove);}
@@ -49,6 +56,6 @@
   }
   async function load() { if(!sessionStorage.getItem('saiShopAdminToken'))return;ready=false;save.disabled=true;try{const response=await fetch('/api/admin/design-examples',{headers:headers(),cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Could not load examples');examples=data.examples;render();ready=true;message.textContent='';}catch(error){notify(error.message);}save.disabled=!ready; }
   document.getElementById('addDesignExample').addEventListener('click',()=>{if(!ready||pending)return;if(examples.length>=30){message.textContent='Maximum 30 examples.';return;}examples.push({name:'',image:'',detailImage:'',description:''});render();list.lastElementChild.scrollIntoView({block:'center'});list.lastElementChild.querySelector('input').focus();});
-  save.addEventListener('click',async()=>{if(!ready||pending)return;const invalid=examples.findIndex(item=>!item.name.trim()||!item.image);if(invalid!==-1){notify('Example '+(invalid+1)+' needs a design name and a main image. Upload its main image before saving.');return;}save.disabled=true;message.textContent='Saving…';try{const response=await fetch('/api/admin/design-examples',{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({examples})});const data=await response.json();if(!response.ok)throw new Error(data.error||'Save failed');examples=data.examples;render();message.textContent='Saved. Homepage design examples updated.';}catch(error){notify(error.message);}finally{save.disabled=false;}});
+  save.addEventListener('click',async()=>{if(!ready||pending)return;const invalid=examples.findIndex(item=>!item.name.trim()||!item.image);if(invalid!==-1){notify('Example '+(invalid+1)+' needs a design name and a main image. Upload its main image before saving.');return;}save.disabled=true;message.textContent='Saving…';try{const response=await fetch('/api/admin/design-examples',{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({examples})});const data=await response.json();if(!response.ok)throw new Error(data.error||'Save failed');examples=data.examples;render();message.textContent='Saved. Design examples and blog portfolio updated.';}catch(error){notify(error.message);}finally{save.disabled=false;}});
   window.addEventListener('sai-admin-open',load);load();
 })();

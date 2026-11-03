@@ -31,3 +31,8 @@
 .site-footer .footer-bottom{max-width:1200px;margin:28px auto 0;border-top:1px solid #426156;padding-top:16px;display:flex;justify-content:space-between;gap:12px}
 @media(max-width:900px){.site-header .nav-container{flex-wrap:wrap;justify-content:space-between}.site-header .mobile-menu-btn{display:block;margin-left:auto}.site-header .main-nav{display:none;order:3;flex-basis:100%;flex-direction:column;align-items:stretch;gap:0;margin:0}.site-header .main-nav.mobile-open{display:flex}.site-header .nav-link{padding:12px;border-top:1px solid #e6ede9}.site-header .nav-actions{display:none}.site-footer .footer-container{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.site-footer .footer-container{grid-template-columns:1fr}.site-footer .footer-bottom{flex-direction:column}.site-header .logo-name{font-size:15px}}
+
+.blog-portfolio { margin-block: 2rem; }
+.blog-portfolio figure { margin: 0 0 1rem; }
+.blog-portfolio img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #f1f5f9; border-radius: 12px; }
+.blog-portfolio button { padding: .5rem .8rem; cursor: pointer; }
