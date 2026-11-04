@@ -18,7 +18,7 @@ if(cards.length>1&&!reduced.matches){
   track.classList.add('is-auto-scrolling');
   const copies=cards.map((card,i)=>{const copy=card.cloneNode(true);copy.removeAttribute('data-card-index');copy.classList.remove('is-selected');copy.setAttribute('aria-hidden','true');copy.tabIndex=-1;copy.addEventListener('click',()=>{select(i,false);openDesign()});track.append(copy);return copy});
   let cycle=0,position=0,last=0,hover=false,dragging=false,pauseUntil=0,inView=true;
-  function measure(){copies.forEach((copy,i)=>{copy.style.width=cards[i].style.width;const image=copy.querySelector('img');image.style.aspectRatio=cards[i].querySelector('img').style.aspectRatio;image.removeAttribute('width');image.removeAttribute('height')});cycle=copies[0].offsetLeft-cards[0].offsetLeft;position=0;track.scrollLeft=position;}
+  function measure(){copies.forEach((copy,i)=>{copy.style.width=cards[i].style.width;const image=copy.querySelector('img');image.style.aspectRatio=cards[i].querySelector('img').style.aspectRatio;image.removeAttribute('width');image.removeAttribute('height')});cycle=copies[0].offsetLeft-cards[0].offsetLeft;position=cycle>0?track.scrollLeft%cycle:0;track.scrollLeft=position;}
   cards.forEach(card=>card.querySelector('img').addEventListener('load',measure));window.addEventListener('resize',measure);measure();
   root.addEventListener('mouseenter',()=>hover=true);root.addEventListener('mouseleave',()=>hover=false);
   root.addEventListener('pointerdown',()=>{dragging=true;pauseUntil=performance.now()+4000});window.addEventListener('pointerup',()=>{dragging=false;position=track.scrollLeft});window.addEventListener('pointercancel',()=>dragging=false);
