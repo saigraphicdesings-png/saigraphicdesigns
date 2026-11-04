@@ -175,8 +175,8 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://saigraphicdesings.com/#website", "name": "Sai Graphic Designs", "url": "https://saigraphicdesings.com/", "publisher": {"@id": "https://saigraphicdesings.com/#business"}}</script>
     <link rel="stylesheet" href="visiting-shelf.css?v=20261001-scroll-left">
     <script src="visiting-shelf.js?v=20261001-scroll-left" defer></script>
-<link rel="stylesheet" href="reviews.css?v=20261001">
-<script src="reviews.js?v=20261001-shuffle" defer></script>
+<link rel="stylesheet" href="reviews.css?v=review-slider">
+<script src="reviews.js?v=review-slider" defer></script>
 <link rel="stylesheet" href="promotion.css?v=20261006-service-prices"><script src="promotion-ui.js?v=20261006" defer></script><link rel="stylesheet" href="service-gallery.css?v=20261007"><script src="service-gallery.js?v=20261007" defer></script></head>
 
 
@@ -470,7 +470,12 @@
  <div class="visiting-shelf-toolbar"><div aria-live="polite"><span id="visiting-shelf-count">01 / 05</span><h3 id="visiting-shelf-name">Signature visiting cards</h3></div><div class="visiting-shelf-controls"><button type="button" id="visiting-shelf-prev" aria-label="Previous visiting card">Previous</button><button type="button" id="visiting-shelf-next" aria-label="Next visiting card">Next</button></div><a class="visiting-shelf-order" href="customizer.html#service-visiting-card">Request your card design</a></div>
  <dialog id="visiting-shelf-dialog" class="visiting-shelf-dialog" aria-labelledby="visiting-shelf-dialog-title"><button type="button" id="visiting-shelf-close" class="visiting-shelf-close" aria-label="Close design details">Close</button><div class="design-detail-layout"><div class="design-detail-art"><img id="visiting-shelf-large" src="Images/services-ai/visiting-card-design.webp" alt="Signature visiting cards"><img id="visiting-shelf-extra" alt="" hidden></div><div class="design-detail-copy"><span class="section-tag">DESIGN EXAMPLE</span><h3 id="visiting-shelf-dialog-title">Signature visiting cards</h3><p id="visiting-shelf-description"></p><a class="visiting-shelf-order" href="customizer.html#service-visiting-card">Request your card design</a></div></div></dialog>
 </section>
-<section id="clientReviews" class="client-reviews" aria-labelledby="reviewsTitle" hidden><div class="reviews-heading"><span class="section-tag">CLIENT REVIEWS</span><h2 id="reviewsTitle">What our clients say</h2><p>Feedback from the people we design for.</p></div><div class="reviews-grid"></div></section>
+<section id="clientReviews" class="client-reviews" aria-labelledby="reviewsTitle" hidden><div class="reviews-heading"><span class="section-tag">CLIENT REVIEWS</span><h2 id="reviewsTitle">What our clients say</h2><p>Feedback from the people we design for.</p></div><div class="reviews-grid" tabindex="0" role="region" aria-label="Client reviews slider"></div>
+<div class="reviews-controls" hidden>
+  <button type="button" data-review-prev aria-label="Previous review">Previous</button>
+  <button type="button" data-review-toggle>Pause</button>
+  <button type="button" data-review-next aria-label="Next review">Next</button>
+</div></section>
 
 
     <!-- =========================================
