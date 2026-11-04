@@ -490,34 +490,43 @@
             }
         }
         @media (max-width: 767px) {
-            .about-slides.is-ready > section:not(.is-current) { display: none; }
-            .about-slides.is-ready .about-slide-controls {
+            .mission-vision-grid,
+            .works-grid {
                 display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 8px;
-                padding: 12px 16px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                overscroll-behavior-x: contain;
+                gap: 12px;
+                padding-bottom: 12px;
             }
-            .about-slide-controls button {
-                min-height: 44px;
-                padding: 0 12px;
-                border: 1px solid #087a58;
-                border-radius: 8px;
-                background: #fff;
-                color: #12382f;
-                font: inherit;
+
+            .mission-vision-grid > div,
+            .works-grid > .work-card {
+                flex: 0 0 88%;
+                min-width: 0;
+                scroll-snap-align: start;
             }
-            .about-slide-controls button:disabled { opacity: .45; }
-            .about-slide-status { text-align: center; font-size: .875rem; }
+
+            .about-swipe-hint {
+                display: block;
+                text-align: center;
+                margin-bottom: 12px;
+                color: #475569;
+                font-size: .875rem;
+            }
+
+            .achievement-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .achievement-card {
+                min-width: 0;
+                padding: 16px 10px;
+                overflow-wrap: anywhere;
+            }
         }
 
-        @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-            .about-slides.is-ready > .is-current { animation: about-slide-in .28s ease-out; }
-            @keyframes about-slide-in {
-                from { opacity: .45; transform: translateX(var(--about-slide-offset, 12px)); }
-                to { opacity: 1; transform: translateX(0); }
-            }
-        }
     </style>
 
     <link rel="stylesheet" href="cart-unified.css">
@@ -618,12 +627,6 @@
      ABOUT HERO
 ================================= -->
 
-<main class="about-slides" id="aboutSlides">
-    <nav class="about-slide-controls" aria-label="About sections" hidden>
-        <button type="button" data-about-prev>Previous</button>
-        <span class="about-slide-status" aria-live="polite"></span>
-        <button type="button" data-about-next>Next</button>
-    </nav>
 <section class="about-hero">
 
     <div class="about-hero-content">
@@ -741,7 +744,8 @@
     </div>
 
 
-    <div class="mission-vision-grid">
+    <p class="about-swipe-hint" hidden>Swipe to see Mission and Vision</p>
+    <div class="mission-vision-grid" role="region" aria-label="Our Purpose, Mission and Vision" tabindex="0">
 
 
         <!-- MISSION -->
@@ -835,7 +839,8 @@
     </div>
 
 
-    <div class="works-grid">
+    <p class="about-swipe-hint" hidden>Swipe to see more of our work</p>
+    <div class="works-grid" role="region" aria-label="Our Works" tabindex="0">
 
 
         <!-- WORK 01 -->
@@ -1133,7 +1138,6 @@
     </div>
 
 </section>
-</main>
 <!-- =====================================================
      CART OVERLAY
 ===================================================== -->
@@ -1326,78 +1330,6 @@
      JAVASCRIPT
 ================================= -->
 
-<script>
-(() => {
-    const slider = document.getElementById("aboutSlides");
-    const controls = slider.querySelector(".about-slide-controls");
-    const previous = controls.querySelector("[data-about-prev]");
-    const next = controls.querySelector("[data-about-next]");
-    const status = controls.querySelector(".about-slide-status");
-    const sections = Array.from(slider.children).filter(element => element.matches("section"));
-    const mobile = matchMedia("(max-width: 767px)");
-    let active = sections[0];
-    let touchStart;
-
-    function visibleSections() {
-        return sections.filter(section => !section.hidden);
-    }
-
-    function render() {
-        if (!mobile.matches) {
-            controls.hidden = true;
-            return;
-        }
-
-        const slides = visibleSections();
-        if (!slides.includes(active)) active = slides[0];
-        sections.forEach(section => section.classList.toggle("is-current", section === active));
-        const index = slides.indexOf(active);
-        status.textContent = (index + 1) + " of " + slides.length;
-        previous.disabled = index === 0;
-        next.disabled = index === slides.length - 1;
-        controls.hidden = false;
-    }
-
-    function move(direction) {
-        if (!mobile.matches) return;
-        const slides = visibleSections();
-        const target = slides[slides.indexOf(active) + direction];
-        if (!target) return;
-
-        slider.style.setProperty("--about-slide-offset", direction > 0 ? "12px" : "-12px");
-        active = target;
-        render();
-        if (controls.getBoundingClientRect().top < 0) controls.scrollIntoView({ block: "center" });
-    }
-
-    previous.addEventListener("click", () => move(-1));
-    next.addEventListener("click", () => move(1));
-    slider.addEventListener("touchstart", event => {
-        touchStart = undefined;
-        if (!mobile.matches || event.touches.length !== 1 || controls.contains(event.target)) return;
-        for (let element = event.target; element && element !== slider; element = element.parentElement) {
-            if (element.scrollWidth > element.clientWidth + 2 &&
-                /auto|scroll/.test(getComputedStyle(element).overflowX)) return;
-        }
-        touchStart = event.touches[0];
-    }, { passive: true });
-    slider.addEventListener("touchcancel", () => { touchStart = undefined; }, { passive: true });
-    slider.addEventListener("touchend", event => {
-        if (!touchStart) return;
-        const end = event.changedTouches[0];
-        const dx = end.clientX - touchStart.clientX;
-        const dy = end.clientY - touchStart.clientY;
-        touchStart = undefined;
-        if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) move(dx < 0 ? 1 : -1);
-    }, { passive: true });
-
-    mobile.addEventListener("change", render);
-    const observer = new MutationObserver(render);
-    sections.forEach(section => observer.observe(section, { attributes: true, attributeFilter: ["hidden"] }));
-    render();
-    slider.classList.add("is-ready");
-})();
-</script>
 <script src="clients.js?v=20261001-centre" defer></script>
 <script src="main.js"></script>
 
