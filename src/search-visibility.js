@@ -118,7 +118,7 @@ export function withSearchVisibility(base) {
           text = text.replace(/<\/article>/i, freelanceSection + '</article>');
         }
       }
-      if (type.includes("text/html")) text = applyBlogShell(text, url.pathname);
+      if (type.includes("text/html") && response.status === 200) text = applyBlogShell(text, url.pathname);
       const headers = new Headers(response.headers);
       headers.delete("content-length"); headers.delete("etag");
       return new Response(text,{status:response.status,statusText:response.statusText,headers});
