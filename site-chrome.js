@@ -1,5 +1,15 @@
 (() => {
     const header = document.querySelector('.sai-site-header');
+    if (!header) return;
+    const account = header.querySelector('.sai-account-action');
+    fetch('/api/auth/me', { credentials: 'same-origin', cache: 'no-store' })
+        .then(response => response.ok ? response.json() : null)
+        .then(data => {
+            const signedIn = Boolean(data && (data.customer || data.user || data.authenticated));
+            account.querySelector('.sai-account-label').textContent = signedIn ? 'My Account' : 'Login';
+            account.setAttribute('aria-label', signedIn ? 'My Account' : 'Login or open My Account');
+        })
+        .catch(() => {});
     const button = header?.querySelector('#mobileMenuBtn');
     const nav = header?.querySelector('#mainNav');
     if (!button || !nav || button.dataset.menuInitialized === 'true') return;

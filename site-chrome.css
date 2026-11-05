@@ -33,7 +33,8 @@ header.sai-site-header {
     width: 36px; height: 36px; border-radius: 9px; background: #087a58;
     color: white; font-size: 15px; flex: none;
 }
-.sai-site-header .logo-name { font-size: 20px; }
+.sai-site-header .logo-name { font-size: 20px; color: #12382f !important; }
+.sai-site-header .logo-name strong { color: #087a58 !important; }
 .sai-site-header .main-nav {
     display: flex !important; position: static !important; flex-direction: row !important;
     align-items: center !important; gap: 4px !important; margin: 0 !important;
