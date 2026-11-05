@@ -109,3 +109,15 @@ footer.sai-site-footer {
     .sai-site-footer .footer-container { grid-template-columns: 1fr !important; }
     .sai-site-footer .footer-bottom { flex-direction: column; }
 }
+.sai-site-footer .footer-links .footer-link {
+    margin: 0 0 8px !important; padding: 0 !important;
+}
+.sai-site-footer .footer-links a {
+    display: inline-block; margin: 0 !important; padding: 0 !important;
+    font: 15px/1.6 Arial, sans-serif !important;
+}
+.sai-site-footer .footer-socials .social-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%; background: #244b3e !important;
+    color: #fff !important; font: 14px/1 Arial, sans-serif; padding: 0 !important;
+}
