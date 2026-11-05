@@ -121,3 +121,9 @@ footer.sai-site-footer {
     width: 36px; height: 36px; border-radius: 50%; background: #244b3e !important;
     color: #fff !important; font: 14px/1 Arial, sans-serif; padding: 0 !important;
 }
+.sai-site-footer .footer-links { display: block !important; gap: 0 !important; }
+.sai-site-footer .footer-links .footer-link { display: block !important; line-height: 24px !important; }
+.sai-site-footer .footer-col-title { font: 700 17px/1.4 Arial, sans-serif !important; margin: 0 0 12px !important; }
+.sai-site-footer .footer-socials .social-icon { border: 1px solid #739b8a !important; }
+.sai-site-header .logo, .sai-site-header .logo-name { line-height: 1.2 !important; }
+.sai-site-header .nav-link { font-weight: 600 !important; line-height: 21px !important; }
