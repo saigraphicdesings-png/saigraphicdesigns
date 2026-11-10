@@ -105,7 +105,7 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-async function ensureAccountSchema(env) {
+export async function ensureAccountSchema(env) {
   if (!env.DB) throw new Error("DB binding missing");
 
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS customer_accounts (
@@ -125,6 +125,14 @@ async function ensureAccountSchema(env) {
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_login_at TEXT
   )`).run();
+
+  const columns = await env.DB.prepare('PRAGMA table_info(customer_accounts)').all();
+  for (const column of ['address', 'city', 'state', 'pin']) {
+    if (!columns.results.some(c => c.name === column)) {
+      try { await env.DB.prepare(`ALTER TABLE customer_accounts ADD COLUMN ${column} TEXT NOT NULL DEFAULT ''`).run(); }
+      catch (e) { if (!String(e.message).includes('duplicate column')) throw e; }
+    }
+  }
 
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS customer_account_sessions (
     token_hash TEXT PRIMARY KEY,
@@ -187,6 +195,10 @@ function publicCustomer(row) {
     name: row.name,
     email: row.email || "",
     phone: row.phone || "",
+    address: row.address || "",
+    city: row.city || "",
+    state: row.state || "",
+    pin: row.pin || "",
     provider: row.auth_provider || "email",
     emailVerified: Boolean(row.email_verified),
     phoneVerified: Boolean(row.phone_verified),
@@ -194,6 +206,17 @@ function publicCustomer(row) {
     createdAt: row.created_at,
     lastLoginAt: row.last_login_at || ""
   };
+}
+
+export function validateRegistrationAddress(input) {
+  const address = String(input.address || '').trim();
+  const city = String(input.city || '').trim();
+  const state = String(input.state || '').trim();
+  const pin = String(input.pin || '').trim();
+  const phone = normalizeIndianPhone(input.phone);
+  if (!phone) return {error: 'Enter a valid 10-digit Indian mobile number.'};
+  if (address.length < 10 || address.length > 500 || city.length < 2 || city.length > 100 || state.length < 2 || state.length > 100 || !/^[1-9]\d{5}$/.test(pin)) return {error: 'Enter your full address, city, state and valid 6-digit PIN code.'};
+  return {phone, address, city, state, pin};
 }
 
 async function signup(request, env) {
@@ -210,6 +233,8 @@ async function signup(request, env) {
   const email = normalizeEmail(input.email);
   const password = String(input.password || "");
   const termsAccepted = input.termsAccepted === true;
+  const delivery = validateRegistrationAddress(input);
+  if (delivery.error) return json({error: delivery.error}, 400);
 
   if (name.length < 2) return json({ error: "Please enter your full name." }, 400);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "Please enter a valid email address." }, 400);
@@ -221,6 +246,8 @@ async function signup(request, env) {
     .first();
   if (exists) return json({ error: "An account with this email already exists. Please login instead." }, 409);
 
+  const duplicatePhone = await env.DB.prepare('SELECT id FROM customer_accounts WHERE phone = ? LIMIT 1').bind(delivery.phone).first();
+  if (duplicatePhone) return json({error: 'This mobile number is already linked to an account. Please sign in.'}, 409);
   const salt = new Uint8Array(16);
   crypto.getRandomValues(salt);
   const passwordHash = `pbkdf2-sha256$${PASSWORD_HASH_ITERATIONS}$${await derivePasswordHash(password, salt)}`;
@@ -228,9 +255,9 @@ async function signup(request, env) {
 
   await env.DB.prepare(`
     INSERT INTO customer_accounts
-      (id, name, email, password_hash, password_salt, auth_provider, email_verified, active, terms_accepted_at, last_login_at)
-    VALUES (?, ?, ?, ?, ?, 'email', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-  `).bind(id, name, email, passwordHash, bytesToBase64(salt)).run();
+      (id, name, email, password_hash, password_salt, phone, address, city, state, pin, auth_provider, email_verified, active, terms_accepted_at, last_login_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'email', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  `).bind(id, name, email, passwordHash, bytesToBase64(salt), delivery.phone, delivery.address, delivery.city, delivery.state, delivery.pin).run();
 
   const rawToken = await createSession(env, id);
   const customer = await env.DB.prepare("SELECT * FROM customer_accounts WHERE id = ? LIMIT 1")

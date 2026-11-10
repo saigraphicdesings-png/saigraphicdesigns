@@ -1,5 +1,5 @@
 import {getServiceability} from './courier-serviceability.js';
-import {currentCustomer} from './worker.js';
+import {currentCustomer,ensureAccountSchema} from './worker.js';
 import {demoProducts,sizes,stages} from '../public/frames-catalog.mjs';
 const reply=(data,status=200)=>Response.json(data,{status,headers:{'cache-control':'no-store','x-content-type-options':'nosniff'}});
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
@@ -26,6 +26,11 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  const isAdmin=admin(req,env);if(url.pathname.startsWith('/api/frames/admin/')&&!isAdmin)return reply({error:'Log in with your existing admin token.'},401);
  await ensureFrames(env);
  if(url.pathname==='/api/frames/products'&&req.method==='GET')return reply({products:(await list(env)).filter(p=>p.active),sizes});
+ if(url.pathname==='/api/frames/admin/customers'&&req.method==='GET'){
+  await ensureAccountSchema(env);
+  const r=await env.DB.prepare('SELECT id,name,email,phone,address,city,state,pin,created_at FROM customer_accounts ORDER BY created_at DESC LIMIT 1000').all();
+  return reply({customers:r.results});
+ }
  if(url.pathname==='/api/frames/admin/products'){
   if(req.method==='GET')return reply({products:await list(env)});
   const p=validateProduct(await readJSON(req));await env.DB.prepare('INSERT INTO frame_products (id,data) VALUES (?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').bind(p.id,JSON.stringify(p)).run();return reply({product:p});
