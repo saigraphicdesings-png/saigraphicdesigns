@@ -5,6 +5,7 @@ const reply=(data,status=200)=>Response.json(data,{status,headers:{'cache-contro
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
 function admin(req,env){const expected=String(env.ADMIN_TOKEN||'');const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');if(!expected||token.length!==expected.length)return false;let diff=0;for(let i=0;i<token.length;i++)diff|=token.charCodeAt(i)^expected.charCodeAt(i);return diff===0}
 export async function ensureFrames(env){if(!env.DB)throw fail('Store temporarily unavailable.',503);await env.DB.batch([
+ env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_product_images (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at TEXT NOT NULL)'),
  env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_products (id TEXT PRIMARY KEY, data TEXT NOT NULL)'),
  env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_orders (id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, data TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 0, request_key TEXT NOT NULL, UNIQUE(customer_id, request_key))'),
  env.DB.prepare('CREATE INDEX IF NOT EXISTS frame_orders_customer ON frame_orders(customer_id)'),
@@ -13,7 +14,7 @@ export async function ensureFrames(env){if(!env.DB)throw fail('Store temporarily
 async function readJSON(req){const reader=req.body?.getReader();if(!reader)throw fail('Missing request body.');let total=0;const chunks=[];while(true){const {value,done}=await reader.read();if(done)break;total+=value.length;if(total>800000){await reader.cancel();throw fail('Request too large.',413)}chunks.push(value)}const bytes=new Uint8Array(total);let at=0;for(const chunk of chunks){bytes.set(chunk,at);at+=chunk.length}try{return JSON.parse(new TextDecoder().decode(bytes))}catch{throw fail('Invalid JSON request.')}}
 async function list(env){const r=await env.DB.prepare('SELECT data FROM frame_products').all();const m=new Map(r.results.map(r=>{const p=JSON.parse(r.data);return [p.id,p]}));return [...demoProducts.map(p=>m.get(p.id)||p),...[...m.values()].filter(p=>!demoProducts.some(d=>d.id===p.id))]}
 const clean=(s,n=200)=>String(s||'').trim().slice(0,n);
-function validImageURL(value){const v=String(value||'');if(/^\/Images\/[a-zA-Z0-9_./-]+\.(?:png|jpe?g|webp)$/i.test(v)&&!v.includes('..'))return v;try{const u=new URL(v);if(u.protocol==='https:'&&!u.username&&!u.password)return u.href}catch{}throw fail('Product images must use HTTPS or an existing /Images/ file.')}
+function validImageURL(value){const v=String(value||'');if(/^\/api\/frames\/product-image\?id=[a-f0-9-]{36}$/.test(v))return v;if(/^\/Images\/[a-zA-Z0-9_./-]+\.(?:png|jpe?g|webp)$/i.test(v)&&!v.includes('..'))return v;try{const u=new URL(v);if(u.protocol==='https:'&&!u.username&&!u.password)return u.href}catch{}throw fail('Product images must use HTTPS or an existing /Images/ file.')}
 function validStock(n){if(!Number.isInteger(n)||n<0||n>100000)throw fail('Stock must be a whole number between 0 and 100000.');return n}
 function validMRP(n,price){if(!Number.isInteger(n)||n<price||n>100000)throw fail('MRP must be a whole number at least equal to the selling price.');return n}
 export function validateProduct(p){if(!p||!/^[-a-z0-9]{1,60}$/.test(p.id)||!clean(p.name)||!Number.isInteger(p.price)||p.price<1||p.price>100000)throw fail('Enter a product ID, name and whole-rupee price between ₹1 and ₹1,00,000.');const image=validImageURL(p.image);const images=(Array.isArray(p.images)?p.images:[]).slice(0,8).map(validImageURL);if(!/^#[a-f0-9]{6}$/i.test(p.color))throw fail('Choose a valid frame colour.');return {id:p.id,name:clean(p.name,120),price:p.price,category:clean(p.category,60)||'Photo Frames',color:p.color,image,images,productImage:!!p.productImage,titleLong:clean(p.titleLong,250),material:clean(p.material,100),finish:clean(p.finish,80),features:(Array.isArray(p.features)?p.features:[]).slice(0,10).map(f=>clean(f,300)),stock:p.stock===''||p.stock===undefined?undefined:validStock(p.stock),mrp:p.mrp?validMRP(p.mrp,p.price):0,tag:clean(p.tag,60),description:clean(p.description,1200),active:!!p.active,demo:false}}
@@ -25,6 +26,15 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  if(Number(req.headers.get('content-length')||0)>800000)return reply({error:'Request too large. Use a smaller photo.'},413);
  const isAdmin=admin(req,env);if(url.pathname.startsWith('/api/frames/admin/')&&!isAdmin)return reply({error:'Log in with your existing admin token.'},401);
  await ensureFrames(env);
+ if(url.pathname==='/api/frames/product-image'&&req.method==='GET'){
+  const id=url.searchParams.get('id')||'';if(!/^[a-f0-9-]{36}$/.test(id))throw fail('Image not found.',404);
+  const image=await env.DB.prepare('SELECT data FROM frame_product_images WHERE id=?').bind(id).first();if(!image)throw fail('Image not found.',404);
+  return new Response(Uint8Array.from(atob(image.data.slice(image.data.indexOf(',')+1)),c=>c.charCodeAt(0)),{headers:{'Content-Type':'image/jpeg','Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'}});
+ }
+ if(url.pathname==='/api/frames/admin/product-image'&&req.method==='POST'){
+  const b=await readJSON(req);if(typeof b.image!=='string'||b.image.length>650000||!/^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(b.image))throw fail('Choose a JPG, PNG or WebP image; the optimised upload must be under 480 KB.');
+  const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO frame_product_images (id,data,created_at) VALUES (?,?,?)').bind(id,b.image,new Date().toISOString()).run();return reply({url:'/api/frames/product-image?id='+id},201);
+ }
  if(url.pathname==='/api/frames/products'&&req.method==='GET')return reply({products:(await list(env)).filter(p=>p.active),sizes});
  if(url.pathname==='/api/frames/admin/customers'&&req.method==='GET'){
   await ensureAccountSchema(env);
