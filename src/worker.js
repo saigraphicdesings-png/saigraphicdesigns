@@ -1,5 +1,5 @@
 import { pbkdf2 } from "node:crypto";
-import baseWorker from "./index.js";
+import baseWorker from "./static.js";
 
 // The deployed Workers runtime caps PBKDF2 at 100,000 iterations.
 const PASSWORD_HASH_ITERATIONS = 100000;
@@ -52,11 +52,11 @@ function getCookie(request, name) {
 }
 
 function sessionCookie(token, maxAge = 60 * 60 * 24 * 30) {
-  return `sai_customer_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;
+  return `sai_frames_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;
 }
 
 function clearSessionCookie() {
-  return "sai_customer_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0";
+  return "sai_frames_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0";
 }
 
 function oauthStateCookie(token, maxAge = 600) {
@@ -166,7 +166,7 @@ async function createSession(env, customerId) {
 }
 
 async function getSessionCustomer(request, env) {
-  const rawToken = getCookie(request, "sai_customer_session");
+  const rawToken = getCookie(request, "sai_frames_session");
   if (!rawToken) return null;
   const tokenHash = await hashText(rawToken);
 
@@ -314,7 +314,7 @@ async function login(request, env) {
 
 async function logout(request, env) {
   await ensureAccountSchema(env);
-  const rawToken = getCookie(request, "sai_customer_session");
+  const rawToken = getCookie(request, "sai_frames_session");
 
   if (rawToken) {
     const tokenHash = await hashText(rawToken);
@@ -348,7 +348,7 @@ if (!from) throw new Error("RESEND_FROM binding missing");
       <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:18px;padding:32px">
         <div style="font-size:13px;font-weight:800;letter-spacing:.12em;color:#059669;margin-bottom:16px">SAI GRAPHIC DESIGNS</div>
         <h1 style="font-size:26px;line-height:1.2;margin:0 0 14px">Reset your password</h1>
-        <p style="font-size:15px;line-height:1.65;color:#4b5563;margin:0 0 24px">Hello ${firstName}, we received a request to reset the password for your Sai Graphic Designs customer account.</p>
+        <p style="font-size:15px;line-height:1.65;color:#4b5563;margin:0 0 24px">Hello ${firstName}, we received a request to reset the password for your Sai Frames & Gifts customer account.</p>
         <p style="margin:0 0 26px"><a href="${safeResetUrl}" style="display:inline-block;background:#10b981;color:#ffffff;text-decoration:none;font-weight:800;padding:13px 22px;border-radius:10px">Reset My Password</a></p>
         <p style="font-size:13px;line-height:1.6;color:#6b7280;margin:0 0 12px">This secure link expires in ${RESET_TTL_MINUTES} minutes and can be used only once.</p>
         <p style="font-size:13px;line-height:1.6;color:#6b7280;margin:0">If you did not request a password reset, you can safely ignore this email.</p>
@@ -365,7 +365,7 @@ if (!from) throw new Error("RESEND_FROM binding missing");
     body: JSON.stringify({
       from,
       to: [customer.email],
-      subject: "Reset your Sai Graphic Designs password",
+      subject: "Reset your Sai Frames & Gifts password",
       html,
       tags: [{ name: "category", value: "password-reset" }]
     })
@@ -717,6 +717,8 @@ async function finishGoogle(request, env) {
 
   return redirect(accountUrl.toString(), [sessionCookie(session), clearOauthStateCookie()]);
 }
+
+export async function currentCustomer(request,env){await ensureAccountSchema(env);return getSessionCustomer(request,env)}
 
 export default {
   async fetch(request, env, ctx) {

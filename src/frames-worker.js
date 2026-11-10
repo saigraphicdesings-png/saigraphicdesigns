@@ -1,5 +1,5 @@
-import {currentCustomer} from './cart-payment-worker.js';
-import {demoProducts,sizes,stages} from '../frames-catalog.mjs';
+import {currentCustomer} from './worker.js';
+import {demoProducts,sizes,stages} from '../public/frames-catalog.mjs';
 const reply=(data,status=200)=>Response.json(data,{status,headers:{'cache-control':'no-store','x-content-type-options':'nosniff'}});
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
 function admin(req,env){const expected=String(env.ADMIN_TOKEN||'');const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');if(!expected||token.length!==expected.length)return false;let diff=0;for(let i=0;i<token.length;i++)diff|=token.charCodeAt(i)^expected.charCodeAt(i);return diff===0}
@@ -39,7 +39,7 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
   next.history=[...o.history,{stage:next.stage,date:new Date().toISOString(),note:next.note||stages[next.stage]}];
   const result=await env.DB.prepare('UPDATE frame_orders SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(next),o.id,b.version).run();if(!result.meta.changes)throw fail('Order changed. Refresh and try again.',409);return reply({ok:true});
  }
- const customer=await currentCustomer(req,env);if(!customer&&!isAdmin)throw fail('Please log in to your Sai Graphic Designs account.',401);
+ const customer=await currentCustomer(req,env);if(!customer&&!isAdmin)throw fail('Please log in to your Sai Frames & Gifts account.',401);
  if(url.pathname==='/api/frames/photo'){
   if(req.method==='GET'){const id=url.searchParams.get('id');const p=await env.DB.prepare('SELECT customer_id,data FROM frame_photos WHERE id=?').bind(id).first();if(!p||(!isAdmin&&p.customer_id!==customer?.id))throw fail('Photo not found.',404);return reply({photo:p.data})}
   if(!customer)throw fail('Customer login required.',401);const b=await readJSON(req);if(typeof b.photo!=='string'||!/^data:image\/jpeg;base64,\/9j\//.test(b.photo)||b.photo.length>650000)throw fail('Use a JPG photo under 480 KB after optimisation.');const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO frame_photos (id,customer_id,data,created_at) VALUES (?,?,?,?)').bind(id,customer.id,b.photo,new Date().toISOString()).run();return reply({id},201);

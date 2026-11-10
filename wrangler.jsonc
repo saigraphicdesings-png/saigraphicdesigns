@@ -1,39 +1,10 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "saigraphicdesigns",
-  "compatibility_date": "2026-09-08",
-  "main": "src/search-worker.js",
-  "assets": {
-    "directory": ".",
-    "binding": "ASSETS",
-    "run_worker_first": true
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "sai-shop-products",
-      "database_id": "b9f7a39b-cf52-4a74-b31c-ded8c012d5f9"
-    }
-  ],
-  "observability": {
-    "logs": {
-      "enabled": true,
-      "head_sampling_rate": 1,
-      "invocation_logs": true,
-      "persist": true
-    },
-    "traces": {
-      "enabled": false,
-      "head_sampling_rate": 1,
-      "persist": true
-    }
-  },
-  "triggers": {
-    "crons": [
-      "30 3,12 * * *"
-    ]
-  },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
+ "name":"sai-frames-gifts",
+ "main":"src/index.js",
+ "compatibility_date":"2026-11-10",
+ "compatibility_flags":["nodejs_compat"],
+ "workers_dev":true,
+ "build":{"command":"python3 scripts/embed-assets.py"},
+ "d1_databases":[{"binding":"DB","database_name":"sai-frames-gifts","database_id":"eee76a08-66b6-43df-82e8-98b98cd8bdde"}],
+ "observability":{"enabled":true,"logs":{"enabled":true,"invocation_logs":true},"traces":{"enabled":true},"redact_query_string":true}
 }
