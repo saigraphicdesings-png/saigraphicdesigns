@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
+import {accountIcon,mobileNavigation} from '../public/mobile-shell.mjs';
 import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../public/frames.js',import.meta.url),'utf8');
 function dashboard(orders=[]){
- const nodes=new Map(['#modalBody','#accountOrderSummary','#accountRepeatProducts'].map(id=>[id,{isConnected:true,innerHTML:'',scrollTop:30}]));
- const context={user:{id:'customer',name:'<Ajith>',email:'test@example.invalid'},products:[{id:'oak',name:'Oak Frame',price:699,image:'/oak.png'}],wishlist:['oak'],cart:[],document:{addEventListener(){}},localStorage:{getItem(){return '["oak"]'}},dialog:{classList:{add(){}}},esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),money:n=>'₹'+n,date:()=> '10 Nov',stages:['Requested'],frame:p=>`<img src="${p.image}">`,$:id=>nodes.get(id),api:async()=>({orders}),login:()=>{context.loginShown=true},show:(title,html)=>{context.html=html}};
+ const nodes=new Map(['#modalBody','#accountOrderSummary','#accountRepeatProducts','#dialogMobileNav'].map(id=>[id,{isConnected:true,innerHTML:'',scrollTop:30}]));
+ const context={accountIcon,mobileNavigation,user:{id:'customer',name:'<Ajith>',email:'test@example.invalid'},products:[{id:'oak',name:'Oak Frame',price:699,image:'/oak.png'}],wishlist:['oak'],cart:[],document:{addEventListener(){}},localStorage:{getItem(){return '["oak"]'}},dialog:{classList:{add(){}}},esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),money:n=>'₹'+n,date:()=> '10 Nov',stages:['Requested'],frame:p=>`<img src="${p.image}">`,$:id=>nodes.get(id),api:async()=>({orders}),login:()=>{context.loginShown=true},show:(title,html)=>{context.html=html}};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('let recentlyViewed='),source.indexOf('function login(){'))+';this.openAccount=accountView;',context);
  return {context,nodes};
 }
