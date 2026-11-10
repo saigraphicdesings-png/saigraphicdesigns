@@ -16,3 +16,12 @@ test('only admins upload product images; public images persist separately from p
  assert.equal((await call('product-image?id=missing')).status,404);
  assert.equal(db.prepare('SELECT COUNT(*) n FROM frame_photos').get().n,0);assert.equal(db.prepare('SELECT COUNT(*) n FROM frame_product_images').get().n,1);db.close();
 });
+
+test('automatic frame mockups preserve the image and safely apply the selected frame colour',async()=>{
+ const {frameVisual}=await import('../public/frame-visual.mjs');
+ const photo={name:'Family frame',image:'/api/frames/product-image?id=sample',color:'#ab8055',productImage:false};
+ const mockup=frameVisual(photo);assert.match(mockup,/class="frame-preview"/);assert.match(mockup,/--frame-color:#ab8055/);assert.match(mockup,/product-image\?id=sample/);
+ assert.doesNotMatch(frameVisual({...photo,productImage:true}),/class="frame-preview"/);
+ assert.match(frameVisual({...photo,color:'red;position:fixed',name:'<script>bad</script>'}),/--frame-color:#b18a5b/);
+ assert.doesNotMatch(frameVisual({...photo,name:'<script>bad</script>'}),/<script>/);
+});
