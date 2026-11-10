@@ -489,15 +489,3 @@ document.addEventListener("DOMContentLoaded", function () {
     initMobileMenu();
 
 });
-
-// Physical frame store uses its own cart and delivery lifecycle.
-(function () {
-  function addFramesLink() {
-    document.querySelectorAll('#mainNav, .main-nav').forEach(function(nav) {
-      if (nav.querySelector('[data-sai-frames]')) return;
-      const a=document.createElement('a'); a.href='frames.html'; a.className='nav-link'; a.dataset.saiFrames='true'; a.textContent='SAI Frames & Gifts';
-      const contact=nav.querySelector('a[href="contact.html"]'); nav.insertBefore(a,contact||null);
-    });
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',addFramesLink);else addFramesLink();
-})();
