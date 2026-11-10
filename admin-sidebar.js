@@ -19,6 +19,7 @@
         ${navItem("blog", "admin-blog.html", "✎", "Blog Editor")}
         ${navItem("offers", "admin.html#promotionPanel", "%", "Common Offer")}
         <p class="nav-label">Management</p>
+        ${navItem("frames", "admin-frames.html", "▧", "Frames & Gifts")}
         ${navItem("customers", "admin-customers.html", "♙", "Customers")}
         ${navItem("tasks", "admin-tasks.html", "✓", "Task Management")}
         ${navItem("billing", "admin-billing.html", "▤", "Billing") }
