@@ -60,11 +60,11 @@ function clearSessionCookie() {
 }
 
 function oauthStateCookie(token, maxAge = 600) {
-  return `sai_google_oauth_state=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;
+  return `sai_frames_google_oauth_state=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;
 }
 
 function clearOauthStateCookie() {
-  return "sai_google_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0";
+  return "sai_frames_google_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0";
 }
 
 function normalizeEmail(value) {
@@ -90,7 +90,7 @@ function redirect(location, cookies = []) {
 }
 
 function accountError(request, code) {
-  const url = new URL("/account", request.url);
+  const url = new URL("/frames.html", request.url);
   url.searchParams.set("google", "error");
   url.searchParams.set("reason", code);
   return redirect(url.toString(), [clearOauthStateCookie()]);
@@ -666,9 +666,10 @@ async function finishGoogle(request, env) {
   }
 
   const url = new URL(request.url);
+  if (url.searchParams.has("error")) return accountError(request, "cancelled");
   const code = url.searchParams.get("code") || "";
   const state = url.searchParams.get("state") || "";
-  const savedState = getCookie(request, "sai_google_oauth_state");
+  const savedState = getCookie(request, "sai_frames_google_oauth_state");
 
   if (!code || !state || !savedState || state !== savedState) {
     return accountError(request, "state");
@@ -739,7 +740,7 @@ async function finishGoogle(request, env) {
   }
 
   const session = await createSession(env, customerId);
-  const accountUrl = new URL("/account", request.url);
+  const accountUrl = new URL("/frames.html", request.url);
   accountUrl.searchParams.set("google", "success");
 
   return redirect(accountUrl.toString(), [sessionCookie(session), clearOauthStateCookie()]);
@@ -755,6 +756,7 @@ export default {
       if (url.pathname === "/api/auth/signup" && request.method === "POST") return await signup(request, env);
       if (url.pathname === "/api/auth/login" && request.method === "POST") return await login(request, env);
       if (url.pathname === "/api/auth/logout" && request.method === "POST") return await logout(request, env);
+      if (url.pathname === "/api/auth/providers" && request.method === "GET") return json({google: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)});
       if (url.pathname === "/api/auth/me" && request.method === "GET") return await me(request, env);
       if (url.pathname === "/api/auth/forgot-password" && request.method === "POST") return await forgotPassword(request, env);
       if (url.pathname === "/api/auth/reset-password" && request.method === "POST") return await resetPassword(request, env);
