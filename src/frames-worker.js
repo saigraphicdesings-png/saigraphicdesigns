@@ -24,7 +24,7 @@ export function validateCustomer(c){if(!c||!clean(c.name)||!String(c.phone||'').
 export function safeCourierURL(s){if(!s)return '';try{const u=new URL(s);if(u.protocol==='https:'&&!u.username&&!u.password)return u.href}catch{}throw fail('Courier tracking link must be a valid HTTPS URL.')}
 async function paymentSettings(env) {
  const row=await env.DB.prepare("SELECT data FROM frame_settings WHERE id='payment'").first();
- return row?JSON.parse(row.data):{upiId:'',whatsapp:''};
+ return row?JSON.parse(row.data):{upiId:'ajithkumaruuu03-2@okhdfcbank',whatsapp:'916381128781'};
 }
 export function withFrames(base){return {...base,async fetch(req,env,ctx){const url=new URL(req.url);if(!url.pathname.startsWith('/api/frames/'))return base.fetch(req,env,ctx);try{
  if(!['GET','POST','PUT'].includes(req.method))return reply({error:'Method not allowed'},405);
