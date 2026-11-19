@@ -30,7 +30,7 @@ for(const label of ['Size (inches)','1 inch','1.5 inch','2 inch']){const th=docu
 for(const row of prices){const tr=table.insertRow();for(let i=0;i<4;i++)tr.insertCell().textContent=i===0?row[i]:row[i]?money(row[i]):'—';}
 $('price-list').append(table);
 const note=document.createElement('p');note.textContent='Wooden frame prices shown above. PVC prices await confirmation. Combo prices are shown in the combo selector.';$('price-list').append(note);
-form.addEventListener('input',()=>{key=crypto.randomUUID();if(fields.pin.value!==deliveryPin){deliveryPin='';$('delivery-result').textContent='';}update();});
+form.addEventListener('input',()=>{key=crypto.randomUUID();if(fields.pin.value!==deliveryPin){deliveryPin='';$('status').textContent='';}update();});
 let previewUrls=[];
 fields.photos.addEventListener('change',()=>{
  previewUrls.forEach(url=>URL.revokeObjectURL(url));previewUrls=[];$('previews').replaceChildren();
@@ -41,24 +41,21 @@ let pinCheckVersion=0,pinTimer;
 async function checkPin(){
  const version=++pinCheckVersion;
  const pin=fields.pin.value;if(!/^[1-9]\d{5}$/.test(pin))throw Error('Enter a valid 6-digit PIN code.');
- $('delivery-result').textContent='Checking courier availability…';
+
  const d=await api('frames/serviceability?pin='+encodeURIComponent(pin));
  if(version!==pinCheckVersion||fields.pin.value!==pin)return;
  const result=d.serviceability||d;
  if(!result.serviceable){deliveryPin='';throw Error(result.status==='unavailable'?'Delivery is unavailable for this PIN.':'Delivery availability could not be confirmed. Please retry.');}
  if(fields.pin.value!==pin)return;
  deliveryPin=pin;
- const providers=result.providers||[];
- const available=providers.filter(p=>p.status==='available').map(p=>p.name);
- const details=providers.map(p=>p.name+': '+(p.status==='available'?'Available':p.status==='unavailable'?'Unavailable':'Could not verify')).join(' · ');
- $('delivery-result').textContent='Delivery available for '+pin+(available.length?' via '+available.join(' or '):'')+'. '+details;
+ $('status').textContent='';
 }
 function autoCheckPin(){
  clearTimeout(pinTimer);
  ++pinCheckVersion;
  deliveryPin='';
  if(!/^[1-9]\d{5}$/.test(fields.pin.value))return;
- pinTimer=setTimeout(()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;}),350);
+ pinTimer=setTimeout(()=>checkPin().catch(e=>{$('status').textContent=e.message;}),350);
 }
 fields.pin.addEventListener('input',autoCheckPin);
 fields.pin.addEventListener('change',autoCheckPin);
@@ -94,9 +91,9 @@ form.onsubmit=async e=>{
  if(!uploads.has(file)){const d=await api('frames/photo',{photo:await optimise(file)});uploads.set(file,d.id);}photos.push(uploads.get(file));
  }
  const d=await api('frames/form-orders',{requestKey:key,selection:input,photos,caption:input.caption,customer:input});
- $('order-id').textContent=d.order.id;$('confirmation').hidden=false;form.hidden=true;$('status').textContent='Opening UPI payment. If your app does not open, use Pay with UPI app below.';
+ $('order-id').textContent=d.order.id;$('confirmation').hidden=false;form.hidden=true;$('status').textContent='Choose Google Pay or PhonePe below to pay.';
  const payment=paymentPanel(d.order);$('confirmation').append(payment);$('confirmation').scrollIntoView();
- location.href=payment.querySelector('a[href^="upi:"]').href;
+
  orders().catch(error=>{$('status').textContent=error.message;});
  }catch(err){$('status').textContent=err.message;}
  finally{busy=false;controls.forEach(c=>c.disabled=false);update();}
@@ -129,11 +126,20 @@ function paymentPanel(order) {
   pa:paymentSettings.upiId,pn:'SAI Frames & Gifts',
   am:Number(order.total).toFixed(2),cu:'INR',tn:order.id
  });
- const pay=document.createElement('a');
- pay.className='button';
- pay.href='upi://pay?'+params.toString();
- pay.textContent='Pay with UPI app';
- panel.append(pay);
+ const android=/Android/i.test(navigator.userAgent);
+ for(const [name,scheme,packageName] of [
+  ['Google Pay','gpay','com.google.android.apps.nbu.paisa.user'],
+  ['PhonePe','phonepe','com.phonepe.app']
+ ]){
+  const pay=document.createElement('a');
+  pay.className='button';
+  pay.style.margin='0 .5rem .5rem 0';
+  pay.href=android
+   ?'intent://pay?'+params.toString()+'#Intent;scheme=upi;package='+packageName+';end'
+   :scheme+'://upi/pay?'+params.toString();
+  pay.textContent='Pay with '+name;
+  panel.append(pay);
+ }
  const instructions=document.createElement('p');
  instructions.textContent='After payment, send your payment screenshot and order ID '+order.id+' to +'+paymentSettings.whatsapp+' on WhatsApp. Attach the screenshot in WhatsApp. Payment status updates after SAI verifies receipt.';
  panel.append(instructions);
