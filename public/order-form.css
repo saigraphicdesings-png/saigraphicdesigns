@@ -24,3 +24,5 @@ a { color: #783c2c; }
 #status:not(:empty) { padding: .8rem 1rem; background: #eee1d1; border-radius: .4rem; }
 [hidden], #status:empty { display: none !important; }
 @media (min-width: 36rem) { .fields, .delivery { grid-template-columns: 1fr 1fr; } }
+
+.previews { display: flex; flex-wrap: wrap; gap: .5rem; }

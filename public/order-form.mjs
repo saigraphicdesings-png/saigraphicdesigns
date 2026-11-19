@@ -5,6 +5,7 @@ const form = byId('order');
 const items = byId('items');
 const status = byId('status');
 const maxItems = 5;
+const maxPhotos = 10;
 const availableProducts = new Map();
 const availableSizes = new Map();
 const uploads = new WeakMap();
@@ -48,7 +49,7 @@ function updateItems() {
 }
 
 function releasePreview(input) {
-  if (previews.has(input)) URL.revokeObjectURL(previews.get(input));
+  for (const url of previews.get(input) || []) URL.revokeObjectURL(url);
   previews.delete(input);
 }
 
@@ -62,14 +63,23 @@ function addItem() {
   const photo = row.querySelector('.photo');
   photo.addEventListener('change', () => {
     releasePreview(photo);
-    const preview = row.querySelector('.preview');
-    preview.hidden = true;
-    const file = photo.files[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    previews.set(photo, url);
-    preview.src = url;
-    preview.hidden = false;
+    const container = row.querySelector('.previews');
+    container.replaceChildren();
+    const files = [...photo.files];
+    photo.setCustomValidity(files.length > maxPhotos ? 'Choose up to 10 photos per frame design.' : '');
+    if (files.length > maxPhotos) {
+      photo.reportValidity();
+      return;
+    }
+    const urls = files.map((file, index) => {
+      const image = document.createElement('img');
+      image.className = 'preview';
+      image.alt = 'Selected photo ' + (index + 1);
+      image.src = URL.createObjectURL(file);
+      container.append(image);
+      return image.src;
+    });
+    previews.set(photo, urls);
   });
   row.querySelector('.remove').addEventListener('click', () => {
     releasePreview(photo);
@@ -132,13 +142,17 @@ form.addEventListener('submit', async event => {
   try {
     const frames = [];
     for (const [index, row] of [...items.children].entries()) {
-      status.textContent = 'Uploading photo ' + (index + 1) + ' of ' + items.childElementCount + '…';
-      const file = row.querySelector('.photo').files[0];
-      if (!uploads.has(file)) {
-        const {id} = await api('frames/photo', {photo: await optimise(file)});
-        uploads.set(file, id);
+      const files = [...row.querySelector('.photo').files];
+      const photos = [];
+      for (const [photoIndex, file] of files.entries()) {
+        status.textContent = 'Uploading photo ' + (photoIndex + 1) + ' of ' + files.length + ' for frame design ' + (index + 1) + '…';
+        if (!uploads.has(file)) {
+          const {id} = await api('frames/photo', {photo: await optimise(file)});
+          uploads.set(file, id);
+        }
+        photos.push(uploads.get(file));
       }
-      frames.push({...frameDetails(row), photo: uploads.get(file)});
+      frames.push({...frameDetails(row), photos});
     }
     status.textContent = 'Submitting your order request…';
     const {order} = await api('frames/orders', {requestKey: key, customer, items: frames});
@@ -153,7 +167,9 @@ form.addEventListener('submit', async event => {
     if (error.status === 401) {
       form.hidden = true;
       byId('signin').hidden = false;
-      for (const input of form.querySelectorAll('.photo')) uploads.delete(input.files[0]);
+      for (const input of form.querySelectorAll('.photo')) {
+        for (const file of input.files) uploads.delete(file);
+      }
     }
   } finally {
     for (const control of enabled) control.disabled = false;

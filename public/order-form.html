@@ -25,7 +25,7 @@
     <form id="order" hidden>
       <section aria-labelledby="frames-heading">
         <h2 id="frames-heading">Frames &amp; photos</h2>
-        <p>Upload one JPG, PNG or WebP per frame design, up to 15 MB per photo. Photos are optimised for preview. We may ask for the original for printing.</p>
+        <p>Upload up to 10 JPG, PNG or WebP photos per frame design, up to 15 MB per photo. Photos are optimised for preview. We may ask for the original for printing.</p>
         <div id="items"></div>
         <button type="button" class="secondary" id="add">Add another frame design</button>
       </section>
@@ -54,10 +54,10 @@
         <label>Frame<select class="product" required></select></label>
         <label>Size<select class="size" required></select></label>
         <label>Quantity<input class="quantity" type="number" min="1" max="10" value="1" required></label>
-        <label>Photo<input class="photo" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+        <label>Photos<input class="photo" type="file" multiple accept="image/jpeg,image/png,image/webp" required></label>
         <label class="wide">Names, date or message (optional)<textarea class="caption" maxlength="200"></textarea></label>
       </div>
-      <img class="preview" alt="Selected photo" hidden>
+      <div class="previews" aria-label="Selected photos"></div>
       <button type="button" class="secondary remove">Remove frame design</button>
     </fieldset>
   </template>
