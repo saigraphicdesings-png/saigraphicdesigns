@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photo Frame Order Form | SAI Frames &amp; Gifts</title>
+  <link rel="stylesheet" href="/order-form.css">
+  <script type="module" src="/order-form.mjs"></script>
+</head>
+<body>
+  <header><a href="/frames.html">SAI Frames &amp; Gifts</a><a href="/frames.html?view=orders">Track orders</a></header>
+  <main>
+    <h1>Order your photo frames</h1>
+    <p>Choose your frames, upload the photos you want printed, and share your delivery details.</p>
+    <p id="status" role="status">Loading the order form…</p>
+    <section id="signin" hidden>
+      <h2>Sign in to continue</h2>
+      <form id="login">
+        <label>Email<input name="email" type="email" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button>Sign in</button>
+      </form>
+      <p><a href="/frames.html?view=account">Create an account or sign in with Google</a>. Then return to this form.</p>
+    </section>
+    <form id="order" hidden>
+      <section aria-labelledby="frames-heading">
+        <h2 id="frames-heading">Frames &amp; photos</h2>
+        <p>Upload up to 10 JPG, PNG or WebP photos per frame design, up to 15 MB per photo. Photos are optimised for preview. We may ask for the original for printing.</p>
+        <div id="items"></div>
+        <button type="button" class="secondary" id="add">Add another frame design</button>
+      </section>
+      <section aria-labelledby="delivery-heading" class="delivery">
+        <h2 id="delivery-heading">Delivery details</h2>
+        <label>Full name<input name="name" autocomplete="name" maxlength="100" required></label>
+        <label>Mobile number<input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[6-9][0-9]{9}" maxlength="10" required></label>
+        <label class="wide">Full address<textarea name="address" autocomplete="street-address" minlength="10" maxlength="500" required></textarea></label>
+        <label>City<input name="city" autocomplete="address-level2" maxlength="100" required></label>
+        <label>PIN code<input name="pin" inputmode="numeric" autocomplete="postal-code" pattern="[1-9][0-9]{5}" maxlength="6" required></label>
+      </section>
+      <p id="subtotal"></p>
+      <p>We’ll confirm delivery charges and payment details after receiving your request.</p>
+      <button id="submit">Submit order request</button>
+    </form>
+    <section id="confirmation" hidden tabindex="-1">
+      <h2>Order request received</h2>
+      <p>Your order ID is <strong id="order-id"></strong>.</p>
+      <a class="button" href="/frames.html?view=orders">Track your order</a>
+    </section>
+  </main>
+  <template id="item">
+    <fieldset>
+      <legend></legend>
+      <div class="fields">
+        <label>Frame<select class="product" required></select></label>
+        <label>Size<select class="size" required></select></label>
+        <label>Quantity<input class="quantity" type="number" min="1" max="10" value="1" required></label>
+        <label>Photos<input class="photo" type="file" multiple accept="image/jpeg,image/png,image/webp" required></label>
+        <label class="wide">Names, date or message (optional)<textarea class="caption" maxlength="200"></textarea></label>
+      </div>
+      <div class="previews" aria-label="Selected photos"></div>
+      <button type="button" class="secondary remove">Remove frame design</button>
+    </fieldset>
+  </template>
+</body>
+</html>
