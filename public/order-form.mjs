@@ -1,198 +1,80 @@
+import {prices,combos,selection} from './form-catalog.mjs';
 import {optimise} from './frame-photo.mjs';
-
-const byId = id => document.getElementById(id);
-const form = byId('order');
-const items = byId('items');
-const status = byId('status');
-const maxItems = 5;
-const maxPhotos = 10;
-const availableProducts = new Map();
-const availableSizes = new Map();
-const uploads = new WeakMap();
-const previews = new WeakMap();
-const formatPrice = new Intl.NumberFormat('en-IN', {style: 'currency', currency: 'INR', maximumFractionDigits: 0});
-let requestKey = crypto.randomUUID();
-
-async function api(path, body) {
-  const response = await fetch('/api/' + path, body === undefined ? {} : {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(body)
-  });
-  const result = await response.json();
-  if (!response.ok) throw Object.assign(new Error(result.error || 'Please try again.'), {status: response.status});
-  return result;
+import {stages} from './frames-catalog.mjs';
+const $=id=>document.getElementById(id), form=$('order'), fields=form.elements;
+const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
+let user=null,key=crypto.randomUUID(),deliveryPin='',busy=false;
+const uploads=new WeakMap();
+async function api(path,body){
+ const r=await fetch('/api/'+path,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const d=await r.json();if(!r.ok)throw Error(d.error||'Please try again.');return d;
 }
-
-function frameDetails(row) {
-  const product = availableProducts.get(row.querySelector('.product').value);
-  const size = availableSizes.get(row.querySelector('.size').value);
-  return {
-    id: product.id,
-    size: size.name,
-    price: product.price + size.extra,
-    qty: row.querySelector('.quantity').valueAsNumber,
-    caption: row.querySelector('.caption').value
-  };
+function values(){return Object.fromEntries(new FormData(form));}
+function update(){
+ const combo=fields.type.value==='Combo';
+ $('combo-field').hidden=!combo;
+ $('size-field').hidden=combo;
+ $('thickness-field').hidden=combo;
+ $('selection').textContent=combo?combos[fields.combo.value].sizes.map(([s,n])=>n+' frames · '+s+' in').join(' | '):'';
+ for(const option of fields.thickness.options)option.disabled=!prices.find(r=>r[0]===fields.size.value)?.[{'1':1,'1.5':2,'2':3}[option.value]];
+ if(fields.thickness.selectedOptions[0]?.disabled)fields.thickness.value='1';
+ try{const item=selection(values());$('total').textContent=money(item.price)+' × '+item.qty+' = '+money(item.price*item.qty);$('submit').disabled=busy;}
+ catch(e){$('total').textContent=e.message;$('submit').disabled=true;}
 }
-
-function updateItems() {
-  let subtotal = 0;
-  for (const [index, row] of [...items.children].entries()) {
-    row.querySelector('legend').textContent = 'Frame design ' + (index + 1);
-    row.querySelector('.remove').disabled = items.childElementCount === 1;
-    const frame = frameDetails(row);
-    subtotal += frame.price * (frame.qty || 0);
-  }
-  byId('add').disabled = items.childElementCount >= maxItems;
-  byId('subtotal').textContent = 'Frame subtotal ' + formatPrice.format(subtotal);
-}
-
-function releasePreview(input) {
-  for (const url of previews.get(input) || []) URL.revokeObjectURL(url);
-  previews.delete(input);
-}
-
-function addItem() {
-  if (items.childElementCount >= maxItems) return;
-  const row = byId('item').content.firstElementChild.cloneNode(true);
-  const product = row.querySelector('.product');
-  const size = row.querySelector('.size');
-  for (const entry of availableProducts.values()) product.add(new Option(entry.name, entry.id));
-  for (const entry of availableSizes.values()) size.add(new Option(entry.name, entry.name));
-  const photo = row.querySelector('.photo');
-  photo.addEventListener('change', () => {
-    releasePreview(photo);
-    const container = row.querySelector('.previews');
-    container.replaceChildren();
-    const files = [...photo.files];
-    photo.setCustomValidity(files.length > maxPhotos ? 'Choose up to 10 photos per frame design.' : '');
-    if (files.length > maxPhotos) {
-      photo.reportValidity();
-      return;
-    }
-    const urls = files.map((file, index) => {
-      const image = document.createElement('img');
-      image.className = 'preview';
-      image.alt = 'Selected photo ' + (index + 1);
-      image.src = URL.createObjectURL(file);
-      container.append(image);
-      return image.src;
-    });
-    previews.set(photo, urls);
-  });
-  row.querySelector('.remove').addEventListener('click', () => {
-    releasePreview(photo);
-    row.remove();
-    requestKey = crypto.randomUUID();
-    updateItems();
-    byId('add').focus();
-  });
-  items.append(row);
-  updateItems();
-  return product;
-}
-
-function showForm(user) {
-  byId('signin').hidden = true;
-  if (!availableProducts.size || !availableSizes.size) {
-    status.textContent = 'Online orders are unavailable until frames are published in the store.';
-    return;
-  }
-  for (const name of ['name', 'phone', 'address', 'city', 'pin']) {
-    form.elements.namedItem(name).value ||= user[name] || '';
-  }
-  if (!items.childElementCount) addItem();
-  form.hidden = false;
-  status.textContent = '';
-}
-
-byId('add').addEventListener('click', () => {
-  requestKey = crypto.randomUUID();
-  addItem()?.focus();
+for(const row of prices)fields.size.add(new Option(row[0],row[0]));
+combos.forEach((c,i)=>fields.combo.add(new Option('Combo '+(i+1)+' · '+money(c.price),String(i))));
+const table=document.createElement('table');
+const head=table.createTHead().insertRow();
+for(const label of ['Size (inches)','1 inch','1.5 inch','2 inch']){const th=document.createElement('th');th.textContent=label;head.append(th);}
+for(const row of prices){const tr=table.insertRow();for(let i=0;i<4;i++)tr.insertCell().textContent=i===0?row[i]:row[i]?money(row[i]):'—';}
+$('price-list').append(table);
+const note=document.createElement('p');note.textContent='Wooden frame prices shown above. PVC prices await confirmation. Combo prices are shown in the combo selector.';$('price-list').append(note);
+form.addEventListener('input',()=>{key=crypto.randomUUID();if(fields.pin.value!==deliveryPin){deliveryPin='';$('delivery-result').textContent='';}update();});
+let previewUrls=[];
+fields.photos.addEventListener('change',()=>{
+ previewUrls.forEach(url=>URL.revokeObjectURL(url));previewUrls=[];$('previews').replaceChildren();
+ fields.photos.setCustomValidity(fields.photos.files.length>30?'Choose up to 30 photos.':'');
+ for(const file of [...fields.photos.files].slice(0,30)){const img=document.createElement('img');img.className='preview';img.alt=file.name;img.src=URL.createObjectURL(file);previewUrls.push(img.src);$('previews').append(img);}
 });
-form.addEventListener('input', () => {
-  requestKey = crypto.randomUUID();
-  updateItems();
-});
-
-byId('login').addEventListener('submit', async event => {
-  event.preventDefault();
-  const button = event.target.querySelector('button');
-  button.disabled = true;
-  try {
-    const data = Object.fromEntries(new FormData(event.target));
-    const {user} = await api('auth/login', data);
-    event.target.reset();
-    showForm(user);
-  } catch (error) {
-    status.textContent = error.message;
-  } finally {
-    button.disabled = false;
-  }
-});
-
-form.addEventListener('submit', async event => {
-  event.preventDefault();
-  const customer = Object.fromEntries(new FormData(form));
-  const controls = [...form.querySelectorAll('fieldset, input, textarea, button')];
-  const enabled = controls.filter(control => !control.disabled);
-  for (const control of enabled) control.disabled = true;
-  const key = requestKey;
-  try {
-    const frames = [];
-    for (const [index, row] of [...items.children].entries()) {
-      const files = [...row.querySelector('.photo').files];
-      const photos = [];
-      for (const [photoIndex, file] of files.entries()) {
-        status.textContent = 'Uploading photo ' + (photoIndex + 1) + ' of ' + files.length + ' for frame design ' + (index + 1) + '…';
-        if (!uploads.has(file)) {
-          const {id} = await api('frames/photo', {photo: await optimise(file)});
-          uploads.set(file, id);
-        }
-        photos.push(uploads.get(file));
-      }
-      frames.push({...frameDetails(row), photos});
-    }
-    status.textContent = 'Submitting your order request…';
-    const {order} = await api('frames/orders', {requestKey: key, customer, items: frames});
-    for (const input of form.querySelectorAll('.photo')) releasePreview(input);
-    form.hidden = true;
-    byId('order-id').textContent = order.id;
-    byId('confirmation').hidden = false;
-    byId('confirmation').focus();
-    status.textContent = '';
-  } catch (error) {
-    status.textContent = error.message;
-    if (error.status === 401) {
-      form.hidden = true;
-      byId('signin').hidden = false;
-      for (const input of form.querySelectorAll('.photo')) {
-        for (const file of input.files) uploads.delete(file);
-      }
-    }
-  } finally {
-    for (const control of enabled) control.disabled = false;
-  }
-});
-
-async function initialise() {
-  const [{products, sizes}, {user}] = await Promise.all([api('frames/products'), api('auth/me')]);
-  for (const product of products) {
-    if (!product.demo && product.stock !== 0) availableProducts.set(product.id, product);
-  }
-  for (const size of sizes) availableSizes.set(size.name, size);
-  if (user) showForm(user);
-  else {
-    byId('signin').hidden = false;
-    status.textContent = '';
-  }
+async function checkPin(){
+ const pin=fields.pin.value;if(!/^[1-9]\d{5}$/.test(pin))throw Error('Enter a valid 6-digit PIN code.');
+ $('delivery-result').textContent='Checking courier availability…';
+ const d=await api('frames/serviceability?pin='+encodeURIComponent(pin));
+ const result=d.serviceability||d;
+ if(!result.serviceable){deliveryPin='';throw Error(result.status==='unavailable'?'Delivery is unavailable for this PIN.':'Delivery availability could not be confirmed. Please retry.');}
+ if(fields.pin.value!==pin)return;
+ deliveryPin=pin;$('delivery-result').textContent='Delivery available for '+pin+'.';
 }
-
-initialise().catch(error => {
-  status.textContent = error.message + ' Reload the page to try again.';
-});
-
-byId('google-signin').addEventListener('click', () => {
-  sessionStorage.setItem('sai-order-form-return', '1');
-});
+$('check-pin').onclick=()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;});
+async function orders(){
+ if(!user){$('orders').textContent='Sign in above to see your orders.';return;}
+ const d=await api('frames/orders');$('orders').replaceChildren();
+ if(!d.orders.length)$('orders').textContent='Your submitted orders will appear here.';
+ for(const o of d.orders){
+ const card=document.createElement('article');card.className='order-card';
+ const title=document.createElement('h3');title.textContent=o.id;card.append(title);
+ for(const text of [stages[o.stage],o.items.map(i=>i.name+' · '+i.size).join(' | '),'Total '+money(o.total)+(o.shippingConfirmed?'':' · delivery charge pending'),o.note||'',o.tracking?o.courier+' · '+o.tracking:'']){
+ const p=document.createElement('p');p.textContent=text;card.append(p);}
+ if(o.trackingUrl){try{const url=new URL(o.trackingUrl);if(url.protocol==='https:'){const a=document.createElement('a');a.href=url.href;a.textContent='Courier tracking';a.target='_blank';a.rel='noopener';card.append(a);}}catch{}}
+ $('orders').append(card);
+ }
+}
+$('refresh').onclick=()=>orders().catch(e=>{$('status').textContent=e.message;});
+function signedIn(account){user=account;$('signin').hidden=!!user;if(user)for(const n of ['name','phone','address','city','pin'])fields[n].value ||= user[n]||'';orders().catch(e=>{$('status').textContent=e.message;});}
+$('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='Signed in.';}catch(err){$('status').textContent=err.message;}};
+form.onsubmit=async e=>{
+ e.preventDefault();if(busy)return;if(!user){$('signin').hidden=false;$('signin').scrollIntoView();$('status').textContent='Please sign in before submitting.';return;}
+ const input=values();selection(input);busy=true;const controls=[...form.querySelectorAll('input,select,textarea,button')];controls.forEach(c=>c.disabled=true);
+ try{
+ if(deliveryPin!==input.pin)await checkPin();
+ const photos=[];
+ for(const [i,file] of [...fields.photos.files].entries()){
+ $('status').textContent='Uploading photo '+(i+1)+' of '+fields.photos.files.length+'…';
+ if(!uploads.has(file)){const d=await api('frames/photo',{photo:await optimise(file)});uploads.set(file,d.id);}photos.push(uploads.get(file));
+ }
+ const d=await api('frames/form-orders',{requestKey:key,selection:input,photos,caption:input.caption,customer:input});
+ $('order-id').textContent=d.order.id;$('confirmation').hidden=false;form.hidden=true;$('status').textContent='Order request received.';await orders();$('confirmation').scrollIntoView();
+ }catch(err){$('status').textContent=err.message;}
+ finally{busy=false;controls.forEach(c=>c.disabled=false);update();}
+};
+update();api('auth/me').then(d=>signedIn(d.user)).catch(e=>{$('status').textContent=e.message;});

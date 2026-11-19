@@ -657,7 +657,7 @@ async function startGoogle(request, env) {
   google.searchParams.set("prompt", "select_account");
   google.searchParams.set("include_granted_scopes", "true");
 
-  return redirect(google.toString(), [oauthStateCookie(state)]);
+  return redirect(google.toString(), [oauthStateCookie(state), 'sai_frames_oauth_return='+(new URL(request.url).searchParams.get('returnTo')==='order-form'?'order-form':'store')+'; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600']);
 }
 
 async function finishGoogle(request, env) {
@@ -740,7 +740,7 @@ async function finishGoogle(request, env) {
   }
 
   const session = await createSession(env, customerId);
-  const accountUrl = new URL("/frames.html", request.url);
+  const accountUrl = new URL(getCookie(request, "sai_frames_oauth_return")==="order-form"?"/order-form.html":"/frames.html", request.url);
   accountUrl.searchParams.set("google", "success");
 
   return redirect(accountUrl.toString(), [sessionCookie(session), clearOauthStateCookie()]);

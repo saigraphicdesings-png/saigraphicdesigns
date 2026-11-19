@@ -1,3 +1,4 @@
+import {selection} from '../public/form-catalog.mjs';
 import {getServiceability} from './courier-serviceability.js';
 import {currentCustomer,ensureAccountSchema} from './worker.js';
 import {demoProducts,sizes,stages} from '../public/frames-catalog.mjs';
@@ -59,6 +60,26 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  if(url.pathname==='/api/frames/photo'){
   if(req.method==='GET'){const id=url.searchParams.get('id');const p=await env.DB.prepare('SELECT customer_id,data FROM frame_photos WHERE id=?').bind(id).first();if(!p||(!isAdmin&&p.customer_id!==customer?.id))throw fail('Photo not found.',404);return reply({photo:p.data})}
   if(!customer)throw fail('Customer login required.',401);const b=await readJSON(req);if(typeof b.photo!=='string'||!/^data:image\/jpeg;base64,\/9j\//.test(b.photo)||b.photo.length>650000)throw fail('Use a JPG photo under 480 KB after optimisation.');const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO frame_photos (id,customer_id,data,created_at) VALUES (?,?,?,?)').bind(id,customer.id,b.photo,new Date().toISOString()).run();return reply({id},201);
+ }
+
+ if(url.pathname==='/api/frames/form-orders'&&req.method==='POST'){
+  const b=await readJSON(req);
+  if(!/^[-a-z0-9]{16,80}$/i.test(b.requestKey||''))throw fail('Please refresh the form.');
+  const existing=await env.DB.prepare('SELECT data FROM frame_orders WHERE customer_id=? AND request_key=?').bind(customer.id,b.requestKey).first();
+  if(existing)return reply({order:JSON.parse(existing.data)});
+  let item;try{item=selection(b.selection||{})}catch(e){throw fail(e.message)}
+  const address=validateCustomer(b.customer);
+  const delivery=await getServiceability(address.pin,env);
+  if(!delivery.serviceable)throw fail(delivery.status==='unavailable'?'Delivery unavailable for this PIN.':'Please retry PIN verification.',422);
+  const photos=b.photos;
+  if(!Array.isArray(photos)||!photos.length||photos.length>30||photos.some(id=>typeof id!=='string'||!/^[a-f0-9-]{36}$/.test(id))||new Set(photos).size!==photos.length)throw fail('Upload between 1 and 30 photos.');
+  const owned=await env.DB.prepare('SELECT id FROM frame_photos WHERE customer_id=? AND id IN ('+photos.map(()=>'?').join(',')+')').bind(customer.id,...photos).all();
+  if(owned.results.length!==photos.length)throw fail('Please upload your photos again.');
+  const now=new Date().toISOString(),subtotal=item.price*item.qty;
+  const o={id:'SAI-'+crypto.randomUUID().slice(0,12).toUpperCase(),date:now,source:'order-form',customer:{...address,email:customer.email},items:[{...item,image:'',color:'#765034',caption:clean(b.caption),photo:photos[0],photos}],subtotal,shipping:0,total:subtotal,shippingConfirmed:false,stage:0,payment:'Awaiting confirmation',courier:'',tracking:'',trackingUrl:'',estimated:'',note:'Order request received. Delivery charges and payment will be confirmed.',history:[{stage:0,date:now,note:'Order request received'}]};
+  await env.DB.prepare('INSERT INTO frame_orders(id,customer_id,data,request_key) VALUES(?,?,?,?) ON CONFLICT(customer_id,request_key) DO NOTHING').bind(o.id,customer.id,JSON.stringify(o),b.requestKey).run();
+  const saved=await env.DB.prepare('SELECT data FROM frame_orders WHERE customer_id=? AND request_key=?').bind(customer.id,b.requestKey).first();
+  return reply({order:JSON.parse(saved.data)},201);
  }
  if(url.pathname==='/api/frames/orders'&&req.method==='GET'){const r=await env.DB.prepare('SELECT data FROM frame_orders WHERE customer_id=? ORDER BY rowid DESC LIMIT 100').bind(customer.id).all();return reply({orders:r.results.map(r=>JSON.parse(r.data))})}
  if(url.pathname==='/api/frames/orders'&&req.method==='POST'){
