@@ -35,7 +35,10 @@
     {
       "pattern": "orderform.saigraphicdesings.com",
       "custom_domain": true
+    },
+    {
+      "pattern": "orderform.saigraphicdesings.com/*",
+      "zone_name": "saigraphicdesings.com"
     }
   ]
 }
-
