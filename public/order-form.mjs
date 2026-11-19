@@ -70,6 +70,17 @@ async function orders(){
  const p=document.createElement('p');p.textContent=text;card.append(p);}
  if(o.trackingUrl){try{const url=new URL(o.trackingUrl);if(url.protocol==='https:'){const a=document.createElement('a');a.href=url.href;a.textContent='Courier tracking';a.target='_blank';a.rel='noopener';card.append(a);}}catch{}}
  if(o.payment!=='Paid'&&o.payment!=='Refunded')card.append(paymentPanel(o));
+ if(o.stage===stages.indexOf('Delivered')){
+  const request=document.createElement('p');
+  request.textContent='Your frame has arrived. Share your honest experience on Google.';
+  const review=document.createElement('a');
+  review.className='button secondary';
+  review.href='https://g.page/r/CUJMmmok_JaaEAE/review';
+  review.target='_blank';
+  review.rel='noopener';
+  review.textContent='Write a Google review';
+  card.append(request,review);
+ }
  $('orders').append(card);
  }
 }
