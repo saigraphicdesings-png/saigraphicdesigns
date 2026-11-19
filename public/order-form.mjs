@@ -192,3 +192,7 @@ async function initialise() {
 initialise().catch(error => {
   status.textContent = error.message + ' Reload the page to try again.';
 });
+
+byId('google-signin').addEventListener('click', () => {
+  sessionStorage.setItem('sai-order-form-return', '1');
+});
