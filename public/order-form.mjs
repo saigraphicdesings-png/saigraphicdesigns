@@ -4,6 +4,7 @@ import {stages} from './frames-catalog.mjs';
 const $=id=>document.getElementById(id), form=$('order'), fields=form.elements;
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
 let user=null,key=crypto.randomUUID(),deliveryPin='',busy=false;
+let paymentSettings=null;
 const uploads=new WeakMap();
 async function api(path,body){
  const r=await fetch('/api/'+path,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -52,14 +53,15 @@ async function checkPin(){
 $('check-pin').onclick=()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;});
 async function orders(){
  if(!user){$('orders').textContent='Sign in above to see your orders.';return;}
- const d=await api('frames/orders');$('orders').replaceChildren();
+ const [d,settings]=await Promise.all([api('frames/orders'),api('frames/payment-settings')]);paymentSettings=settings;$('orders').replaceChildren();
  if(!d.orders.length)$('orders').textContent='Your submitted orders will appear here.';
  for(const o of d.orders){
  const card=document.createElement('article');card.className='order-card';
  const title=document.createElement('h3');title.textContent=o.id;card.append(title);
- for(const text of [stages[o.stage],o.items.map(i=>i.name+' · '+i.size).join(' | '),'Total '+money(o.total)+(o.shippingConfirmed?'':' · delivery charge pending'),o.note||'',o.tracking?o.courier+' · '+o.tracking:'']){
+ for(const text of [stages[o.stage],o.items.map(i=>i.name+' · '+i.size).join(' | '),'Total '+money(o.total),'Free delivery across Tamil Nadu','Payment: '+(o.payment==='Paid'?'Received':o.payment==='Refunded'?'Refunded':'Awaiting payment'),customerNote(o),o.tracking?o.courier+' · '+o.tracking:'']){
  const p=document.createElement('p');p.textContent=text;card.append(p);}
  if(o.trackingUrl){try{const url=new URL(o.trackingUrl);if(url.protocol==='https:'){const a=document.createElement('a');a.href=url.href;a.textContent='Courier tracking';a.target='_blank';a.rel='noopener';card.append(a);}}catch{}}
+ if(o.payment!=='Paid'&&o.payment!=='Refunded')card.append(paymentPanel(o));
  $('orders').append(card);
  }
 }
@@ -82,3 +84,47 @@ form.onsubmit=async e=>{
  finally{busy=false;controls.forEach(c=>c.disabled=false);update();}
 };
 update();api('auth/me').then(d=>signedIn(d.user)).catch(e=>{$('status').textContent=e.message;});
+
+
+function customerNote(order) {
+ const defaults=[
+  'Order request received. Delivery charges and payment will be confirmed.',
+  'Request received. We will confirm your design, delivery charge and payment details before production.'
+ ];
+ return defaults.includes(order.note)?'Order received.':order.note||'';
+}
+function paymentPanel(order) {
+ const panel=document.createElement('div');
+ const heading=document.createElement('h4');
+ heading.textContent='Pay '+money(order.total)+' by UPI';
+ panel.append(heading);
+ if(!paymentSettings?.upiId||!paymentSettings?.whatsapp){
+  const text=document.createElement('p');
+  text.textContent='UPI payment details will appear here once SAI adds them.';
+  panel.append(text);
+  return panel;
+ }
+ const id=document.createElement('p');
+ id.textContent='UPI ID: '+paymentSettings.upiId;
+ panel.append(id);
+ const params=new URLSearchParams({
+  pa:paymentSettings.upiId,pn:'SAI Frames & Gifts',
+  am:Number(order.total).toFixed(2),cu:'INR',tn:order.id
+ });
+ const pay=document.createElement('a');
+ pay.className='button';
+ pay.href='upi://pay?'+params.toString();
+ pay.textContent='Pay with UPI app';
+ panel.append(pay);
+ const instructions=document.createElement('p');
+ instructions.textContent='After payment, send your payment screenshot and order ID '+order.id+' to +'+paymentSettings.whatsapp+' on WhatsApp. Attach the screenshot in WhatsApp. Payment status updates after SAI verifies receipt.';
+ panel.append(instructions);
+ const screenshot=document.createElement('a');
+ screenshot.className='button secondary';
+ screenshot.href='https://wa.me/'+paymentSettings.whatsapp+'?text='+encodeURIComponent('Payment for order '+order.id+' · '+money(order.total)+'. I am attaching my payment screenshot.');
+ screenshot.target='_blank';
+ screenshot.rel='noopener';
+ screenshot.textContent='Send payment screenshot on WhatsApp';
+ panel.append(screenshot);
+ return panel;
+}

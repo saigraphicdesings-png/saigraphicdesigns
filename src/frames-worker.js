@@ -6,6 +6,7 @@ const reply=(data,status=200)=>Response.json(data,{status,headers:{'cache-contro
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
 function admin(req,env){const expected=String(env.ADMIN_TOKEN||'');const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');if(!expected||token.length!==expected.length)return false;let diff=0;for(let i=0;i<token.length;i++)diff|=token.charCodeAt(i)^expected.charCodeAt(i);return diff===0}
 export async function ensureFrames(env){if(!env.DB)throw fail('Store temporarily unavailable.',503);await env.DB.batch([
+ env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_settings (id TEXT PRIMARY KEY, data TEXT NOT NULL)'),
  env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_product_images (id TEXT PRIMARY KEY, data TEXT NOT NULL, created_at TEXT NOT NULL)'),
  env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_products (id TEXT PRIMARY KEY, data TEXT NOT NULL)'),
  env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_orders (id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, data TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 0, request_key TEXT NOT NULL, UNIQUE(customer_id, request_key))'),
@@ -21,12 +22,28 @@ function validMRP(n,price){if(!Number.isInteger(n)||n<price||n>100000)throw fail
 export function validateProduct(p){if(!p||!/^[-a-z0-9]{1,60}$/.test(p.id)||!clean(p.name)||!Number.isInteger(p.price)||p.price<1||p.price>100000)throw fail('Enter a product ID, name and whole-rupee price between ₹1 and ₹1,00,000.');const image=validImageURL(p.image);const images=(Array.isArray(p.images)?p.images:[]).slice(0,8).map(validImageURL);if(!/^#[a-f0-9]{6}$/i.test(p.color))throw fail('Choose a valid frame colour.');return {id:p.id,name:clean(p.name,120),price:p.price,category:clean(p.category,60)||'Photo Frames',color:p.color,image,images,productImage:!!p.productImage,titleLong:clean(p.titleLong,250),material:clean(p.material,100),finish:clean(p.finish,80),features:(Array.isArray(p.features)?p.features:[]).slice(0,10).map(f=>clean(f,300)),stock:p.stock===''||p.stock===undefined?undefined:validStock(p.stock),mrp:p.mrp?validMRP(p.mrp,p.price):0,tag:clean(p.tag,60),description:clean(p.description,1200),active:!!p.active,demo:false}}
 export function validateCustomer(c){if(!c||!clean(c.name)||!String(c.phone||'').match(/^[6-9]\d{9}$/)||!String(c.pin||'').match(/^[1-9]\d{5}$/)||clean(c.address).length<10||!clean(c.city))throw fail('Enter your name, valid Indian mobile number, full address, city and 6-digit PIN.');return {name:clean(c.name,100),phone:c.phone,pin:c.pin,address:clean(c.address,500),city:clean(c.city,100)}}
 export function safeCourierURL(s){if(!s)return '';try{const u=new URL(s);if(u.protocol==='https:'&&!u.username&&!u.password)return u.href}catch{}throw fail('Courier tracking link must be a valid HTTPS URL.')}
+async function paymentSettings(env) {
+ const row=await env.DB.prepare("SELECT data FROM frame_settings WHERE id='payment'").first();
+ return row?JSON.parse(row.data):{upiId:'',whatsapp:''};
+}
 export function withFrames(base){return {...base,async fetch(req,env,ctx){const url=new URL(req.url);if(!url.pathname.startsWith('/api/frames/'))return base.fetch(req,env,ctx);try{
  if(!['GET','POST','PUT'].includes(req.method))return reply({error:'Method not allowed'},405);
  if(req.method!=='GET'&&req.headers.get('origin')!==url.origin)return reply({error:'Invalid request origin'},403);
  if(Number(req.headers.get('content-length')||0)>800000)return reply({error:'Request too large. Use a smaller photo.'},413);
  const isAdmin=admin(req,env);if(url.pathname.startsWith('/api/frames/admin/')&&!isAdmin)return reply({error:'Log in with your existing admin token.'},401);
  await ensureFrames(env);
+ if(url.pathname==='/api/frames/payment-settings'&&req.method==='GET')return reply(await paymentSettings(env));
+ if(url.pathname==='/api/frames/admin/payment-settings'){
+  if(req.method==='GET')return reply(await paymentSettings(env));
+  if(req.method!=='PUT')throw fail('Method not allowed',405);
+  const b=await readJSON(req);
+  const upiId=String(b.upiId||'').trim();
+  const whatsapp=String(b.whatsapp||'').replace(/[^0-9]/g,'').replace(/^(?=[6-9][0-9]{9}$)/,'91');
+  if(!/^[a-zA-Z0-9._-]{2,256}@[a-zA-Z0-9.-]{2,64}$/.test(upiId))throw fail('Enter your exact UPI ID.');
+  if(!/^91[6-9][0-9]{9}$/.test(whatsapp))throw fail('Enter a valid Indian WhatsApp number.');
+  await env.DB.prepare("INSERT INTO frame_settings(id,data) VALUES('payment',?) ON CONFLICT(id) DO UPDATE SET data=excluded.data").bind(JSON.stringify({upiId,whatsapp})).run();
+  return reply({ok:true});
+ }
  if(url.pathname==='/api/frames/product-image'&&req.method==='GET'){
   const id=url.searchParams.get('id')||'';if(!/^[a-f0-9-]{36}$/.test(id))throw fail('Image not found.',404);
   const image=await env.DB.prepare('SELECT data FROM frame_product_images WHERE id=?').bind(id).first();if(!image)throw fail('Image not found.',404);
@@ -50,8 +67,8 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  if(url.pathname==='/api/frames/admin/order'&&req.method==='PUT'){
   const b=await readJSON(req);const row=await env.DB.prepare('SELECT data,version FROM frame_orders WHERE id=?').bind(b.id).first();if(!row)throw fail('Order not found.',404);if(row.version!==b.version)throw fail('This order was updated elsewhere. Refresh before saving.',409);
   const o=JSON.parse(row.data);if(!Number.isInteger(b.stage)||b.stage<0||b.stage>=stages.length)throw fail('Invalid order stage.');if(!['Awaiting confirmation','Payment requested','Paid','Refunded'].includes(b.payment))throw fail('Invalid payment status.');
-  const shipping=Number(b.shipping);if(!Number.isInteger(shipping)||shipping<0||shipping>5000)throw fail('Shipping must be a whole-rupee amount between 0 and 5000.');
-  const next={...o,stage:b.stage,payment:b.payment,shipping,total:o.subtotal+shipping,shippingConfirmed:!!b.shippingConfirmed,courier:clean(b.courier,80),tracking:clean(b.tracking,100),trackingUrl:safeCourierURL(b.trackingUrl),estimated:clean(b.estimated,40),note:clean(b.note,1000)};
+  const shipping=o.source==='order-form'?0:Number(b.shipping);if(!Number.isInteger(shipping)||shipping<0||shipping>5000)throw fail('Shipping must be a whole-rupee amount between 0 and 5000.');
+  const next={...o,stage:b.stage,payment:b.payment,shipping,total:o.subtotal+shipping,shippingConfirmed:o.source==='order-form'||!!b.shippingConfirmed,courier:clean(b.courier,80),tracking:clean(b.tracking,100),trackingUrl:safeCourierURL(b.trackingUrl),estimated:clean(b.estimated,40),note:clean(b.note,1000)};
   if(next.stage>=4&&(!next.courier||!next.tracking))throw fail('Add the courier name and tracking number before marking shipped.');
   next.history=[...o.history,{stage:next.stage,date:new Date().toISOString(),note:next.note||stages[next.stage]}];
   const result=await env.DB.prepare('UPDATE frame_orders SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(next),o.id,b.version).run();if(!result.meta.changes)throw fail('Order changed. Refresh and try again.',409);return reply({ok:true});
@@ -76,7 +93,7 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
   const owned=await env.DB.prepare('SELECT id FROM frame_photos WHERE customer_id=? AND id IN ('+photos.map(()=>'?').join(',')+')').bind(customer.id,...photos).all();
   if(owned.results.length!==photos.length)throw fail('Please upload your photos again.');
   const now=new Date().toISOString(),subtotal=item.price*item.qty;
-  const o={id:'SAI-'+crypto.randomUUID().slice(0,12).toUpperCase(),date:now,source:'order-form',customer:{...address,email:customer.email},items:[{...item,image:'',color:'#765034',caption:clean(b.caption),photo:photos[0],photos}],subtotal,shipping:0,total:subtotal,shippingConfirmed:false,stage:0,payment:'Awaiting confirmation',courier:'',tracking:'',trackingUrl:'',estimated:'',note:'Order request received. Delivery charges and payment will be confirmed.',history:[{stage:0,date:now,note:'Order request received'}]};
+  const o={id:'SAI-'+crypto.randomUUID().slice(0,12).toUpperCase(),date:now,source:'order-form',customer:{...address,email:customer.email},items:[{...item,image:'',color:'#765034',caption:clean(b.caption),photo:photos[0],photos}],subtotal,shipping:0,total:subtotal,shippingConfirmed:true,freeDelivery:true,stage:0,payment:'Awaiting confirmation',courier:'',tracking:'',trackingUrl:'',estimated:'',note:'Order received. Free delivery across Tamil Nadu.',history:[{stage:0,date:now,note:'Order request received'}]};
   await env.DB.prepare('INSERT INTO frame_orders(id,customer_id,data,request_key) VALUES(?,?,?,?) ON CONFLICT(customer_id,request_key) DO NOTHING').bind(o.id,customer.id,JSON.stringify(o),b.requestKey).run();
   const saved=await env.DB.prepare('SELECT data FROM frame_orders WHERE customer_id=? AND request_key=?').bind(customer.id,b.requestKey).first();
   return reply({order:JSON.parse(saved.data)},201);
