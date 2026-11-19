@@ -37,10 +37,13 @@ fields.photos.addEventListener('change',()=>{
  fields.photos.setCustomValidity(fields.photos.files.length>30?'Choose up to 30 photos.':'');
  for(const file of [...fields.photos.files].slice(0,30)){const img=document.createElement('img');img.className='preview';img.alt=file.name;img.src=URL.createObjectURL(file);previewUrls.push(img.src);$('previews').append(img);}
 });
+let pinCheckVersion=0,pinTimer;
 async function checkPin(){
+ const version=++pinCheckVersion;
  const pin=fields.pin.value;if(!/^[1-9]\d{5}$/.test(pin))throw Error('Enter a valid 6-digit PIN code.');
  $('delivery-result').textContent='Checking courier availability…';
  const d=await api('frames/serviceability?pin='+encodeURIComponent(pin));
+ if(version!==pinCheckVersion||fields.pin.value!==pin)return;
  const result=d.serviceability||d;
  if(!result.serviceable){deliveryPin='';throw Error(result.status==='unavailable'?'Delivery is unavailable for this PIN.':'Delivery availability could not be confirmed. Please retry.');}
  if(fields.pin.value!==pin)return;
@@ -50,7 +53,15 @@ async function checkPin(){
  const details=providers.map(p=>p.name+': '+(p.status==='available'?'Available':p.status==='unavailable'?'Unavailable':'Could not verify')).join(' · ');
  $('delivery-result').textContent='Delivery available for '+pin+(available.length?' via '+available.join(' or '):'')+'. '+details;
 }
-$('check-pin').onclick=()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;});
+function autoCheckPin(){
+ clearTimeout(pinTimer);
+ ++pinCheckVersion;
+ deliveryPin='';
+ if(!/^[1-9]\d{5}$/.test(fields.pin.value))return;
+ pinTimer=setTimeout(()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;}),350);
+}
+fields.pin.addEventListener('input',autoCheckPin);
+fields.pin.addEventListener('change',autoCheckPin);
 async function orders(){
  if(!user){$('orders').textContent='Sign in above to see your orders.';return;}
  const [d,settings]=await Promise.all([api('frames/orders'),api('frames/payment-settings')]);paymentSettings=settings;$('orders').replaceChildren();
@@ -66,20 +77,27 @@ async function orders(){
  }
 }
 $('refresh').onclick=()=>orders().catch(e=>{$('status').textContent=e.message;});
-function signedIn(account){user=account;$('signin').hidden=!!user;if(user)for(const n of ['name','phone','address','city','pin'])fields[n].value ||= user[n]||'';orders().catch(e=>{$('status').textContent=e.message;});}
+function signedIn(account){user=account;$('signin').hidden=!!user;if(user)for(const n of ['name','phone','address','city','pin'])fields[n].value ||= user[n]||'';autoCheckPin();orders().catch(e=>{$('status').textContent=e.message;});}
 $('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='Signed in.';}catch(err){$('status').textContent=err.message;}};
 form.onsubmit=async e=>{
  e.preventDefault();if(busy)return;if(!user){$('signin').hidden=false;$('signin').scrollIntoView();$('status').textContent='Please sign in before submitting.';return;}
  const input=values();selection(input);busy=true;const controls=[...form.querySelectorAll('input,select,textarea,button')];controls.forEach(c=>c.disabled=true);
  try{
+ clearTimeout(pinTimer);
  if(deliveryPin!==input.pin)await checkPin();
+ if(deliveryPin!==input.pin)throw Error('Please wait for PIN verification.');
+ paymentSettings=await api('frames/payment-settings');
+ if(!paymentSettings.upiId)throw Error('Payment details are temporarily unavailable.');
  const photos=[];
  for(const [i,file] of [...fields.photos.files].entries()){
  $('status').textContent='Uploading photo '+(i+1)+' of '+fields.photos.files.length+'…';
  if(!uploads.has(file)){const d=await api('frames/photo',{photo:await optimise(file)});uploads.set(file,d.id);}photos.push(uploads.get(file));
  }
  const d=await api('frames/form-orders',{requestKey:key,selection:input,photos,caption:input.caption,customer:input});
- $('order-id').textContent=d.order.id;$('confirmation').hidden=false;form.hidden=true;$('status').textContent='Order request received.';await orders();$('confirmation').scrollIntoView();
+ $('order-id').textContent=d.order.id;$('confirmation').hidden=false;form.hidden=true;$('status').textContent='Opening UPI payment. If your app does not open, use Pay with UPI app below.';
+ const payment=paymentPanel(d.order);$('confirmation').append(payment);$('confirmation').scrollIntoView();
+ location.href=payment.querySelector('a[href^="upi:"]').href;
+ orders().catch(error=>{$('status').textContent=error.message;});
  }catch(err){$('status').textContent=err.message;}
  finally{busy=false;controls.forEach(c=>c.disabled=false);update();}
 };
