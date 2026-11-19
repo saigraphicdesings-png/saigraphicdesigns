@@ -43,7 +43,11 @@ async function checkPin(){
  const result=d.serviceability||d;
  if(!result.serviceable){deliveryPin='';throw Error(result.status==='unavailable'?'Delivery is unavailable for this PIN.':'Delivery availability could not be confirmed. Please retry.');}
  if(fields.pin.value!==pin)return;
- deliveryPin=pin;$('delivery-result').textContent='Delivery available for '+pin+'.';
+ deliveryPin=pin;
+ const providers=result.providers||[];
+ const available=providers.filter(p=>p.status==='available').map(p=>p.name);
+ const details=providers.map(p=>p.name+': '+(p.status==='available'?'Available':p.status==='unavailable'?'Unavailable':'Could not verify')).join(' · ');
+ $('delivery-result').textContent='Delivery available for '+pin+(available.length?' via '+available.join(' or '):'')+'. '+details;
 }
 $('check-pin').onclick=()=>checkPin().catch(e=>{$('delivery-result').textContent=e.message;});
 async function orders(){
