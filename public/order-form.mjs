@@ -81,6 +81,11 @@ async function orders(){
   review.textContent='Write a Google review';
   card.append(request,review);
  }
+ const cashback=document.createElement('p');
+ cashback.textContent=o.cashbackAmount
+  ?'Cashback '+money(o.cashbackAmount)+' · '+(o.cashbackStatus==='Sent'?'Sent':'Pending')
+  :'Cashback amount will be updated by SAI.';
+ card.append(cashback);
  $('orders').append(card);
  }
 }
