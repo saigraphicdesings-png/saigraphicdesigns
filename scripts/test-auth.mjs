@@ -30,3 +30,34 @@ test('Google callback verifies the provider email and creates an isolated store 
   const orders=await app.fetch(new Request(base+'/api/frames/orders',{headers:{cookie}}),env,{});assert.deepEqual((await orders.json()).orders,[]);
  }finally{globalThis.fetch=originalFetch}
 });
+
+test('order form domain uses browser-bound one-use Google login transfer',async()=>{
+ const env={...setup(),GOOGLE_CLIENT_ID:'test-client',GOOGLE_CLIENT_SECRET:'test-secret'};
+ const standalone='https://orderform.saigraphicdesings.com';
+ const start=await app.fetch(new Request(standalone+'/api/auth/google/start'),env,{});
+ const browserCookie=start.headers.get('set-cookie').split(';')[0];
+ const providerStart=await app.fetch(new Request(start.headers.get('location')),env,{});
+ const state=new URL(providerStart.headers.get('location')).searchParams.get('state');
+ const cookies=providerStart.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
+ const originalFetch=globalThis.fetch;
+ globalThis.fetch=async(url)=>url==='https://oauth2.googleapis.com/token'
+  ?Response.json({access_token:'test-access'})
+  :Response.json({sub:'orderform-google',email:'orderform@example.invalid',name:'Order Form Customer',email_verified:true});
+ try{
+  const callback=await app.fetch(new Request('https://frames.saigraphicdesings.com/api/auth/google/callback?code=test-code&state='+state,{headers:{cookie:cookies}}),env,{});
+  const target=callback.headers.get('location');
+  assert.equal(new URL(target).origin,standalone);
+  const wrong=await app.fetch(new Request(target,{headers:{cookie:'sai_orderform_browser=wrong'}}),env,{});
+  assert.match(wrong.headers.get('location'),/google=error/);
+  const complete=await app.fetch(new Request(target,{headers:{cookie:browserCookie}}),env,{});
+  assert.equal(complete.headers.get('location'),standalone+'/');
+  const session=complete.headers.getSetCookie().find(c=>c.startsWith('sai_frames_session=')).split(';')[0];
+  const me=await app.fetch(new Request(standalone+'/api/auth/me',{headers:{cookie:session}}),env,{});
+  assert.equal((await me.json()).user.email,'orderform@example.invalid');
+  const replay=await app.fetch(new Request(target,{headers:{cookie:browserCookie}}),env,{});
+  assert.match(replay.headers.get('location'),/google=error/);
+  const page=await app.fetch(new Request(standalone+'/'),env,{});
+  assert.match(await page.text(),/Your frame order/);
+ }finally{globalThis.fetch=originalFetch;}
+});
+

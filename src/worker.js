@@ -90,7 +90,8 @@ function redirect(location, cookies = []) {
 }
 
 function accountError(request, code) {
-  const url = new URL("/frames.html", request.url);
+  const standalone=getCookie(request,"sai_frames_oauth_return")==="standalone-order-form";
+  const url = new URL(standalone?"https://orderform.saigraphicdesings.com/":"/frames.html", request.url);
   url.searchParams.set("google", "error");
   url.searchParams.set("reason", code);
   return redirect(url.toString(), [clearOauthStateCookie()]);
@@ -642,7 +643,37 @@ async function freeDownload(request, env) {
   return json({ success: true, id: product.id, name: product.name, downloadUrl: product.download_url });
 }
 
+const orderFormOrigin = 'https://orderform.saigraphicdesings.com';
+const framesOrigin = 'https://frames.saigraphicdesings.com';
+const transferCookie = (value, maxAge = 600) => 'sai_orderform_browser='+value+'; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age='+maxAge;
+async function ensureLoginTransfers(env) {
+ await env.DB.prepare('CREATE TABLE IF NOT EXISTS frame_login_transfers (code_hash TEXT PRIMARY KEY, browser_hash TEXT NOT NULL, customer_id TEXT NOT NULL, expires_at INTEGER NOT NULL)').run();
+ await env.DB.prepare('DELETE FROM frame_login_transfers WHERE expires_at < ?').bind(Date.now()).run();
+}
+async function completeOrderFormLogin(request, env) {
+ const url=new URL(request.url);
+ if(url.origin!==orderFormOrigin)return json({error:'Not found'},404);
+ const code=url.searchParams.get('code')||'';
+ const browser=getCookie(request,'sai_orderform_browser');
+ if(!code||!browser)return redirect(orderFormOrigin+'/?google=error',[transferCookie('',0)]);
+ await ensureAccountSchema(env);
+ await ensureLoginTransfers(env);
+ const row=await env.DB.prepare('DELETE FROM frame_login_transfers WHERE code_hash=? AND browser_hash=? AND expires_at>? RETURNING customer_id')
+  .bind(await hashText(code),await hashText(browser),Date.now()).first();
+ if(!row)return redirect(orderFormOrigin+'/?google=error',[transferCookie('',0)]);
+ const session=await createSession(env,row.customer_id);
+ return redirect(orderFormOrigin+'/',[sessionCookie(session),transferCookie('',0)]);
+}
+
 async function startGoogle(request, env) {
+  if(new URL(request.url).origin===orderFormOrigin){
+   const browser=randomToken(32);
+   const start=new URL('/api/auth/google/start',framesOrigin);
+   start.searchParams.set('returnTo','standalone-order-form');
+   start.searchParams.set('browser',await hashText(browser));
+   return redirect(start.toString(),[transferCookie(browser)]);
+  }
+
   if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) return accountError(request, "google_unavailable");
 
   const state = randomToken(24);
@@ -657,7 +688,15 @@ async function startGoogle(request, env) {
   google.searchParams.set("prompt", "select_account");
   google.searchParams.set("include_granted_scopes", "true");
 
-  return redirect(google.toString(), [oauthStateCookie(state), 'sai_frames_oauth_return='+(new URL(request.url).searchParams.get('returnTo')==='order-form'?'order-form':'store')+'; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600']);
+  const params=new URL(request.url).searchParams;
+  const browserHash=params.get('browser')||'';
+  const standalone=params.get('returnTo')==='standalone-order-form'&&/^[A-Za-z0-9+/=]{40,64}$/.test(browserHash);
+  const destination=standalone?'standalone-order-form':params.get('returnTo')==='order-form'?'order-form':'store';
+  return redirect(google.toString(),[
+   oauthStateCookie(state),
+   'sai_frames_oauth_return='+destination+'; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600',
+   'sai_frames_transfer_browser='+encodeURIComponent(standalone?browserHash:'')+'; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600'
+  ]);
 }
 
 async function finishGoogle(request, env) {
@@ -739,6 +778,17 @@ async function finishGoogle(request, env) {
     `).bind(customerId, name, email, googleSub).run();
   }
 
+  if(getCookie(request,'sai_frames_oauth_return')==='standalone-order-form'){
+   const browserHash=decodeURIComponent(getCookie(request,'sai_frames_transfer_browser')||'');
+   if(!/^[A-Za-z0-9+/=]{40,64}$/.test(browserHash))return accountError(request,'state');
+   await ensureLoginTransfers(env);
+   const code=randomToken(32);
+   await env.DB.prepare('INSERT INTO frame_login_transfers(code_hash,browser_hash,customer_id,expires_at) VALUES(?,?,?,?)')
+    .bind(await hashText(code),browserHash,customerId,Date.now()+60000).run();
+   const target=new URL('/api/auth/order-form-complete',orderFormOrigin);
+   target.searchParams.set('code',code);
+   return redirect(target.toString(),[clearOauthStateCookie()]);
+  }
   const session = await createSession(env, customerId);
   const accountUrl = new URL(getCookie(request, "sai_frames_oauth_return")==="order-form"?"/order-form.html":"/frames.html", request.url);
   accountUrl.searchParams.set("google", "success");
@@ -753,6 +803,7 @@ export default {
     const url = new URL(request.url);
 
     try {
+      if (url.pathname === "/api/auth/order-form-complete" && request.method === "GET") return await completeOrderFormLogin(request, env);
       if (url.pathname === "/api/auth/signup" && request.method === "POST") return await signup(request, env);
       if (url.pathname === "/api/auth/login" && request.method === "POST") return await login(request, env);
       if (url.pathname === "/api/auth/logout" && request.method === "POST") return await logout(request, env);
@@ -779,3 +830,4 @@ export default {
     return baseWorker.fetch(request, env, ctx);
   }
 };
+
