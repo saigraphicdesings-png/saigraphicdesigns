@@ -81,6 +81,7 @@ async function orders(){
   review.textContent='Write a Google review';
   card.append(request,review);
  }
+ card.append(cashbackDetails(o));
  $('orders').append(card);
  }
 }
@@ -162,4 +163,50 @@ function paymentPanel(order) {
  screenshot.textContent='Send payment screenshot on WhatsApp';
  panel.append(screenshot);
  return panel;
+}
+
+
+function cashbackDetails(order) {
+ const form=document.createElement('form');
+ const title=document.createElement('h4');
+ title.textContent='Your payment & cashback details';
+ form.append(title);
+ const upiLabel=document.createElement('label');
+ upiLabel.textContent='Your UPI ID for cashback';
+ const upi=document.createElement('input');
+ upi.name='customerUpi';
+ upi.value=order.customerUpi||'';
+ upi.placeholder='yourname@bank';
+ upi.maxLength=321;
+ upi.required=true;
+ upiLabel.append(upi);
+ const methodLabel=document.createElement('label');
+ methodLabel.textContent='Payment method used';
+ const method=document.createElement('select');
+ method.name='paymentMethod';
+ method.required=true;
+ method.add(new Option('Select payment method',''));
+ for(const name of ['Google Pay','PhonePe','Other UPI'])method.add(new Option(name,name));
+ method.value=order.paymentMethod||'';
+ methodLabel.append(method);
+ const button=document.createElement('button');
+ button.type='submit';
+ button.textContent='Save payment details';
+ const message=document.createElement('p');
+ message.setAttribute('role','status');
+ if(order.cashbackAmount)message.textContent='Cashback '+money(order.cashbackAmount)+' · '+(order.cashbackStatus==='Sent'?'Sent':'Pending');
+ const note=document.createElement('p');
+ note.textContent='Cashback is available whether or not you leave a review. Your UPI ID helps SAI send your cashback.';
+ form.append(upiLabel,methodLabel,note,button,message);
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  button.disabled=true;
+  try{
+   await api('frames/payment-details',{id:order.id,customerUpi:upi.value,paymentMethod:method.value});
+   message.textContent='Payment details saved.';
+   button.textContent='Saved';
+  }catch(error){message.textContent=error.message;}
+  finally{button.disabled=false;}
+ });
+ return form;
 }

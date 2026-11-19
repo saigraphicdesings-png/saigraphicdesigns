@@ -63,12 +63,40 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
   if(req.method==='GET')return reply({products:await list(env)});
   const p=validateProduct(await readJSON(req));await env.DB.prepare('INSERT INTO frame_products (id,data) VALUES (?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').bind(p.id,JSON.stringify(p)).run();return reply({product:p});
  }
- if(url.pathname==='/api/frames/admin/orders'&&req.method==='GET'){const r=await env.DB.prepare('SELECT data,version FROM frame_orders ORDER BY rowid DESC LIMIT 200').all();return reply({orders:r.results.map(r=>({...JSON.parse(r.data),version:r.version}))})}
+ if(url.pathname==='/api/frames/admin/orders'&&req.method==='GET'){
+  const r=await env.DB.prepare('SELECT data,version FROM frame_orders ORDER BY rowid DESC LIMIT 200').all();
+  const summary=await env.DB.prepare(`SELECT
+   COUNT(DISTINCT CASE WHEN json_extract(data,'$.reviewVerified')=1 THEN customer_id END) AS reviewers,
+   COALESCE(SUM(COALESCE(json_extract(data,'$.cashbackAmount'),0)),0) AS cashbackTotal,
+   COALESCE(SUM(CASE WHEN json_extract(data,'$.cashbackStatus')='Sent' THEN COALESCE(json_extract(data,'$.cashbackAmount'),0) ELSE 0 END),0) AS cashbackSent
+   FROM frame_orders`).first();
+  return reply({orders:r.results.map(r=>({...JSON.parse(r.data),version:r.version})),summary});
+ }
  if(url.pathname==='/api/frames/admin/order'&&req.method==='PUT'){
   const b=await readJSON(req);const row=await env.DB.prepare('SELECT data,version FROM frame_orders WHERE id=?').bind(b.id).first();if(!row)throw fail('Order not found.',404);if(row.version!==b.version)throw fail('This order was updated elsewhere. Refresh before saving.',409);
   const o=JSON.parse(row.data);if(!Number.isInteger(b.stage)||b.stage<0||b.stage>=stages.length)throw fail('Invalid order stage.');if(!['Awaiting confirmation','Payment requested','Paid','Refunded'].includes(b.payment))throw fail('Invalid payment status.');
   const shipping=o.source==='order-form'?0:Number(b.shipping);if(!Number.isInteger(shipping)||shipping<0||shipping>5000)throw fail('Shipping must be a whole-rupee amount between 0 and 5000.');
   const next={...o,stage:b.stage,payment:b.payment,shipping,total:o.subtotal+shipping,shippingConfirmed:o.source==='order-form'||!!b.shippingConfirmed,courier:clean(b.courier,80),tracking:clean(b.tracking,100),trackingUrl:safeCourierURL(b.trackingUrl),estimated:clean(b.estimated,40),note:clean(b.note,1000)};
+  if(b.customerUpi!==undefined){
+   const upi=String(b.customerUpi).trim();
+   if(upi&&!/^[a-zA-Z0-9._-]{2,256}@[a-zA-Z0-9.-]{2,64}$/.test(upi))throw fail('Enter a valid customer UPI ID.');
+   next.customerUpi=upi;
+  }
+  if(b.paymentMethod!==undefined){
+   if(!['','Google Pay','PhonePe','Other UPI'].includes(b.paymentMethod))throw fail('Invalid payment method.');
+   next.paymentMethod=b.paymentMethod;
+  }
+  if(b.reviewVerified!==undefined)next.reviewVerified=!!b.reviewVerified;
+  if(b.cashbackAmount!==undefined){
+   const amount=Number(b.cashbackAmount);
+   if(!Number.isInteger(amount)||amount<0||amount>25)throw fail('Cashback must be between ₹1 and ₹25, or 0 when unassigned.');
+   next.cashbackAmount=amount;
+  }
+  if(b.cashbackStatus!==undefined){
+   if(!['Not sent','Sent'].includes(b.cashbackStatus))throw fail('Invalid cashback status.');
+   next.cashbackStatus=b.cashbackStatus;
+  }
+  if(next.cashbackStatus==='Sent'&&(!next.customerUpi||!next.cashbackAmount))throw fail('Add the customer UPI ID and cashback amount before marking sent.');
   if(next.stage>=4&&(!next.courier||!next.tracking))throw fail('Add the courier name and tracking number before marking shipped.');
   next.history=[...o.history,{stage:next.stage,date:new Date().toISOString(),note:next.note||stages[next.stage]}];
   const result=await env.DB.prepare('UPDATE frame_orders SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(next),o.id,b.version).run();if(!result.meta.changes)throw fail('Order changed. Refresh and try again.',409);return reply({ok:true});
@@ -77,6 +105,22 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  if(url.pathname==='/api/frames/photo'){
   if(req.method==='GET'){const id=url.searchParams.get('id');const p=await env.DB.prepare('SELECT customer_id,data FROM frame_photos WHERE id=?').bind(id).first();if(!p||(!isAdmin&&p.customer_id!==customer?.id))throw fail('Photo not found.',404);return reply({photo:p.data})}
   if(!customer)throw fail('Customer login required.',401);const b=await readJSON(req);if(typeof b.photo!=='string'||!/^data:image\/jpeg;base64,\/9j\//.test(b.photo)||b.photo.length>650000)throw fail('Use a JPG photo under 480 KB after optimisation.');const id=crypto.randomUUID();await env.DB.prepare('INSERT INTO frame_photos (id,customer_id,data,created_at) VALUES (?,?,?,?)').bind(id,customer.id,b.photo,new Date().toISOString()).run();return reply({id},201);
+ }
+
+ if(url.pathname==='/api/frames/payment-details'&&req.method==='POST'){
+  if(!customer)throw fail('Customer login required.',401);
+  const b=await readJSON(req);
+  const upi=String(b.customerUpi||'').trim();
+  if(!/^[a-zA-Z0-9._-]{2,256}@[a-zA-Z0-9.-]{2,64}$/.test(upi))throw fail('Enter your UPI ID for cashback.');
+  if(!['Google Pay','PhonePe','Other UPI'].includes(b.paymentMethod))throw fail('Select your payment method.');
+  const row=await env.DB.prepare('SELECT data,version FROM frame_orders WHERE id=? AND customer_id=?').bind(b.id,customer.id).first();
+  if(!row)throw fail('Order not found.',404);
+  const order=JSON.parse(row.data);
+  if(order.cashbackStatus==='Sent'&&order.customerUpi!==upi)throw fail('Cashback has already been sent. Contact SAI to change these details.');
+  const updated={...order,customerUpi:upi,paymentMethod:b.paymentMethod};
+  const result=await env.DB.prepare('UPDATE frame_orders SET data=?,version=version+1 WHERE id=? AND version=?').bind(JSON.stringify(updated),b.id,row.version).run();
+  if(!result.meta.changes)throw fail('Order updated elsewhere. Please try again.',409);
+  return reply({ok:true});
  }
 
  if(url.pathname==='/api/frames/form-orders'&&req.method==='POST'){
@@ -112,3 +156,4 @@ export function withFrames(base){return {...base,async fetch(req,env,ctx){const 
  }
  return reply({error:'Not found'},404)
  }catch(e){if(!e.status)console.error('frames_api_failure',e.message);return reply({error:e.status?e.message:'Store temporarily unavailable. Please try again.'},e.status||500)}}}}
+
