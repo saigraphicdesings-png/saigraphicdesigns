@@ -153,3 +153,30 @@ summary { color: #1545ac; font-weight: 750; cursor: pointer; padding: .35rem 0; 
 }
 .password-toggle svg { width: 21px; height: 21px; }
 .password-toggle.is-visible .eye-slash { display: none; }
+
+#notifications-link {
+ position: relative;
+ display: inline-grid;
+ place-items: center;
+ width: 44px;
+ height: 44px;
+ margin-block: -.5rem;
+ border-radius: 50%;
+ background: #e1ecff;
+}
+#notifications-link:hover { background: #d3e3ff; }
+#notifications-link svg { width: 22px; height: 22px; }
+#notification-count {
+ position: absolute;
+ inset-block-start: -3px;
+ inset-inline-end: -5px;
+ min-width: 1.3rem;
+ padding: 0 .25rem;
+ border: 2px solid #f4f8ff;
+ border-radius: 999px;
+ background: #b91c36;
+ color: #fff;
+ font-size: .7rem;
+ line-height: 1.1rem;
+ text-align: center;
+}
