@@ -1,6 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css?v=signup-page"><script type="module" src="/order-form.mjs?v=signup-page"></script></head>
-<body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><a id="track-link" href="#tracking" hidden>Track order</a></header><main>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css?v=signup-page"><script type="module" src="/order-form.mjs?v=account-settings"></script></head>
+<body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><nav id="customer-nav" aria-label="Customer account" hidden style="display:flex;flex-wrap:wrap;gap:.5rem 1rem">
+ <a id="track-link" href="#tracking">Track order</a>
+ <a id="notifications-link" href="#notifications">Notifications</a>
+ <a id="settings-link" href="#account-settings">Account settings</a>
+</nav></header><main>
 <p id="status" role="status"></p>
 <section id="signin" aria-labelledby="signin-title"><div class="auth-intro">
  <div class="brand-tile" aria-hidden="true"><span>S</span></div>
@@ -11,6 +15,26 @@
 <a class="signup-link" href="/order-signup.html">Create an account</a><button type="submit">Sign in</button></form>
 <p class="auth-divider">or continue with</p>
 <a class="button google-signin" href="/api/auth/google/start?returnTo=order-form">Continue with Google</a>
+</section>
+<section id="account-settings" aria-labelledby="account-heading" hidden>
+ <h1 id="account-heading" tabindex="-1">Account settings</h1>
+ <p>Signed in as <strong id="account-email"></strong></p>
+ <form id="delivery-settings" class="fields">
+  <label>Full name<input name="name" autocomplete="name" minlength="2" maxlength="80" required></label>
+  <label>Mobile number<input name="phone" type="tel" autocomplete="tel-national" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" required></label>
+  <label class="wide">Full delivery address<textarea name="address" autocomplete="street-address" minlength="10" maxlength="500" required></textarea></label>
+  <label>City<input name="city" autocomplete="address-level2" minlength="2" maxlength="100" required></label>
+  <label>State<input name="state" autocomplete="address-level1" minlength="2" maxlength="100" required></label>
+  <label>PIN code<input name="pin" autocomplete="postal-code" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" required></label>
+  <div class="wide"><button type="submit">Save delivery details</button> <button class="secondary" id="close-settings" type="button">Back to order</button></div>
+ </form>
+ <p id="account-status" role="status"></p>
+ <button type="button" id="logout" class="secondary">Sign out</button>
+</section>
+<section id="notifications" aria-labelledby="notifications-heading" hidden>
+ <h2 id="notifications-heading" tabindex="-1">Order notifications</h2>
+ <ul id="notification-list"></ul>
+ <p id="notification-status" role="status"></p>
 </section>
 <div id="order-content" hidden>
 <h1 tabindex="-1">Your frame order</h1><p>Select your frame, add photos and check delivery availability.</p>
