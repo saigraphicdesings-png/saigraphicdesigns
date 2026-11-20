@@ -550,6 +550,34 @@ function normalizeIndianPhone(value) {
   return `+91${local}`;
 }
 
+async function saveDelivery(request, env) {
+  const customer = await currentCustomer(request, env);
+  if (!customer) return json({ error: "Please sign in to save delivery details." }, 401);
+  const input = await request.json().catch(() => null);
+  if (!input || typeof input !== "object") return json({ error: "Invalid request." }, 400);
+  const name = String(input.name || "").trim().slice(0, 80);
+  if (name.length < 2) return json({ error: "Please enter your full name." }, 400);
+  const delivery = validateRegistrationAddress(input);
+  if (delivery.error) return json({ error: delivery.error }, 400);
+
+  const existing = await env.DB.prepare(
+    "SELECT id FROM customer_accounts WHERE phone = ? AND id <> ? LIMIT 1"
+  ).bind(delivery.phone, customer.id).first();
+  if (existing) return json({ error: "This mobile number is already linked to another account." }, 409);
+
+  const updated = await env.DB.prepare(`
+    UPDATE customer_accounts
+    SET name = ?, address = ?, city = ?, state = ?, pin = ?,
+        phone_verified = CASE WHEN phone = ? THEN phone_verified ELSE 0 END,
+        phone = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+    RETURNING *
+  `).bind(name, delivery.address, delivery.city, delivery.state, delivery.pin,
+    delivery.phone, delivery.phone, customer.id).first();
+
+  return json({ user: publicCustomer(updated) });
+}
+
 async function savePhone(request, env) {
   await ensureAccountSchema(env);
   const customer = await getSessionCustomer(request, env);
@@ -813,6 +841,7 @@ export default {
       if (url.pathname === "/api/auth/reset-password" && request.method === "POST") return await resetPassword(request, env);
       if (url.pathname === "/api/auth/google/start" && request.method === "GET") return await startGoogle(request, env);
       if (url.pathname === "/api/auth/google/callback" && request.method === "GET") return await finishGoogle(request, env);
+      if (url.pathname === "/api/auth/delivery" && request.method === "POST") return await saveDelivery(request, env);
       if (url.pathname === "/api/auth/phone/save" && request.method === "POST") return await savePhone(request, env);
       if (url.pathname.startsWith("/api/admin/customers/") && url.pathname.endsWith("/reset-link") && request.method === "POST") return await createAdminResetLink(request, env, url);
       if (url.pathname === "/api/free-download" && request.method === "GET") return await freeDownload(request, env);
