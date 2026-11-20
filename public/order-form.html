@@ -1,8 +1,15 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css"><script type="module" src="/order-form.mjs?v=registration"></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css?v=blue"><script type="module" src="/order-form.mjs?v=registration"></script></head>
 <body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><a id="track-link" href="#tracking" hidden>Track order</a></header><main>
 <p id="status" role="status"></p>
-<section id="signin" aria-labelledby="signin-title"><h1 id="signin-title">Sign in</h1><p>Sign in to order your photo frames.</p><a class="button" href="/api/auth/google/start?returnTo=order-form">Continue with Google</a><form id="login"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button>Sign in</button></form>
+<section id="signin" aria-labelledby="signin-title"><div class="auth-intro">
+ <div class="brand-tile" aria-hidden="true"><span>S</span></div>
+ <h1 id="signin-title">Welcome back</h1>
+ <p>Sign in to order your photo frames.</p>
+</div>
+<form id="login"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign in</button></form>
+<p class="auth-divider">or continue with</p>
+<a class="button google-signin" href="/api/auth/google/start?returnTo=order-form">Continue with Google</a>
 <details>
  <summary>Create an account</summary>
  <form id="register" class="fields">
