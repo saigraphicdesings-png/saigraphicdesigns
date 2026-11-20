@@ -1,8 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css"><script type="module" src="/order-form.mjs"></script></head>
-<body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><a href="#tracking">Track order</a></header><main>
-<h1>Your frame order</h1><p>Select your frame, add photos and check delivery availability.</p><p id="status" role="status"></p>
-<section id="signin" hidden><h2>Sign in</h2><a class="button" href="/api/auth/google/start?returnTo=order-form">Continue with Google</a><form id="login"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button>Sign in</button></form></section>
+<body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><a id="track-link" href="#tracking" hidden>Track order</a></header><main>
+<p id="status" role="status"></p>
+<section id="signin" aria-labelledby="signin-title"><h1 id="signin-title">Sign in</h1><p>Sign in to order your photo frames.</p><a class="button" href="/api/auth/google/start?returnTo=order-form">Continue with Google</a><form id="login"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button>Sign in</button></form></section>
+<div id="order-content" hidden>
+<h1 tabindex="-1">Your frame order</h1><p>Select your frame, add photos and check delivery availability.</p>
 <form id="order"><section><h2>Frame details</h2><div class="fields">
 <label>Frame type<select name="type"><option>Wooden</option><option>PVC</option><option>Combo</option></select></label>
 <label id="combo-field" hidden>Combo<select name="combo"></select></label>
@@ -23,5 +25,6 @@
 <section id="confirmation" hidden><h2>Order received</h2><p id="order-id"></p><a href="#tracking">Track this order below</a></section>
 <section id="tracking"><h2>Track your order</h2><button type="button" id="refresh">Refresh orders</button><div id="orders"></div></section>
 <details><summary>Frame price list</summary><div id="price-list"></div></details>
+</div>
 </main></body></html>
 
