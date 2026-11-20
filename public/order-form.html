@@ -1,8 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css?v=signup-page"><script type="module" src="/order-form.mjs?v=account-settings"></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAI Frame Orders</title><link rel="stylesheet" href="/order-form.css?v=notification-bell"><script type="module" src="/order-form.mjs?v=notification-bell"></script></head>
 <body><header><a href="/order-form.html">SAI Frames &amp; Gifts · Order form</a><nav id="customer-nav" aria-label="Customer account" hidden style="display:flex;flex-wrap:wrap;gap:.5rem 1rem">
  <a id="track-link" href="#tracking">Track order</a>
- <a id="notifications-link" href="#notifications">Notifications</a>
+ <a id="notifications-link" href="#notifications" aria-label="Notifications" title="Notifications">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 6-2 7-2 9h16c0-2-2-3-2-9M10 21h4"/></svg>
+  <span id="notification-count" aria-hidden="true" hidden></span>
+ </a>
  <a id="settings-link" href="#account-settings">Account settings</a>
 </nav></header><main>
 <p id="status" role="status"></p>
