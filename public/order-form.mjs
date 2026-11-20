@@ -90,6 +90,44 @@ $('refresh').onclick=()=>orders().catch(e=>{$('status').textContent=e.message;})
 const deliverySettings = $('delivery-settings');
 const deliveryNames = ['name', 'phone', 'address', 'city', 'state', 'pin'];
 let needsDelivery = false;
+let notificationTimer;
+const seenUpdates = new Map();
+
+function readNotifications() {
+ try {
+  return JSON.parse(localStorage.getItem('sai-order-updates:' + user.id) || '{}') || {};
+ } catch {
+  return {};
+ }
+}
+
+function updateNotifications(updates, markRead = false) {
+ const badge = $('notification-count');
+ if (!badge) return;
+ const seen = seenUpdates.get(user.id) || readNotifications();
+ const current = Object.fromEntries(updates.map(order => [
+  order.id, JSON.stringify([order.stage, order.payment, customerNote(order), order.tracking, order.cashbackStatus, order.cashbackAmount])
+ ]));
+ if (markRead) {
+  seenUpdates.set(user.id, current);
+  try { localStorage.setItem('sai-order-updates:' + user.id, JSON.stringify(current)); } catch {}
+ }
+ const count = markRead ? 0 : Object.entries(current).filter(([id, status]) => seen[id] !== status).length;
+ badge.hidden = count === 0;
+ badge.textContent = count > 99 ? '99+' : String(count);
+ $('notifications-link').setAttribute('aria-label', count ? 'Notifications (' + count + ' unread)' : 'Notifications');
+}
+
+async function refreshNotificationCount() {
+ if (!user || needsDelivery || document.hidden || !$('notifications').hidden) return;
+ const customerId = user.id;
+ try {
+  const {orders: updates} = await api('frames/orders');
+  if (user?.id === customerId && $('notifications').hidden) updateNotifications(updates);
+ } catch {
+  // Keep the last successful count and try again on the next refresh.
+ }
+}
 
 function fillDelivery(target, account, overwrite = false) {
  for (const name of deliveryNames) {
@@ -137,7 +175,12 @@ function signedIn(account) {
  $('notifications-link').hidden = needsDelivery;
  fillDelivery(fields, user);
  if (needsDelivery) showSettings();
- else showOrder();
+ else {
+  showOrder();
+  clearInterval(notificationTimer);
+  refreshNotificationCount();
+  notificationTimer = setInterval(refreshNotificationCount, 30000);
+ }
 }
 
 if (deliverySettings) {
@@ -210,6 +253,7 @@ if (deliverySettings) {
     list.append(item);
    }
    message.textContent = updates.length ? '' : 'No order updates yet.';
+   updateNotifications(updates, true);
   } catch (error) {
    message.textContent = error.message;
   }
