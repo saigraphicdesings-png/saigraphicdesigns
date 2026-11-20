@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>Create an account | SAI Frames &amp; Gifts</title>
+ <link rel="stylesheet" href="/order-form.css?v=signup-page">
+ <script type="module" src="/order-auth.mjs"></script>
+</head>
+<body>
+ <header><a href="/order-form.html">SAI Frames &amp; Gifts</a></header>
+ <main>
+  <section id="signup" aria-labelledby="signup-title">
+   <div class="auth-intro">
+    <div class="brand-tile" aria-hidden="true"><span>S</span></div>
+    <h1 id="signup-title">Create an account</h1>
+   </div>
+   <form id="register" class="fields">
+  <label>Full name<input name="name" autocomplete="name" minlength="2" maxlength="80" required></label>
+  <label>Email<input name="email" type="email" autocomplete="email" required></label>
+  <label>Mobile number<input name="phone" type="tel" autocomplete="tel-national" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" required></label>
+  <div><label for="signup-password">Password</label><div class="password-field"><input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" required><button type="button" class="password-toggle" data-password-toggle aria-label="Show password" aria-controls="signup-password" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.5"/><path class="eye-slash" d="m4 4 16 16"/></svg></button></div></div>
+  <label class="wide">Full delivery address<textarea name="address" autocomplete="street-address" minlength="10" maxlength="500" required></textarea></label>
+  <label>City<input name="city" autocomplete="address-level2" minlength="2" maxlength="100" required></label>
+  <label>State<input name="state" autocomplete="address-level1" minlength="2" maxlength="100" required></label>
+  <label>PIN code<input name="pin" autocomplete="postal-code" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" required></label>
+  <div class="wide"><input id="registration-terms" name="termsAccepted" type="checkbox" required style="width:auto"> <label for="registration-terms" style="display:inline">I accept the <a href="/terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</label></div>
+  <div class="wide"><button type="submit">Create account</button><div id="registration-status" role="status"></div></div>
+ </form>
+   <p>Already have an account? <a href="/order-form.html">Sign in</a></p>
+  </section>
+ </main>
+</body>
+</html>
