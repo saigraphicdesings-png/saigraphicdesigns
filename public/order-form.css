@@ -131,3 +131,25 @@ summary { color: #1545ac; font-weight: 750; cursor: pointer; padding: .35rem 0; 
 #price-list td, #price-list th { padding: .5rem; border-bottom: 1px solid #c9d8f1; text-align: left; }
 [hidden], #status:empty { display: none !important; }
 @media (min-width: 36rem) { .fields, .delivery { grid-template-columns: 1fr 1fr; } }
+
+#signup { max-width: 36rem; margin-inline: auto; }
+.signup-link { justify-self: end; font-size: .9rem; font-weight: 700; }
+.password-field { position: relative; margin-top: .35rem; }
+.password-field input { padding-inline-end: 3.2rem; }
+#login .password-toggle, .password-toggle {
+ position: absolute;
+ inset-block-start: 50%;
+ inset-inline-end: 2px;
+ transform: translateY(-50%);
+ display: grid;
+ place-items: center;
+ width: 44px;
+ height: 44px;
+ min-height: 0;
+ padding: 0;
+ background: transparent;
+ box-shadow: none;
+ color: #1545ac;
+}
+.password-toggle svg { width: 21px; height: 21px; }
+.password-toggle.is-visible .eye-slash { display: none; }
