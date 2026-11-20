@@ -90,8 +90,21 @@ async function orders(){
  }
 }
 $('refresh').onclick=()=>orders().catch(e=>{$('status').textContent=e.message;});
-function signedIn(account){user=account;$('signin').hidden=!!user;if(user)for(const n of ['name','phone','address','city','pin'])fields[n].value ||= user[n]||'';autoCheckPin();orders().catch(e=>{$('status').textContent=e.message;});}
-$('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='Signed in.';}catch(err){$('status').textContent=err.message;}};
+function signedIn(account) {
+ user = account;
+ $('signin').hidden = Boolean(user);
+ for (const id of ['order-content', 'track-link']) {
+  const element = $(id);
+  if (element) element.hidden = !user;
+ }
+ if (!user) return;
+ for (const name of ['name', 'phone', 'address', 'city', 'pin']) {
+  fields[name].value ||= user[name] || '';
+ }
+ autoCheckPin();
+ orders().catch(error => { $('status').textContent = error.message; });
+}
+$('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='';$('order-content')?.querySelector('h1')?.focus();}catch(err){$('status').textContent=err.message;}};
 form.onsubmit=async e=>{
  e.preventDefault();if(busy)return;if(!user){$('signin').hidden=false;$('signin').scrollIntoView();$('status').textContent='Please sign in before submitting.';return;}
  const input=values();selection(input);busy=true;const controls=[...form.querySelectorAll('input,select,textarea,button')];controls.forEach(c=>c.disabled=true);
