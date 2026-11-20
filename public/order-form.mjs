@@ -87,21 +87,136 @@ async function orders(){
  }
 }
 $('refresh').onclick=()=>orders().catch(e=>{$('status').textContent=e.message;});
-function signedIn(account) {
- user = account;
- $('signin').hidden = Boolean(user);
- for (const id of ['order-content', 'track-link']) {
-  const element = $(id);
-  if (element) element.hidden = !user;
+const deliverySettings = $('delivery-settings');
+const deliveryNames = ['name', 'phone', 'address', 'city', 'state', 'pin'];
+let needsDelivery = false;
+
+function fillDelivery(target, account, overwrite = false) {
+ for (const name of deliveryNames) {
+  const field = target[name];
+  if (field && (overwrite || !field.value)) field.value = account[name] || '';
  }
- if (!user) return;
- for (const name of ['name', 'phone', 'address', 'city', 'pin']) {
-  fields[name].value ||= user[name] || '';
- }
+}
+
+function showSettings() {
+ fillDelivery(deliverySettings.elements, user, true);
+ $('order-content').hidden = true;
+ $('notifications').hidden = true;
+ $('account-settings').hidden = false;
+ $('account-heading').textContent = needsDelivery ? 'Add your delivery details' : 'Account settings';
+ $('account-heading').focus();
+}
+
+function showOrder() {
+ $('account-settings').hidden = true;
+ $('notifications').hidden = true;
+ $('order-content').hidden = false;
  autoCheckPin();
  orders().catch(error => { $('status').textContent = error.message; });
 }
-$('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='';$('order-content')?.querySelector('h1')?.focus();}catch(err){$('status').textContent=err.message;}};
+
+function signedIn(account) {
+ user = account;
+ $('signin').hidden = Boolean(user);
+ if (!deliverySettings) {
+  $('order-content').hidden = !user;
+  $('track-link').hidden = !user;
+  if (user) {
+   fillDelivery(fields, user);
+   autoCheckPin();
+   orders().catch(error => { $('status').textContent = error.message; });
+  }
+  return;
+ }
+ $('customer-nav').hidden = !user;
+ if (!user) return;
+ $('account-email').textContent = user.email;
+ needsDelivery = !deliveryNames.every(name => String(user[name] || '').trim());
+ $('close-settings').hidden = needsDelivery;
+ $('track-link').hidden = needsDelivery;
+ $('notifications-link').hidden = needsDelivery;
+ fillDelivery(fields, user);
+ if (needsDelivery) showSettings();
+ else showOrder();
+}
+
+if (deliverySettings) {
+ $('settings-link').onclick = event => { event.preventDefault(); showSettings(); };
+ $('close-settings').onclick = () => {
+  $('account-status').textContent = '';
+  showOrder();
+  $('order-content').querySelector('h1').focus();
+ };
+ $('track-link').onclick = event => {
+  event.preventDefault();
+  showOrder();
+  $('tracking').scrollIntoView();
+ };
+ deliverySettings.onsubmit = async event => {
+  event.preventDefault();
+  const submit = event.submitter;
+  submit.disabled = true;
+  const message = $('account-status');
+  message.textContent = '';
+  try {
+   const {user: updated} = await api('auth/delivery', Object.fromEntries(new FormData(deliverySettings)));
+   user = updated;
+   fillDelivery(fields, user, true);
+   deliveryPin = '';
+   if (needsDelivery) {
+    signedIn(updated);
+    $('order-content').querySelector('h1').focus();
+    $('status').textContent = 'Delivery details saved.';
+   } else {
+    message.textContent = 'Delivery details saved.';
+   }
+  } catch (error) {
+   message.textContent = error.message;
+  } finally {
+   submit.disabled = false;
+  }
+ };
+
+ $('logout').onclick = async () => {
+  const button = $('logout');
+  button.disabled = true;
+  try {
+   await api('auth/logout', {});
+   location.replace('/order-form.html');
+  } catch (error) {
+   $('account-status').textContent = error.message;
+   button.disabled = false;
+  }
+ };
+
+ $('notifications-link').onclick = async event => {
+  event.preventDefault();
+  $('account-settings').hidden = true;
+  $('order-content').hidden = true;
+  $('notifications').hidden = false;
+  $('notifications-heading').focus();
+  const list = $('notification-list');
+  const message = $('notification-status');
+  list.replaceChildren();
+  message.textContent = 'Loading order updates…';
+  try {
+   const {orders: updates} = await api('frames/orders');
+   for (const order of updates) {
+    const item = document.createElement('li');
+    const note = customerNote(order);
+    const payment = order.payment === 'Paid' ? 'Payment received'
+     : order.payment === 'Refunded' ? 'Payment refunded' : 'Awaiting payment';
+    item.textContent = [order.id, stages[order.stage], payment, note].filter(Boolean).join(' · ');
+    list.append(item);
+   }
+   message.textContent = updates.length ? '' : 'No order updates yet.';
+  } catch (error) {
+   message.textContent = error.message;
+  }
+ };
+}
+
+$('login').onsubmit=async e=>{e.preventDefault();try{const d=await api('auth/login',Object.fromEntries(new FormData(e.target)));signedIn(d.user);e.target.reset();$('status').textContent='';if (!$('order-content').hidden) $('order-content').querySelector('h1').focus();}catch(err){$('status').textContent=err.message;}};
 form.onsubmit=async e=>{
  e.preventDefault();if(busy)return;if(!user){$('signin').hidden=false;$('signin').scrollIntoView();$('status').textContent='Please sign in before submitting.';return;}
  const input=values();selection(input);busy=true;const controls=[...form.querySelectorAll('input,select,textarea,button')];controls.forEach(c=>c.disabled=true);
