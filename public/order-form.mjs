@@ -1,3 +1,4 @@
+import {api} from './order-auth.mjs';
 import {prices,combos,selection} from './form-catalog.mjs';
 import {optimise} from './frame-photo.mjs';
 import {stages} from './frames-catalog.mjs';
@@ -6,10 +7,6 @@ const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',ma
 let user=null,key=crypto.randomUUID(),deliveryPin='',busy=false;
 let paymentSettings=null;
 const uploads=new WeakMap();
-async function api(path,body){
- const r=await fetch('/api/'+path,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
- const d=await r.json();if(!r.ok)throw Error(d.error||'Please try again.');return d;
-}
 function values(){return Object.fromEntries(new FormData(form));}
 function update(){
  const combo=fields.type.value==='Combo';
@@ -127,31 +124,6 @@ form.onsubmit=async e=>{
  }catch(err){$('status').textContent=err.message;}
  finally{busy=false;controls.forEach(c=>c.disabled=false);update();}
 };
-const registration = $('register');
-if (registration) {
- registration.onsubmit = async event => {
-  event.preventDefault();
-  const submit = registration.querySelector('button');
-  if (submit.disabled) return;
-  const input = Object.fromEntries(new FormData(registration));
-  input.termsAccepted = registration.elements.termsAccepted.checked;
-  const message = $('registration-status');
-  submit.disabled = true;
-  message.textContent = '';
-  try {
-   const {user: account} = await api('auth/signup', input);
-   signedIn(account);
-   registration.reset();
-   $('status').textContent = '';
-   $('order-content').querySelector('h1').focus();
-  } catch (error) {
-   message.textContent = error.message;
-  } finally {
-   submit.disabled = false;
-  }
- };
-}
-
 update();
 api('auth/me').then(({user: account}) => {
  if (!user) signedIn(account);
